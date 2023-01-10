@@ -9,38 +9,29 @@ export default defineComponent({
     RouterView
   },
   data() {
-      return {
-        homeView: false,
-        userView: false,
-        newsView: false
-      }
-  }, props: {
-
-  },
-  methods: {
-
+      return {}
   }
 })
 </script>
 
 
-<template>
+<template> 
     <div class="sidenav d-none d-lg-block">
-        <RouterLink to="/logged" :class="{onViewEffect: homeView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
+        <RouterLink to="/logged" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
         Home</RouterLink>
 
-        <RouterLink to="/users" :class="{onViewEffect: userView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="user icon" src="../assets/user.png">Users</RouterLink>
+        <RouterLink to="/users" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="user icon" src="../assets/user.png">Users</RouterLink>
 
-        <RouterLink to="/news" :class="{onViewEffect: newsView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="news icon" src="../assets/news.png">News</RouterLink>
+        <RouterLink to="/news" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="news icon" src="../assets/news.png">News</RouterLink>
 
     </div>
 
     <div class="smallSidenav d-lg-none"> 
-      <RouterLink to="/logged" :class="{onViewEffect: homeView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
+      <RouterLink to="/logged" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
         <br></RouterLink>
-      <RouterLink to="/users" :class="{onViewEffect: userView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="user icon" src="../assets/user.png">
+      <RouterLink to="/users" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="user icon" src="../assets/user.png">
         <br></RouterLink>
-      <RouterLink to="/news" :class="{onViewEffect: newsView}" class="hoverEffect hovicon effect-1 sub-a" ><img class="smallIcons" alt="news icon" src="../assets/news.png">
+      <RouterLink to="/news" class="hoverEffect hovicon effect-1 sub-a" ><img class="smallIcons" alt="news icon" src="../assets/news.png">
         <br></RouterLink>
     </div>
 
@@ -48,7 +39,6 @@ export default defineComponent({
   </template>
   
   <style scoped>
-
   .smallIcons {
     width: 48px;
     margin-bottom: 3%;
@@ -105,10 +95,10 @@ export default defineComponent({
     padding-right: 5%;
   }
   
-  .onViewEffect {
-    background:#DBDBDB;
+  .router-link-exact-active {
+  background:#DBDBDB;
     border-radius: 70px;
-  }
+}
 
 
   /* When you mouse over the navigation links, change their color */
@@ -145,5 +135,4 @@ export default defineComponent({
     color: #0477CE;
     box-shadow: 0 0 0 8px #cac9c9a3;
   }
-  
   </style>
