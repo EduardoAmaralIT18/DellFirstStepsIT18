@@ -54,9 +54,23 @@ position: relative;
 </style>
 
 <script lang="ts">
+// import { defineComponent } from 'vue';
+// import { RouterLink, RouterView } from 'vue-router';
+
+// export default defineComponent({
+//   name: 'NavBar',
+//   components: {
+//     RouterLink,
+//     RouterView
+//   },
+//   data() {
+//     return {}
+//   }
+// })
 export default {
   data() {
-    return {}
+    return {
+    }
   }
 }
 </script>
