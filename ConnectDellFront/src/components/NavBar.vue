@@ -31,7 +31,7 @@ height: 75px;
 padding-top: 3px;
 }
 .name{
-color: #0477CE;
+color: #0672CB;
 font-size: 151%;
 position: absolute;
 right: 0;

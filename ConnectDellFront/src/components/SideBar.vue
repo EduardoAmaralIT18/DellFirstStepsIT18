@@ -12,6 +12,8 @@ export default defineComponent({
       return {}
   }
 })
+
+//comentario teste
 </script>
 
 
@@ -86,7 +88,7 @@ export default defineComponent({
     border-top: 20%;
     text-decoration: none;
     font-size: 20px;
-    color: #0477CE;
+    color: #0672CB;
     display: block;
     margin-bottom: 6%;
     
@@ -94,7 +96,7 @@ export default defineComponent({
   
   .router-link-exact-active {
   background:#f4f1f1;
-  border-left: 10px solid #0477CE;
+  border-left: 10px solid #0672CB;
 
 }
 
@@ -102,7 +104,7 @@ export default defineComponent({
   /* When you mouse over the navigation links, change their color */
   .hoverEffect:hover{
     background:#f4f1f1;
-    border-left: 10px solid #0477CE;
+    border-left: 10px solid #0672CB;
   }
   
   /* Style page content */
@@ -128,7 +130,7 @@ export default defineComponent({
   
   .hoverEffect:active{
     background: #c6c6c6;
-    color: #0477CE;
+    color: #0672CB;
     box-shadow: 0 0 0 8px #cac9c9a3;
   }
   </style>
