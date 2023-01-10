@@ -132,39 +132,32 @@ export default {
     display: flex;
     flex-direction: column;
 }
-
 .dds__card {
     width: 12rem;
     color: #0477CE;
     box-shadow: 5px 5px lightgrey;
     border-radius: 10px;
 }
-
 .dds__card__header__title {
     font-weight: 550;
     color: #0477CE;
 }
-
 .dds__card__body {
     color: #0477CE;
 }
-
 .title {
     margin-left: 0px !important;
     text-align: left;
     color: #0477CE;
     margin: 2.5%;
 }
-
 .dds__button {
     background-color: white;
     border-style: none;
 }
-
 .dds__button:hover {
     background-color: unset !important;
 }
-
 .dds__icon {
     color: #0477CE;
     font-size: 55px;
