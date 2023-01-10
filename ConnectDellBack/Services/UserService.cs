@@ -16,15 +16,22 @@ public class UserService : IUserService
         _dbUser = dbUser;
     }
 
-  Task<IEnumerable<ProgramModel>> Get()
-  {
-        return 
+    public Task<IEnumerable<ProgramModel>> Get()
+    {
+        throw new NotImplementedException();
     }
 
-    Task<ProgramModel> Get(int Id)
-    {
-        return Ok;
-    }
+    //coment rapido prar poder rodar o back - pode descomentar depois
+    /*
+      Task<IEnumerable<ProgramModel>> Get()
+      {
+            return 
+        }
+
+        Task<ProgramModel> Get(int Id)
+        {
+            return Ok;
+        }*/
 
 
 }

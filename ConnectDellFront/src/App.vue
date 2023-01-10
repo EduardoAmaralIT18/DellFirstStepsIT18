@@ -1,23 +1,19 @@
 
 <template>
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
   <NavBar></NavBar>
-  <SideBar></SideBar>
+  <SideBar view="home"></SideBar>
 </template>
 
 <script lang="ts">
-/* eslint-disable */
 import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
 import NavBar from './components/NavBar.vue';
 import SideBar from './components/SideBar.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
-    HelloWorld,
     NavBar,
-    SideBar,
+    SideBar
   }
 });
 </script>

@@ -15,7 +15,10 @@ export default defineComponent({
         newsView: false
       }
   }, props: {
-    
+
+  },
+  methods: {
+
   }
 })
 </script>
@@ -45,6 +48,7 @@ export default defineComponent({
   </template>
   
   <style scoped>
+
   .smallIcons {
     width: 48px;
     margin-bottom: 3%;
