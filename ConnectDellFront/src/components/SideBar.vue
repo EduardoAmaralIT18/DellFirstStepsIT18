@@ -78,9 +78,7 @@ export default defineComponent({
     padding-top: 140px;
     border-right: 1px solid #b9b8b8;
   }
-  .hoverEffect:hover img{
-    width: 53px;
-  }
+
   /* The navigation menu links */
   .hoverEffect{
     border-right: 20%;
@@ -91,22 +89,20 @@ export default defineComponent({
     color: #0477CE;
     display: block;
     margin-bottom: 6%;
-    margin-right: 5%;
-    padding-right: 5%;
+    
   }
   
   .router-link-exact-active {
-  background:#DBDBDB;
-    border-radius: 70px;
+  background:#f4f1f1;
+  border-left: 10px solid #0477CE;
+
 }
 
 
   /* When you mouse over the navigation links, change their color */
   .hoverEffect:hover{
-    background:#DBDBDB;
-    border-radius: 40px;
-    padding: 15px;
-    margin-left: 8%;
+    background:#f4f1f1;
+    border-left: 10px solid #0477CE;
   }
   
   /* Style page content */

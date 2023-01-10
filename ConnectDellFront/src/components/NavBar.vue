@@ -3,7 +3,7 @@
       <div class="container-fluid">
           <div class="row">
               <div class="col-4 dellLogo">
-                <a href="index.html"><img class="logo" alt="logo Dell" src="../assets/logoDell.png"></a>
+                <a><img class="logo" alt="logo Dell" src="../assets/logoDell.png"></a>
               </div>
               <div class="col-8">
               <nav class="userName">
