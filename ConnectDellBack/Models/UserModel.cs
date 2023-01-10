@@ -34,5 +34,7 @@ public class UserModel{
     public List<ProgramModel> ProgramsAdmins {get;set;} = null!;
     public List<MembershipModel> memberships {get;set;} = null!;
     public List<NewsModel>? listNews {get; set;}
+
+    //Comentando Projeto 
    
 }
