@@ -14,7 +14,9 @@ export default defineComponent({
         userView: false,
         newsView: false
       }
-  },
+  }, props: {
+    
+  }
 })
 </script>
 
