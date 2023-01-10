@@ -8,55 +8,67 @@
               <div class="col-8">
               <nav class="userName">
                   <div class="d-none d-lg-block">
-                    <p class="name">Surname, Name | Role <img class="userPicture" alt="user icon" src="../assets/user.png"></p>
+                    <p class="name"> {{ NAME }} | {{ ROLE }}<img class="userPicture" alt="user icon" src="../assets/user.png"></p>
                   </div>
                 </nav>            
               </div>
+
           </div>
       </div>
   </header>
 </template>
 
 <style>
-.navbar{
-padding-bottom: 0;
-margin-bottom: 0;
-background-color: #ffffff;
-box-shadow: 2px 2px #a6a6a6ba;
-width: 100%;
-border-bottom: 2px solid #A6A6A6;
-margin-bottom: 0;
-width: 100%;
-height: 75px;
-padding-top: 3px;
-}
-.name{
-color: #0477CE;
-font-size: 151%;
-position: absolute;
-right: 0;
-top:0;
-margin-top: 10px;
-margin-right: 1%;
-}
-.userPicture{
-width: 47px;
-margin-left: 1px;
-margin-bottom: 3%;
-padding-top: 4px;
-}
-.logo{
-width: 400px;
-margin-left: 3%;
-top:0;
-position: relative;
-}
+  .navbar{
+    padding-bottom: 0;
+    margin-bottom: 0;
+    background-color: #ffffff;
+    box-shadow: 2px 2px #a6a6a6ba;
+    width: 100%;
+    border-bottom: 2px solid #A6A6A6;
+    margin-bottom: 0;
+    width: 100%;
+    height: 75px;
+    padding-top: 3px;
+  }
+  .name{
+    color: #0672CB;
+    font-size: 151%;
+    position: absolute;
+    right: 0;
+    top:0;
+    margin-top: 10px;
+    margin-right: 1%;
+  }
+  .userPicture{
+    width: 47px;
+    margin-left: 1px;
+    margin-bottom: 3%;
+    padding-top: 4px;
+  }
+  .logo{
+    width: 400px;
+    margin-left: 3%;
+    top:0;
+    position: relative;
+  }
 </style>
 
 <script lang="ts">
-export default {
-  data() {
-    return {}
-  }
+
+import { defineComponent } from 'vue';
+
+interface Data {
+  NAME: string,
+  ROLE: string,
 }
+
+export default defineComponent({
+  data(): Data {
+    return {
+      NAME: this.$cookies.get("NAME"),
+      ROLE: this.$cookies.get("ROLE"),
+    }
+  }
+})
 </script>

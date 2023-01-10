@@ -1,4 +1,3 @@
-
 <template>
   <NavBar></NavBar>
   <SideBar view="home"></SideBar>
@@ -8,12 +7,18 @@
 import { defineComponent } from 'vue';
 import NavBar from './components/NavBar.vue';
 import SideBar from './components/SideBar.vue';
-
 export default defineComponent({
   name: 'App',
   components: {
     NavBar,
     SideBar
+  },
+  data() {
+    return {}
+  },
+  created() {
+        this.$cookies.set("NAME", "Elise"),
+        this.$cookies.set("ROLE", "Intern")
   }
 });
 </script>
