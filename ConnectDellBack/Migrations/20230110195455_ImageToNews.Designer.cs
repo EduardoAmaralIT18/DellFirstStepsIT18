@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConnectDellBack.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230106201409_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230110195455_ImageToNews")]
+    partial class ImageToNews
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,6 +74,33 @@ namespace ConnectDellBack.Migrations
                     b.ToTable("editions");
                 });
 
+            modelBuilder.Entity("ConnectDellBack.Models.ImageModel", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<byte[]>("imageData")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("imageTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("newsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("newsId")
+                        .IsUnique();
+
+                    b.ToTable("images");
+                });
+
             modelBuilder.Entity("ConnectDellBack.Models.MembershipModel", b =>
                 {
                     b.Property<int>("editionid")
@@ -97,6 +124,9 @@ namespace ConnectDellBack.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
+                    b.Property<int>("authorid")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("date")
                         .HasColumnType("datetime2");
 
@@ -114,6 +144,8 @@ namespace ConnectDellBack.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("id");
+
+                    b.HasIndex("authorid");
 
                     b.HasIndex("programid");
 
@@ -251,6 +283,17 @@ namespace ConnectDellBack.Migrations
                     b.Navigation("program");
                 });
 
+            modelBuilder.Entity("ConnectDellBack.Models.ImageModel", b =>
+                {
+                    b.HasOne("ConnectDellBack.Models.NewsModel", "news")
+                        .WithOne("image")
+                        .HasForeignKey("ConnectDellBack.Models.ImageModel", "newsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("news");
+                });
+
             modelBuilder.Entity("ConnectDellBack.Models.MembershipModel", b =>
                 {
                     b.HasOne("ConnectDellBack.Models.EditionModel", "edition")
@@ -272,11 +315,19 @@ namespace ConnectDellBack.Migrations
 
             modelBuilder.Entity("ConnectDellBack.Models.NewsModel", b =>
                 {
+                    b.HasOne("ConnectDellBack.Models.UserModel", "author")
+                        .WithMany("listNews")
+                        .HasForeignKey("authorid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ConnectDellBack.Models.ProgramModel", "program")
                         .WithMany("news")
                         .HasForeignKey("programid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("author");
 
                     b.Navigation("program");
                 });
@@ -329,6 +380,11 @@ namespace ConnectDellBack.Migrations
                     b.Navigation("phases");
                 });
 
+            modelBuilder.Entity("ConnectDellBack.Models.NewsModel", b =>
+                {
+                    b.Navigation("image");
+                });
+
             modelBuilder.Entity("ConnectDellBack.Models.ProgramModel", b =>
                 {
                     b.Navigation("editions");
@@ -340,6 +396,8 @@ namespace ConnectDellBack.Migrations
 
             modelBuilder.Entity("ConnectDellBack.Models.UserModel", b =>
                 {
+                    b.Navigation("listNews");
+
                     b.Navigation("memberships");
 
                     b.Navigation("ownerships");

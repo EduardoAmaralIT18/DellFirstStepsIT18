@@ -11,7 +11,6 @@ public class ApplicationContext : DbContext
     public DbSet<EditionModel> editions { get; set;} = null!;
     public DbSet<PhasesModel> phases { get; set;} = null!;
     public DbSet<NewsModel> news { get; set;} = null!;
-
     
     public ApplicationContext(DbContextOptions options) : base(options)
     {
@@ -32,7 +31,104 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<UserModel>()
                     .HasOne(user => user.editionIntern)
                     .WithMany(edition => edition.interns);
+        
+        modelBuilder.Entity<NewsModel>()
+            .HasOne(n => n.image)
+            .WithOne(i => i.news)
+            .HasForeignKey<ImageModel>(i => i.newsId);
+    }
+
+    // Criando uma instância dentro da primeira Migration (InicialCreate) para conseguir o Seed 
+    internal static ApplicationContext CreateContext()  
+    {  
+        return new ApplicationContext(new DbContextOptionsBuilder<ApplicationContext>().UseSqlServer(  
+               new ConfigurationBuilder()  
+                     .AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), $"appsettings.json"))  
+                     .AddEnvironmentVariables()  
+                     .Build()  
+                     .GetConnectionString("DefaultConnection")  
+                 ).Options);  
+    } 
+
+    public class ApplicationContextFactory : IDesignTimeDbContextFactory<ApplicationContext>  
+    {  
+        public ApplicationContext CreateDbContext(string[] args)  
+        {  
+            var dbContext = ApplicationContext.CreateContext();  
+            dbContext.Database.Migrate();  
+            return dbContext;  
+        }  
+    } 
+}
+
+
     
+        modelBuilder.Entity<ProgramModel>().HasData(
+            new {
+                id = 1,
+                name = "IT Academy",  
+                startDate = new DateTime(08/10/2022),
+                description = "Internship Program in partnership with PUCRS, focused in software development",
+            }
+        );
+        modelBuilder.Entity<UserModel>().HasData(
+            new UserModel {
+                id = 1,
+                name = "Tassia",
+                email = "tassia.borochedes@dell.com",
+                role = Role.Admin,
+                notes = "N/A"
+            },
+            new UserModel(){
+                id = 2,
+                name = "Nelson",
+                email = "nelson.muller@dell.com",
+                role = Role.DellManager,
+                notes = "N/A"
+            },
+            new UserModel(){
+                id = 3,
+                name = "Marcelo",
+                email = "marcelo.soares@dell.com",
+                role = Role.DellManager,
+                notes = "N/A"
+            },
+            new UserModel(){
+                id = 4,
+                name = "Norton",
+                email = "norton.zamboni@dellteam.com",
+                role = Role.DellMember,
+                notes = "N/A"
+            },
+            new UserModel(){
+                id = 5,
+                name = "Daniel",
+                email = "daniel.callegari@dell.com",
+                role = Role.PucrsStaff,
+                notes = "N/A"
+            },
+            new UserModel(){
+                id = 6,
+                name = "Edson",
+                email = "edson.moreno@dell.com",
+                role = Role.PucrsStaff,
+                notes = "N/A"
+            },
+            new UserModel(){
+                id = 7,
+                name = "Tuani",
+                email = "tuani.alves@edupucrs.com",
+                role = Role.PucrsStaff,
+                notes = "N/A"
+            },
+            new UserModel(){
+                id = 8,
+                name = "Natalya",
+                email = "natalya.goelzer@edu.pucrs.br",
+                role = Role.PucrsStaff,
+                notes = "N/A"
+            },
+
         modelBuilder.Entity<ProgramModel>().HasData(
             new {
                 id = 1,
