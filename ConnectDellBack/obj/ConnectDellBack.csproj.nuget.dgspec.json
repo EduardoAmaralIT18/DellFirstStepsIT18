@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Larissa_Rosa\\Documents\\IT_Academy\\01 - Projeto IT Academy\\ConnectDellFull\\ConnectDellBack\\ConnectDellBack.csproj": {}
+    "C:\\projects\\Dell_FirstSteps\\ConnectDellBack\\ConnectDellBack.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Larissa_Rosa\\Documents\\IT_Academy\\01 - Projeto IT Academy\\ConnectDellFull\\ConnectDellBack\\ConnectDellBack.csproj": {
+    "C:\\projects\\Dell_FirstSteps\\ConnectDellBack\\ConnectDellBack.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Larissa_Rosa\\Documents\\IT_Academy\\01 - Projeto IT Academy\\ConnectDellFull\\ConnectDellBack\\ConnectDellBack.csproj",
+        "projectUniqueName": "C:\\projects\\Dell_FirstSteps\\ConnectDellBack\\ConnectDellBack.csproj",
         "projectName": "ConnectDellBack",
-        "projectPath": "C:\\Users\\Larissa_Rosa\\Documents\\IT_Academy\\01 - Projeto IT Academy\\ConnectDellFull\\ConnectDellBack\\ConnectDellBack.csproj",
-        "packagesPath": "C:\\Users\\Larissa_Rosa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Larissa_Rosa\\Documents\\IT_Academy\\01 - Projeto IT Academy\\ConnectDellFull\\ConnectDellBack\\obj\\",
+        "projectPath": "C:\\projects\\Dell_FirstSteps\\ConnectDellBack\\ConnectDellBack.csproj",
+        "packagesPath": "C:\\Users\\Jordana_Santos\\.nuget\\packages\\",
+        "outputPath": "C:\\projects\\Dell_FirstSteps\\ConnectDellBack\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Larissa_Rosa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Jordana_Santos\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -74,7 +74,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.404\\RuntimeIdentifierGraph.json"
         }
       }
     }
