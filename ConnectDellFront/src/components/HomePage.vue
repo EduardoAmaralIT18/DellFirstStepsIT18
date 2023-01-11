@@ -74,26 +74,23 @@ export default {
             },
             myPrograms: [
                 {
-                    "name": "IT Academy 2",
+                    "name": "IT Academy 17",
                     "description": "Description IT"
                 },
-                {
-                    "name": "Design Academy 2",
-                    "description": "Description Design"
-                },
+
                 {
                     "name": "Infrastructure Residency 2",
                     "description": "Description Infra"
-                }
+                },
 
             ],
             programs: [
+
                 {
-                    "name": "IT Academy"
-                },
-                {
-                    "name": "Design Academy"
+                    "name": "Design Academy",
+                    "description": "Description Design"
                 }
+
             ]
         }
     },
