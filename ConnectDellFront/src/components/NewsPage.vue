@@ -20,7 +20,7 @@
                     <div class="dds__card__body">{{ item.text }}
                     </div>
                     <div class="dds__card__footer">
-                        <p><b>{{ item.author }}</b> in {{ item.date }}</p>
+                        <p><b>{{ item.author }} - {{ item.program }}</b> in {{ item.date }}</p>
                     </div>
                 </div>
             </div>

@@ -22,6 +22,7 @@ public class NewsController : ControllerBase
     [HttpGet("getNews")]
     public async Task<ActionResult<IEnumerable<NewsDTO>>> GetNews()
     {
+        //abacaxi
         var news = await _newsService.getNews();
 
         var newsDTO = new List<NewsDTO>();

@@ -41,7 +41,6 @@ public class EditionModel{
     [StringLength(500, MinimumLength = 10, ErrorMessage = "The program's curriculum must be at most 500 characters.")]
     public string curriculum {get;set;} = null!;
 
-    [Required]
     public ProgramModel program {get;set;} = null!;
     public List<UserModel> members {get;set;} = null!;
     public List<MembershipModel> memberships {get;set;} = null!;

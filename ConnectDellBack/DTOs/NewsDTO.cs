@@ -16,6 +16,7 @@ public class NewsDTO{
     public string date {get; set;} = null!;
 
     public static NewsDTO converteModel2DTO(NewsModel news){
+        //uhul obg alexya
         NewsDTO aux = new NewsDTO();
         aux.title = news.title;
         aux.text = news.text;
