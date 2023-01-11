@@ -8,13 +8,8 @@ namespace ConnectDellBack.Services;
     {
     
     Task<IEnumerable<ProgramModel>> Get();
-
-    }
-
-
-        
         //criar usuário
-        /*public string createUser (UserModel user);
+        public string createUser (UserModel user);
 
         //ligando usuário ao programa
         public string assignProgram (int idUser, int idProgram);
@@ -23,9 +18,13 @@ namespace ConnectDellBack.Services;
 
         public string assignEdition(int idUser, int idEdition);
 
-        public string createEdition(EditionModel edition);
-
+        public string createEdition(EditionModel edition); // quem fez??
 
         //public changeRole(); //?????????????????????????
 
-        public IEnumerable<UserModel> listUser(); */
+        public IEnumerable<UserModel> listUsers();
+    }
+
+
+        
+        
