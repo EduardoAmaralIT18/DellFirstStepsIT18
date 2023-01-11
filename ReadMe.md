@@ -17,12 +17,12 @@ Essa documentação é pertinente ao projeto Dell First Steps, um programa colab
 Para realizar as instalações necessárias para que o programa possa rodar com sucesso em seu ambiente, é necessário seguir os seguintes passos:
 
 - Instalar o SKD.NET utilizando o aplicativo Workspace One da sua máquina.
-- Instalar o Dotnet. Para fazer isso, execute o seguinte comando via command prompt: `dotnet tool install --global dotnet-ef` Assim que a instalação for concluida, siga para o próximo passo.
+- Instalar o Dotnet. Para fazer isso, execute o seguinte comando via command prompt: `dotnet tool install --global dotnet-ef` Assim que a instalação for concluída, siga para o próximo passo.
 - Instalar o NPM/NODE utilizando o aplicativo Workspace One da sua máquina.
-- Istalar o NUnit. Um tutorial para realizar isso pode ser visto aqui: [Tutorial de Instalção Nunit](https://docs.nunit.org/articles/nunit/getting-started/installation.html)
+- Istalar o NUnit. Um tutorial para realizar isso pode ser visto aqui: [Tutorial de Instalação Nunit](https://docs.nunit.org/articles/nunit/getting-started/installation.html)
 - Instalar o Selenium. Existe um plug-in no Microsoft Edge que pode ser instalado no seu Browser.
 - Istalar o Git for Windows utilizando o aplicativo Workspace One da sua máquina.
-- Existe a opção de instalar tambem o Github for Desktop, caso tenha conhecimento da ferramenta.
+- Existe també a opção de instalar o Github for Desktop, caso tenha conhecimento da ferramenta.
 
 Após as instalações. Podemos seguir para utilizar o git para ter uma cópia do código. 
 
@@ -30,7 +30,7 @@ Após as instalações. Podemos seguir para utilizar o git para ter uma cópia d
 
 ### Utilizando o Git
 Para poder criar uma cópia do projeto, crie uma conta no Github e peça para que seja adicionado no diretório.
-Na sua maquina, Crie uma pasta dedicada para o projeto. Dentro dessa pasta, clique com o botão direito do mouse e escolha a opção de Git Bash. 
+Na sua máquina, crie uma pasta dedicada para o projeto. Dentro dessa pasta, clique com o botão direito do mouse e escolha a opção de Git Bash. 
 
 #### Configurando seu usuário
 
@@ -43,7 +43,7 @@ Na sua maquina, Crie uma pasta dedicada para o projeto. Dentro dessa pasta, cliq
 - Configurar senha:
 `git config --global user.password "suaSenhaAqui"`
 
-Ápos isso, já pode criar uma cópia do projeto na sua máquina. Dentro da pasta do projeto, insira o seguinte comando: `git clone https://github.com/LarissaRosaIT17/Dell_FirstSteps.git`.
+Após isso, já é possível criar uma cópia do projeto na sua máquina. Dentro da pasta do projeto, insira o seguinte comando: `git clone https://github.com/LarissaRosaIT17/Dell_FirstSteps.git`.
 
 ---
 
@@ -68,16 +68,16 @@ Para rodar o projeto, utilize os seguintes comandos nas pastas de backend ou fro
 
 #### Tutorial Rápido de Git
 
-Dentro da pasta dedicada, abrir o git bash, e entrar na branch especifica:
+Dentro da pasta dedicada, abrir o git bash, e entrar na branch específica:
 _ex: `git checkout nomeBranch`_ No caso do projeto, trabalhamos a partir da dev
 
-- Para verificar se esta na branch certa:
+- Para verificar se está na branch certa:
 `git branch`
 
 - Para resgatar o código atualizado:
 `git pull`
 
-- Para resgatar o código atualizado de uma branch especifica:
+- Para resgatar o código atualizado de uma branch específica:
 `git pull origin nomeBranch`
 
 - Para criar uma branch nova:
@@ -89,7 +89,7 @@ _ex: `git checkout nomeBranch`_ No caso do projeto, trabalhamos a partir da dev
 - Para abrir no VsCode:
 `code .`
 
-Dentro do Vs code, Existem opções que podem auxiliar no processo de dar commits e pushs. Assim que finalizar seu serviço, vá no terceiro icone da barra lateral do vsCode. Lá é possivel ver a opção de realizar commit. No campo acima do botão, descrever o trabalho que foi feito. Selecionar somente as files do programa que foram trabalhadas, e clicar no icone de <kbd>+</kbd>. Assim que finalizado, clicar no botão de commit. Quando completo, Clicar em sincronizar mudanças, para enviar o trabalho feito para o git.
+Dentro do Vs code, existem opções que podem auxiliar no processo de dar commits e pushs. Assim que finalizar seu serviço, vá no terceiro ícone da barra lateral do VsCode. Lá é possível ver a opção de realizar commit. No campo acima do botão, descrever o trabalho que foi feito. Selecionar somente as files do programa que foram trabalhadas e clicar no ícone de <kbd>+</kbd>. Assim que finalizado, clicar no botão de commit. Quando completo, clicar em sincronizar mudanças, para enviar o trabalho feito para o git.
 
 <br/>
 
