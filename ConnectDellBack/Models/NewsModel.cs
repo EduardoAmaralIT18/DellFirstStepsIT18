@@ -18,5 +18,7 @@ public class NewsModel {
 
     public UserModel author {get; set;} = null!;
 
+    public ImageModel? image {get; set;}
+
     public DateTime date {get; set;}
 }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ConnectDellBack.Services;
 using ConnectDellBack.Models;
+using ConnectDellBack.DTOs;
 
 namespace ConnectDellBack.Controllers;
 
@@ -19,9 +20,16 @@ public class NewsController : ControllerBase
 
     [Route("getNews")]
     [HttpGet("getNews")]
-    public async Task<ActionResult<IEnumerable<NewsModel>>> GetNews()
+    public async Task<ActionResult<IEnumerable<NewsDTO>>> GetNews()
     {
         var news = await _newsService.getNews();
-        return news == null ? NotFound() : Ok(news);
+
+        var newsDTO = new List<NewsDTO>();
+        foreach (var item in news)        
+        {
+            newsDTO.Add(NewsDTO.converteModel2DTO(item));            
+        }
+
+        return news == null ? NotFound() : Ok(newsDTO);
     }
 }
