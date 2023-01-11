@@ -89,9 +89,11 @@ export default defineComponent({
     text-decoration: none;
     font-size: 20px;
     color: #0672CB;
-    display: block;
     margin-bottom: 6%;
-    
+    float: left;
+    width: 100%;
+    text-align: left;
+    padding-left: 4%;
   }
   
   .router-link-exact-active {
@@ -105,14 +107,9 @@ export default defineComponent({
   .hoverEffect:hover{
     background:#f4f1f1;
     border-left: 10px solid #0672CB;
+    width: 100%;
   }
-  
-  /* Style page content */
-  .main {
-    margin-left: 100px;
-    /* Same as the width of the sidebar */
-    padding: 0px 10px;
-  }
+
   
   /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
   @media screen and (max-height: 450px) {
@@ -125,6 +122,7 @@ export default defineComponent({
       font-size: 20px;
       margin-bottom: 38%;
       padding-left: 24%;
+      width: 100%;
     }
   }
   
