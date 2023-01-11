@@ -26,7 +26,7 @@ export default defineComponent({
 
 <template>
     <div class="sidenav d-none d-lg-block">
-        <RouterLink to="/logged" :class="{onViewEffect: homeView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
+        <RouterLink to="/home" :class="{onViewEffect: homeView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
         Home</RouterLink>
 
         <RouterLink to="/users" :class="{onViewEffect: userView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="user icon" src="../assets/user.png">Users</RouterLink>
@@ -36,7 +36,7 @@ export default defineComponent({
     </div>
 
     <div class="smallSidenav d-lg-none"> 
-      <RouterLink to="/logged" :class="{onViewEffect: homeView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
+      <RouterLink to="/home" :class="{onViewEffect: homeView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
         <br></RouterLink>
       <RouterLink to="/users" :class="{onViewEffect: userView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="user icon" src="../assets/user.png">
         <br></RouterLink>

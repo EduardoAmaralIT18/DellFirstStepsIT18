@@ -4,6 +4,7 @@ using ConnectDellBack.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConnectDellBack.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20230111141946_Initial_Seeding_Migration")]
+    partial class InitialSeedingMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,33 +87,6 @@ namespace ConnectDellBack.Migrations
                             programId = 1,
                             startDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
-                });
-
-            modelBuilder.Entity("ConnectDellBack.Models.ImageModel", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<byte[]>("imageData")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("imageTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("newsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("newsId")
-                        .IsUnique();
-
-                    b.ToTable("images");
                 });
 
             modelBuilder.Entity("ConnectDellBack.Models.MembershipModel", b =>
@@ -510,17 +486,6 @@ namespace ConnectDellBack.Migrations
                     b.Navigation("program");
                 });
 
-            modelBuilder.Entity("ConnectDellBack.Models.ImageModel", b =>
-                {
-                    b.HasOne("ConnectDellBack.Models.NewsModel", "news")
-                        .WithOne("image")
-                        .HasForeignKey("ConnectDellBack.Models.ImageModel", "newsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("news");
-                });
-
             modelBuilder.Entity("ConnectDellBack.Models.MembershipModel", b =>
                 {
                     b.HasOne("ConnectDellBack.Models.EditionModel", "edition")
@@ -613,9 +578,6 @@ namespace ConnectDellBack.Migrations
 
             modelBuilder.Entity("ConnectDellBack.Models.NewsModel", b =>
                 {
-                    b.Navigation("image");
-                    b.Navigation("news");
-
                     b.Navigation("news");
                 });
 

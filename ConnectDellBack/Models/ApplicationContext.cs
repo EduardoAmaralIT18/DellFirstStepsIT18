@@ -11,13 +11,7 @@ public class ApplicationContext : DbContext
     public DbSet<EditionModel> editions { get; set;} = null!;
     public DbSet<PhasesModel> phases { get; set;} = null!;
     public DbSet<NewsModel> news { get; set;} = null!;
-
-<<<<<<< HEAD
-    public DbSet<ImageModel> images { get; set;} = null!;
-
-=======
     
->>>>>>> 19eaf0af4cfe6ee703d10125563b95c0340b7ca9
     public ApplicationContext(DbContextOptions options) : base(options)
     {
     }
@@ -37,7 +31,6 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<UserModel>()
                     .HasOne(user => user.editionIntern)
                     .WithMany(edition => edition.interns);
-<<<<<<< HEAD
         
         modelBuilder.Entity<NewsModel>()
             .HasOne(n => n.image)
@@ -68,8 +61,74 @@ public class ApplicationContext : DbContext
     } 
 }
 
-=======
+
     
+        modelBuilder.Entity<ProgramModel>().HasData(
+            new {
+                id = 1,
+                name = "IT Academy",  
+                startDate = new DateTime(08/10/2022),
+                description = "Internship Program in partnership with PUCRS, focused in software development",
+            }
+        );
+        modelBuilder.Entity<UserModel>().HasData(
+            new UserModel {
+                id = 1,
+                name = "Tassia",
+                email = "tassia.borochedes@dell.com",
+                role = Role.Admin,
+                notes = "N/A"
+            },
+            new UserModel(){
+                id = 2,
+                name = "Nelson",
+                email = "nelson.muller@dell.com",
+                role = Role.DellManager,
+                notes = "N/A"
+            },
+            new UserModel(){
+                id = 3,
+                name = "Marcelo",
+                email = "marcelo.soares@dell.com",
+                role = Role.DellManager,
+                notes = "N/A"
+            },
+            new UserModel(){
+                id = 4,
+                name = "Norton",
+                email = "norton.zamboni@dellteam.com",
+                role = Role.DellMember,
+                notes = "N/A"
+            },
+            new UserModel(){
+                id = 5,
+                name = "Daniel",
+                email = "daniel.callegari@dell.com",
+                role = Role.PucrsStaff,
+                notes = "N/A"
+            },
+            new UserModel(){
+                id = 6,
+                name = "Edson",
+                email = "edson.moreno@dell.com",
+                role = Role.PucrsStaff,
+                notes = "N/A"
+            },
+            new UserModel(){
+                id = 7,
+                name = "Tuani",
+                email = "tuani.alves@edupucrs.com",
+                role = Role.PucrsStaff,
+                notes = "N/A"
+            },
+            new UserModel(){
+                id = 8,
+                name = "Natalya",
+                email = "natalya.goelzer@edu.pucrs.br",
+                role = Role.PucrsStaff,
+                notes = "N/A"
+            },
+
         modelBuilder.Entity<ProgramModel>().HasData(
             new {
                 id = 1,
@@ -271,4 +330,3 @@ public class ApplicationContext : DbContext
          );
     }
 }
->>>>>>> 19eaf0af4cfe6ee703d10125563b95c0340b7ca9
