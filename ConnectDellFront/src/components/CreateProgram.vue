@@ -6,7 +6,7 @@
                 <h2 class="title">Create Program</h2>
                 <div class="dds__row">
                     <div class="dds__col--12 dds__col--sm-12">
-                        <div class="dds__input-text__container text-left">
+                        <div class="dds__input-text__container">
                             <label id="text-input-label-396765024" for="text-input-control-name-396765024">Program Name</label>
                             <div class="dds__input-text__wrapper">
                                 <input v-model="name" type="text" class="dds__input-text" name="text-input-control-name-396765024"
@@ -66,7 +66,7 @@
                             </div>
                             <div class="dds__text-area__wrapper">
                                 <textarea class="dds__text-area" name="text-area-control-name-980579425"
-                                    id="text-area-control-980579425" data-maxlength="null" aria-required="true"
+                                    id="text-area-control-980579425" data-maxlength="null" required="true"
                                     aria-labelledby="text-area-label-980579425 text-area-helper-980579425"></textarea>
                                 <small id="text-area-helper-980579425" class="dds__input-text__helper"></small>
                                 <small id="text-area-error-980579425" class="dds__invalid-feedback">Enter a description
@@ -76,7 +76,7 @@
                     </div>
                 </div>
             </fieldset>
-            <button class="dds__button dds__button--lg" type="submit">Submit</button>
+            <button class="submitbutton dds__button dds__button--lg" type="submit">Submit</button>
         </form>
     </div>
 
@@ -104,6 +104,9 @@ export default {
 </script>
 
 <style scoped>
+body{
+    font-family: 'Roboto', sans-serif;
+}
 .container {
     padding-top: 5%;
     padding-left: 20%;
@@ -112,6 +115,20 @@ export default {
 }
 .title{
   color: #0063B8;
+  margin-top: 10%;
+  margin-bottom: 5%;
+  font-size: 200%;
 }
-
+label{
+    display: flex;
+   text-align: left; 
+   margin-bottom: 10px
+}
+.submitbutton{
+    margin-top: 30px;
+    display: flex;
+    float: right;
+    width: 20%;
+    font-size: 20px;
+}
 </style>
