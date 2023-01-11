@@ -8,7 +8,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-//teste
 export default defineComponent({
     data(){
         return {}
