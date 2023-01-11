@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace ConnectDellBack.Models;
 
 public enum Type {
+    Set_Up,
     Training,
     Sprints,
     HandsOn

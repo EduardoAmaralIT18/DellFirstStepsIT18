@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ConnectDellBack.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class ImageToNews : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,28 +48,6 @@ namespace ConnectDellBack.Migrations
                     table.PrimaryKey("PK_editions", x => x.id);
                     table.ForeignKey(
                         name: "FK_editions_programs_programid",
-                        column: x => x.programid,
-                        principalTable: "programs",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "news",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    text = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: false),
-                    programid = table.Column<int>(type: "int", nullable: false),
-                    date = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_news", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_news_programs_programid",
                         column: x => x.programid,
                         principalTable: "programs",
                         principalColumn: "id",
@@ -148,6 +126,35 @@ namespace ConnectDellBack.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "news",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    text = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: false),
+                    programid = table.Column<int>(type: "int", nullable: false),
+                    authorid = table.Column<int>(type: "int", nullable: false),
+                    date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_news", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_news_programs_programid",
+                        column: x => x.programid,
+                        principalTable: "programs",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_news_users_authorid",
+                        column: x => x.authorid,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OwnershipModel",
                 columns: table => new
                 {
@@ -171,15 +178,47 @@ namespace ConnectDellBack.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "images",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    imageTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    imageData = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    newsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_images", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_images_news_newsId",
+                        column: x => x.newsId,
+                        principalTable: "news",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_editions_programid",
                 table: "editions",
                 column: "programid");
 
             migrationBuilder.CreateIndex(
+                name: "IX_images_newsId",
+                table: "images",
+                column: "newsId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MembershipModel_ownerid",
                 table: "MembershipModel",
                 column: "ownerid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_news_authorid",
+                table: "news",
+                column: "authorid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_news_programid",
@@ -206,16 +245,19 @@ namespace ConnectDellBack.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "MembershipModel");
+                name: "images");
 
             migrationBuilder.DropTable(
-                name: "news");
+                name: "MembershipModel");
 
             migrationBuilder.DropTable(
                 name: "OwnershipModel");
 
             migrationBuilder.DropTable(
                 name: "phases");
+
+            migrationBuilder.DropTable(
+                name: "news");
 
             migrationBuilder.DropTable(
                 name: "users");

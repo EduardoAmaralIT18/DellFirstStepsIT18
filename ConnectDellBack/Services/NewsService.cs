@@ -13,6 +13,10 @@ public class NewsService : INewsService
 
     public async Task<IEnumerable<NewsModel>> getNews()
     {
-        return await dbnews.news.OrderBy(news => news.date).ToListAsync();
+        //bananinha
+        var news = await dbnews.news.Include(news => news.program)
+                                    .Include(news => news.author)
+                                    .OrderBy(news => news.date).ToListAsync();
+        return news;
     }
 }

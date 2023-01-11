@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConnectDellBack.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230106220621_NewsUserRelation")]
-    partial class NewsUserRelation
+    [Migration("20230110195455_ImageToNews")]
+    partial class ImageToNews
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,6 +72,33 @@ namespace ConnectDellBack.Migrations
                     b.HasIndex("programid");
 
                     b.ToTable("editions");
+                });
+
+            modelBuilder.Entity("ConnectDellBack.Models.ImageModel", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<byte[]>("imageData")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("imageTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("newsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("newsId")
+                        .IsUnique();
+
+                    b.ToTable("images");
                 });
 
             modelBuilder.Entity("ConnectDellBack.Models.MembershipModel", b =>
@@ -256,6 +283,17 @@ namespace ConnectDellBack.Migrations
                     b.Navigation("program");
                 });
 
+            modelBuilder.Entity("ConnectDellBack.Models.ImageModel", b =>
+                {
+                    b.HasOne("ConnectDellBack.Models.NewsModel", "news")
+                        .WithOne("image")
+                        .HasForeignKey("ConnectDellBack.Models.ImageModel", "newsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("news");
+                });
+
             modelBuilder.Entity("ConnectDellBack.Models.MembershipModel", b =>
                 {
                     b.HasOne("ConnectDellBack.Models.EditionModel", "edition")
@@ -340,6 +378,11 @@ namespace ConnectDellBack.Migrations
                     b.Navigation("memberships");
 
                     b.Navigation("phases");
+                });
+
+            modelBuilder.Entity("ConnectDellBack.Models.NewsModel", b =>
+                {
+                    b.Navigation("image");
                 });
 
             modelBuilder.Entity("ConnectDellBack.Models.ProgramModel", b =>
