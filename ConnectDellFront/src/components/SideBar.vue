@@ -19,11 +19,7 @@ export default defineComponent({
 
 <template> 
     <div class="sidenav d-none d-lg-block">
-<<<<<<< HEAD
         <RouterLink to="/home" :class="{onViewEffect: homeView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
-=======
-        <RouterLink to="/logged" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
->>>>>>> f2324de1307558d1487dcc112ccadc2e854aa3e5
         Home</RouterLink>
 
         <RouterLink to="/users" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="user icon" src="../assets/user.png">Users</RouterLink>
@@ -33,11 +29,7 @@ export default defineComponent({
     </div>
 
     <div class="smallSidenav d-lg-none"> 
-<<<<<<< HEAD
       <RouterLink to="/home" :class="{onViewEffect: homeView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
-=======
-      <RouterLink to="/logged" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
->>>>>>> f2324de1307558d1487dcc112ccadc2e854aa3e5
         <br></RouterLink>
       <RouterLink to="/users" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="user icon" src="../assets/user.png">
         <br></RouterLink>
