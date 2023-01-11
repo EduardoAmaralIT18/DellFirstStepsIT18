@@ -2,18 +2,31 @@
 import { defineComponent } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 
+interface Data {
+  ROLE: string,
+}
+
 export default defineComponent({
   name: 'SideBar',
   components: {
     RouterLink,
     RouterView
   },
-  data() {
-      return {}
+  data(): Data {
+    return {
+      ROLE: this.$cookies.get("ROLE")
+    }
+  },
+  methods: {
+    showUser() {
+      if (!(this.ROLE === 'Intern')) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
 })
-
-//comentario teste
 </script>
 
 
@@ -22,7 +35,7 @@ export default defineComponent({
         <RouterLink to="/home" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
         Home</RouterLink>
 
-        <RouterLink to="/users" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="user icon" src="../assets/user.png">Users</RouterLink>
+        <RouterLink to="/users" class="hoverEffect hovicon effect-1 sub-a" v-if="showUser()"><img class="smallIcons" alt="user icon" src="../assets/user.png">Users</RouterLink>
 
         <RouterLink to="/news" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="news icon" src="../assets/news.png">News</RouterLink>
 
@@ -31,7 +44,7 @@ export default defineComponent({
     <div class="smallSidenav d-lg-none"> 
       <RouterLink to="/home" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
         <br></RouterLink>
-      <RouterLink to="/users" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="user icon" src="../assets/user.png">
+      <RouterLink to="/users" class="hoverEffect hovicon effect-1 sub-a" v-if="showUser()"><img class="smallIcons" alt="user icon" src="../assets/user.png">
         <br></RouterLink>
       <RouterLink to="/news" class="hoverEffect hovicon effect-1 sub-a" ><img class="smallIcons" alt="news icon" src="../assets/news.png">
         <br></RouterLink>
