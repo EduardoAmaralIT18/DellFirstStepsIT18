@@ -1,12 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using ConnectDellBack.Models;
 using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ConnectDellBack.Services;
 
 public class UserService : IUserService
 {
-    private readonly ApplicationContext dbUser;
+    public readonly ApplicationContext dbUser;
 
     string IUserService.assignEdition(int idUser, int idEdition)
     {
@@ -43,6 +46,22 @@ public class UserService : IUserService
         throw new NotImplementedException();
     }
 
+    public Task<IEnumerable<ProgramModel>> Get()
+    {
+        throw new NotImplementedException();
+    }
+
+    //coment rapido prar poder rodar o back - pode descomentar depois
+    /*
+      Task<IEnumerable<ProgramModel>> Get()
+      {
+            return 
+        }
+
+        Task<ProgramModel> Get(int Id)
+        {
+            return Ok;
+        }*/
 
     IEnumerable<UserModel> IUserService.listUsers()
     {
