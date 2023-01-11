@@ -62,7 +62,7 @@ Para rodar o projeto, utilize os seguintes comandos nas pastas de backend ou fro
   - `dotnet add package Microsoft.EntityFrameworkCore.SqlServer`
   - `dotnet ef database update`
 - Frontend: 
-  -npm install
+  npm install
 
 ---
 
