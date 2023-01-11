@@ -28,7 +28,7 @@ public class NewsController : ControllerBase
         var newsDTO = new List<NewsDTO>();
         foreach (var item in news)        
         {
-            newsDTO.Add(NewsDTO.converteModel2DTO(item));            
+            newsDTO.Add(NewsDTO.convertModel2DTO(item));            
         }
 
         return news == null ? NotFound() : Ok(newsDTO);
