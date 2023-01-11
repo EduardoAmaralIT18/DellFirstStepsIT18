@@ -1,6 +1,9 @@
 <template>
 <!-- meninas da navbar testando router -->
-<h2>Homepage</h2>
+    <div class="container">
+        <h2>Homepage</h2>
+        <p>testandu</p>
+    </div>
 </template>
 
 <script lang="ts">
@@ -12,9 +15,3 @@ export default defineComponent({
     }
 })
 </script>
-    <!-- meninas da navbar testando router -->
-    <div class="container">
-        <h2>Homepage</h2>
-        <p>testandu</p>
-    </div>
-    </template>
