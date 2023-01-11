@@ -4,7 +4,7 @@
             Welcome, {{ user.name }}!
         </h4>
 
-        <div>
+        <div v-if="myPrograms && myPrograms.length > 0">
             <h4 class="subtitle">
                 My Programs
             </h4>
@@ -26,12 +26,12 @@
             </div>
         </div>
 
-        <div>
+        <div v-if="(programs && programs.length > 0) || IsAdmin">
             <h4 class="subtitle">
-                Other Programs
+                Programs
             </h4>
             <div class="row">
-                <div class="col-2 dds__mr-4 dds__mb-4" v-for="(item, i) in otherPrograms" :key="i">
+                <div class="col-2 dds__mr-4 dds__mb-4" v-for="(item, i) in programs" :key="i">
                     <div class="dds__card">
                         <div class="dds__card__content">
                             <div class="dds__card__header">
@@ -46,7 +46,7 @@
                     </div>
                 </div>
 
-                <div class="col-2 dds__mr-4 dds__mb-4">
+                <div class="col-2 dds__mr-4 dds__mb-4" v-if="IsAdmin">
                     <div class="dds__card">
                         <div class="dds__card__content">
                             <button class="dds__button dds__button__icon" type="button">
@@ -70,7 +70,7 @@ export default {
         return {
             user: {
                 "name": "Jordana",
-                "role": "Intern"
+                "role": "Admin"
             },
             myPrograms: [
                 {
@@ -85,39 +85,14 @@ export default {
                     "name": "Infrastructure Residency 2",
                     "description": "Description Infra"
                 }
+
             ],
-            otherPrograms: [
+            programs: [
                 {
-                    "name": "IT Academy",
-                    "description": "Description IT"
+                    "name": "IT Academy"
                 },
                 {
-                    "name": "Design Academy",
-                    "description": "Description Design"
-                },
-                {
-                    "name": "Infrastructure Residency",
-                    "description": "Description Infra"
-                },
-                {
-                    "name": "IT Academy",
-                    "description": "Description IT"
-                },
-                {
-                    "name": "Infrastructure Residency",
-                    "description": "Description Infra"
-                },
-                {
-                    "name": "IT Academy",
-                    "description": "Description IT"
-                },
-                {
-                    "name": "Design Academy",
-                    "description": "Description Design"
-                },
-                {
-                    "name": "Infrastructure Residency",
-                    "description": "Description Infra"
+                    "name": "Design Academy"
                 }
             ]
         }
