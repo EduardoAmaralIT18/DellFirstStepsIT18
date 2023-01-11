@@ -17,7 +17,7 @@ export default defineComponent({
     return {}
   },
   created() {
-      this.$cookies.set("NAME", "Laura"),
+      this.$cookies.set("NAME", "Elise"),
       this.$cookies.set("ROLE", "Intern")
   }
 });
