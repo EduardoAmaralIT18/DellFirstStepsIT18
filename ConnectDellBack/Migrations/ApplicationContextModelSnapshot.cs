@@ -86,33 +86,6 @@ namespace ConnectDellBack.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ConnectDellBack.Models.ImageModel", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<byte[]>("imageData")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("imageTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("newsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("newsId")
-                        .IsUnique();
-
-                    b.ToTable("images");
-                });
-
             modelBuilder.Entity("ConnectDellBack.Models.MembershipModel", b =>
                 {
                     b.Property<int>("editionid")
@@ -510,17 +483,6 @@ namespace ConnectDellBack.Migrations
                     b.Navigation("program");
                 });
 
-            modelBuilder.Entity("ConnectDellBack.Models.ImageModel", b =>
-                {
-                    b.HasOne("ConnectDellBack.Models.NewsModel", "news")
-                        .WithOne("image")
-                        .HasForeignKey("ConnectDellBack.Models.ImageModel", "newsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("news");
-                });
-
             modelBuilder.Entity("ConnectDellBack.Models.MembershipModel", b =>
                 {
                     b.HasOne("ConnectDellBack.Models.EditionModel", "edition")
@@ -613,9 +575,6 @@ namespace ConnectDellBack.Migrations
 
             modelBuilder.Entity("ConnectDellBack.Models.NewsModel", b =>
                 {
-                    b.Navigation("image");
-                    b.Navigation("news");
-
                     b.Navigation("news");
                 });
 

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace ConnectDellBack.Models;
 
 public class NewsModel {
-//lalalala
+
     public int id {get;set;}
     
     [Required]
@@ -16,8 +16,6 @@ public class NewsModel {
     public ProgramModel program {get;set;} = null!;
 
     public UserModel author {get; set;} = null!;
-
-    public ImageModel? image {get; set;}
 
     public DateTime date {get; set;}
 
