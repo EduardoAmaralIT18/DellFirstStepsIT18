@@ -16,7 +16,7 @@ public class NewsService : INewsService
         //bananinha
         var news = await dbnews.news.Include(news => news.program)
                                     .Include(news => news.author)
-                                    .OrderBy(news => news.date).ToListAsync();
+                                    .OrderByDescending(news => news.date).ToListAsync();
         return news;
     }
 }

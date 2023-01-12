@@ -36,7 +36,7 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<NewsModel>()
             .HasOne(n => n.image)
             .WithOne(i => i.news)
-            .HasForeignKey<ImageModel>(i => i.newsId);
+            .HasForeignKey<ImageModel>(i => i.imageId);
 
         modelBuilder.Entity<ProgramModel>().HasData(
             new
