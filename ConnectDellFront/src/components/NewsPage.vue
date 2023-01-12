@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div v-if="user != null" class="container">
         <div class="top">
             <h2>News</h2>
             <div v-if="role == 0">
@@ -45,6 +45,7 @@ type News = {
 }[];
 
 interface Data {
+    user: number | null,
     news: null | News,
     role: number,
     newsShown: null | News,
@@ -55,6 +56,7 @@ interface Data {
 export default defineComponent({
     data(): Data {
         return {
+            user: null, 
             news: null,
             role: 5,
             newsShown: [],
@@ -75,7 +77,9 @@ export default defineComponent({
         fetchData(): void {
             this.news = null;
 
+            //por enquano cookies nao setados
             this.role = this.$cookies.get("role");
+            this.user = this.$cookies.get("id");
 
             axios.get('/news/getNews')
                 .then(function (response) {
@@ -106,9 +110,6 @@ export default defineComponent({
                     this.countNews = this.countNews + 1;
                 });
             } while ((this.countNews % 10 != 0) && (this.countNews != this.totalNews));
-            console.log(this.totalNews);
-            console.log(this.news?.length);
-            console.log(this.countNews);
         }
     },
 });
