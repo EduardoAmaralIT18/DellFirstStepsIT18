@@ -1,3 +1,4 @@
+
 using Microsoft.EntityFrameworkCore;
 using ConnectDellBack.Models;
 
@@ -33,3 +34,13 @@ public string createEdition(EditionModel edition);
 
         
         
+=======
+using DellFirstSteps.Models;
+using System.Threading.Tasks;
+
+namespace DellFirstSteps.Services;
+public interface IUserService
+ {
+    public Task<IEnumerable<UserModel>> GetUser();
+ 
+}
