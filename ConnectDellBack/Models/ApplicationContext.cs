@@ -32,7 +32,12 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<UserModel>()
                     .HasOne(user => user.editionIntern)
                     .WithMany(edition => edition.interns);
-    
+
+        modelBuilder.Entity<NewsModel>()
+            .HasOne(n => n.image)
+            .WithOne(i => i.news)
+            .HasForeignKey<ImageModel>(i => i.imageId);
+
         modelBuilder.Entity<ProgramModel>().HasData(
             new {
                 id = 1,
