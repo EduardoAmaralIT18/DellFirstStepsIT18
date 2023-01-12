@@ -1,10 +1,9 @@
-﻿using ConnectDellBack.Models;
+﻿using ConnectDellBack.DTOs;
 
 namespace ConnectDellBack.Services
 {
     public interface IProgramService
     {
-        public Task<IEnumerable<ProgramModel>> GetPrograms(int idUser, string role);
-        public Task<IEnumerable<ProgramModel>> GetMyPrograms(int idUser, string role);
+        public Task<ProgramDTO> GetPrograms(int idUser, string role);
     }
 }

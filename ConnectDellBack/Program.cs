@@ -15,6 +15,7 @@ builder.Services.AddDbContext<ApplicationContext>(
 );
 
 builder.Services.AddScoped<INewsService, NewsService>();
+builder.Services.AddScoped<IProgramService, ProgramService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -30,9 +31,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
