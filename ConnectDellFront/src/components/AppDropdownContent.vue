@@ -1,3 +1,4 @@
+<!-- ALTERADO -->
 <template>
     <div v-if="active">
       <slot/>

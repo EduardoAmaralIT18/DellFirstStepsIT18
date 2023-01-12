@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace ConnectDellBack.Models;
-
+// //////// ALTERADO
 public class ApplicationContext : DbContext
 {
 
