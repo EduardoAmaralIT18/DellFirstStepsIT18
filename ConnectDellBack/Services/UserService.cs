@@ -1,24 +1,72 @@
 using Microsoft.EntityFrameworkCore;
-using DellFirstSteps.Models;
-using DellFirstSteps.Services;
+using ConnectDellBack.Models;
+using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace DellFirstSteps.Services;
+namespace ConnectDellBack.Services;
 
 public class UserService : IUserService
 {
-    private readonly ApplicationContext _dbuser;
+    public readonly ApplicationContext dbUser;
 
-    public UserService(ApplicationContext dbuser)
+    string IUserService.assignEdition(int idUser, int idEdition)
     {
-        _dbuser = dbuser;
+        throw new NotImplementedException();
     }
 
-    public async Task<IEnumerable<UserModel>> GetUser()
+    public UserService(ApplicationContext _dbuser)
     {
-        return await _dbuser.users
-                    .Include(x => x.name)
-                    .Include(x => x.ProgramsAdmins)
-                    .ToListAsync();
+        dbUser = _dbuser;
     }
 
+    string IUserService.assignProgram(int idUser, int idProgram)
+    {
+        throw new NotImplementedException();
+    }
+
+    string IUserService.createEdition(EditionModel edition)
+    {
+        throw new NotImplementedException();
+    }
+
+    string IUserService.createProgram(ProgramModel program)
+    {
+        throw new NotImplementedException();
+    }
+
+    string IUserService.createUser(UserModel user)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<IEnumerable<ProgramModel>> IUserService.Get()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<ProgramModel>> Get()
+    {
+        throw new NotImplementedException();
+    }
+
+    //coment rapido prar poder rodar o back - pode descomentar depois
+    /*
+      Task<IEnumerable<ProgramModel>> Get()
+      {
+            return 
+        }
+        Task<ProgramModel> Get(int Id)
+        {
+            return Ok;
+        }*/
+
+    IEnumerable<UserModel> IUserService.listUsers()
+    {
+        var userList = dbUser.users;
+        return userList;
+    }
 }
+// RETORNAR OS PROGRAMAS RELACIONADOS AQUELE USER
+// VALIDAÇÃO DO ROLE NO FRONT - COOKIES
