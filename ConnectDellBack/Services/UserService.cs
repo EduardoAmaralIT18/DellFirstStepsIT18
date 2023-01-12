@@ -1,39 +1,24 @@
 using Microsoft.EntityFrameworkCore;
-using ConnectDellBack.Models;
-using System.Threading.Tasks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using DellFirstSteps.Models;
+using DellFirstSteps.Services;
 
-namespace ConnectDellBack.Services;
+namespace DellFirstSteps.Services;
 
 public class UserService : IUserService
 {
-    public readonly ApplicationContext _dbUser;
+    private readonly ApplicationContext _dbuser;
 
-    public UserService(ApplicationContext dbUser)
+    public UserService(ApplicationContext dbuser)
     {
-        _dbUser = dbUser;
+        _dbuser = dbuser;
     }
 
-    public Task<IEnumerable<ProgramModel>> Get()
+    public async Task<IEnumerable<UserModel>> GetUser()
     {
-        throw new NotImplementedException();
+        return await _dbuser.users
+                    .Include(x => x.name)
+                    .Include(x => x.ProgramsAdmins)
+                    .ToListAsync();
     }
-
-    //coment rapido prar poder rodar o back - pode descomentar depois
-    /*
-      Task<IEnumerable<ProgramModel>> Get()
-      {
-            return 
-        }
-
-        Task<ProgramModel> Get(int Id)
-        {
-            return Ok;
-        }*/
-
 
 }
-// RETORNAR OS PROGRAMAS RELACIONADOS AQUELE USER
-// VALIDAÇÃO DO ROLE NO FRONT - COOKIES

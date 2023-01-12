@@ -22,9 +22,6 @@ public class UserModel{
     public String email { get; set; } =  null!;
     [Required]
     public Role role { get; set; }
-    [Required]
-    [StringLength (2500, ErrorMessage ="Characters limit exceeded.")]
-
     // intership log (text to fill with information about which activities were performed.)
     public String notes { get; set; } =  null!; 
 
@@ -36,5 +33,5 @@ public class UserModel{
     public List<NewsModel>? listNews {get; set;}
 
     //Comentando Projeto 
-   
+
 }
