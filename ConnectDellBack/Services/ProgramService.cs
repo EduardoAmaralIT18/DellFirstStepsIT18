@@ -1,24 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ConnectDellBack.Models;
+using ConnectDellBack.DTOs;
 
 namespace ConnectDellBack.Services;
 
 public class ProgramService : IProgramService
 {
-    private readonly ApplicationContext _dbPrograms;
+    private readonly ApplicationContext _dbContext;
 
-    public ProgramService(ApplicationContext dbPrograms)
+    public ProgramService(ApplicationContext dbContext)
     {
-        _dbPrograms = dbPrograms;
+        _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<ProgramModel>> GetPrograms(int idUser, string role)
+    public async Task<ProgramDTO> GetPrograms(int idUser, string role)
     {
-        return await _dbPrograms.programs.OrderBy(p => p.startDate).ToListAsync();
-    }
+        var programDTO = new ProgramDTO
+        {
+            Programs = await _dbContext.programs.OrderBy(p => p.startDate).ToListAsync(),
+            MyPrograms = await _dbContext.programs.OrderBy(p => p.startDate).ToListAsync()
+        };
 
-    public async Task<IEnumerable<ProgramModel>> GetMyPrograms(int idUser, string role)
-    {
-        return await _dbPrograms.programs.OrderBy(p => p.startDate).ToListAsync();
+        return programDTO;
     }
 }
