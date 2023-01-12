@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace ConnectDellBack.Models;
 
 //parking
- public enum Role
+public enum Role
 {
     Admin,
     Intern,

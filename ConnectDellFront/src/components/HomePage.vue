@@ -1,4 +1,5 @@
 <template>
+<!-- meninas da navbar testando router -->
     <div class="container">
         <h4 class="title">
             Welcome, {{ user.name }}!
@@ -99,61 +100,5 @@ export default {
             return this.user.role === 'Admin';
         }
     }
-}
+})
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.container {
-    padding-top: 5%;
-    padding-left: 15%;
-    display: flex;
-    flex-direction: column;
-}
-
-.dds__card {
-    width: 12rem;
-    color: #0672CB;
-    box-shadow: 5px 5px lightgrey;
-    border-radius: 10px;
-}
-
-.dds__card__header__title {
-    font-weight: 550;
-    color: #0672CB;
-}
-
-.dds__card__body {
-    color: #0672CB;
-}
-
-.title {
-    margin-left: 0px !important;
-    text-align: left;
-    color: #0672CB;
-    margin: 2.5%;
-    font-weight: bold;
-}
-
-.subtitle {
-    margin-left: 0px !important;
-    text-align: left;
-    color: #0672CB;
-    margin: 2.5%;
-}
-
-.dds__button {
-    background-color: white;
-    border-style: none;
-}
-
-.dds__button:hover {
-    background-color: unset !important;
-}
-
-.dds__icon {
-    color: #0672CB;
-    font-size: 55px;
-    font-weight: bold;
-}
-</style>  
