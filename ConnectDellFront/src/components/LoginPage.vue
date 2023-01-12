@@ -10,7 +10,7 @@
         <legend>Select your email</legend>
         <div id="app">
         <AppDropdown>
-            <template slot="toggler">
+            <template>
             <button>Toggle</button>
             </template>
         <AppDropdownContent>
@@ -49,9 +49,9 @@
 </template>
 
 <script lang="ts">
-import AppDropdown from './components/AppDropdown.vue'
+/*import AppDropdown from './components/AppDropdown.vue'
 import AppDropdownContent from './components/AppDropdownContent.vue'
-import AppDropdownItem from './components/AppDropdownItem.vue'
+import AppDropdownItem from './components/AppDropdownItem.vue'*/
 import { defineComponent } from 'vue';
 import axios from 'axios';
 
@@ -116,6 +116,7 @@ export default defineComponent({
         this.$cookies.set("name",this.item.name);
         this.$cookies.set("role",this.item.role);
         this.$cookies.set("email",this.item.email);
+        this.$router.push({ name: 'home'});
        } 
 },
 
