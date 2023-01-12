@@ -26,13 +26,13 @@
 
                 
                 <div class="dates dds__row">
-                    <div class="dds__col--6 dds__col--sm-6">
+                    <div class="dds__col--3 dds__col--sm-3">
                         <div>
                             <label for="startDate">Start date <span> *</span></label>
                             <input v-model="program.startDate" type="date" id="startDate" name="startDate">
                         </div>
                     </div>
-                    <div class="dds__col--6 dds__col--sm-6">
+                    <div class="enddate dds__col--3 dds__col--sm-3">
                         <div>
                             <label for="endDate">End date</label>
                             <input v-model="program.endDate" type="date" id="endDate" name="endDate">
@@ -123,7 +123,7 @@ body {
 }
 
 .container {
-    padding-top: 5%;
+    padding-top: 3%;
     padding-left: 20%;
     display: flex;
     flex-direction: column;
@@ -131,8 +131,8 @@ body {
 
 .title {
     color: #0063B8;
-    margin-top: 10%;
     margin-bottom: 5%;
+    margin-top: 2%;
     font-size: 200%;
 }
 
@@ -148,23 +148,46 @@ label {
     float: right;
     width: 20%;
     font-size: 20px;
+    margin-bottom: 12%;
 }
 .multiselect {
-    border-color: #7e7e7e;
+    border: .0625rem solid #7e7e7e;
+    border-radius: .125rem;
+    background-clip: padding-box;
     margin-bottom: 5px;
+    font-family: 'Roboto', sans-serif;
 }
 
+
 .multiselect-tag {
-    background: #0672CB;
+    width: 100%;
+    background-color: rgb(231, 90, 90);
 } 
 
 .dates{
+    text-align: left;
     display: flex;
+    margin-bottom: 1%;
 }
 
+.dates input{
+    width: 100%;
+    height: 45px;
+    font-size: 18px;
+    color: #525151;
+    padding-left: 4%;
+    border: .0625rem solid #7e7e7e;
+    border-radius: .125rem;
+    background-clip: padding-box;
+}
+.enddate input{
+    background-color: rgba(181, 181, 181, 0.233);
+}
 span{
     margin-left: 4px;
     color: rgba(255, 0, 0, 0.658);
     font-weight: bold;
 }
+
+
 </style>
