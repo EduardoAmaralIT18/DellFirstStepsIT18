@@ -33,5 +33,5 @@ public class UserModel{
     public List<NewsModel>? listNews {get; set;}
 
     //Comentando Projeto 
-   
+
 }

@@ -1,0 +1,149 @@
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { RouterLink, RouterView } from 'vue-router';
+
+export default defineComponent({
+  name: 'SideBar',
+  components: {
+    RouterLink,
+    RouterView
+  },
+  data() {
+      return {
+        homeView: false,
+        userView: false,
+        newsView: false
+      }
+  }, props: {
+
+  },
+  methods: {
+
+  }
+})
+</script>
+
+
+<template>
+    <div class="sidenav d-none d-lg-block">
+        <RouterLink to="/home" :class="{onViewEffect: homeView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
+        Home</RouterLink>
+
+        <RouterLink to="/users" :class="{onViewEffect: userView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="user icon" src="../assets/user.png">Users</RouterLink>
+
+        <RouterLink to="/news" :class="{onViewEffect: newsView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="news icon" src="../assets/news.png">News</RouterLink>
+
+    </div>
+
+    <div class="smallSidenav d-lg-none"> 
+      <RouterLink to="/home" :class="{onViewEffect: homeView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
+        <br></RouterLink>
+      <RouterLink to="/users" :class="{onViewEffect: userView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="user icon" src="../assets/user.png">
+        <br></RouterLink>
+      <RouterLink to="/news" :class="{onViewEffect: newsView}" class="hoverEffect hovicon effect-1 sub-a" ><img class="smallIcons" alt="news icon" src="../assets/news.png">
+        <br></RouterLink>
+    </div>
+
+    <RouterView/>
+  </template>
+  
+  <style scoped>
+
+  .smallIcons {
+    width: 48px;
+    margin-bottom: 3%;
+  }
+  
+  .sidenav{
+    height: 100%;
+    /* Full-height: remove this if you want "auto" height */
+    width: 17%;
+    /* Set the width of the sidebar */
+    position: fixed;
+    /* Fixed Sidebar (stay in place on scroll) */
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #ffffff;
+    overflow-x: hidden;
+    /* Disable horizontal scroll */
+    padding-top: 140px;
+    border-right: 1px solid #b9b8b8;
+  }
+  
+  .smallSidenav{
+    height: 100%;
+    /* Full-height: remove this if you want "auto" height */
+    width: 17%;
+    /* Set the width of the sidebar */
+    position: fixed;
+    /* Fixed Sidebar (stay in place on scroll) */
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #ffffff;
+    overflow-x: hidden;
+    /* Disable horizontal scroll */
+    padding-top: 140px;
+    border-right: 1px solid #b9b8b8;
+  }
+  .hoverEffect:hover img{
+    width: 53px;
+  }
+  /* The navigation menu links */
+  .hoverEffect{
+    border-right: 20%;
+    border-bottom: 20%;
+    border-top: 20%;
+    text-decoration: none;
+    font-size: 20px;
+    color: #0477CE;
+    display: block;
+    margin-bottom: 6%;
+    margin-right: 5%;
+    padding-right: 5%;
+  }
+  
+  .onViewEffect {
+    background:#DBDBDB;
+    border-radius: 70px;
+  }
+
+
+  /* When you mouse over the navigation links, change their color */
+  .hoverEffect:hover{
+    background:#DBDBDB;
+    border-radius: 40px;
+    padding: 15px;
+    margin-left: 8%;
+  }
+  
+  /* Style page content */
+  .main {
+    margin-left: 100px;
+    /* Same as the width of the sidebar */
+    padding: 0px 10px;
+  }
+  
+  /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+  @media screen and (max-height: 450px) {
+    .sidenav {
+      padding-top: 15px;
+    }
+  
+    .hoverEffect{
+      margin-top: 40%;
+      font-size: 20px;
+      margin-bottom: 38%;
+      padding-left: 24%;
+    }
+  }
+  
+  .hoverEffect:active{
+    background: #c6c6c6;
+    color: #0477CE;
+    box-shadow: 0 0 0 8px #cac9c9a3;
+  }
+  
+  </style>
