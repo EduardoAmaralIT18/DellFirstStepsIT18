@@ -79,7 +79,7 @@
 
 <script>
 export default {
-    name: 'HelloWorld',
+    name: 'HomePage',
     props: {
     },
     data() {
@@ -103,26 +103,17 @@ export default {
                 }
             ],
             programs: [
-                {
 
+                {
                     "name": "IT Academy",
-
                     "description": "Description IT"
-
                 },
-
                 {
-
                     "name": "Design Academy",
-
                     "description": "Description Design"
-
                 }
-
             ]
-
         }
-
     },
     computed: {
         IsAdmin() {
