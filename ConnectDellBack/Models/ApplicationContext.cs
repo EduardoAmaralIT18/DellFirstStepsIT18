@@ -159,7 +159,7 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<EditionModel>().HasData(
             new {
                 id = 1,
-                programId = 1,
+                programid = 1,
                 name = "IT Academy 17",
                 startDate = new DateTime(10/10/2022),
                 endDate = new DateTime(02/28/2023),
