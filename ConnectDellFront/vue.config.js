@@ -25,7 +25,10 @@ module.exports = {
         },
         proxy: {
             '^/': {
-                target: 'https://localhost:7134'
+                target: 'https://localhost:7134',
+                ws: false,
+                changeOrigin: false,
+                secure: false
             }
         },
         port: 5002

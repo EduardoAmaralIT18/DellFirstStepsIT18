@@ -16,6 +16,7 @@ builder.Services.AddDbContext<ApplicationContext>(
 
 builder.Services.AddScoped<INewsService, NewsService>();
 builder.Services.AddScoped<IProgramService, ProgramService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -29,6 +30,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(builder => builder
+   .AllowAnyOrigin()
+   .AllowAnyMethod()
+   .AllowAnyHeader());
 
 app.UseHttpsRedirection();
 app.UseAuthorization();

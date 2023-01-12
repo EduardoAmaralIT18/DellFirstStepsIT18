@@ -78,6 +78,9 @@
 </template>
 
 <script>
+import axios from 'axios';
+import ApiHandler from '../libs/ApiHandler'
+
 export default {
     name: 'HomePage',
     props: {
@@ -85,39 +88,52 @@ export default {
     data() {
         return {
             user: {
-                "name": "Jordana",
-                "role": "Admin"
+                "id": "1",
+                "name": "Person",
+                "role": "0"
             },
-            myPrograms: [
-                {
-                    "name": "IT Academy 2",
-                    "description": "Description IT"
-                },
-                {
-                    "name": "Design Academy 2",
-                    "description": "Description Design"
-                },
-                {
-                    "name": "Infrastructure Residency 2",
-                    "description": "Description Infra"
-                }
-            ],
-            programs: [
-
-                {
-                    "name": "IT Academy",
-                    "description": "Description IT"
-                },
-                {
-                    "name": "Design Academy",
-                    "description": "Description Design"
-                }
-            ]
+            myPrograms: [],
+            programs: []
         }
     },
     computed: {
         IsAdmin() {
-            return this.user.role === 'Admin';
+            return this.user.role === "0";
+        }
+    },
+    created() {
+        // fetch the data when the view is created and the data is
+        // already being observed
+        this.fetchData();
+    },
+    watch: {
+        // call again the method if the route changes
+        '$route': 'fetchData'
+    },
+    methods: {
+        fetchData: function () {
+            this.myPrograms = [];
+            this.programs = [];
+
+            //this.user.id = this.$cookies.get("id");
+            //this.user.name = this.$cookies.get("name");
+            //this.user.role = this.$cookies.get("role");
+
+            axios.get(ApiHandler.URL(`/Program/GetPrograms?idUser=${this.user.id}&role=${this.user.role}`))
+                .then(function (response) {
+                    return response;
+                })
+                .then(response => {
+                    if (response.status == 404) {
+                        this.myPrograms = [];
+                        this.programs = [];
+                    } else if (response.status == 200) {
+                        this.myPrograms = response.data?.myPrograms;
+                        this.programs = response.data?.programs;
+                    } else {
+                        console.log(response.status);
+                    }
+                });
         }
     }
 }
