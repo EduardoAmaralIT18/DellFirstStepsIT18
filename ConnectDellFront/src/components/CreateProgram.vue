@@ -4,12 +4,14 @@
         <form data-dds="form" class="dds__form dds__container">
             <fieldset class="dds__form__section">
                 <h2 class="title">Create Program</h2>
+
                 <div class="dds__row">
                     <div class="dds__col--12 dds__col--sm-12">
                         <div class="dds__input-text__container">
-                            <label id="text-input-label-396765024" for="text-input-control-name-396765024">Program Name</label>
+                            <label id="text-input-label-396765024" for="text-input-control-name-396765024">Program
+                                Name <span> *</span></label>
                             <div class="dds__input-text__wrapper">
-                                <input v-model="form.name" type="text" class="dds__input-text"
+                                <input v-model="program.name" type="text" class="dds__input-text"
                                     name="text-input-control-name-396765024" id="text-input-control-396765024"
                                     aria-labelledby="text-input-label-396765024 text-input-helper-396765024"
                                     required="true" />
@@ -21,50 +23,40 @@
                         </div>
                     </div>
                 </div>
+
+                
+                <div class="dates dds__row">
+                    <div class="dds__col--6 dds__col--sm-6">
+                        <div>
+                            <label for="startDate">Start date <span> *</span></label>
+                            <input v-model="program.startDate" type="date" id="startDate" name="startDate">
+                        </div>
+                    </div>
+                    <div class="dds__col--6 dds__col--sm-6">
+                        <div>
+                            <label for="endDate">End date</label>
+                            <input v-model="program.endDate" type="date" id="endDate" name="endDate">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="dds__row">
                     <div class="dds__col--12 dds__col--sm-12">
                         <div class="dds__select" data-dds="select">
-                            <label id="select-label-141366292" for="select-control-141366292">Members</label>
-                            <div class="dds__select__wrapper">
-                                <select id="select-control-141366292" class="dds__select__field"
-                                    aria-describedby="select-helper-141366292" required="true">
-                                    <option value="" class="dds__select__option--placeholder" selected>Select an option
-                                    </option>
-                                    <option value="undefined">Tassia</option>
-                                    <option value="undefined">Nelson</option>
-                                </select>
-                                <small id="select-helper-141366292" class="dds__select__helper"></small>
-                                <div id="select-error-141366292" class="dds__invalid-feedback"></div>
+                            <label id="select-label-141366292" for="select-control-141366292">Members <span> *</span></label>
+                            <div class="multiselec dds__select__wrapper">
+                                <MultiSelect v-model="program.members"/>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="dds__row">
-                    <div class="dds__col--12 dds__col--sm-12">
-                        <div class="dds__select" data-dds="select">
-                            <label id="select-label-484037542" for="select-control-484037542">Role</label>
-                            <div class="dds__select__wrapper">
-                                <select id="select-control-484037542" class="dds__select__field"
-                                    aria-describedby="select-helper-484037542" required="true">
-                                    <option value="" class="dds__select__option--placeholder" selected>Select an option
-                                    </option>
-                                    <option value="content">Content</option>
-                                    <option value="design">Design</option>
-                                    <option value="engineering">Engineering</option>
-                                    <option value="product-management">Product management</option>
-                                </select>
-                                <small id="select-helper-484037542" class="dds__select__helper"></small>
-                                <div id="select-error-484037542" class="dds__invalid-feedback"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="dds__row">
                     <div class="dds__col--12 dds__col--sm-12">
                         <div class="dds__text-area__container" data-dds="text-area">
                             <div class="dds__text-area__header">
                                 <label id="text-area-label-980579425"
-                                    for="text-area-control-980579425">Description:</label>
+                                    for="text-area-control-980579425">Description <span> *</span></label>
                             </div>
                             <div class="dds__text-area__wrapper">
                                 <textarea class="dds__text-area" name="text-area-control-name-980579425"
@@ -82,58 +74,97 @@
         </form>
     </div>
 
+    <ul>
+        <li v-for="member in program.members" :key="member.id">{{ member }}</li>
+    </ul>
 
-    <p>{{ form.name }}</p>
 </template>
 
 <script lang="ts">
+import MultiSelect from './MultipleSelect.vue';
 
+type User = {
+    id: number,
+    name: string
+}[];
+
+interface Data {
+    program: {
+        name: string,
+        members: null | User,
+        description: string,
+        startDate: string,
+        endDate: string
+    }
+}
 
 export default {
-    data() {
+    components: {
+        MultiSelect
+    },
+    data(): Data {
         return {
-            form: {
+            program: {
                 name: '',
-                members: '',
+                members: null,
                 description: '',
-                startDate: '',
+                startDate: new Date().toISOString().slice(0,10),
                 endDate: ''
-            }
+            },
 
         }
-    },
-    methods: {
-
     }
 }
 </script>
 
 <style scoped>
-body{
+body {
     font-family: 'Roboto', sans-serif;
 }
+
 .container {
     padding-top: 5%;
     padding-left: 20%;
     display: flex;
     flex-direction: column;
 }
-.title{
-  color: #0063B8;
-  margin-top: 10%;
-  margin-bottom: 5%;
-  font-size: 200%;
+
+.title {
+    color: #0063B8;
+    margin-top: 10%;
+    margin-bottom: 5%;
+    font-size: 200%;
 }
-label{
+
+label {
     display: flex;
-   text-align: left; 
-   margin-bottom: 10px
+    text-align: left;
+    margin-bottom: 10px
 }
-.submitbutton{
+
+.submitbutton {
     margin-top: 30px;
     display: flex;
     float: right;
     width: 20%;
     font-size: 20px;
+}
+.multiselect {
+    border-color: #7e7e7e;
+    margin-bottom: 5px;
+}
+
+.multiselect-tag {
+    background: #0672CB;
+} 
+
+.dates{
+    display: flex;
+}
+
+span{
+    margin-left: 4px;
+    color: rgba(255, 0, 0, 0.658);
+    font-weight: bold;
 }
 </style>
