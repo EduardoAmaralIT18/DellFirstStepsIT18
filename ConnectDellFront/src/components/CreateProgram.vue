@@ -7,14 +7,17 @@
                 <div class="dds__row">
                     <div class="dds__col--12 dds__col--sm-12">
                         <div class="dds__input-text__container text-left">
-                            <label id="text-input-label-396765024" for="text-input-control-name-396765024">Program Name</label>
+                            <label id="text-input-label-396765024" for="text-input-control-name-396765024">Program
+                                Name</label>
                             <div class="dds__input-text__wrapper">
-                                <input v-model="name" type="text" class="dds__input-text" name="text-input-control-name-396765024"
-                                    id="text-input-control-396765024"
-                                    aria-labelledby="text-input-label-396765024 text-input-helper-396765024" required="true"/>
+                                <input v-model="form.name" type="text" class="dds__input-text"
+                                    name="text-input-control-name-396765024" id="text-input-control-396765024"
+                                    aria-labelledby="text-input-label-396765024 text-input-helper-396765024"
+                                    required="true" />
 
                                 <small id="text-input-helper-396765024" class="dds__input-text__helper"></small>
-                                <div id="text-input-error-396765024" class="dds__invalid-feedback">Enter a program name to continue</div>
+                                <div id="text-input-error-396765024" class="dds__invalid-feedback">Enter a program name
+                                    to continue</div>
                             </div>
                         </div>
                     </div>
@@ -81,7 +84,7 @@
     </div>
 
 
-<p>{{ name }}</p>
+    <p>{{ form.name }}</p>
 </template>
 
 <script lang="ts">
@@ -90,11 +93,14 @@
 export default {
     data() {
         return {
-            name: '',
-            members: '',
-            description: '',
-            startDate: '',
-            endDate: ''
+            form: {
+                name: '',
+                members: '',
+                description: '',
+                startDate: '',
+                endDate: ''
+            }
+
         }
     },
     methods: {
@@ -110,8 +116,8 @@ export default {
     display: flex;
     flex-direction: column;
 }
-.title{
-  color: #0063B8;
-}
 
+.title {
+    color: #0063B8;
+}
 </style>
