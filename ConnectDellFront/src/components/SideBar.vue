@@ -3,7 +3,7 @@ import { defineComponent } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 
 interface Data {
-  ROLE: string,
+  ROLE: number,
 }
 
 export default defineComponent({
@@ -19,10 +19,10 @@ export default defineComponent({
   },
   methods: {
     showUser() {
-      if (!(this.ROLE === 'Intern')) {
-        return true;
-      } else {
+      if (!(this.ROLE == 0)) {
         return false;
+      } else {
+        return true;
       }
     }
   }

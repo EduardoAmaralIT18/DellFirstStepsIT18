@@ -8,7 +8,7 @@
               <div class="col-8">
               <nav class="userName">
                   <div class="d-none d-lg-block">
-                    <p class="name"> {{ NAME }} | {{ ROLE }}<img class="userPicture" alt="user icon" src="../assets/user.png"></p>
+                    <p class="name"> {{ NAME }} | {{ showRole() }}<img class="userPicture" alt="user icon" src="../assets/user.png"></p>
                   </div>
                 </nav>            
               </div>
@@ -60,14 +60,29 @@ import { defineComponent } from 'vue';
 
 interface Data {
   NAME: string,
-  ROLE: string,
+  ROLE: number,
 }
 
 export default defineComponent({
   data(): Data {
     return {
       NAME: this.$cookies.get("NAME"),
-      ROLE: this.$cookies.get("ROLE"),
+      ROLE: this.$cookies.get("ROLE")
+    }
+  },
+  methods: {
+    showRole() {
+      if ((this.ROLE == 0)) {
+        return "Admin";
+      } else if ((this.ROLE == 1)){
+          return "Intern";
+      } else if ((this.ROLE == 2)){
+          return "Dell Manager";
+      } else if ((this.ROLE == 3)){
+          return "Dell Member";
+      } else if ((this.ROLE == 4)){
+          return "Dell Pucrs Staff";
+      }
     }
   }
 })
