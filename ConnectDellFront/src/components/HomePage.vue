@@ -37,13 +37,13 @@
                 Programs
             </h4>
             <div class="row">
-                <div class="col-2 dds__mr-4 dds__mb-4" v-for="(item, i) in programs" :key="i">
+                <div class="col-2 dds__mr-4 dds__mb-3" v-for="(item, i) in programs" :key="i">
                     <div class="flip-card">
                         <div class="flip-card-inner">
                             <div class="flip-card-front">
                                 <div class="dds__card__content">
                                     <div class="dds__card__header">
-                                        <div class="dds__card__header_text">
+                                        <div class="dds__card__header__text">
                                             <h5 class="dds__card__header__title">{{ item.name }}</h5>
                                         </div>
                                     </div>
@@ -148,28 +148,21 @@ export default {
     flex-direction: column;
 }
 
-.dds__card {
-    width: 12rem;
-    color: #0672CB;
-    box-shadow: 5px 5px lightgrey;
-    border-radius: 10px;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-}
-
 .dds__card__header__title {
     font-weight: 550;
+    font-size: 1.25rem;
     color: #0672CB;
     text-align: center;
-
 }
 
 .dds__card__body {
+    font-size: 1.0rem;
+    padding: 10%;
     color: #0672CB;
 }
 
 .title {
-    margin-left: 4.0% !important;
+    margin-left: 0px !important;
     text-align: left;
     color: #0672CB;
     margin: 2.5%;
@@ -177,11 +170,10 @@ export default {
 }
 
 .subtitle {
-    margin-left: 4.0% !important;
+    margin-left: 0px !important;
     text-align: left;
     color: #0672CB;
     margin: 2.5%;
-    font-weight: bold;
 }
 
 .dds__button {
@@ -200,27 +192,27 @@ export default {
 }
 
 .flip-card {
-    position: relative;
-    width: 10rem;
-    height: 8rem;
+    padding-right: 10%;
+    width: 12rem;
+    height: 10rem;
+    color: #0672CB;
     border-radius: 10px;
     text-align: center;
     transition: transform 0.6s;
     transform-style: preserve-3d;
     backface-visibility: hidden;
     -moz-backface-visibility: hidden;
-    margin: 1cm;
 }
 
 .flip-card-inner {
-    position: relative;
     width: 100%;
     height: 100%;
+    border-radius: 10px;
+    position: relative;
     text-align: center;
     transition: transform 0.6s;
     transform-style: preserve-3d;
     backface-visibility: hidden;
-    border-radius: 10px;
     -moz-backface-visibility: hidden;
 }
 
@@ -230,33 +222,33 @@ export default {
 
 .flip-card:hover .flip-card-inner,
 .flip-card:focus .flip-card-inner {
-    transform: rotateY(180deg);
     border-radius: 10px;
+    transform: rotateY(180deg);
 }
 
 .flip-card-front,
 .flip-card-back {
-    position: absolute;
     width: 100%;
     border-radius: 10px;
     height: 100%;
+    position: absolute;
 }
 
 .flip-card-front {
-    background-color: white;
     z-index: 2;
     display: flex;
+    background-color: white;
     justify-content: center;
     align-items: center;
 }
 
 .flip-card-back {
-    background-color: white;
-    transform: rotateY(180deg);
     z-index: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: -5px 5px 0px 0px lightgrey;
+    background-color: white;
+    box-shadow: 5px 5px lightgrey;
+    transform: rotateY(180deg);
 }
 </style>  
