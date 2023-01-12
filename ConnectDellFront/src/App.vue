@@ -23,7 +23,7 @@
     },
     created() {
         this.$cookies.set("NAME", "Elise"),
-        this.$cookies.set("ROLE", "Intern")
+        this.$cookies.set("ROLE", "Admin")
     }
   });
 </script>
