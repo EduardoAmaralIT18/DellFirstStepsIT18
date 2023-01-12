@@ -17,20 +17,20 @@
                                     <div class="dds__card__header">
                                         <div class="dds__card__header__text">
                                             <h5 class="dds__card__header__title">{{ item.name }}</h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                    </div>
-                    <div class="flip-card-back">
-                        <div class="dds__card__body">{{ item.description }}</div>
-                                    <div class="dds__card__footer">
-                                    </div>
-                                    </div>
+                            <div class="flip-card-back">
+                                <div class="dds__card__body">{{ item.description }}</div>
+                                <div class="dds__card__footer">
                                 </div>
                             </div>
                         </div>
-                            </div>
                     </div>
+                </div>
+            </div>
+        </div>
 
         <div v-if="(programs && programs.length > 0) || IsAdmin">
             <h4 class="subtitle">
@@ -51,7 +51,7 @@
                             </div>
                             <div class="flip-card-back">
                                 <div class="dds__card__body">{{ item.description }}</div>
-                                    <div class="dds__card__footer">
+                                <div class="dds__card__footer">
                                 </div>
                             </div>
                         </div>
@@ -60,16 +60,16 @@
 
                 <div class="col-2 dds__mr-4 dds__mb-4" v-if="IsAdmin">
                     <div class="flip-card">
-                            <div class="flip-card-back">
-                                <div class="dds__card__content">
-                            <div class="dds__card__body">
-                                <button class="dds__button dds__button__icon" type="button">
-                                    <i class="dds__icon dds__icon--plus-add dds__card__header__icon"
-                                    title="Add a Program"></i>
-                                </button>
+                        <div class="flip-card-back">
+                            <div class="dds__card__content">
+                                <div class="dds__card__body">
+                                    <button class="dds__button dds__button__icon" type="button">
+                                        <i class="dds__icon dds__icon--plus-add dds__card__header__icon"
+                                            title="Add a Program"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                            </div>
-                            </div>
                     </div>
                 </div>
             </div>
@@ -103,27 +103,27 @@ export default {
                 }
             ],
             programs: [
-            {
+                {
 
-"name": "IT Academy",
+                    "name": "IT Academy",
 
-"description": "Description IT"
+                    "description": "Description IT"
 
-},
+                },
 
-{
+                {
 
-"name": "Design Academy",
+                    "name": "Design Academy",
 
-"description": "Description Design"
+                    "description": "Description Design"
 
-}
+                }
 
-]
+            ]
 
-}
+        }
 
-},
+    },
     computed: {
         IsAdmin() {
             return this.user.role === 'Admin';
@@ -140,6 +140,7 @@ export default {
     display: inline-flex;
     flex-direction: column;
 }
+
 .dds__card {
     width: 12rem;
     color: #0672CB;
@@ -148,15 +149,18 @@ export default {
     transition: transform 0.6s;
     transform-style: preserve-3d;
 }
+
 .dds__card__header__title {
     font-weight: 550;
     color: #0672CB;
     text-align: center;
-    
+
 }
+
 .dds__card__body {
     color: #0672CB;
 }
+
 .title {
     margin-left: 4.0% !important;
     text-align: left;
@@ -164,6 +168,7 @@ export default {
     margin: 2.5%;
     font-weight: bold;
 }
+
 .subtitle {
     margin-left: 4.0% !important;
     text-align: left;
@@ -171,13 +176,16 @@ export default {
     margin: 2.5%;
     font-weight: bold;
 }
+
 .dds__button {
     background-color: white;
     border-style: none;
 }
+
 .dds__button:hover {
     background-color: unset !important;
 }
+
 .dds__icon {
     color: #0672CB;
     font-size: 55px;
@@ -185,63 +193,63 @@ export default {
 }
 
 .flip-card {
-        position: relative;
-width: 10rem;
-height: 8rem;
-border-radius: 10px;
-text-align: center;
-transition: transform 0.6s;
-transform-style: preserve-3d;
-backface-visibility: hidden;
--moz-backface-visibility: hidden;
-margin: 1cm;
+    position: relative;
+    width: 10rem;
+    height: 8rem;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    margin: 1cm;
 }
 
 .flip-card-inner {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        text-align: center;
-        transition: transform 0.6s;
-        transform-style: preserve-3d;
-        backface-visibility: hidden;
-            border-radius: 10px;
-        -moz-backface-visibility: hidden;
-      }
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    border-radius: 10px;
+    -moz-backface-visibility: hidden;
+}
 
-      .flip-card:focus {
-          outline: 0;
-      }
+.flip-card:focus {
+    outline: 0;
+}
 
-      .flip-card:hover .flip-card-inner,
-      .flip-card:focus .flip-card-inner{
-        transform: rotateY(180deg);
-            border-radius: 10px;
-      }
+.flip-card:hover .flip-card-inner,
+.flip-card:focus .flip-card-inner {
+    transform: rotateY(180deg);
+    border-radius: 10px;
+}
 
-      .flip-card-front,
-      .flip-card-back {
-        position: absolute;
-        width: 100%;
-        border-radius: 10px;
-        height: 100%;
-      }
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    border-radius: 10px;
+    height: 100%;
+}
 
-      .flip-card-front {
-  background-color: white;
-        z-index: 2;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+.flip-card-front {
+    background-color: white;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-      .flip-card-back {
-  background-color: white;
-        transform: rotateY(180deg);
-        z-index: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-          box-shadow: -5px 5px 0px 0px lightgrey;
-      }
+.flip-card-back {
+    background-color: white;
+    transform: rotateY(180deg);
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: -5px 5px 0px 0px lightgrey;
+}
 </style>  
