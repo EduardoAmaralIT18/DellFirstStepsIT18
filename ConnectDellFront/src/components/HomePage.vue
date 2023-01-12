@@ -63,7 +63,7 @@
 </template>
 
 <script>
-export default {
+export default ({
     name: 'HelloWorld',
     props: {
     },
@@ -100,5 +100,5 @@ export default {
             return this.user.role === 'Admin';
         }
     }
-})
+});
 </script>
