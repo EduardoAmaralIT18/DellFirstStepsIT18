@@ -21,8 +21,8 @@ Para realizar as instalações necessárias para que o programa possa rodar com 
 - Instalar o NPM/NODE utilizando o aplicativo Workspace One da sua máquina.
 - Istalar o NUnit. Um tutorial para realizar isso pode ser visto aqui: [Tutorial de Instalação Nunit](https://docs.nunit.org/articles/nunit/getting-started/installation.html)
 - Instalar o Selenium. Existe um plug-in no Microsoft Edge que pode ser instalado no seu Browser.
-- Istalar o Git for Windows utilizando o aplicativo Workspace One da sua máquina.
-- Existe també a opção de instalar o Github for Desktop, caso tenha conhecimento da ferramenta.
+- Instalar o Git for Windows utilizando o aplicativo Workspace One da sua máquina.
+- Existe tambem a opção de instalar o Github for Desktop, caso tenha conhecimento da ferramenta.
 
 Após as instalações. Podemos seguir para utilizar o git para ter uma cópia do código. 
 
@@ -44,6 +44,14 @@ Na sua máquina, crie uma pasta dedicada para o projeto. Dentro dessa pasta, cli
 `git config --global user.password "suaSenhaAqui"`
 
 Após isso, já é possível criar uma cópia do projeto na sua máquina. Dentro da pasta do projeto, insira o seguinte comando: `git clone https://github.com/LarissaRosaIT17/Dell_FirstSteps.git`.
+
+#### Comentário sobre padronização
+
+Existe um passo a passo que deve ser realizado antes de sair codando. O principal é abrir uma Issue no git. O nome da issue deve ser simples e de facil compreensão sobre o que será feito, exemplo: _Criação de Usuários no Banco_.
+
+Informações mais pertinentes sobre essa tarefa devem ser adicionados na descrição. Caso exista uma documentação pertinente, é possivel adicona-la tambem na descrição da issue.
+
+Após ela ter sido criada, ela tera um numero associado a mesma, como no caso dessa issue, é #3.
 
 ---
 
@@ -88,6 +96,17 @@ _ex: `git checkout nomeBranch`_ No caso do projeto, trabalhamos a partir da dev
 
 - Para abrir no VsCode:
 `code .`
+
+#### Padronização de nome de Branch
+
+Vamos trabalhar com uma padronização simples para a nomenclatura das branchs. A ideia é simples:
+
+<br/>
+
+seuNome ou nomeGrupo/tipoDemanda/#numeroIssue (Issue criada anteriormente)
+Exemplo: _alexya/documentation/#3_
+
+<br/>
 
 Dentro do Vs code, existem opções que podem auxiliar no processo de dar commits e pushs. Assim que finalizar seu serviço, vá no terceiro ícone da barra lateral do VsCode. Lá é possível ver a opção de realizar commit. No campo acima do botão, descrever o trabalho que foi feito. Selecionar somente as files do programa que foram trabalhadas e clicar no ícone de <kbd>+</kbd>. Assim que finalizado, clicar no botão de commit. Quando completo, clicar em sincronizar mudanças, para enviar o trabalho feito para o git.
 
