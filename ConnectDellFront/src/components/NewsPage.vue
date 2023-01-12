@@ -106,7 +106,6 @@ export default defineComponent({
                 this.news?.every(element => {
                     this.newsShown?.push(element);
                     this.news?.shift();
-                    console.log(element);
                     this.countNews = this.countNews + 1;
                 });
             } while ((this.countNews % 10 != 0) && (this.countNews != this.totalNews));
