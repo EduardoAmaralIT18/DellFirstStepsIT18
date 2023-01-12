@@ -1,29 +1,62 @@
 <template>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">LOGO</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Intern +</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<!-- Em produção no arquivo pessoal -->
-
+  <header class="navbar shadow-lg fixed-top">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-4 dellLogo">
+                <a href="index.html"><img class="logo" alt="logo Dell" src="../assets/logoDell.png"></a>
+              </div>
+              <div class="col-8">
+              <nav class="userName">
+                  <div class="d-none d-lg-block">
+                    <p class="name">Surname, Name | Role <img class="userPicture" alt="user icon" src="../assets/user.png"></p>
+                  </div>
+                </nav>            
+              </div>
+          </div>
+      </div>
+  </header>
 </template>
 
-<script>
-export default {
-    
-};
-</script>
+<style>
+.navbar{
+padding-bottom: 0;
+margin-bottom: 0;
+background-color: #ffffff;
+box-shadow: 2px 2px #a6a6a6ba;
+width: 100%;
+border-bottom: 2px solid #A6A6A6;
+margin-bottom: 0;
+width: 100%;
+height: 75px;
+padding-top: 3px;
+}
+.name{
+color: #0477CE;
+font-size: 151%;
+position: absolute;
+right: 0;
+top:0;
+margin-top: 10px;
+margin-right: 1%;
+}
+.userPicture{
+width: 47px;
+margin-left: 1px;
+margin-bottom: 3%;
+padding-top: 4px;
+}
+.logo{
+width: 400px;
+margin-left: 3%;
+top:0;
+position: relative;
+}
+</style>
 
-<style></style>
+<script lang="ts">
+export default {
+  data() {
+    return {}
+  }
+}
+</script>
