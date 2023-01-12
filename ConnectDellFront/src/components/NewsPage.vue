@@ -1,33 +1,39 @@
 <template>
     <div class="container">
-        <div class="teste">
+        <div class="top">
             <h2>News</h2>
-            <button class="dds__button dds__button--primary dds__button--lg" type="button">
-                <i class="dds__icon dds__icon--plus-add" aria-hidden="true"></i>Add News
-            </button>
+            <div v-if="role == 0">
+                <button class="dds__button dds__button--primary dds__button--lg" type="button">
+                    <i class="dds__icon dds__icon--plus-add" aria-hidden="true"></i>Add News
+                </button>
+            </div>
         </div>
-        <div v-if="news != null" class="dds__col-12 dds__col--md-6 dds__col--lg-4 dds__mb-3" id="card-news">
-            <div v-for="item in news" :key="item.id" class="dds__card">
-                <div v-if="item.image" class="dds__card__media">
-                    <img src="item.image">
-                </div>
-                <div class="dds__card__content">
-                    <div class="dds__card__header">
-                        <span class="dds__card__header__text">
-                            <h5 class="dds__card__header__title">{{ item.title }}</h5>
-                        </span>
+        <div data-dds="pagination" id="unique-id">
+            <div v-if="news != null" class="dds__col-12 dds__col--md-6 dds__col--lg-4 dds__mb-3">
+                <div v-for="item in newsShown" :key="item.id" class="dds__card" id="card-news">
+                    <div v-if="item.image" class="dds__card__media">
+                        <img src="item.image">
                     </div>
-                    <div class="dds__card__body">{{ item.text }}
-                    </div>
-                    <div class="dds__card__footer">
-                        <p><b>{{ item.author }} - {{ item.program }}</b> in {{ item.date }}</p>
+                    <div class="dds__card__content">
+                        <div class="dds__card__header">
+                            <span class="dds__card__header__text">
+                                <h5 class="dds__card__header__title"><b>{{ item.title }}</b></h5>
+                                <p><i>Posted by {{ item.author }} from {{ item.program }}</i></p>
+                            </span>
+                        </div>
+                        <div class="dds__card__body">
+                            {{ item.text }}
+                        </div>
+                        <div class="dds__card__footer">
+                            <p>{{ item.date }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
-<script lang="ts">
+<script lang="ts" >
 import { defineComponent } from 'vue';
 import axios from 'axios';
 
@@ -35,13 +41,19 @@ type News = {
 }[];
 
 interface Data {
-    news: null | News,
+    news: null | News ,
+    role: number,
+    newsShown: null | News ,
+    countNews: number
 }
 
 export default defineComponent({
     data(): Data {
         return {
             news: null,
+            role: 5,
+            newsShown: [],
+            countNews: 0
         };
     },
     created() {
@@ -57,6 +69,8 @@ export default defineComponent({
         fetchData(): void {
             this.news = null;
 
+            this.role = this.$cookies.get("role");
+
             axios.get('/news/getNews')
                 .then(function (response) {
                     return response;
@@ -67,12 +81,23 @@ export default defineComponent({
                         return;
                     } else if (response.status == 200) {
                         this.news = response.data;
+                        this.moreNews();
                         return;
                     } else {
                         console.log(response.status);
                         return;
                     }
+                    
                 });
+        },
+        moreNews(): void {
+            this.news?.every(element => {
+                 console.log(this.newsShown?.push(element));
+                this.countNews = this.countNews + 1;
+                if (this.countNews % 10 == 0) {
+                    return false;
+                }
+            });
         }
     },
 });
@@ -85,6 +110,7 @@ export default defineComponent({
 
 .container {
     padding-top: 5%;
+    padding-bottom: 50vh;
     padding-left: 20%;
     display: flex;
     flex-direction: column;
@@ -104,14 +130,16 @@ h2 {
 
 }
 
-.teste {
+.top {
     padding-bottom: 3%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.dds__card__media {}
+#card-news {
+    margin-bottom: 2.5%;
+}
 
 button {
     white-space: nowrap;

@@ -4,7 +4,8 @@ namespace ConnectDellBack.Models;
 public class ImageModel
 {
     //lelelel
-    public int id { get; set; }
+    [Key]
+    public int imageId { get; set; }
 
     [Required]
     public string imageTitle { get; set; } = null!;
