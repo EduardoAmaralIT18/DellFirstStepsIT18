@@ -74,7 +74,7 @@ Para rodar o projeto, utilize os seguintes comandos nas pastas de backend ou fro
 
 ---
 
-#### Tutorial Rápido de Git
+### Tutorial Rápido de Git
 
 Dentro da pasta dedicada, abrir o git bash, e entrar na branch específica:
 _ex: `git checkout nomeBranch`_ No caso do projeto, trabalhamos a partir da dev
@@ -101,12 +101,10 @@ _ex: `git checkout nomeBranch`_ No caso do projeto, trabalhamos a partir da dev
 
 Vamos trabalhar com uma padronização simples para a nomenclatura das branchs. A ideia é simples:
 
-<br/>
+- seuNome ou nomeGrupo/tipoDemanda/#numeroIssue (Issue criada anteriormente)
+  - Exemplo: _alexya/documentation/#3_
 
-seuNome ou nomeGrupo/tipoDemanda/#numeroIssue (Issue criada anteriormente)
-Exemplo: _alexya/documentation/#3_
-
-<br/>
+#### Comitando trabalho
 
 Dentro do Vs code, existem opções que podem auxiliar no processo de dar commits e pushs. Assim que finalizar seu serviço, vá no terceiro ícone da barra lateral do VsCode. Lá é possível ver a opção de realizar commit. No campo acima do botão, descrever o trabalho que foi feito. Selecionar somente as files do programa que foram trabalhadas e clicar no ícone de <kbd>+</kbd>. Assim que finalizado, clicar no botão de commit. Quando completo, clicar em sincronizar mudanças, para enviar o trabalho feito para o git.
 
