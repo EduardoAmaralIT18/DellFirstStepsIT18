@@ -64,7 +64,7 @@ public class UserService : IUserService
 
     IEnumerable<UserModel> IUserService.listUsers()
     {
-        var userList = dbUser.users;
+        var userList = dbUser.users.ToList();
         return userList;
     }
 }

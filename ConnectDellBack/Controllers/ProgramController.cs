@@ -18,7 +18,7 @@ public class ProgramController : ControllerBase
     }
 
     [HttpGet("GetPrograms")]
-    public async Task<ActionResult<ProgramDTO>> GetPrograms(int idUser, string role)
+    public async Task<ActionResult<ProgramDTO>> GetPrograms(int idUser, int role)
     {
         var result = await _service.GetPrograms(idUser, role);
         return result == null ? NotFound() : Ok(result);

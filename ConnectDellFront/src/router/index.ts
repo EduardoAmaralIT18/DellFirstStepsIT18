@@ -13,7 +13,7 @@ const router = createRouter({
     },
     {
       path: '/home',
-      name: 'home',
+      name: 'HomePage',
       component: HomePageVue
     },
     {
