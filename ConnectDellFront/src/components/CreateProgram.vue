@@ -24,15 +24,15 @@
                     </div>
                 </div>
 
-                
+
                 <div class="dates dds__row">
-                    <div class="dds__col--6 dds__col--sm-6">
+                    <div class="dds__col--3 dds__col--sm-3">
                         <div>
                             <label for="startDate">Start date <span> *</span></label>
                             <input v-model="program.startDate" type="date" id="startDate" name="startDate">
                         </div>
                     </div>
-                    <div class="dds__col--6 dds__col--sm-6">
+                    <div class="enddate dds__col--3 dds__col--sm-3">
                         <div>
                             <label for="endDate">End date</label>
                             <input v-model="program.endDate" type="date" id="endDate" name="endDate">
@@ -43,7 +43,8 @@
                 <div class="dds__row">
                     <div class="dds__col--12 dds__col--sm-12">
                         <div class="dds__select" data-dds="select">
-                            <label id="select-label-141366292" for="select-control-141366292">Members <span> *</span></label>
+                            <label id="select-label-141366292" for="select-control-141366292">Members <span>
+                                    *</span></label>
                             <div class="multiselec dds__select__wrapper">
                                 <MultiSelect v-model="program.members"/>
                             </div>
@@ -55,13 +56,14 @@
                     <div class="dds__col--12 dds__col--sm-12">
                         <div class="dds__text-area__container" data-dds="text-area">
                             <div class="dds__text-area__header">
-                                <label id="text-area-label-980579425"
-                                    for="text-area-control-980579425">Description <span> *</span></label>
+                                <label id="text-area-label-980579425" for="text-area-control-980579425">Description
+                                    <span> *</span></label>
                             </div>
                             <div class="dds__text-area__wrapper">
                                 <textarea class="dds__text-area" name="text-area-control-name-980579425"
                                     id="text-area-control-980579425" data-maxlength="null" required="true"
-                                    aria-labelledby="text-area-label-980579425 text-area-helper-980579425"></textarea>
+                                    aria-labelledby="text-area-label-980579425 text-area-helper-980579425"
+                                    v-model="program.description"></textarea>
                                 <small id="text-area-helper-980579425" class="dds__input-text__helper"></small>
                                 <small id="text-area-error-980579425" class="dds__invalid-feedback">Enter a description
                                     to continue</small>
@@ -70,7 +72,7 @@
                     </div>
                 </div>
             </fieldset>
-            <button class="submitbutton dds__button dds__button--lg" type="submit">Submit</button>
+            <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()">Submit</button>
         </form>
     </div>
 
@@ -78,10 +80,17 @@
         <li v-for="member in program.members" :key="member.id">{{ member }}</li>
     </ul>
 
+    <p>{{ program.name }}</p>
+    <p>{{ program.description }}</p>
+    <p>{{ program.startDate }}</p>
+    <p>{{ program.endDate }}</p>
+
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
 import MultiSelect from './MultipleSelect.vue';
+import axios from 'axios';
 
 type User = {
     id: number,
@@ -93,14 +102,16 @@ interface Data {
         name: string,
         members: null | User,
         description: string,
-        startDate: string,
-        endDate: string
-    }
+        startDate: string | Date,
+        endDate: null | Date | string
+    },
+    total: null | User,
+    options: null | User
 }
 
-export default {
+export default defineComponent({
     components: {
-        MultiSelect
+        MultiSelect,
     },
     data(): Data {
         return {
@@ -109,12 +120,39 @@ export default {
                 members: null,
                 description: '',
                 startDate: new Date().toISOString().slice(0,10),
-                endDate: ''
+                endDate: null
             },
-
+            total: null,
+            options: null
+        };
+    },
+    methods: {
+        onSubmit(): void {
+            axios.post('/program/addProgram', {
+                name: this.program.name,
+                startDate: this.program.startDate = new Date(),
+                endDate: this.program.endDate,
+                description: this.program.description,
+                owners: this.program.members,
+                editions: null,
+                ownerships: null,
+                memberships: null
+            })
+                .then(function (response) {
+                    return response;
+                })
+                .then(response => {
+                    if (response.status == 200) {
+                        this.$router.push({ name: 'HomePage' });
+                        return;
+                    } else if (response.status == 404) {
+                        this.$router.push({ name: 'HomePage'});
+                        alert("There was an error on our database! Please, try again later.");
+                    }
+                })
         }
     }
-}
+});
 </script>
 
 <style scoped>
@@ -123,7 +161,7 @@ body {
 }
 
 .container {
-    padding-top: 5%;
+    padding-top: 3%;
     padding-left: 20%;
     display: flex;
     flex-direction: column;
@@ -131,8 +169,8 @@ body {
 
 .title {
     color: #0063B8;
-    margin-top: 10%;
     margin-bottom: 5%;
+    margin-top: 2%;
     font-size: 200%;
 }
 
@@ -148,23 +186,48 @@ label {
     float: right;
     width: 20%;
     font-size: 20px;
+    margin-bottom: 12%;
 }
+
+.dates {
+    text-align: left;
+    display: flex;
+    margin-bottom: 1%;
+}
+
+.dates input {
+    width: 100%;
+    height: 45px;
+    font-size: 18px;
+    color: #525151;
+    padding-left: 4%;
+    border: .0625rem solid #7e7e7e;
+    border-radius: .125rem;
+    background-clip: padding-box;
+}
+
+.enddate input {
+    background-color: rgba(181, 181, 181, 0.233);
+}
+
+span {
+    margin-left: 4px;
+    color: #0063B8;
+    font-weight: bold;
+}
+</style>
+
+<style>
 .multiselect {
-    border-color: #7e7e7e;
+    border: .0625rem solid #7e7e7e;
+    border-radius: .125rem;
+    background-clip: padding-box;
     margin-bottom: 5px;
+    font-family: 'Roboto', sans-serif;
 }
 
 .multiselect-tag {
-    background: #0672CB;
-} 
-
-.dates{
-    display: flex;
-}
-
-span{
-    margin-left: 4px;
-    color: rgba(255, 0, 0, 0.658);
-    font-weight: bold;
+    background-color: rgb(6, 114, 203);
+    font-weight: lighter;
 }
 </style>

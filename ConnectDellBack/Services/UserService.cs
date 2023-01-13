@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ConnectDellBack.DTOs;
 
 namespace ConnectDellBack.Services;
 
@@ -21,6 +22,12 @@ public class UserService : IUserService
         throw new NotImplementedException();
     }
 
+    public IEnumerable<UserModel> GetOwners() {
+        var owners = _dbUser.users.Where(usr => ((int)usr.role) == 0)
+                                    .ToArray<UserModel>();
+        return owners;
+    }
+
     //coment rapido prar poder rodar o back - pode descomentar depois
     /*
       Task<IEnumerable<ProgramModel>> Get()
@@ -33,6 +40,8 @@ public class UserService : IUserService
             return Ok;
         }*/
 
+
+    
 
 }
 // RETORNAR OS PROGRAMAS RELACIONADOS AQUELE USER

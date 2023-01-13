@@ -1,33 +1,64 @@
 <template>
-    <Multiselect mode="tags" :close-on-select="false" :searchable="true" :create-option="true"
-        :options="[
-            { value: 'batman', label: 'Batman' },
-            { value: 'robin', label: 'Robin' },
-            { value: 'joker', label: 'Joker' },
-        ]" />
+    <Multiselect mode="tags" :close-on-select="false" :searchable="true" :create-option="true" :options="transformOptions()" />
 </template>
 
 <script lang="ts">
-import Multiselect from '@vueform/multiselect'
+import { defineComponent } from 'vue';
+import Multiselect from '@vueform/multiselect';
+import axios from 'axios';
+
+type User = {
+    id: number,
+    name: string
+}[];
 
 
-export default {
+interface Data {
+    options: null | User,
+}
+
+export default defineComponent ({
     components: {
-        Multiselect,
+        Multiselect
     },
-    data() {
+    data() : Data {
         return {
-            options: [
-                'Batman',
-                'Robin',
-                'Joker',
-            ]
+            options: null
+        };
+    },
+    created() {
+        axios.get("/user/GetOwners")
+            .then(function (response) {
+                return response;
+            })
+            .then(response => {
+                this.options = response.data;
+                return;
+            });
+    },
+    methods: {
+        transformOptions() {
+            return this.options?.map(option => ({
+                value: option,
+                label: option.name
+            }))
         }
     }
-}
+});
 </script>
 
 <style src="@vueform/multiselect/themes/default.css">
+.multiselect {
+    border: .0625rem solid #7e7e7e;
+    border-radius: .125rem;
+    background-clip: padding-box;
+    margin-bottom: 5px;
+    font-family: 'Roboto', sans-serif;
+}
 
 
+.multiselect-tag {
+    background-color: rgb(6, 114, 203);
+    font-weight: lighter;
+}
 </style>

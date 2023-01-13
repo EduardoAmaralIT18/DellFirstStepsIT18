@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ConnectDellBack.Models;
+using ConnectDellBack.DTOs;
+
 
 namespace ConnectDellBack.Services;
 
@@ -7,6 +9,8 @@ namespace ConnectDellBack.Services;
     {
 
     Task<IEnumerable<ProgramModel>> Get();
+    IEnumerable<UserModel> GetOwners();
+
 
     //Task<ProgramModel> Get(int Id);
 

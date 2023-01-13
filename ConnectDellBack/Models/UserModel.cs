@@ -30,9 +30,9 @@ public class UserModel{
 
     public List<EditionModel>? listEditions {get;set;}
     public EditionModel? editionIntern {get;set;}
-    public List<OwnershipModel> ownerships {get;set;} = null!;
-    public List<ProgramModel> ProgramsAdmins {get;set;} = null!;
-    public List<MembershipModel> memberships {get;set;} = null!;
+    public List<OwnershipModel>? ownerships {get;set;}
+    public List<ProgramModel>? ProgramsAdmins {get;set;}
+    public List<MembershipModel>? memberships {get;set;}
     public List<NewsModel>? listNews {get; set;}
 
     //Comentando Projeto 
