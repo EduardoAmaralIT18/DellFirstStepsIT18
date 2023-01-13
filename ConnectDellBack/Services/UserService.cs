@@ -64,7 +64,7 @@ public class UserService : IUserService
 
     IEnumerable<UserModel> IUserService.listUsers()
     {
-        var userList = dbUser.users.ToList();
+        var userList = dbUser.users.OrderBy(user => user.email).ToList();
         return userList;
     }
 }
