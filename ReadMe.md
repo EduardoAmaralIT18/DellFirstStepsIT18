@@ -71,6 +71,19 @@ Para rodar o projeto, utilize os seguintes comandos nas pastas de backend ou fro
   - `dotnet ef database update`
 - Frontend: 
   `npm install`
+  
+### Executando a aplicação a partir do editor de texto local
+
+Para executar a aplicação desenvolvida no projeto, após fazer o clone do git e as configuraçãos de ambiente já mencionadas anteriormente, é necessário:
+- Backend:
+  - Selecionar a parte do projeto que trata do backend (Diretório DellConnectBack)
+  - Abrir um terminal integrado a partir dele
+  - Executar o comando `dotnet run serve`. 
+- Frontend:
+  - Selecionar a parte do projeto que trata do backend (Diretório DellConnectFront)
+  - Abrir um terminal integrado a partir dele
+  - Executar o comando `npm run serve`. 
+  - Clicar no link do localhost para abrir a aplicação de forma local no seu navegador padrão.
 
 ---
 
