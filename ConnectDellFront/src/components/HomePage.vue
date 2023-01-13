@@ -1,5 +1,6 @@
 <template>
-<!-- meninas da navbar testando router -->
+    <NavBar></NavBar>
+    <SideBar view="home"></SideBar>
     <div class="container">
         <h4 class="title">
             Welcome, {{ user.name }}!
@@ -85,20 +86,26 @@
     </div>
 </template>
 
-<script lang='ts'>
+<script>
+import NavBar from '../components/NavBar.vue';
+import SideBar from '../components/SideBar.vue';
 import axios from 'axios';
 import ApiHandler from '../libs/ApiHandler'
 
 export default ({
     name: 'HomePage',
+    components: {
+        SideBar,
+        NavBar,
+    },
     props: {
     },
     data() {
         return {
             user: {
-                "id": "1",
-                "name": "Person",
-                "role": 0
+                id: '',
+                name: '',
+                role: '-1'
             },
             myPrograms: [],
             programs: []
@@ -112,7 +119,7 @@ export default ({
             return (this.programs && this.programs.length > 0) || this.IsAdmin
         },
         IsAdmin() {
-            return this.user.role === 0;
+            return this.user.role === "0";
         }
     },
     created() {
@@ -129,9 +136,12 @@ export default ({
             this.myPrograms = [];
             this.programs = [];
 
-            //this.user.id = this.$cookies.get("id");
-            //this.user.name = this.$cookies.get("name");
-            //this.user.role = this.$cookies.get("role");
+            this.user.id = this.$cookies.get("id");
+            this.user.name = this.$cookies.get("name");
+            this.user.role = this.$cookies.get("role");
+
+            console.log(this.user.role);
+            console.log(this.IsAdmin);
 
             axios.get(ApiHandler.URL(`/Program/GetPrograms?idUser=${this.user.id}&role=${this.user.role}`))
                 .then(function (response) {
