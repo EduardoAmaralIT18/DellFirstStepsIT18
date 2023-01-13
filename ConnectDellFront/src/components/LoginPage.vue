@@ -76,7 +76,7 @@ export default defineComponent({
       this.$cookies.set("name", us.name);
       this.$cookies.set("role", us.role);
       this.$cookies.set("email", us.email);
-      this.$router.push({ name: "home" });
+      this.$router.push({ name: "HomePage" });
     },
   },
 });
