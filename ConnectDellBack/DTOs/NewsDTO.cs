@@ -23,7 +23,7 @@ public class NewsDTO
         aux.text = news.text;
         aux.program = news.program.name;
         aux.author = news.author.name;
-        aux.image = news.image.imageTitle;
+        if(news.image is not null)aux.image = news.image.imageTitle;
         aux.date = news.date.ToLongDateString() + " - " + news.date.ToShortTimeString();
         return aux;
     }

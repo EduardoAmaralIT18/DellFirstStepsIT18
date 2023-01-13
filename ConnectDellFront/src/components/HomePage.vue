@@ -1,4 +1,6 @@
 <template>
+    <NavBar></NavBar>
+    <SideBar view="home"></SideBar>
     <div class="container">
         <h4 class="title">
             Welcome, {{ user.name }}!
@@ -85,11 +87,17 @@
 </template>
 
 <script>
+import NavBar from '../components/NavBar.vue';
+import SideBar from '../components/SideBar.vue';
 import axios from 'axios';
 import ApiHandler from '../libs/ApiHandler'
 
 export default {
     name: 'HomePage',
+    components: {
+        SideBar,
+        NavBar,
+    },
     props: {
     },
     data() {
