@@ -4,7 +4,7 @@
             Welcome, {{ user.name }}!
         </h4>
 
-        <div v-if="myPrograms && myPrograms.length > 0">
+        <div v-if="HasMyPrograms">
             <h4 class="subtitle">
                 My Programs
             </h4>
@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <div v-if="(programs && programs.length > 0) || IsAdmin">
+        <div v-if="HasPrograms">
             <h4 class="subtitle">
                 Programs
             </h4>
@@ -64,7 +64,7 @@
                             <div class="dds__card__content">
                                 <div class="dds__card__body">
                                     <button class="dds__button dds__button__icon" type="button">
-                                        <i class="dds__icon dds__icon--plus-add dds__card__header__icon"
+                                        <i class="dds__icon dds__icon--plus-add dds__card__header__icon dds__icon__plus"
                                             title="Add a Program"></i>
                                     </button>
                                 </div>
@@ -73,6 +73,13 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div v-if="!HasMyPrograms && !HasPrograms">
+            <p class="message">
+                <i class="dds__icon dds__icon--search dds__icon__search"></i>
+                No programs found
+            </p>
         </div>
     </div>
 </template>
@@ -90,15 +97,21 @@ export default {
             user: {
                 "id": "1",
                 "name": "Person",
-                "role": "0"
+                "role": 0
             },
             myPrograms: [],
             programs: []
         }
     },
     computed: {
+        HasMyPrograms() {
+            return this.myPrograms && this.myPrograms.length > 0;
+        },
+        HasPrograms() {
+            return (this.programs && this.programs.length > 0) || this.IsAdmin
+        },
         IsAdmin() {
-            return this.user.role === "0";
+            return this.user.role === 0;
         }
     },
     created() {
@@ -176,6 +189,13 @@ export default {
     margin: 2.5%;
 }
 
+.message {
+    text-align: center;
+    color: #0672CB;
+    margin-top: 5%;
+    font-size: 1.5rem;
+}
+
 .dds__button {
     background-color: white;
     border-style: none;
@@ -185,10 +205,18 @@ export default {
     background-color: unset !important;
 }
 
-.dds__icon {
+.dds__icon__plus {
     color: #0672CB;
     font-size: 55px;
     font-weight: bold;
+}
+
+.dds__icon__search {
+    color: #0672CB;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding-right: 1%;
+
 }
 
 .flip-card {
