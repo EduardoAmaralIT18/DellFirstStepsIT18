@@ -7,18 +7,14 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: '/', 
-      redirect: { name: 'HomePage' }
+      path: '/',
+      name: 'login',
+      component: LoginView
     },
     {
       path: '/home',
       name: 'HomePage',
       component: HomePageVue
-    },
-    {
-      path: '/',
-      name: 'login',
-      component: LoginView
     },
     {
       path: '/news',

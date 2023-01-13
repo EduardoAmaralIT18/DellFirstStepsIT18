@@ -15,6 +15,7 @@ public class LoginController : Controller{
         user = _user;
     }
 
+    [Route("getUserList")]
     [HttpGet("getUserList")]
     public IEnumerable<UserModel> GetAllUsers()
     {
