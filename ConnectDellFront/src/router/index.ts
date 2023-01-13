@@ -7,13 +7,12 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: HomePageVue
+      path: '/', 
+      redirect: { name: 'HomePage' }
     },
     {
       path: '/home',
-      name: 'home',
+      name: 'HomePage',
       component: HomePageVue
     },
     {

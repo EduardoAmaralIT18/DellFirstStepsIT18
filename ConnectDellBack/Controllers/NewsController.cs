@@ -18,7 +18,6 @@ public class NewsController : ControllerBase
         _newsService = newsService;
     }
 
-    [Route("getNews")]
     [HttpGet("getNews")]
     public async Task<ActionResult<IEnumerable<NewsDTO>>> GetNews()
     {
