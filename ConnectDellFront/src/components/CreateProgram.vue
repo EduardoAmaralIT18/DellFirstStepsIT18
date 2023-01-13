@@ -226,8 +226,41 @@ span {
     font-family: 'Roboto', sans-serif;
 }
 
+
 .multiselect-tag {
+<<<<<<< HEAD
     background-color: rgb(6, 114, 203);
     font-weight: lighter;
+=======
+    width: 100%;
+    background-color: rgb(231, 90, 90);
+} 
+
+.dates{
+    text-align: left;
+    display: flex;
+    margin-bottom: 1%;
 }
+
+.dates input{
+    width: 100%;
+    height: 45px;
+    font-size: 18px;
+    color: #525151;
+    padding-left: 4%;
+    border: .0625rem solid #7e7e7e;
+    border-radius: .125rem;
+    background-clip: padding-box;
+}
+.enddate input{
+    background-color: rgba(181, 181, 181, 0.233);
+}
+span{
+    margin-left: 4px;
+    color: rgba(255, 0, 0, 0.658);
+    font-weight: bold;
+>>>>>>> dab05b779cbe59d30026dc4a5c5061ac82a5160c
+}
+
+
 </style>
