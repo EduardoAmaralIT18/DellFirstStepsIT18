@@ -58,7 +58,7 @@ namespace ConnectDellBack.Migrations
                     b.Property<int>("numberOfMembers")
                         .HasColumnType("int");
 
-                    b.Property<int>("programId")
+                    b.Property<int>("programid")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("startDate")
@@ -66,7 +66,7 @@ namespace ConnectDellBack.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("programId");
+                    b.HasIndex("programid");
 
                     b.ToTable("editions");
 
@@ -76,23 +76,20 @@ namespace ConnectDellBack.Migrations
                             id = 1,
                             curriculum = "CSS, HTML, C#, JavaScript, SQL Server, Entity Framework, Asp.NET, Vue.js entre outros",
                             description = "First edition of the IT Academy program focused solely on the self-titled female audience",
-                            endDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            endDate = new DateTime(2023, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             mode = 1,
                             name = "IT Academy 17",
                             numberOfInterns = 21,
                             numberOfMembers = 25,
-                            programId = 1,
-                            startDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            programid = 1,
+                            startDate = new DateTime(2022, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
             modelBuilder.Entity("ConnectDellBack.Models.ImageModel", b =>
                 {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("imageId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<byte[]>("imageData")
                         .IsRequired()
@@ -105,10 +102,7 @@ namespace ConnectDellBack.Migrations
                     b.Property<int>("newsId")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
-
-                    b.HasIndex("newsId")
-                        .IsUnique();
+                    b.HasKey("imageId");
 
                     b.ToTable("images");
                 });
@@ -215,7 +209,7 @@ namespace ConnectDellBack.Migrations
                         {
                             id = 1,
                             authorid = 1,
-                            date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            date = new DateTime(2022, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             programid = 1,
                             text = "The all-girls team starts development of the Dell FirstSteps Project, that will help organize all contents about Dell's Internship Programs.",
                             title = "IT 17 team starts development of the Dell FirstSteps Project"
@@ -291,10 +285,10 @@ namespace ConnectDellBack.Migrations
                             id = 1,
                             description = "Enrollment stage",
                             editionid = 1,
-                            endDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            endDate = new DateTime(2022, 8, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             name = "Enrollment",
                             peopleInvolved = "Puc and Dell Staff",
-                            startDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            startDate = new DateTime(2022, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             type = 0
                         });
                 });
@@ -333,7 +327,7 @@ namespace ConnectDellBack.Migrations
                             id = 1,
                             description = "Internship Program in partnership with PUCRS, focused in software development",
                             name = "IT Academy",
-                            startDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            startDate = new DateTime(2022, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -503,7 +497,7 @@ namespace ConnectDellBack.Migrations
                 {
                     b.HasOne("ConnectDellBack.Models.ProgramModel", "program")
                         .WithMany("editions")
-                        .HasForeignKey("programId")
+                        .HasForeignKey("programid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -514,7 +508,7 @@ namespace ConnectDellBack.Migrations
                 {
                     b.HasOne("ConnectDellBack.Models.NewsModel", "news")
                         .WithOne("image")
-                        .HasForeignKey("ConnectDellBack.Models.ImageModel", "newsId")
+                        .HasForeignKey("ConnectDellBack.Models.ImageModel", "imageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -614,7 +608,6 @@ namespace ConnectDellBack.Migrations
             modelBuilder.Entity("ConnectDellBack.Models.NewsModel", b =>
                 {
                     b.Navigation("image");
-                    b.Navigation("news");
 
                     b.Navigation("news");
                 });
