@@ -1,65 +1,25 @@
 <!-- ALTERADO -->
 <template>
 
-<header class="navbar shadow-lg fixed-top">
+  <header class="navbar shadow-lg fixed-top">
       <div class="container-fluid">
           <div class="row">
               <div class="col-4 dellLogo">
                 <a href="index.html"><img class="logo" alt="logo Dell" src="../assets/logoDell.png"></a>
               </div>
+          </div>
       </div>
-    </div>
   </header>
 
   <div class="container">
     <p class="title">Sign in to Dell FirstSteps</p>
-  <button v-for="us in user" :key="us.id" @click="setCookies(us)" class="dds__button dds__button--primary" type="button">Login with {{us.email}}</button>
-  <!--. comentando pra larissa ter seus devaneios
-    <form data-dds="form" class="dds__form dds__container">
-      <div class="dds__row">
-        <div class="dds__col--1 dds__col--sm-3">
-          <div class="dds__select" data-dds="select">
-            <label id="select-label-775154376" for="select-control-775154376"
-              >Member</label
-            >
-            <div class="dds__select__wrapper">
-              <select v-model="item"
-                id="select-control-775154376"
-                class="dds__select__field"
-                aria-describedby="select-helper-775154376"
-                required="true"
-              >
-                <option v-for="us in user" :key="us.id"
-                  :value="us.id"
-                  class="dds__select__option--placeholder"
-                  selected
-                >
-                  {{us.email}}
-                </option>
-              </select>
-              <small
-                id="select-helper-775154376"
-                class="dds__select__helper"
-              ></small>
-              <div
-                id="select-error-775154376"
-                class="dds__invalid-feedback"
-              ></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <button class="submitbutton dds__button dds__button--lg" type="submit" @click="setCookies">Submit</button>
-    </form>-->
+    <button v-for="us in user" :key="us.id" @click="setCookies(us)" class="dds__button dds__button--primary" type="button">Login with {{us.email}}</button>
   </div>
 
 </template>
 
 <script lang="ts">
-/*import AppDropdown from './components/AppDropdown.vue'
-import AppDropdownContent from './components/AppDropdownContent.vue'
-import AppDropdownItem from './components/AppDropdownItem.vue'*/
+
 import { defineComponent } from "vue";
 import axios from "axios";
 
@@ -76,15 +36,7 @@ interface Data {
   };
 }
 
-/*export default {
-    name: 'app',
-    components: {
-      AppDropdown,
-      AppDropdownContent,
-      AppDropdownItem,
-    }
-  }
-*/
+
 export default defineComponent({
   data(): Data {
     return {
