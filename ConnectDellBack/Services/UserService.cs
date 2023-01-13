@@ -68,5 +68,3 @@ public class UserService : IUserService
         return userList;
     }
 }
-// RETORNAR OS PROGRAMAS RELACIONADOS AQUELE USER
-// VALIDAÇÃO DO ROLE NO FRONT - COOKIES
