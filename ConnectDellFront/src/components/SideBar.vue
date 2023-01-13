@@ -14,7 +14,7 @@ export default defineComponent({
   },
   data(): Data {
     return {
-      ROLE: this.$cookies.get("ROLE")
+      ROLE: this.$cookies.get("role")
     }
   },
   methods: {

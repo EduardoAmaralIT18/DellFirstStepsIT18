@@ -66,8 +66,8 @@ interface Data {
 export default defineComponent({
   data(): Data {
     return {
-      NAME: this.$cookies.get("NAME"),
-      ROLE: this.$cookies.get("ROLE")
+      NAME: this.$cookies.get("name"),
+      ROLE: this.$cookies.get("role")
     }
   },
   methods: {

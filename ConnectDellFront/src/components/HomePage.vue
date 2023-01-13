@@ -85,11 +85,11 @@
     </div>
 </template>
 
-<script>
+<script lang='ts'>
 import axios from 'axios';
 import ApiHandler from '../libs/ApiHandler'
 
-export default {
+export default ({
     name: 'HomePage',
     props: {
     },

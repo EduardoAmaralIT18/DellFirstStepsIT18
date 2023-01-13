@@ -17,8 +17,6 @@
       return {}
     },
     created() {
-        this.$cookies.set("NAME", "Elise"),
-        this.$cookies.set("ROLE", 0)
     }
   });
 </script>
