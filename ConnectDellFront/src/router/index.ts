@@ -9,18 +9,13 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomePageVue
+      name: 'login',
+      component: LoginView
     },
     {
       path: '/home',
-      name: 'home',
-      component: HomePageVue //teste, pode trocar, so troca so o componente, nao o path nem o name
-    },
-    {
-      path: '/',
-      name: 'login',
-      component: LoginView
+      name: 'HomePage',
+      component: HomePageVue
     },
     {
       path: '/news',

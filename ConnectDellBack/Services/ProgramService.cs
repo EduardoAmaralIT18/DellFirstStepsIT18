@@ -13,7 +13,7 @@ public class ProgramService : IProgramService
         _dbContext = dbContext;
     }
 
-    public async Task<ProgramDTO> GetPrograms(int idUser, string role)
+    public async Task<ProgramDTO> GetPrograms(int idUser, int role)
     {
         var programDTO = new ProgramDTO
         {
