@@ -90,6 +90,11 @@ Para executar a aplicação desenvolvida no projeto, após fazer o clone do git 
 - Axios:
   - Caso occora um erro de Axios, rode o seguinte comando no terminal do frontend: `install --save axios vue-axios`
 
+- Database
+  - Caso sua database não esteja funcionando corretamente, delete a pasta Migrations do seu projeto, e rode os seguintes comandos no terminal do Backend:
+    - `dotnet ef migrations add <MigrationName>`
+    - `dotnet ef database update`
+
 ---
 
 ### Tutorial Rápido de Git
