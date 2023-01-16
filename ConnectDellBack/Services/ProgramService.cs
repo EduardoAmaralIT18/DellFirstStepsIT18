@@ -11,7 +11,7 @@ public class ProgramService : IProgramService
     }
 
     public async Task<ProgramDTO> GetPrograms(int idUser, int role)
-    public async Task<ProgramDTO> GetPrograms(int idUser, string role)
+    
     {
         var user = _dbContext.users.FirstOrDefault(u => u.id == idUser);
 @AlexyaOliveiraIT17 AlexyaOliveiraIT17 Pending
