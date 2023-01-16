@@ -65,10 +65,10 @@
                         <div class="flip-card-back">
                             <div class="dds__card__content">
                                 <div class="dds__card__body">
-                                    <button class="dds__button dds__button__icon" type="button">
+                                    <RouterLink to="/program" class="dds__button dds__button__icon" type="button">
                                         <i class="dds__icon dds__icon--plus-add dds__card__header__icon dds__icon__plus"
                                             title="Add a Program"></i>
-                                    </button>
+                                    </RouterLink>
                                 </div>
                             </div>
                         </div>
@@ -84,19 +84,24 @@
             </p>
         </div>
     </div>
+
+<RouterView/>
 </template>
 
 <script>
 import NavBar from '../components/NavBar.vue';
 import SideBar from '../components/SideBar.vue';
 import axios from 'axios';
-import ApiHandler from '../libs/ApiHandler'
+import ApiHandler from '../libs/ApiHandler';
+import { RouterLink, RouterView } from 'vue-router';
 
 export default ({
     name: 'HomePage',
     components: {
         SideBar,
         NavBar,
+        RouterLink,
+        RouterView
     },
     props: {
     },
