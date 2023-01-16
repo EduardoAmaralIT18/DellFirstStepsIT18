@@ -76,14 +76,6 @@
         </form>
     </div>
 
-    <ul>
-        <li v-for="member in program.members" :key="member.id">{{ member }}</li>
-    </ul>
-
-    <p>{{ program.name }}</p>
-    <p>{{ program.description }}</p>
-    <p>{{ program.startDate }}</p>
-    <p>{{ program.endDate }}</p>
 
 </template>
 
@@ -111,7 +103,7 @@ interface Data {
 
 export default defineComponent({
     components: {
-        MultiSelect,
+        MultiSelect
     },
     data(): Data {
         return {
@@ -228,12 +220,8 @@ span {
 
 
 .multiselect-tag {
-<<<<<<< HEAD
     background-color: rgb(6, 114, 203);
     font-weight: lighter;
-=======
-    width: 100%;
-    background-color: rgb(231, 90, 90);
 } 
 
 .dates{
@@ -257,9 +245,8 @@ span {
 }
 span{
     margin-left: 4px;
-    color: rgba(255, 0, 0, 0.658);
+    color: #0063B8;
     font-weight: bold;
->>>>>>> dab05b779cbe59d30026dc4a5c5061ac82a5160c
 }
 
 
