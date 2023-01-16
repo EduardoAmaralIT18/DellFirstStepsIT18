@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace ConnectDellBack.Models;
 
 public enum Type {
+    Set_Up,
     Training,
     Sprints,
     HandsOn
@@ -32,4 +33,6 @@ public class PhasesModel {
     public Type type {get;set;}
 
     public EditionModel edition {get;set;} = null!;
+
+    //aaaaaaaa
 }
