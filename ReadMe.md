@@ -129,4 +129,4 @@ Dentro do Vs code, existem opções que podem auxiliar no processo de dar commit
 <br/>
 
 Assim que o trabalho estiver terminado:
-Abrir um pull Request no git. Aguardar aprovação.
+Abrir um Pull Request da sua branch para a branch dev no git. Aguardar aprovação.
