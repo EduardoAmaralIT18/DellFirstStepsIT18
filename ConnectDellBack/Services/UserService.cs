@@ -53,7 +53,7 @@ public class UserService : IUserService
     }
 
     public IEnumerable<UserModel> GetOwners() {
-        var owners = _dbUser.users.Where(usr => ((int)usr.role) == 0)
+        var owners = dbUser.users.Where(usr => ((int)usr.role) == 0)
                                     .ToArray<UserModel>();
         return owners;
     }
@@ -62,7 +62,7 @@ public class UserService : IUserService
     /*
       Task<IEnumerable<ProgramModel>> Get()
       {
-            return 
+            return
         }
         Task<ProgramModel> Get(int Id)
         {

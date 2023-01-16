@@ -11,13 +11,10 @@ public class ProgramService : IProgramService
     }
 
     public async Task<ProgramDTO> GetPrograms(int idUser, int role)
-    
+
     {
         var user = _dbContext.users.FirstOrDefault(u => u.id == idUser);
-@AlexyaOliveiraIT17 AlexyaOliveiraIT17 Pending
-Não deve ser pagado
 
-@AlexyaOliveiraIT17	Reply...
         var programs = await _dbContext.programs.OrderBy(p => p.startDate).ToListAsync();
 
         var myPrograms = new List<ProgramModel>();
@@ -37,9 +34,9 @@ Não deve ser pagado
         var programDTO = new ProgramDTO
         {
             Programs = programs.Except(myPrograms).ToList(),
-            MyPrograms = myPrograms
-            Programs = await _dbContext.programs.OrderBy(p => p.startDate).ToListAsync(),
-            MyPrograms = await _dbContext.programs.OrderBy(p => p.startDate).ToListAsync()
+            MyPrograms = myPrograms,
+            // Programs = await _dbContext.programs.OrderBy(p => p.startDate).ToListAsync(),
+            // MyPrograms = await _dbContext.programs.OrderBy(p => p.startDate).ToListAsync()
         };
 
         return programDTO;
@@ -57,4 +54,5 @@ Não deve ser pagado
         return entries;
     }
 
+    
 }

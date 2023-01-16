@@ -30,7 +30,7 @@ const router = createRouter({
     {
       path: '/program',
       name: 'CreateProgram',
-      component: () => import('../views/CreateProgramView.vue')    
+      component: () => import('../views/CreateProgramView.vue')
     },
   ]
 })
