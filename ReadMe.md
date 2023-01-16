@@ -70,7 +70,7 @@ Para rodar o projeto, utilize os seguintes comandos nas pastas de backend ou fro
   - `dotnet add package Microsoft.EntityFrameworkCore.SqlServer`
   - `dotnet ef database update`
 - Frontend: 
-  `npm install`
+  - `npm install`
   
 ### Executando a aplicação a partir do editor de texto local
 
@@ -84,6 +84,11 @@ Para executar a aplicação desenvolvida no projeto, após fazer o clone do git 
   - Abrir um terminal integrado a partir dele
   - Executar o comando `npm run serve`. 
   - Clicar no link do localhost para abrir a aplicação de forma local no seu navegador padrão.
+  
+#### Erros comuns
+  
+- Axios:
+  - Caso occora um erro de Axios, rode o seguinte comando no terminal do frontend: `install --save axios vue-axios`
 
 ---
 
