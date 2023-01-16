@@ -61,35 +61,27 @@ export default defineComponent({
   
   .sidenav{
     height: 100%;
-    /* Full-height: remove this if you want "auto" height */
     width: 17%;
-    /* Set the width of the sidebar */
     position: fixed;
-    /* Fixed Sidebar (stay in place on scroll) */
     top: 0;
     bottom: 0;
     left: 0;
     background-color: #ffffff;
     overflow-x: hidden;
-    /* Disable horizontal scroll */
     padding-top: 140px;
     border-right: 1px solid #b9b8b8;
   }
   
   .smallSidenav{
     height: 100%;
-    /* Full-height: remove this if you want "auto" height */
     width: 17%;
-    /* Set the width of the sidebar */
     position: fixed;
-    /* Fixed Sidebar (stay in place on scroll) */
     height: 100%;
     top: 0;
     bottom: 0;
     left: 0;
     background-color: #ffffff;
     overflow-x: hidden;
-    /* Disable horizontal scroll */
     padding-top: 140px;
     border-right: 1px solid #b9b8b8;
   }
@@ -109,12 +101,12 @@ export default defineComponent({
     padding-left: 4%;
   }
   
+  /* pre-defined vue class to link that leads to the page the user is in */
   .router-link-exact-active {
   background:#f4f1f1;
   border-left: 10px solid #0672CB;
 
 }
-
 
   /* When you mouse over the navigation links, change their color */
   .hoverEffect:hover{
