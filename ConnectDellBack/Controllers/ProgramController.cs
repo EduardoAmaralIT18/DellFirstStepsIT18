@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ConnectDellBack.Services;
 using ConnectDellBack.DTOs;
+using ConnectDellBack.Models;
 
 namespace ConnectDellBack.Controllers;
 
@@ -18,9 +19,24 @@ public class ProgramController : ControllerBase
     }
 
     [HttpGet("GetPrograms")]
-    public async Task<ActionResult<ProgramDTO>> GetPrograms(int idUser, int role)
+    public async Task<ActionResult<ProgramDTO>> GetPrograms(int idUser, string role)
     {
         var result = await _service.GetPrograms(idUser, role);
         return result == null ? NotFound() : Ok(result);
     }
+
+    [HttpPost("addProgram")]
+    public async Task<ActionResult> addProgram(ProgramModel program) {
+        Console.WriteLine("ESTA AQUI!!!!!!!!!!!!!!!!!");
+        Console.WriteLine(program.owners);
+        int entries = await _service.addProgram(program);
+        if (entries > 0) {
+            return Ok();
+        } else {
+            return NotFound();
+        }
+    }
+
+  
+
 }

@@ -19,12 +19,10 @@ public class ProgramModel{
     [StringLength(500, MinimumLength = 10, ErrorMessage = "The program's description must be at most 500 characters.")]
     public string description {get;set;} = null!;
 
-    [Required]
-    public List<EditionModel> editions {get;set;} = null!;
-    [Required]
-    public List<NewsModel> news {get;set;} = null!;
+    public List<EditionModel>? editions {get;set;}
+    public List<NewsModel>? news {get;set;}
     [Required]
     public List<UserModel> owners {get;set;} = null!;
 
-    public List<OwnershipModel> ownerships {get;set;} = null!;
+    public List<OwnershipModel>? ownerships {get;set;}
 }

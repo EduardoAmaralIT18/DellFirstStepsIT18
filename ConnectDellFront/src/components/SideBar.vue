@@ -2,45 +2,51 @@
 import { defineComponent } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 
+interface Data {
+  ROLE: number,
+}
+
 export default defineComponent({
   name: 'SideBar',
   components: {
     RouterLink,
     RouterView
   },
-  data() {
-      return {
-        homeView: false,
-        userView: false,
-        newsView: false
-      }
-  }, props: {
-
+  data(): Data {
+    return {
+      ROLE: this.$cookies.get("role")
+    }
   },
   methods: {
-
+    showUser() {
+      if (!(this.ROLE == 0)) {
+        return false;
+      } else {
+        return true;
+      }
+    }
   }
 })
 </script>
 
 
-<template>
+<template> 
     <div class="sidenav d-none d-lg-block">
-        <RouterLink to="/home" :class="{onViewEffect: homeView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
+        <RouterLink to="/home" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
         Home</RouterLink>
 
-        <RouterLink to="/users" :class="{onViewEffect: userView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="user icon" src="../assets/user.png">Users</RouterLink>
+        <RouterLink to="/users" class="hoverEffect hovicon effect-1 sub-a" v-if="showUser()"><img class="smallIcons" alt="user icon" src="../assets/user.png">Users</RouterLink>
 
-        <RouterLink to="/news" :class="{onViewEffect: newsView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="news icon" src="../assets/news.png">News</RouterLink>
+        <RouterLink to="/news" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="news icon" src="../assets/news.png">News</RouterLink>
 
     </div>
 
     <div class="smallSidenav d-lg-none"> 
-      <RouterLink to="/home" :class="{onViewEffect: homeView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
+      <RouterLink to="/home" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
         <br></RouterLink>
-      <RouterLink to="/users" :class="{onViewEffect: userView}" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="user icon" src="../assets/user.png">
+      <RouterLink to="/users" class="hoverEffect hovicon effect-1 sub-a" v-if="showUser()"><img class="smallIcons" alt="user icon" src="../assets/user.png">
         <br></RouterLink>
-      <RouterLink to="/news" :class="{onViewEffect: newsView}" class="hoverEffect hovicon effect-1 sub-a" ><img class="smallIcons" alt="news icon" src="../assets/news.png">
+      <RouterLink to="/news" class="hoverEffect hovicon effect-1 sub-a" ><img class="smallIcons" alt="news icon" src="../assets/news.png">
         <br></RouterLink>
     </div>
 
@@ -48,7 +54,6 @@ export default defineComponent({
   </template>
   
   <style scoped>
-
   .smallIcons {
     width: 48px;
     margin-bottom: 3%;
@@ -56,41 +61,31 @@ export default defineComponent({
   
   .sidenav{
     height: 100%;
-    /* Full-height: remove this if you want "auto" height */
     width: 17%;
-    /* Set the width of the sidebar */
     position: fixed;
-    /* Fixed Sidebar (stay in place on scroll) */
     top: 0;
     bottom: 0;
     left: 0;
     background-color: #ffffff;
     overflow-x: hidden;
-    /* Disable horizontal scroll */
     padding-top: 140px;
     border-right: 1px solid #b9b8b8;
   }
   
   .smallSidenav{
     height: 100%;
-    /* Full-height: remove this if you want "auto" height */
     width: 17%;
-    /* Set the width of the sidebar */
     position: fixed;
-    /* Fixed Sidebar (stay in place on scroll) */
     height: 100%;
     top: 0;
     bottom: 0;
     left: 0;
     background-color: #ffffff;
     overflow-x: hidden;
-    /* Disable horizontal scroll */
     padding-top: 140px;
     border-right: 1px solid #b9b8b8;
   }
-  .hoverEffect:hover img{
-    width: 53px;
-  }
+
   /* The navigation menu links */
   .hoverEffect{
     border-right: 20%;
@@ -98,33 +93,28 @@ export default defineComponent({
     border-top: 20%;
     text-decoration: none;
     font-size: 20px;
-    color: #0477CE;
-    display: block;
+    color: #0672CB;
     margin-bottom: 6%;
-    margin-right: 5%;
-    padding-right: 5%;
+    float: left;
+    width: 100%;
+    text-align: left;
+    padding-left: 4%;
   }
   
-  .onViewEffect {
-    background:#DBDBDB;
-    border-radius: 70px;
-  }
+  /* pre-defined vue class to link that leads to the page the user is in */
+  .router-link-exact-active {
+  background:#f4f1f1;
+  border-left: 10px solid #0672CB;
 
+}
 
   /* When you mouse over the navigation links, change their color */
   .hoverEffect:hover{
-    background:#DBDBDB;
-    border-radius: 40px;
-    padding: 15px;
-    margin-left: 8%;
+    background:#f4f1f1;
+    border-left: 10px solid #0672CB;
+    width: 100%;
   }
-  
-  /* Style page content */
-  .main {
-    margin-left: 100px;
-    /* Same as the width of the sidebar */
-    padding: 0px 10px;
-  }
+
   
   /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
   @media screen and (max-height: 450px) {
@@ -137,13 +127,13 @@ export default defineComponent({
       font-size: 20px;
       margin-bottom: 38%;
       padding-left: 24%;
+      width: 100%;
     }
   }
   
   .hoverEffect:active{
     background: #c6c6c6;
-    color: #0477CE;
+    color: #0672CB;
     box-shadow: 0 0 0 8px #cac9c9a3;
   }
-  
   </style>
