@@ -43,7 +43,7 @@
                 <div class="dds__row">
                     <div class="dds__col--12 dds__col--sm-12">
                         <div class="dds__select" data-dds="select">
-                            <label id="select-label-141366292" for="select-control-141366292">Members <span>
+                            <label id="select-label-141366292" for="select-control-141366292">Owners <span>
                                     *</span></label>
                             <div class="multiselec dds__select__wrapper">
                                 <MultiSelect v-model="program.members"/>
@@ -222,7 +222,7 @@ span {
 .multiselect-tag {
     background-color: rgb(6, 114, 203);
     font-weight: lighter;
-} 
+}
 
 .dates{
     text-align: left;

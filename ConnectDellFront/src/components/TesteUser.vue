@@ -12,7 +12,6 @@ import { RouterView } from 'vue-router';
     <h2>PRÓXIMA SPRINT</h2>
     <RouterView />
   </main>
-
 </template>
 
 <style>
