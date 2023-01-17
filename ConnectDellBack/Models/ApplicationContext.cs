@@ -11,6 +11,7 @@ public class ApplicationContext : DbContext
     public DbSet<EditionModel> editions { get; set;} = null!;
     public DbSet<PhasesModel> phases { get; set;} = null!;
     public DbSet<NewsModel> news { get; set;} = null!;
+    public DbSet<ImageModel> images {get; set;} = null!;
 
     
     public ApplicationContext(DbContextOptions options) : base(options)
