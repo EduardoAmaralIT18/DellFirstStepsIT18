@@ -27,7 +27,6 @@ public class ProgramController : ControllerBase
 
     [HttpPost("addProgram")]
     public async Task<ActionResult> addProgram(ProgramModel program) {
-        Console.WriteLine("ESTA AQUI!!!!!!!!!!!!!!!!!");
         Console.WriteLine(program.owners);
         int entries = await _service.addProgram(program);
         if (entries > 0) {
@@ -35,6 +34,12 @@ public class ProgramController : ControllerBase
         } else {
             return NotFound();
         }
+    }
+
+    [HttpGet("showInfoProgram")]
+    public async Task<ActionResult<ProgramModel>> showInfoProgram(int id1) {
+        var result = await _service.getProgramInfo(id1);
+        return result == null ? NoContent() : Ok(result);
     }
 
 

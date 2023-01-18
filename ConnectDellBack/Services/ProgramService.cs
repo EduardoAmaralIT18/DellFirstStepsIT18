@@ -54,5 +54,12 @@ public class ProgramService : IProgramService
         return entries;
     }
 
+    public async Task<ProgramModel> getProgramInfo(int id1) {
+        Console.WriteLine("-----------------------------------------OLA CHEGUEI AQUI --------" + id1 + "-----------------------------------------------------------------------");
+        var program = await _dbContext.programs.Where(p => p.id == id1)
+                                                .FirstOrDefaultAsync();
+        return program;
+    }
+
     
 }

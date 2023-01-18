@@ -26,7 +26,7 @@
                                     <RouterLink to="/programinfo" @click="settingCookies(item.id)">
                                         Learn moreㅤ➔
                                     </RouterLink>
-                                    <!-- adicionar metodo que seta os cookies com o id referente a div clicada -->
+                                        <!-- adicionar metodo que seta os cookies com o id referente a div clicada -->
                                 </div>
                             </div>
                         </div>
@@ -165,7 +165,7 @@
                     });
             },
             settingCookies(index) {
-                this.$cookies.set("programId", "ta funcionando" + index);
+                this.$cookies.set("programId", index);
             }
         }
     });

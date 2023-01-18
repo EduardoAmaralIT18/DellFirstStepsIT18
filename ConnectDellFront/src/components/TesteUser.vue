@@ -7,7 +7,7 @@ import { RouterView } from 'vue-router';
 <template>
   <main>
     <NavBar></NavBar>
-    <SideBar view="home"></SideBar>
+    <SideBar></SideBar>
     <h2 class="h2">User</h2>
     <h2>PRÓXIMA SPRINT</h2>
     <RouterView />

@@ -1,5 +1,9 @@
 <template>
-    <Multiselect mode="tags" :close-on-select="false" :searchable="true" :create-option="true" :options="transformOptions()" />
+    <!-- Colocar mode="tags" é a opção antiga -->
+    <Multiselect mode="multiple" :close-on-select="false" :searchable="true" :create-option="false" :options="transformOptions()"/>
+     <!-- <ul>
+        <li v-for="(opt, key) in transformOptions()" :key="key">{{   opt }}</li>
+    </ul> -->
 </template>
 
 <script lang="ts">
@@ -15,6 +19,7 @@ type User = {
 
 interface Data {
     options: null | User,
+    //esconder: boolean
 }
 
 export default defineComponent ({
@@ -23,7 +28,8 @@ export default defineComponent ({
     },
     data() : Data {
         return {
-            options: null
+            options: null,
+            //esconder: false
         };
     },
     created() {
