@@ -11,26 +11,29 @@
                 My Programs
             </h4>
             <div class="row">
-                <div class="col-2 dds__mr-4 dds__mb-3" v-for="(item, i) in myPrograms" :key="i">
-                    <div class="flip-card" tabindex="0">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front">
-                                <div class="dds__card__content">
-                                    <div class="dds__card__header">
-                                        <div class="dds__card__header__text">
-                                            <h5 class="dds__card__header__title">{{ item.name }}</h5>
-                                        </div>
-                                    </div>
+                <div class="col-3 dds__mr-3 dds__mb-3" v-for="item in myPrograms" :key="item.id">
+                    <div class="dds__col-12 dds__col--md-6 dds__col--lg-4 dds__mb-3">
+                        <div class="dds__card">
+                            <div class="dds__card__content">
+                                <div class="dds__card__header">
+                                    <span class="dds__card__header__text">
+                                        <h5 class="dds__card__header__title">{{ item.name }}</h5>
+                                    </span>
                                 </div>
-                            </div>
-                            <div class="flip-card-back">
-                                <div class="dds__card__body">{{ item.description }}</div>
+                                <div class="dds__card__body">{{ item.description }}
+                                </div>
                                 <div class="dds__card__footer">
+                                    <RouterLink to="/programinfo">
+                                        Learn moreㅤ➔
+                                    </RouterLink>
+                                    <!-- adicionar metodo que seta os cookies com o id referente a div clicada -->
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
             </div>
         </div>
 
@@ -39,260 +42,212 @@
                 Programs
             </h4>
             <div class="row">
-                <div class="col-2 dds__mr-4 dds__mb-3" v-for="(item, i) in programs" :key="i">
-                    <div class="flip-card">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front">
-                                <div class="dds__card__content">
-                                    <div class="dds__card__header">
-                                        <div class="dds__card__header__text">
-                                            <h5 class="dds__card__header__title">{{ item.name }}</h5>
-                                        </div>
-                                    </div>
+                <div class="col-3 dds__mr-3 dds__mb-3" v-for="(item, i) in programs" :key="i">
+                    <div class="dds__col-12 dds__col--md-6 dds__col--lg-4 dds__mb-3">
+                        <div class="dds__card">
+                            <div class="dds__card__content">
+                                <div class="dds__card__header">
+                                    <span class="dds__card__header__text">
+                                        <h5 class="dds__card__header__title">{{ item.name }}</h5>
+                                    </span>
                                 </div>
-                            </div>
-                            <div class="flip-card-back">
-                                <div class="dds__card__body">{{ item.description }}</div>
+                                <div class="dds__card__body">{{ item.description }}
+                                </div>
                                 <div class="dds__card__footer">
+                                    <RouterLink to="/programinfo">
+                                        Learn moreㅤ➔
+                                    </RouterLink>
+                                    <!-- adicionar metodo que seta os cookies com o id referente a div clicada -->
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-2 dds__mr-4 dds__mb-4" v-if="IsAdmin">
-                    <div class="flip-card">
-                        <div class="flip-card-back">
+                <div class="col-3 dds__mr-3 dds__mb-3" v-if="IsAdmin">
+                    <div class="dds__col-12 dds__col--md-6 dds__col--lg-4 dds__mb-3">
+                        <div class="dds__card">
                             <div class="dds__card__content">
-                                <div class="dds__card__body">
-                                    <RouterLink to="/program" class="dds__button dds__button__icon" type="button">
-                                        <i class="dds__icon dds__icon--plus-add dds__card__header__icon dds__icon__plus"
-                                            title="Add a Program"></i>
+                                <div class="addProgramIcon dds__card__body">
+                                    <RouterLink to="/createprogram">
+                                        +
                                     </RouterLink>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div v-if="!HasMyPrograms && !HasPrograms">
+                    <p class="message">
+                        <i class="dds__icon dds__icon--search dds__icon__search"></i>
+                        No programs found
+                    </p>
+                </div>
             </div>
         </div>
-
-        <div v-if="!HasMyPrograms && !HasPrograms">
-            <p class="message">
-                <i class="dds__icon dds__icon--search dds__icon__search"></i>
-                No programs found
-            </p>
-        </div>
     </div>
-
-<RouterView/>
+    <RouterView />
 </template>
 
 <script>
-import NavBar from '../components/NavBar.vue';
-import SideBar from '../components/SideBar.vue';
-import axios from 'axios';
-import ApiHandler from '../libs/ApiHandler';
-import { RouterLink, RouterView } from 'vue-router';
+    import NavBar from '../components/NavBar.vue';
+    import SideBar from '../components/SideBar.vue';
+    import axios from 'axios';
+    import ApiHandler from '../libs/ApiHandler';
+    import { RouterLink, RouterView } from 'vue-router';
 
-export default ({
-    name: 'HomePage',
-    components: {
-        SideBar,
-        NavBar,
-        RouterLink,
-        RouterView
-    },
-    props: {
-    },
-    data() {
-        return {
-            user: {
-                id: '',
-                name: '',
-                role: '-1'
+    export default ({
+        name: 'HomePage',
+        components: {
+            SideBar,
+            NavBar,
+            RouterLink,
+            RouterView
+        },
+        props: {
+        },
+        data() {
+            return {
+                user: {
+                    id: '',
+                    name: '',
+                    role: '-1'
+                },
+                myPrograms: [],
+                programs: []
+            }
+        },
+        computed: {
+            HasMyPrograms() {
+                return this.myPrograms && this.myPrograms.length > 0;
             },
-            myPrograms: [],
-            programs: []
-        }
-    },
-    computed: {
-        HasMyPrograms() {
-            return this.myPrograms && this.myPrograms.length > 0;
+            HasPrograms() {
+                return (this.programs && this.programs.length > 0) || this.IsAdmin
+            },
+            IsAdmin() {
+                return this.user.role === "0";
+            }
         },
-        HasPrograms() {
-            return (this.programs && this.programs.length > 0) || this.IsAdmin
+        created() {
+            // fetch the data when the view is created and the data is
+            // already being observed
+            this.fetchData();
         },
-        IsAdmin() {
-            return this.user.role === "0";
+        watch: {
+            // call again the method if the route changes
+            '$route': 'fetchData'
+        },
+        methods: {
+            fetchData: function () {
+                this.myPrograms = [];
+                this.programs = [];
+
+                this.user.id = this.$cookies.get("id");
+                this.user.name = this.$cookies.get("name");
+                this.user.role = this.$cookies.get("role");
+
+                console.log(this.user.role);
+                console.log(this.IsAdmin);
+
+                axios.get(ApiHandler.URL(`/Program/GetPrograms?idUser=${this.user.id}&role=${this.user.role}`))
+                    .then(function (response) {
+                        return response;
+                    })
+                    .then(response => {
+                        if (response.status == 404) {
+                            this.myPrograms = [];
+                            this.programs = [];
+                        } else if (response.status == 200) {
+                            this.myPrograms = response.data?.myPrograms;
+                            this.programs = response.data?.programs;
+                        } else {
+                            console.log(response.status);
+                        }
+                    });
+            }
         }
-    },
-    created() {
-        // fetch the data when the view is created and the data is
-        // already being observed
-        this.fetchData();
-    },
-    watch: {
-        // call again the method if the route changes
-        '$route': 'fetchData'
-    },
-    methods: {
-        fetchData: function () {
-            this.myPrograms = [];
-            this.programs = [];
-
-            this.user.id = this.$cookies.get("id");
-            this.user.name = this.$cookies.get("name");
-            this.user.role = this.$cookies.get("role");
-
-            console.log(this.user.role);
-            console.log(this.IsAdmin);
-
-            axios.get(ApiHandler.URL(`/Program/GetPrograms?idUser=${this.user.id}&role=${this.user.role}`))
-                .then(function (response) {
-                    return response;
-                })
-                .then(response => {
-                    if (response.status == 404) {
-                        this.myPrograms = [];
-                        this.programs = [];
-                    } else if (response.status == 200) {
-                        this.myPrograms = response.data?.myPrograms;
-                        this.programs = response.data?.programs;
-                    } else {
-                        console.log(response.status);
-                    }
-                });
-        }
-    }
-});
+    });
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.container {
-    padding-top: 5%;
-    padding-left: 15%;
-    display: inline-flex;
-    flex-direction: column;
-}
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
 
-.dds__card__header__title {
-    font-weight: 550;
-    font-size: 1.25rem;
-    color: #0672CB;
-    text-align: center;
-}
+    .container {
+        padding-top: 5%;
+        padding-left: 15%;
+        display: inline-flex;
+        flex-direction: column;
+    }
 
-.dds__card__body {
-    font-size: 1.0rem;
-    padding: 10%;
-    color: #0672CB;
-}
+    .dds__card {
+        box-shadow: rgba(0, 0, 0, 0.176) 0px 3px 8px;
+        border-radius: 10px;
+    }
 
-.title {
-    margin-left: 0px !important;
-    text-align: left;
-    color: #0672CB;
-    margin: 2.5%;
-    font-weight: bold;
-}
+    .dds__card__header__title {
+        font-size: 22px;
+        color: #0672CB;
+        text-align: center;
+    }
 
-.subtitle {
-    margin-left: 0px !important;
-    text-align: left;
-    color: #0672CB;
-    margin: 2.5%;
-}
+    .dds__card__body {
+        font-size: 17px;
+        color: #0e0e0e;
+        text-align: left;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-.message {
-    text-align: center;
-    color: #0672CB;
-    margin-top: 5%;
-    font-size: 1.5rem;
-}
+    .title {
+        margin-left: 0px !important;
+        text-align: left;
+        color: #0672CB;
+        margin: 2.5%;
+        font-weight: bold;
+    }
 
-.dds__button {
-    background-color: white;
-    border-style: none;
-}
+    .subtitle {
+        margin-left: 0px !important;
+        text-align: left;
+        color: #0672CB;
+        margin: 2.5%;
+    }
 
-.dds__button:hover {
-    background-color: unset !important;
-}
+    .message {
+        text-align: center;
+        color: #0672CB;
+        margin-top: 5%;
+        font-size: 1.5rem;
+    }
 
-.dds__icon__plus {
-    color: #0672CB;
-    font-size: 55px;
-    font-weight: bold;
-}
+    .dds__icon__search {
+        color: #0672CB;
+        font-size: 1.5rem;
+        font-weight: bold;
+        padding-right: 1%;
 
-.dds__icon__search {
-    color: #0672CB;
-    font-size: 1.5rem;
-    font-weight: bold;
-    padding-right: 1%;
+    }
 
-}
+    .link {
+        color: #0672CB;
+        margin: 0 auto;
+        padding-top: 15%;
+        font-size: 16px;
+    }
 
-.flip-card {
-    padding-right: 10%;
-    width: 12rem;
-    height: 10rem;
-    color: #0672CB;
-    border-radius: 10px;
-    text-align: center;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-}
-
-.flip-card-inner {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-    position: relative;
-    text-align: center;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-}
-
-.flip-card:focus {
-    outline: 0;
-}
-
-.flip-card:hover .flip-card-inner,
-.flip-card:focus .flip-card-inner {
-    border-radius: 10px;
-    transform: rotateY(180deg);
-}
-
-.flip-card-front,
-.flip-card-back {
-    width: 100%;
-    border-radius: 10px;
-    height: 100%;
-    position: absolute;
-}
-
-.flip-card-front {
-    z-index: 2;
-    display: flex;
-    background-color: white;
-    justify-content: center;
-    align-items: center;
-}
-
-.flip-card-back {
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    box-shadow: 5px 5px lightgrey;
-    transform: rotateY(180deg);
-}
+    .addProgramIcon {
+        color: #0672CB;
+        text-align: center;
+        font-size: 50px;
+        padding-top: 35px;
+        padding-bottom: 35px;
+        text-decoration: none;
+    }
 </style>  
