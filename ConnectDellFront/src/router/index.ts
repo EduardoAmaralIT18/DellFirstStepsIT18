@@ -28,7 +28,7 @@ const router = createRouter({
       component: () => import('../components/TesteUser.vue') //teste, pode trocar, so troca so o componente, nao o path nem o name
     },
     {
-      path: '/program',
+      path: '/createprogram',
       name: 'CreateProgram',
       component: () => import('../views/CreateProgramView.vue')
     },

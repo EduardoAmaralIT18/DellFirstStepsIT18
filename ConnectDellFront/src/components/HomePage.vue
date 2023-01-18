@@ -23,7 +23,7 @@
                                 <div class="dds__card__body">{{ item.description }}
                                 </div>
                                 <div class="dds__card__footer">
-                                    <RouterLink to="/programinfo">
+                                    <RouterLink to="/programinfo" @click="settingCookies(item.id)">
                                         Learn moreㅤ➔
                                     </RouterLink>
                                     <!-- adicionar metodo que seta os cookies com o id referente a div clicada -->
@@ -32,8 +32,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
 
@@ -54,7 +52,7 @@
                                 <div class="dds__card__body">{{ item.description }}
                                 </div>
                                 <div class="dds__card__footer">
-                                    <RouterLink to="/programinfo">
+                                    <RouterLink to="/programinfo" @click="settingCookies(item.id)">
                                         Learn moreㅤ➔
                                     </RouterLink>
                                     <!-- adicionar metodo que seta os cookies com o id referente a div clicada -->
@@ -68,8 +66,8 @@
                     <div class="dds__col-12 dds__col--md-6 dds__col--lg-4 dds__mb-3">
                         <div class="dds__card">
                             <div class="dds__card__content">
-                                <div class="addProgramIcon dds__card__body">
-                                    <RouterLink to="/createprogram">
+                                <div class="addProgramIcon dds__card__body" data-hover="Add program">
+                                    <RouterLink style="text-decoration: none;" to="/createprogram">
                                         +
                                     </RouterLink>
                                 </div>
@@ -165,6 +163,9 @@
                             console.log(response.status);
                         }
                     });
+            },
+            settingCookies(index) {
+                this.$cookies.set("programId", "ta funcionando" + index);
             }
         }
     });
@@ -186,6 +187,8 @@
     .dds__card {
         box-shadow: rgba(0, 0, 0, 0.176) 0px 3px 8px;
         border-radius: 10px;
+        display: block;
+        height: 250px;
     }
 
     .dds__card__header__title {
@@ -245,9 +248,20 @@
     .addProgramIcon {
         color: #0672CB;
         text-align: center;
-        font-size: 50px;
+        font-size: 63px;
         padding-top: 35px;
         padding-bottom: 35px;
         text-decoration: none;
+        margin: 0 auto;
+
+    }
+
+    .dds__card__footer a{
+        position: absolute;
+        bottom: 0;
+        text-align: center;
+        margin-left: 30%;
+        padding-bottom: 15px;
+        
     }
 </style>  
