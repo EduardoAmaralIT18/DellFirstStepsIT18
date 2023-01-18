@@ -125,7 +125,7 @@ public class ApplicationContext : DbContext
                 id = 11,
                 editionInternid = 1,
                 name = "Yolanda",
-                email = " yolanda.colombo@dellteam.com",
+                email = "yolanda.colombo@dellteam.com",
                 role = Role.Intern,
                 notes = "I need to learn Vue.js."
             },
