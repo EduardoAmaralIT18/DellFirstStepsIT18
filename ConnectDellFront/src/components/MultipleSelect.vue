@@ -44,10 +44,13 @@ export default defineComponent ({
     },
     methods: {
         transformOptions() {
-            return this.options?.map(option => ({
+            var list = this.options?.map(option => ({
                 value: option,
                 label: option.name
             }))
+
+            console.log(list);
+            return list;
         }
     }
 });

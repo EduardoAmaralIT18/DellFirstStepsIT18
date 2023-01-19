@@ -252,7 +252,7 @@
         bottom: 0;
         text-align: center;
         left:0;
-        margin-left: 15px;
+        margin-left: 20px;
         margin-top: 10px;
         padding-bottom: 17px;
     }
