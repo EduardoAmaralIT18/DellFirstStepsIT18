@@ -1,9 +1,6 @@
 <template>
-    <!-- Colocar mode="tags" é a opção antiga -->
+    <!-- mode="tags" é a opção antiga -->
     <Multiselect mode="multiple" :close-on-select="false" :searchable="true" :create-option="false" :options="transformOptions()"/>
-     <!-- <ul>
-        <li v-for="(opt, key) in transformOptions()" :key="key">{{   opt }}</li>
-    </ul> -->
 </template>
 
 <script lang="ts">
@@ -28,8 +25,7 @@ export default defineComponent ({
     },
     data() : Data {
         return {
-            options: null,
-            //esconder: false
+            options: null
         };
     },
     created() {

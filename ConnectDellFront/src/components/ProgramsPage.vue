@@ -38,8 +38,9 @@
   <main>
     <NavBar></NavBar>
     <SideBar></SideBar>
-    <h2>PROGRAMS PAGE</h2>
-    <p>{{ program.name }}</p>
+    <h2>{{ program.name }}</h2>
+    <br>
+    <p>{{ program.description }}</p>
     <RouterView />
   </main>
 </template>
