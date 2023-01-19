@@ -56,9 +56,10 @@ public class ProgramService : IProgramService
 
     public async Task<ProgramModel> getProgramInfo(int id1) {
         var program = await _dbContext.programs.Where(p => p.id == id1)
+                                                .Include(p => p.owners)
+                                                .Include(p => p.editions)
                                                 .FirstOrDefaultAsync();
         return program;
     }
 
-    
 }

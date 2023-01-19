@@ -42,7 +42,7 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<ProgramModel>().HasData(
             new {
                 id = 1,
-                name = "IT Academy",  
+                name = "IT Academy",
                 startDate = new DateTime(08/10/2022),
                 description = "Internship Program in partnership with PUCRS, focused in software development",
             }

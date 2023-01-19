@@ -37,9 +37,10 @@ public class ProgramController : ControllerBase
     }
 
     [HttpGet("showInfoProgram")]
-    public async Task<ActionResult<ProgramModel>> showInfoProgram(int id1) {
+    public async Task<ActionResult<ProgramInfoDTO>> showInfoProgram(int id1) {
         var result = await _service.getProgramInfo(id1);
-        return result == null ? NoContent() : Ok(result);
+        var outravariavel = ProgramInfoDTO.convertModel2DTO(result);
+        return outravariavel == null ? NoContent() : Ok(outravariavel);
     }
 
 
