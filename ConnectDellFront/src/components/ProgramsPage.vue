@@ -109,21 +109,23 @@ export default defineComponent({
               </div>
             </div>
 
-            <div v-if="cookiesPermission==-1" class="initialCard col-2 dds__ml-3 dds__mr-4 dds__mb-3" v-for="(edition, i) in editions" :key="i">
-              <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
-                <div class="dds__card">
-                  <div class="dds__card__content">
-                    <div class="dds__card__header">
-                      <span class="dds__card__header__text">
-                        <h5 class="dds__card__header__title">{{ edition.name }}</h5>
-                      </span>
-                    </div>
-                    <div class="dds__card__body">{{ edition.description }}
-                    </div>
-                    <div class="dds__card__footer">
-                      <RouterLink to="#">
-                        Edit Edition ➔
-                      </RouterLink>
+            <div v-if="cookiesPermission == -1">
+              <div class="initialCard col-2 dds__ml-3 dds__mr-4 dds__mb-3" v-for="(edition, i) in editions" :key="i">
+                <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
+                  <div class="dds__card">
+                    <div class="dds__card__content">
+                      <div class="dds__card__header">
+                        <span class="dds__card__header__text">
+                          <h5 class="dds__card__header__title">{{ edition.name }}</h5>
+                        </span>
+                      </div>
+                      <div class="dds__card__body">{{ edition.description }}
+                      </div>
+                      <div class="dds__card__footer">
+                        <RouterLink to="#">
+                          Edit Edition ➔
+                        </RouterLink>
+                      </div>
                     </div>
                   </div>
                 </div>
