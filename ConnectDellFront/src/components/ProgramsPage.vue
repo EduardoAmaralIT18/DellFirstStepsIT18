@@ -14,13 +14,16 @@ export default defineComponent({
   data() {
     return {
       cookiesId: this.$cookies.get("programId"),
+      cookiesPermission: this.$cookies.get("Permission"),
+      cookiesUser: this.$cookies.get("id"),
       program: [],
       owners: [],
       editions: []
     }
   },
   created() {
-    axios.get(ApiHandler.URL(`/Program/showInfoProgram?id1=${this.cookiesId}`))
+    if (this.cookiesPermission == -1) {
+      axios.get(ApiHandler.URL(`/Program/showInfoProgram?id1=${this.cookiesId}&idUser=${this.cookiesUser}`))
       .then(function (response) {
         return response;
       })
@@ -33,6 +36,20 @@ export default defineComponent({
           alert("There was an error on our database! Please, try again later.");
         }
       })
+    } else if (this.cookiesId == -1) {
+      axios.get(ApiHandler.URL(`/Program/showInfoProgram?id1=${this.cookiesPermission}`))
+            .then(function (response) {
+              return response
+            })
+            .then(response => {
+        if (response.status == 200) {
+          this.program = response.data;
+          this.owners = response.data.owners;
+        } else if (response.status == 204) {
+          alert("There was an error on our database! Please, try again later.");
+        }
+      })
+    }
   },
   methods: {
     hasEndDate() {
@@ -44,14 +61,14 @@ export default defineComponent({
         return moment(String(value)).format('MM/DD/YYYY')
       }
     },
-    
+
   },
   computed: {
     isOwner() {
       const idAccess = this.$cookies.get("id");
       console.log(idAccess);
       var boolean = false;
-      this.owners.forEach (owner => {
+      this.owners.forEach(owner => {
         if (owner.id == idAccess) {
           boolean = true;
         }
@@ -79,42 +96,43 @@ export default defineComponent({
         </p>
       </div>
 
-      <div v-if="isOwner" class="initialCard col-3 dds__ml-3 dds__mr-4 dds__mb-3">
+
+      <div  class="initialCard col-2  dds__ml-3 dds__mr-4 dds__mb-3">
         <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
           <div class="dds__card">
-            <div class="dds__card__content">
-              <div class="addProgramIcon dds__card__body">
+
+            <div v-if="isOwner" class="dds__card__content">
+              <div  class="addProgramIcon dds__card__body">
                 <RouterLink style="text-decoration: none" to="/createprogram">
                   +
                 </RouterLink>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="row">
-        <div class="initialCard col-3 dds__ml-3 dds__mr-4 dds__mb-3" v-for="(edition, i) in editions" :key="i">
-          <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
-            <div class="dds__card">
-              <div class="dds__card__content">
-                <div class="dds__card__header">
-                  <span class="dds__card__header__text">
-                    <h5 class="dds__card__header__title">{{ edition.name }}</h5>
-                  </span>
-                </div>
-                <div class="dds__card__body">{{ edition.description }}
-                </div>
-                <div class="dds__card__footer">
-                  <!-- nao tem nada aqui ainda, mas pode-se colocar -->
+            <div v-if="cookiesPermission==-1" class="initialCard col-2 dds__ml-3 dds__mr-4 dds__mb-3" v-for="(edition, i) in editions" :key="i">
+              <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
+                <div class="dds__card">
+                  <div class="dds__card__content">
+                    <div class="dds__card__header">
+                      <span class="dds__card__header__text">
+                        <h5 class="dds__card__header__title">{{ edition.name }}</h5>
+                      </span>
+                    </div>
+                    <div class="dds__card__body">{{ edition.description }}
+                    </div>
+                    <div class="dds__card__footer">
+                      <RouterLink to="#">
+                        Edit Edition ➔
+                      </RouterLink>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+            
           </div>
         </div>
       </div>
-
-
     </div>
   </main>
 </template>
@@ -151,7 +169,7 @@ body {
   color: #7E7E7E;
 }
 
-.owner{
+.owner {
   text-align: left;
   font-size: 14px;
   color: #7E7E7E;
@@ -159,7 +177,8 @@ body {
   display: flex;
   float: left;
 }
-.button{
+
+.button {
   width: 120px;
   font-size: 13px;
   height: 8%;
@@ -170,7 +189,8 @@ body {
   float: right;
   margin-top: 9px;
 }
-.button img{
+
+.button img {
   margin-right: 5px;
   margin-top: 1px;
   width: 20px;

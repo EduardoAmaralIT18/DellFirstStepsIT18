@@ -10,8 +10,8 @@ public class ProgramService : IProgramService
         _dbContext = dbContext;
     }
 
-    public async Task<ProgramDTO> GetPrograms(int idUser, int role)
 
+    public async Task<ProgramDTO> GetPrograms(int idUser, int role)
     {
         var user = _dbContext.users.FirstOrDefault(u => u.id == idUser);
 
@@ -54,12 +54,49 @@ public class ProgramService : IProgramService
         return entries;
     }
 
-    public async Task<ProgramModel> getProgramInfo(int id1) {
-        var program = await _dbContext.programs.Where(p => p.id == id1)
-                                                .Include(p => p.owners)
-                                                .Include(p => p.editions)
-                                                .FirstOrDefaultAsync();
+    public async Task<ProgramInfoDTO> getProgramInfo(int id1, int idUser)
+    {
+
+        var user = await _dbContext.users.Where(u => u.id == idUser)
+                                    .Include(user => user.editionIntern)
+                                    .ThenInclude(user => user.program)
+                                    .Include(user => user.ownerships)
+                                    .ThenInclude(user => user.program)
+                                    .ThenInclude(user => user.editions)
+                                    .Include(user => user.memberships)
+                                    .ThenInclude(user => user.edition)
+                                    .ThenInclude(user => user.program)
+                                    .FirstOrDefaultAsync();
+        ProgramInfoDTO program = new ProgramInfoDTO();
+        if (user.ownerships.Any(u => u.program.id == id1))
+        {
+            var ownership = user.ownerships.Where(o => o.program.id == id1).FirstOrDefault();
+            program = ProgramInfoDTO.convertModel2DTOAdmin(ownership.program);
+        }
+        else if (user.role.Equals(Role.Intern) && user.editionIntern.program.id == id1)
+        {
+            var prog = user.editionIntern.program;
+            var edition = user.editionIntern;
+            program = ProgramInfoDTO.convertModel2DTOIntern(prog, edition);
+        }
+        else
+        {
+            var membership = user.memberships.Where(m => m.edition.program.id == id1).ToList();
+            List<EditionModel> editions = new List<EditionModel>();
+            foreach (var i in membership)
+            {
+                editions.Add(i.edition);
+            }
+            program = ProgramInfoDTO.convertModel2DTOOthers(membership[0].edition.program, editions);
+        }
+
         return program;
     }
 
+    public async Task<ProgramModel> getProgramInfoNoPermission(int id1)
+    {
+        var program = await _dbContext.programs.Where(p => p.id == id1).FirstOrDefaultAsync();
+        return program;
+    }
+    
 }
