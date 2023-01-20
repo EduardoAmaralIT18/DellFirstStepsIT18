@@ -50,16 +50,8 @@ public class ProgramService : IProgramService
                 break;
         }
         
-        for (int i = 0; i < programs.Count; i++)
-        {
-            if (i < myPrograms.Count)
-            {
-                if (programs[i].id == myPrograms[i].id)
-                {
-                    programs.RemoveAt(i);
-                }
-            }
-        }
+        programs.RemoveAll(p => myPrograms.Any(m => m.id == p.id));
+
         var programDTO = new ProgramDTO
         {
             Programs = programs,
