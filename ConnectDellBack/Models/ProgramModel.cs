@@ -16,7 +16,6 @@ public class ProgramModel{
     public DateTime? endDate {get;set;}
 
     [Required]
-    [StringLength(500, MinimumLength = 10, ErrorMessage = "The program's description must be at most 500 characters.")]
     public string description {get;set;} = null!;
 
     public List<EditionModel>? editions {get;set;} = new List<EditionModel>();

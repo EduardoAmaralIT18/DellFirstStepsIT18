@@ -9,5 +9,5 @@ namespace ConnectDellBack.DTOs
         public List<MyProgramDTO> MyPrograms { get; set; }
 
     }
-
 }
+
