@@ -14,20 +14,24 @@ public class EditionModel{
     
     [Required]
     [StringLength(50, MinimumLength = 5, ErrorMessage = "The program's name must be at most 50 characters.")]
+     [RegularExpression(@"[A-Za-z0-9]*")]
     public string name {get;set;} = null!;
    
     [Required]
     public DateTime startDate {get;set;}
 
+    [IsValidEndDate ("startDate")]
     public DateTime? endDate {get;set;}
 
     [StringLength(500, MinimumLength = 10, ErrorMessage = "The program's description must be at most 500 characters.")]
     public string description {get;set;} = null!;
 
     [Range (1,25, ErrorMessage = "The program must have at least 1 member!")] //ask PO about the maximum number
+    [RegularExpression(@"\b([1-9]|[1-9][0-9])\b")]
     public int numberOfMembers {get;set;}
 
     [Range (1,25, ErrorMessage = "The program must have at least 1 intern!")] // ask PO about the maximum number of interns
+    [RegularExpression(@"\b([1-9]|[1-9][0-9])\b")]
     public int numberOfInterns {get;set;}
     
     public Mode mode {get;set;}
@@ -38,7 +42,7 @@ public class EditionModel{
     public ProgramModel program {get;set;} = null!;
     public List<UserModel> members {get;set;} = null!;
     public List<MembershipModel> memberships {get;set;} = null!;
-    public List<UserModel>? interns {get;set;}
-    public List<PhasesModel>? phases {get;set;}
+    public List<UserModel> interns {get;set;}
+    public List<PhasesModel> phases {get;set;}
     
 }

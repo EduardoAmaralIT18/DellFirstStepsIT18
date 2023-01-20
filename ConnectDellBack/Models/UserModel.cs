@@ -19,10 +19,12 @@ public class UserModel{
     public String name { get; set; } =  null!;
     [Required(ErrorMessage = "Email can't be empty.")]
     [EmailAddress]
+    [RegularExpression(@".+\@dell(team){0,1}\.com$")]
     public String email { get; set; } =  null!;
     [Required]
     public Role role { get; set; }
     // intership log (text to fill with information about which activities were performed.)
+    [StringLength(5000, ErrorMessage = "The length of the notes exceeds the limit.")]
     public String notes { get; set; } =  null!; 
 
     public List<EditionModel>? listEditions {get;set;}
