@@ -13,30 +13,57 @@ public class ProgramService : IProgramService
     public async Task<ProgramDTO> GetPrograms(int idUser, int role)
 
     {
-        var user = _dbContext.users.FirstOrDefault(u => u.id == idUser);
+        var user = _dbContext.users.Where(u => u.id == idUser)
+                                    .Include(user => user.ProgramsAdmins)
+                                    .Include(user => user.editionIntern)
+                                    .Include(user => user.memberships)
+                                    .FirstOrDefault();
 
-        var programs = await _dbContext.programs.OrderBy(p => p.startDate).ToListAsync();
+        var allPrograms = await _dbContext.programs.OrderBy(p => p.startDate).ToListAsync();
 
-        var myPrograms = new List<ProgramModel>();
-        switch (role)
+        var programs = new List<MyProgramDTO>();
+        var myPrograms = new List<MyProgramDTO>();
+
+        foreach (var item in allPrograms)
         {
-            case 0: //Admin
-                myPrograms = programs; //TODO: filter
-                break;
-            case 1: //Intern
-                myPrograms = programs; //TODO: filter
-                break;
-            default: //Other
-                myPrograms = programs; //TODO: filter
-                break;
+            programs.Add(MyProgramDTO.convertToDTOAll(item));
         }
 
+        switch (role)
+        {
+            case 0: //Admin  
+                foreach (var item in user.ProgramsAdmins)
+                {
+                    myPrograms.Add(MyProgramDTO.convertToDTOAdmin(item));
+                }
+                break;
+            case 1: //Intern
+                myPrograms.Add(MyProgramDTO.convertToDTOIntern(user.editionIntern.program, user.editionIntern));
+                //TODO: filter
+                break;
+            default: //Other
+                foreach (var item in user.memberships)
+                {
+                    myPrograms.Add(MyProgramDTO.convertToDTOOthers(item.edition.program, item.edition));
+                }
+                //TODO: filter
+                break;
+        }
+        
+        for (int i = 0; i < programs.Count; i++)
+        {
+            if (i < myPrograms.Count)
+            {
+                if (programs[i].id == myPrograms[i].id)
+                {
+                    programs.RemoveAt(i);
+                }
+            }
+        }
         var programDTO = new ProgramDTO
         {
-            Programs = programs.Except(myPrograms).ToList(),
+            Programs = programs,
             MyPrograms = myPrograms,
-            // Programs = await _dbContext.programs.OrderBy(p => p.startDate).ToListAsync(),
-            // MyPrograms = await _dbContext.programs.OrderBy(p => p.startDate).ToListAsync()
         };
 
         return programDTO;
@@ -54,5 +81,5 @@ public class ProgramService : IProgramService
         return entries;
     }
 
-    
+
 }
