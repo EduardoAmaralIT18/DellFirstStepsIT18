@@ -26,11 +26,15 @@ public class ProgramInfoDTO
             aux.editions.Add(new EditionModel()
             {
                 name = item.name,
-                description = item.description
+                description = item.description,
+                startDate = item.startDate
             });
         }
-        foreach (var item in program.owners) {
-            aux.owners.Add(new UserModel() {
+        // aux.Sort((x, y) => DateTime.Compare(x.Created, y.Created));
+        foreach (var item in program.owners)
+        {
+            aux.owners.Add(new UserModel()
+            {
                 name = item.name,
                 id = item.id
             });
