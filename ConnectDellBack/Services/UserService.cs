@@ -69,7 +69,7 @@ public class UserService : IUserService
             return Ok;
         }*/
 
-    IEnumerable<UserModel> IUserService.listUsers()
+    public IEnumerable<UserModel> listUsers()
     {
         var userList = dbUser.users.OrderBy(user => user.email).ToList();
         return userList;
