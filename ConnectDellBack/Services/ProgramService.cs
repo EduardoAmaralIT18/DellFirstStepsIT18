@@ -13,30 +13,49 @@ public class ProgramService : IProgramService
 
     public async Task<ProgramDTO> GetPrograms(int idUser, int role)
     {
-        var user = _dbContext.users.FirstOrDefault(u => u.id == idUser);
+        var user = _dbContext.users.Where(u => u.id == idUser)
+                                    .Include(user => user.ProgramsAdmins)
+                                    .Include(user => user.editionIntern)
+                                    .Include(user => user.memberships)
+                                    .FirstOrDefault();
 
-        var programs = await _dbContext.programs.OrderBy(p => p.startDate).ToListAsync();
+        var allPrograms = await _dbContext.programs.OrderBy(p => p.startDate).ToListAsync();
 
-        var myPrograms = new List<ProgramModel>();
+        var programs = new List<MyProgramDTO>();
+        var myPrograms = new List<MyProgramDTO>();
+
+        foreach (var item in allPrograms)
+        {
+            programs.Add(MyProgramDTO.convertToDTOAll(item));
+        }
+
         switch (role)
         {
-            case 0: //Admin
-                myPrograms = programs; //TODO: filter
+            case 0: //Admin  
+                foreach (var item in user.ProgramsAdmins)
+                {
+                    myPrograms.Add(MyProgramDTO.convertToDTOAdmin(item));
+                }
                 break;
             case 1: //Intern
-                myPrograms = programs; //TODO: filter
+                myPrograms.Add(MyProgramDTO.convertToDTOIntern(user.editionIntern.program, user.editionIntern));
+                //TODO: filter
                 break;
             default: //Other
-                myPrograms = programs; //TODO: filter
+                foreach (var item in user.memberships)
+                {
+                    myPrograms.Add(MyProgramDTO.convertToDTOOthers(item.edition.program, item.edition));
+                }
+                //TODO: filter
                 break;
         }
+        
+        programs.RemoveAll(p => myPrograms.Any(m => m.id == p.id));
 
         var programDTO = new ProgramDTO
         {
-            Programs = programs.Except(myPrograms).ToList(),
+            Programs = programs,
             MyPrograms = myPrograms,
-            // Programs = await _dbContext.programs.OrderBy(p => p.startDate).ToListAsync(),
-            // MyPrograms = await _dbContext.programs.OrderBy(p => p.startDate).ToListAsync()
         };
 
         return programDTO;

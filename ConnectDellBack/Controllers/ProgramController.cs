@@ -27,7 +27,6 @@ public class ProgramController : ControllerBase
 
     [HttpPost("addProgram")]
     public async Task<ActionResult> addProgram(ProgramModel program) {
-        Console.WriteLine(program.owners);
         int entries = await _service.addProgram(program);
         if (entries > 0) {
             return Ok();

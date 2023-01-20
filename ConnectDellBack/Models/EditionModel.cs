@@ -36,9 +36,9 @@ public class EditionModel{
     public string curriculum {get;set;} = null!;
 
     public ProgramModel program {get;set;} = null!;
-    public List<UserModel> members {get;set;} = null!;
-    public List<MembershipModel> memberships {get;set;} = null!;
-    public List<UserModel>? interns {get;set;}
-    public List<PhasesModel>? phases {get;set;}
+    public List<UserModel> members {get;set;} = new List<UserModel>();
+    public List<MembershipModel> memberships {get;set;} = new List<MembershipModel>();
+    public List<UserModel>? interns {get;set;} = new List<UserModel>();
+    public List<PhasesModel>? phases {get;set;} = new List<PhasesModel>();
     
 }
