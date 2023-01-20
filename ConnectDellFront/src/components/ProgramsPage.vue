@@ -37,7 +37,7 @@ export default defineComponent({
           }
         })
     } else if (this.cookiesId == -1) {
-      axios.get(ApiHandler.URL(`/Program/showInfoProgram?id1=${this.cookiesPermission}`))
+      axios.get(ApiHandler.URL(`/Program/showBasicInfo?id1=${this.cookiesPermission}`))
         .then(function (response) {
           return response
         })
