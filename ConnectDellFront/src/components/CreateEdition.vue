@@ -12,7 +12,7 @@
                     <div class="dds__col--12 dds__col--sm-12">
                         <div class="dds__input-text__container">
                             <label id="text-input-label-396765024" for="text-input-control-name-396765024">Edition
-                                Number <span> *</span></label>
+                                name <span> *</span></label>
                             <div class="dds__input-text__wrapper">
                                 <input v-model="edition.name" type="text" class="dds__input-text"
                                     name="text-input-control-name-396765024" id="text-input-control-396765024"
@@ -131,110 +131,18 @@
 <script lang ='ts'>
 import { defineComponent } from 'vue';
 import axios from 'axios';
-//import { program } from '@babel/types';
-//mport NavBar from '../components/NavBar.vue';
-
-//  at ConnectDellBack.DTOs.MyProgramDTO.convertToDTOAll(ProgramModel prog) in C:\Users\Alexya_Oliveira\Documents\DellFirstSteps\Dell_FirstSteps\ConnectDellBack\DTOs\MyProgramDTO.cs:line 15
-//  at ConnectDellBack.Services.ProgramService.getProgramById(Int32 idProgram) in C:\Users\Alexya_Oliveira\Documents\DellFirstSteps\Dell_FirstSteps\ConnectDellBack\Services\ProgramService.cs:line 81
-//  at ConnectDellBack.Controllers.ProgramController.getProgramById(Int32 programTargetId) in C:\Users\Alexya_Oliveira\Documents\DellFirstSteps\Dell_FirstSteps\ConnectDellBack\Controllers\ProgramController.cs:line 41
-
-//import SideBar from '../components/SideBar.vue';
-//import ApiHandler from '../libs/ApiHandler';
-//import { RouterLink, RouterView } from 'vue-router';
- 
-
-// export default ({
-//     name: 'Create-Editions',
-//     components: {
-//         SideBar,
-//         NavBar,
-//         //RouterLink,
-//         //RouterView
-//     },
-//     props: {
-//     },
-//     data() {
-//         return {
-//             edition: {
-//                 name: '',
-//                 interns: 0,
-//                 members: 0,
-//                 description: '',
-//                 courses: '',
-//                 mode: 1,
-//                 startDate: new Date().toISOString().slice(0,10),
-//                 endDate: null,
-//                 program: null
-//             },
-
-//         }
-
-//     },
-//     computed: {
-
-//     },
-//     created() {
-//         // fetch the data when the view is created and the data is
-//         // already being observed
-//         this.fetchData();
-//         this.getProgram(1);
-//     },
-//     watch: {
-//         // call again the method if the route changes
-//         '$route': 'fetchData'
-//     },
-//     methods: {
-//         getProgram(id) {
-            
-//              //axios.get(ApiHandler.URL(`/Program/getProgramById?id=${id}`))
-//              axios.get('/program/getProgramById', {params: {id}
-//   })
-//              .then(function(response){
-//                 return response;})
-//              .then((response) => {
-//                  this.program = response.data;
-//                  return;
-//             })
-//         },
-
-//         onSubmit() { // axios.post(nome do controller/nome do metodo)
-//             this.$cookies.set("targetProgramId" , 1);
-//             axios.post('/edition/addEdition', { //nome do controle na rota de EditionController (linha 9)
-//                 name: this.edition.name,
-//                 startDate: this.edition.startDate = new Date(),
-//                 endDate: this.edition.endDate,
-//                 description: this.edition.description,
-//                 courses:this.edition.courses,
-//                 member: this.edition.members, 
-//                 intern:this.edition.interns,
-//                 program: this.getProgram(1)
-               
-//             })
-//                 .then(function (response) {
-//                     return response;
-//                 })
-//                 .then(response => {
-//                     if (response.status == 200) {
-//                         this.$router.push({ name: 'program' });
-//                         return;
-//                     } else if (response.status == 404) {
-//                         this.$router.push({ name: 'program'});
-//                         alert("There was an error on our database! Please, try again later.");
-//                     }
-//                 })
-
-//         },
-
-//     }
-// });
-
-
-
-//Versão Antiga do código 
+// type User = {
+//     id: number,
+//     name: string
+// }[];
 
 type Program = {
-    //id: number,
-    
+    id: number,
+    name: string,
+    // members: User,
+    description: string,
+    // startDate: string | Date,
+    // endDate: null | Date | string
 }[];
 
 interface Data {
@@ -270,13 +178,32 @@ export default defineComponent({
             //total: null,
             //options: null,
             programEdition: []
+
+            
         };
     },
     methods: {
+
+        setProgram(): void {
+                                //Alterar aqui    !
+            this.programEdition = this.getProgram(1);
+            console.log(this.programEdition)
+        },
+
         onSubmit(): void { // axios.post(nome do controller/nome do metodo)
-            this.$cookies.set("targetProgramId" , 1);
-        
-            this.programEdition = this.getProgram(1)
+            //this.$cookies.set("targetProgramId" , 1);
+
+            this.setProgram();
+
+            // console.log(this.programEdition)
+            // console.log(this.edition.name);
+            // console.log(this.edition.startDate);
+            // console.log(this.edition.endDate);
+            // console.log(this.edition.description);
+            // console.log(this.edition.courses);
+            // console.log(this.edition.members);
+            // console.log(this.edition.interns);
+            // console.log(this.edition.program);
 
             axios.post('/edition/addEdition', { //nome do controle na rota de EditionController (linha 9)
                 name: this.edition.name,
@@ -285,7 +212,7 @@ export default defineComponent({
                 description: this.edition.description,
                 courses:this.edition.courses,
                 member: this.edition.members, 
-                intern:this.edition.interns,
+                intern: this.edition.interns,
                 program : this.programEdition
             })
 
@@ -344,7 +271,7 @@ body {
     width: 100%;
     height: 45px;
     font-size: 18px;
-    color: #525151;
+    color: #525151; 
     padding: .6875rem 4.5rem .6875rem 1rem;
     border: .0625rem solid #7e7e7e;
     border-radius: .125rem;

@@ -42,8 +42,8 @@ public class ProgramController : ControllerBase
     }
 
     [HttpGet("getProgramById")]
-    public async Task<ActionResult> getProgramById (int programTargetId) {
-        var result = await _service.getProgramById(programTargetId);
+    public async Task<ActionResult> getProgramById (int id) {
+        var result = await _service.getProgramById(id);
         return result == null ? NotFound() : Ok(result);
     }
 

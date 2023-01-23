@@ -72,9 +72,10 @@ public class ProgramService : IProgramService
         int entries = await _dbContext.SaveChangesAsync();
         return entries;
     }
-    public async Task<MyProgramDTO> getProgramById (int idProgram){
+    public async Task<MyProgramDTO> getProgramById (int id){
         
-        var program = _dbContext.programs.Where(prog => prog.id == idProgram)
+        var program = _dbContext.programs.Where(prog => prog.id == id)
+                                         //.Include(prog => prog.editions)
                                          .FirstOrDefault();
 
         

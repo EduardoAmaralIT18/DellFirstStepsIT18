@@ -13,7 +13,7 @@ public class ProgramModel{
     //[Required]
     public DateTime startDate {get;set;}
     
-    [IsValidEndDate ("startDate")]
+    //[IsValidEndDate ("startDate")]
     public DateTime? endDate {get;set;}
 
     //[Required]
