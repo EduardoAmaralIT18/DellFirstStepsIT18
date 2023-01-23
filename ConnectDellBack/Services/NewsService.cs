@@ -19,4 +19,10 @@ public class NewsService : INewsService
                                     .OrderByDescending(news => news.date).ToListAsync();
         return news;
     }
+
+    public async Task<int> addContent(ContentModel content)
+    {
+        throw new NotImplementedException();
+    }
+
 }
