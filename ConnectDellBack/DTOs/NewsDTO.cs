@@ -4,6 +4,7 @@ namespace ConnectDellBack.DTOs;
 
 public class NewsDTO
 {
+    public int id {get; set;}
     public string title { get; set; } = null!;
     public string text { get; set; } = null!;
 
@@ -19,6 +20,7 @@ public class NewsDTO
     {
         //uhul obg alexya
         NewsDTO aux = new NewsDTO();
+        aux.id = news.id;
         aux.title = news.title;
         aux.text = news.text;
         aux.program = news.program.name;
