@@ -35,11 +35,22 @@ public class ProgramController : ControllerBase
         }
     }
 
+    [HttpGet("showInfoProgram")]
+    public async Task<ActionResult<ProgramInfoDTO>> showInfoProgram(int id1, int idUser) {
+        var result = await _service.getProgramInfo(id1, idUser);
+        return result == null ? NoContent() : Ok(result);
+    }
 
     [HttpGet("getProgramById")]
     public async Task<ActionResult> getProgramById (int programTargetId) {
         var result = await _service.getProgramById(programTargetId);
         return result == null ? NotFound() : Ok(result);
+    }
+
+    [HttpGet("shwoBasicInfo")]
+    public async Task<ActionResult<ProgramInfoDTO>> showBasicInfo(int id1) {
+        var result = await _service.getProgramInfoNoPermission(id1);
+        return ProgramInfoDTO.convertModel2DTONoPermission(result);
     }
 
 }

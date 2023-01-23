@@ -8,6 +8,9 @@ namespace ConnectDellBack.Services
         public Task<ProgramDTO> GetPrograms(int idUser, int role);
         public Task<int> addProgram(ProgramModel program);
         public Task<MyProgramDTO> getProgramById (int targetId);
+        public Task<ProgramInfoDTO> getProgramInfo(int id1, int idUser);
+        public Task<ProgramModel> getProgramInfoNoPermission(int id1);
+
     }
 
 }

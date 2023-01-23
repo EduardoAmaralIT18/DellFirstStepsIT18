@@ -46,7 +46,7 @@
                             <label id="select-label-141366292" for="select-control-141366292">Owners <span>
                                     *</span></label>
                             <div class="multiselec dds__select__wrapper">
-                                <MultiSelect v-model="program.members"/>
+                                <MultiSelect style="box-shadow: none ;" v-model="program.members" />
                             </div>
                         </div>
                     </div>
@@ -72,7 +72,8 @@
                     </div>
                 </div>
             </fieldset>
-            <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()">Submit</button>
+            <button class="submitbutton dds__button dds__button--lg" type="submit"
+                @click.prevent="onSubmit()">Submit</button>
         </form>
     </div>
 
@@ -111,7 +112,7 @@ export default defineComponent({
                 name: '',
                 members: null,
                 description: '',
-                startDate: new Date().toISOString().slice(0,10),
+                startDate: new Date().toISOString().slice(0, 10),
                 endDate: null
             },
             total: null,
@@ -138,7 +139,7 @@ export default defineComponent({
                         this.$router.push({ name: 'HomePage' });
                         return;
                     } else if (response.status == 404) {
-                        this.$router.push({ name: 'HomePage'});
+                        this.$router.push({ name: 'HomePage' });
                         alert("There was an error on our database! Please, try again later.");
                     }
                 })
@@ -224,13 +225,13 @@ span {
     font-weight: lighter;
 }
 
-.dates{
+.dates {
     text-align: left;
     display: flex;
     margin-bottom: 1%;
 }
 
-.dates input{
+.dates input {
     width: 100%;
     height: 45px;
     font-size: 18px;
@@ -240,14 +241,22 @@ span {
     border-radius: .125rem;
     background-clip: padding-box;
 }
-.enddate input{
+
+.enddate input {
     background-color: rgba(181, 181, 181, 0.233);
 }
-span{
+
+span {
     margin-left: 4px;
     color: #0063B8;
     font-weight: bold;
 }
 
+.multiselect:hover {
+    border: .0625rem solid rgb(6, 114, 203);
+}
 
+.dates input:hover {
+    border: .0625rem solid rgb(6, 114, 203);
+}
 </style>
