@@ -39,6 +39,8 @@ export default defineComponent({
 
         <RouterLink to="/news" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="news icon" src="../assets/news.png">News</RouterLink>
 
+        <RouterLink to="/edition" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="news icon" src="../assets/news.png">Editions</RouterLink>
+
     </div>
 
     <div class="smallSidenav d-lg-none"> 
@@ -47,6 +49,8 @@ export default defineComponent({
       <RouterLink to="/users" class="hoverEffect hovicon effect-1 sub-a" v-if="showUser()"><img class="smallIcons" alt="user icon" src="../assets/user.png">
         <br></RouterLink>
       <RouterLink to="/news" class="hoverEffect hovicon effect-1 sub-a" ><img class="smallIcons" alt="news icon" src="../assets/news.png">
+        <br></RouterLink>
+        <RouterLink to="/edition" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="home icon" src="../assets/home.png">
         <br></RouterLink>
     </div>
 
