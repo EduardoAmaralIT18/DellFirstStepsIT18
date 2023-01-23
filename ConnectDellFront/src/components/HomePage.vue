@@ -54,7 +54,7 @@
                                 <div class="dds__card__body">{{ item.description }}
                                 </div>
                                 <div class="dds__card__footer">
-                                    <RouterLink to="/programinfo" @click="settingCookiesNoPermission(item.id)">
+                                    <RouterLink style="text-decoration: none" class="link" to="/programinfo" @click="settingCookiesNoPermission(item.id)">
                                         Learn more ➔
                                     </RouterLink>
                                     <!-- adicionar metodo que seta os cookies com o id referente a div clicada -->
