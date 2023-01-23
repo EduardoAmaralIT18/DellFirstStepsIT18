@@ -42,7 +42,7 @@ public class ProgramInfoDTO
         return aux;
     }
 
-    public static ProgramInfoDTO convertModel2DTOIntern(ProgramModel program, EditionModel edition, List<UserModel> owners)
+    public static ProgramInfoDTO convertModel2DTOIntern(ProgramModel program, EditionModel edition)
     {
         ProgramInfoDTO aux = new ProgramInfoDTO();
         aux.name = program.name;
@@ -59,7 +59,7 @@ public class ProgramInfoDTO
             startDate = edition.startDate
         });
         
-            foreach (var item in owners)
+            foreach (var item in program.owners)
             {
                 aux.owners.Add(new UserModel()
                 {

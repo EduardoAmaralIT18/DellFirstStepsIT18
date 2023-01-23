@@ -64,7 +64,7 @@ export default defineComponent({
       }
     },
     showMoreMethod() {
-      if (this.program.description.length > 10 && this.editions.length != 0) {
+      if (this.program.description.length > 500 && (this.editions.length != 0 || this.isOwner)) {
         return true;
       }
       return false;
@@ -72,6 +72,7 @@ export default defineComponent({
     toggleShowMore() {
       this.showMore = !this.showMore;
     }
+    
 
   },
   computed: {
@@ -85,7 +86,16 @@ export default defineComponent({
         }
       });
       return boolean;
+    },
+    howMuchOfDescriptionShown() {
+      if (!this.showMoreMethod() || !this.showMore) {
+        return this.program.description;
+      } else {
+        return this.program.description.slice(0,500) + "...";
+      }
     }
+
+
   }
 
 })
@@ -97,8 +107,8 @@ export default defineComponent({
   <div class="container">
     <p class="title">{{ program.name }}</p>
     <p class="date">{{ formatDate(this.program.startDate) }}{{ hasEndDate() }}</p>
-    <p class="description">{{ program.description }}</p>
-    <!-- <button @click="toggleShowMore()" v-if="showMoreMethod()">Show {{ showMore ? 'More' : 'Less'}}</button> -->
+    <p class="description">{{ howMuchOfDescriptionShown }} &nbsp; <a @click="toggleShowMore()" v-if="showMoreMethod()" href="#">Show {{ showMore ? 'More' : 'Less'}}</a></p>
+    
     <div class="bottomInfo">
       <p class="owner" v-for="owner in owners" :key="owner.id">{{ owner.name }}</p>
       <p v-if="isOwner" class="button dds__button dds__button--primary" type="button">
