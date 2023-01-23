@@ -184,18 +184,20 @@ export default defineComponent({
     },
     methods: {
 
-        setProgram(): void {
-                                //Alterar aqui    !
-            this.programEdition = this.getProgram(1);
-            console.log(this.programEdition)
-        },
+        // setProgram(): void {
+        //                         //Alterar aqui    !
+        //     this.programEdition = this.getProgram(1);
+        //     console.log(this.programEdition);
+        // },
 
         onSubmit(): void { // axios.post(nome do controller/nome do metodo)
             //this.$cookies.set("targetProgramId" , 1);
 
-            this.setProgram();
+            //this.setProgram();
 
-            // console.log(this.programEdition)
+            this.programEdition = this.getProgram(1);
+
+            console.log(this.programEdition);
             // console.log(this.edition.name);
             // console.log(this.edition.startDate);
             // console.log(this.edition.endDate);
@@ -206,6 +208,7 @@ export default defineComponent({
             // console.log(this.edition.program);
 
             axios.post('/edition/addEdition', { //nome do controle na rota de EditionController (linha 9)
+                
                 name: this.edition.name,
                 startDate: this.edition.startDate = new Date(),
                 endDate: this.edition.endDate,
