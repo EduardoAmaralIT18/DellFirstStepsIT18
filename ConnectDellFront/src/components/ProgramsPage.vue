@@ -3,8 +3,9 @@ import NavBar from '../components/NavBar.vue';
 import SideBar from '../components/SideBar.vue';
 import { defineComponent } from 'vue';
 import axios from 'axios';
-import ApiHandler from '../libs/ApiHandler';
+// import ApiHandler from '../libs/ApiHandler';
 import moment from 'moment';
+
 
 export default defineComponent({
   components: {
@@ -23,7 +24,7 @@ export default defineComponent({
   },
   created() {
     if (this.cookiesPermission == -1) {
-      axios.get(ApiHandler.URL(`/Program/showInfoProgram?id1=${this.cookiesId}&idUser=${this.cookiesUser}`))
+      axios.get(`/Program/showInfoProgram?id1=${this.cookiesId}&idUser=${this.cookiesUser}`)
         .then(function (response) {
           return response;
         })
@@ -37,7 +38,7 @@ export default defineComponent({
           }
         })
     } else if (this.cookiesId == -1) {
-      axios.get(ApiHandler.URL(`/Program/showBasicInfo?id1=${this.cookiesPermission}`))
+      axios.get(`/Program/showInfoProgram?id1=${this.cookiesPermission}`)
         .then(function (response) {
           return response
         })
