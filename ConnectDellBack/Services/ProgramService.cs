@@ -52,7 +52,7 @@ public class ProgramService : IProgramService
                 //TODO: filter
                 break;
         }
-        
+
         programs.RemoveAll(p => myPrograms.Any(m => m.id == p.id));
 
         var programDTO = new ProgramDTO
@@ -98,8 +98,13 @@ public class ProgramService : IProgramService
         else if (user.role.Equals(Role.Intern) && user.editionIntern.program.id == id1)
         {
             var prog = user.editionIntern.program;
+            var teste = prog.owners;
+            Console.WriteLine(teste.Count() + "-------------------------------------------------------------------");
+            foreach (var item in teste) {
+                Console.WriteLine(item.name + "---------------------------------------------------------------------");
+            }
             var edition = user.editionIntern;
-            program = ProgramInfoDTO.convertModel2DTOIntern(prog, edition);
+            program = ProgramInfoDTO.convertModel2DTOIntern(prog, edition, teste);
         }
         else
         {
@@ -117,8 +122,10 @@ public class ProgramService : IProgramService
 
     public async Task<ProgramModel> getProgramInfoNoPermission(int id1)
     {
-        var program = await _dbContext.programs.Where(p => p.id == id1).FirstOrDefaultAsync();
+        var program = await _dbContext.programs.Where(p => p.id == id1)
+                                                .Include(p => p.ownerships)
+                                                .FirstOrDefaultAsync();
         return program;
     }
-    
+
 }

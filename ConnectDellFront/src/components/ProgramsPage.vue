@@ -19,7 +19,8 @@ export default defineComponent({
       cookiesUser: this.$cookies.get("id"),
       program: [],
       owners: [],
-      editions: []
+      editions: [],
+      showMore: true
     }
   },
   created() {
@@ -38,7 +39,7 @@ export default defineComponent({
           }
         })
     } else if (this.cookiesId == -1) {
-      axios.get(`/Program/showInfoProgram?id1=${this.cookiesPermission}`)
+      axios.get(`/Program/showBasicInfo?id1=${this.cookiesPermission}`)
         .then(function (response) {
           return response
         })
@@ -62,6 +63,15 @@ export default defineComponent({
         return moment(String(value)).format('MM/DD/YYYY')
       }
     },
+    showMoreMethod() {
+      if (this.program.description.length > 10 && this.editions.length != 0) {
+        return true;
+      }
+      return false;
+    },
+    toggleShowMore() {
+      this.showMore = !this.showMore;
+    }
 
   },
   computed: {
@@ -88,6 +98,7 @@ export default defineComponent({
     <p class="title">{{ program.name }}</p>
     <p class="date">{{ formatDate(this.program.startDate) }}{{ hasEndDate() }}</p>
     <p class="description">{{ program.description }}</p>
+    <!-- <button @click="toggleShowMore()" v-if="showMoreMethod()">Show {{ showMore ? 'More' : 'Less'}}</button> -->
     <div class="bottomInfo">
       <p class="owner" v-for="owner in owners" :key="owner.id">{{ owner.name }}</p>
       <p v-if="isOwner" class="button dds__button dds__button--primary" type="button">
@@ -127,10 +138,12 @@ export default defineComponent({
                   <h5 class="dds__card__header__title">{{ edition.name }}</h5>
                 </span>
               </div>
-              <div class="dds__card__body">{{ edition.description }}
+              <div class="dds__card__body">{{ edition.description }} 
               </div>
               <div class="dds__card__footer">
-                <RouterLink style="text-decoration: none;   font-size: 15px;  position: absolute;  bottom: 0;  text-align: center;   left: 0;  margin-left: 20px;  margin-top: 10px;  padding-bottom: 17px;" to="/programinfo">
+                <RouterLink
+                  style="text-decoration: none;   font-size: 15px;  position: absolute;  bottom: 0;  text-align: center;   left: 0;  margin-left: 20px;  margin-top: 10px;  padding-bottom: 17px;"
+                  to="/programinfo">
                   Learn more ➔
                 </RouterLink>
               </div>

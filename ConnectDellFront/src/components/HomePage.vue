@@ -166,8 +166,8 @@
                         }
                     });
             },
-            settingCookies(index) {
-                this.$cookies.set("programId", index);
+            settingCookies(id) {
+                this.$cookies.set("programId", id);
                 this.$cookies.set("Permission", -1);
             },
             settingCookiesNoPermission(id) {

@@ -42,7 +42,7 @@ public class ProgramInfoDTO
         return aux;
     }
 
-    public static ProgramInfoDTO convertModel2DTOIntern(ProgramModel program, EditionModel edition)
+    public static ProgramInfoDTO convertModel2DTOIntern(ProgramModel program, EditionModel edition, List<UserModel> owners)
     {
         ProgramInfoDTO aux = new ProgramInfoDTO();
         aux.name = program.name;
@@ -58,6 +58,16 @@ public class ProgramInfoDTO
             description = edition.description,
             startDate = edition.startDate
         });
+        
+            foreach (var item in owners)
+            {
+                aux.owners.Add(new UserModel()
+                {
+                    name = item.name
+                });
+            }
+        
+
         return aux;
     }
 
@@ -80,6 +90,13 @@ public class ProgramInfoDTO
                 startDate = item.startDate
             });
         }
+        foreach (var item in program.owners)
+        {
+            aux.owners.Add(new UserModel()
+            {
+                name = item.name,
+            });
+        }
         return aux;
     }
 
@@ -93,6 +110,13 @@ public class ProgramInfoDTO
             aux.endDate = program.endDate;
         }
         aux.description = program.description;
+        foreach (var item in program.owners)
+        {
+            aux.owners.Add(new UserModel()
+            {
+                name = item.name,
+            });
+        }
         return aux;
     }
 
