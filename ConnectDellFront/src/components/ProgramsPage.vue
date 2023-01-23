@@ -81,62 +81,67 @@ export default defineComponent({
 </script>
 
 <template>
-  <main>
-    <NavBar></NavBar>
-    <SideBar></SideBar>
-    <div class="container">
-      <p class="title">{{ program.name }}</p>
-      <p class="date">{{ formatDate(this.program.startDate) }}{{ hasEndDate() }}</p>
-      <p class="description">{{ program.description }}</p>
-      <div class="bottomInfo">
-        <p class="owner" v-for="owner in owners" :key="owner.id">{{ owner.name }}</p>
-        <p v-if="isOwner" class="button dds__button dds__button--primary" type="button">
-          <img src="../assets/pencil.png" alt="pencil icon" width="19">
-          Edit Program
-        </p>
-      </div>
+  <NavBar></NavBar>
+  <SideBar></SideBar>
+  <div class="container">
+    <p class="title">{{ program.name }}</p>
+    <p class="date">{{ formatDate(this.program.startDate) }}{{ hasEndDate() }}</p>
+    <p class="description">{{ program.description }}</p>
+    <div class="bottomInfo">
+      <p class="owner" v-for="owner in owners" :key="owner.id">{{ owner.name }}</p>
+      <p v-if="isOwner" class="button dds__button dds__button--primary" type="button">
+        <img src="../assets/pencil.png" alt="pencil icon" width="19">
+        Edit Program
+      </p>
+    </div>
+
+    <h4 class="subtitle" v-if="cookiesPermission == -1">
+      Editions
+    </h4>
+
+    <div class="row">
 
 
-      <div class="initialCard col-2  dds__ml-3 dds__mr-4 dds__mb-3">
+
+      <div v-if="isOwner" class="initialCard col-3 dds__ml-3 dds__mr-4 dds__mb-3">
         <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
           <div class="dds__card">
-
-            <div v-if="isOwner" class="dds__card__content">
+            <div class="dds__card__content">
               <div class="addProgramIcon dds__card__body">
                 <RouterLink style="text-decoration: none" to="/createprogram">
                   +
                 </RouterLink>
               </div>
             </div>
-
-            <div v-if="cookiesPermission == -1">
-              <div class="initialCard col-2 dds__ml-3 dds__mr-4 dds__mb-3" v-for="(edition, i) in editions" :key="i">
-                <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
-                  <div class="dds__card">
-                    <div class="dds__card__content">
-                      <div class="dds__card__header">
-                        <span class="dds__card__header__text">
-                          <h5 class="dds__card__header__title">{{ edition.name }}</h5>
-                        </span>
-                      </div>
-                      <div class="dds__card__body">{{ edition.description }}
-                      </div>
-                      <div class="dds__card__footer">
-                        <RouterLink to="#">
-                          Edit Edition ➔
-                        </RouterLink>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </div>
         </div>
       </div>
+
+      <div class="initialCard col-3 dds__ml-3 dds__mr-4 dds__mb-3" v-for="(edition, i) in editions" :key="i">
+        <div v-if="cookiesPermission == -1" class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
+          <div class="dds__card">
+            <div class="dds__card__content">
+              <div class="dds__card__header">
+                <span class="dds__card__header__text">
+                  <h5 class="dds__card__header__title">{{ edition.name }}</h5>
+                </span>
+              </div>
+              <div class="dds__card__body">{{ edition.description }}
+              </div>
+              <div class="dds__card__footer">
+                <RouterLink style="text-decoration: none;   font-size: 15px;  position: absolute;  bottom: 0;  text-align: center;   left: 0;  margin-left: 20px;  margin-top: 10px;  padding-bottom: 17px;" to="/programinfo">
+                  Learn more ➔
+                </RouterLink>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
-  </main>
+
+
+  </div> <!-- ends the container-->
 </template>
 
 <style scoped>
