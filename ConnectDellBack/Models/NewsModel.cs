@@ -15,7 +15,7 @@ public class NewsModel {
     public string text {get;set;}  = null!;
     public ProgramModel program {get;set;}  = null!;
 
-    public UserModel author {get; set;}
+    public UserModel author {get; set;} = null!;
 
     public ImageModel? image {get; set;}
 
