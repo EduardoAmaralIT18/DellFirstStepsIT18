@@ -61,7 +61,7 @@ public class ProgramController : ControllerBase
     }
 
     [HttpGet("GetProgram")]
-    public async Task<ActionResult<ProgramInfoDTO>> GetProgram(int id)
+    public async Task<ActionResult<ProgramModel>> GetProgram(int id)
     {
         var result = await _service.GetProgram(id);
         return result == null ? NoContent() : Ok(result);

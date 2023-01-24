@@ -119,15 +119,21 @@ public class ProgramService : IProgramService
 
     public async Task<int> UpdateProgram(ProgramModel program)
     {
+         var ownerships = _dbContext.OwnershipModel.Where(o => o.program.id == program.id);
+        _dbContext.OwnershipModel.RemoveRange(ownerships);
+        await _dbContext.SaveChangesAsync();
+
         _dbContext.programs.Update(program);
-        _dbContext.Entry(program).Collection(p => p.owners).IsModified = false;
+
         int entries = await _dbContext.SaveChangesAsync();
         return entries;
     }
 
     public async Task<ProgramModel> GetProgram(int id)
     {
-        var program = await _dbContext.programs.Where(p => p.id == id).FirstOrDefaultAsync();
+        var program = await _dbContext.programs.Where(p => p.id == id)
+                                               .Include(p => p.owners)
+                                               .FirstOrDefaultAsync();
         return program;
     }
 }
