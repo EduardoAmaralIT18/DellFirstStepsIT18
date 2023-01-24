@@ -3,16 +3,19 @@
         <div class="top">
             <h2>News</h2>
             <div v-if="role == 0">
-                <button class="dds__button dds__button--primary dds__button--lg" type="button">
-                    <i class="dds__icon dds__icon--plus-add" aria-hidden="true"></i>Add News
-                </button>
+                <RouterLink to="/addnews"> <button class="dds__button dds__button--primary dds__button--lg"
+                        type="button">
+                        <i class="dds__icon dds__icon--plus-add" aria-hidden="true"></i>Add News
+                    </button>
+                </RouterLink>
             </div>
         </div>
         <div v-if="news != null" class="dds__col-12 dds__col--md-6 dds__col--lg-4 dds__mb-3">
             <div v-for="item in newsShown" :key="item.id" class="dds__card" id="card-news">
                 <div class="dds__card__media">
                     <!-- <div v-if="item.image != null" class="dds__card__media"></div> -->
-                    <img src="https://super.abril.com.br/wp-content/uploads/2017/12/a-verdadeira-histc3b3ria-de-natal.png?w=1024" />
+                    <img
+                        src="https://super.abril.com.br/wp-content/uploads/2017/12/a-verdadeira-histc3b3ria-de-natal.png?w=1024" />
                 </div>
                 <div class="dds__card__content">
                     <div class="dds__card__header">
@@ -40,8 +43,15 @@
 <script lang="ts" >
 import { defineComponent } from 'vue';
 import axios from 'axios';
+import { RouterLink } from 'vue-router';
 
 type News = {
+    id: number,
+    title: string,
+    text: string,
+    author: string,
+    program: string,
+    date: string,
 }[];
 
 interface Data {
@@ -54,9 +64,13 @@ interface Data {
 }
 
 export default defineComponent({
+    name: 'NewsPage',
+    components: {
+        RouterLink,
+    },
     data(): Data {
         return {
-            user: null, 
+            user: null,
             news: null,
             role: 5,
             newsShown: [],
@@ -77,7 +91,6 @@ export default defineComponent({
         fetchData(): void {
             this.news = null;
 
-            //por enquano cookies nao setados
             this.role = this.$cookies.get("role");
             this.user = this.$cookies.get("id");
 
@@ -150,6 +163,10 @@ h2 {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+a{
+    text-decoration: none;
 }
 
 #card-news {

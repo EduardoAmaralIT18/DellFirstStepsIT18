@@ -24,31 +24,31 @@ export default defineComponent({
   created() {
     if (this.cookiesPermission == -1) {
       axios.get(ApiHandler.URL(`/Program/showInfoProgram?id1=${this.cookiesId}&idUser=${this.cookiesUser}`))
-      .then(function (response) {
-        return response;
-      })
-      .then(response => {
-        if (response.status == 200) {
-          this.program = response.data;
-          this.owners = response.data.owners;
-          this.editions = response.data.editions;
-        } else if (response.status == 204) {
-          alert("There was an error on our database! Please, try again later.");
-        }
-      })
+        .then(function (response) {
+          return response;
+        })
+        .then(response => {
+          if (response.status == 200) {
+            this.program = response.data;
+            this.owners = response.data.owners;
+            this.editions = response.data.editions;
+          } else if (response.status == 204) {
+            alert("There was an error on our database! Please, try again later.");
+          }
+        })
     } else if (this.cookiesId == -1) {
       axios.get(ApiHandler.URL(`/Program/showInfoProgram?id1=${this.cookiesPermission}`))
-            .then(function (response) {
-              return response
-            })
-            .then(response => {
-        if (response.status == 200) {
-          this.program = response.data;
-          this.owners = response.data.owners;
-        } else if (response.status == 204) {
-          alert("There was an error on our database! Please, try again later.");
-        }
-      })
+        .then(function (response) {
+          return response
+        })
+        .then(response => {
+          if (response.status == 200) {
+            this.program = response.data;
+            this.owners = response.data.owners;
+          } else if (response.status == 204) {
+            alert("There was an error on our database! Please, try again later.");
+          }
+        })
     }
   },
   methods: {
@@ -97,12 +97,12 @@ export default defineComponent({
       </div>
 
 
-      <div  class="initialCard col-2  dds__ml-3 dds__mr-4 dds__mb-3">
+      <div class="initialCard col-2  dds__ml-3 dds__mr-4 dds__mb-3">
         <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
           <div class="dds__card">
 
             <div v-if="isOwner" class="dds__card__content">
-              <div  class="addProgramIcon dds__card__body">
+              <div class="addProgramIcon dds__card__body">
                 <RouterLink style="text-decoration: none" to="/createprogram">
                   +
                 </RouterLink>
@@ -131,7 +131,7 @@ export default defineComponent({
                 </div>
               </div>
             </div>
-            
+
           </div>
         </div>
       </div>

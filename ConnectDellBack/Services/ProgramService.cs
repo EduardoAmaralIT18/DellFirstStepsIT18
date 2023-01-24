@@ -16,7 +16,10 @@ public class ProgramService : IProgramService
         var user = _dbContext.users.Where(u => u.id == idUser)
                                     .Include(user => user.ProgramsAdmins)
                                     .Include(user => user.editionIntern)
+                                    .ThenInclude(edt => edt.program)
                                     .Include(user => user.memberships)
+                                    .ThenInclude(memb => memb.edition)
+                                    .ThenInclude(edt => edt.program)
                                     .FirstOrDefault();
 
         var allPrograms = await _dbContext.programs.OrderBy(p => p.startDate).ToListAsync();
