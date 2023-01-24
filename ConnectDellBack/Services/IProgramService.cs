@@ -9,7 +9,7 @@ namespace ConnectDellBack.Services
         public Task<int> addProgram(ProgramModel program);
         public Task<ProgramInfoDTO> getProgramInfo(int id1, int idUser);
         public Task<ProgramModel> getProgramInfoNoPermission(int id1);
-
+        public Task<int> UpdateProgram(ProgramModel program);
+        public Task<ProgramModel> GetProgram(int id);
     }
-
 }

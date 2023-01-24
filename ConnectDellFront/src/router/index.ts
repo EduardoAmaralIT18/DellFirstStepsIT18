@@ -37,11 +37,11 @@ const router = createRouter({
       name: 'ProgramsPage',
       component: () => import('../components/ProgramsPage.vue')
     },
-    {
-      path: '/editprogram/:idProgram',
-      name: 'EditProgram',
-      component: () => import('../views/EditProgramView.vue')
-    },
+    // {
+    //   path: '/editprogram/:idProgram',
+    //   name: 'EditProgram',
+    //   component: () => import('../views/EditProgramView.vue')
+    // },
   ]
 })
 

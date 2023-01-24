@@ -31,25 +31,25 @@ public class ProgramService : IProgramService
 
         switch (role)
         {
-            case 0: //Admin  
+            case 0:
                 foreach (var item in user.ProgramsAdmins)
                 {
                     myPrograms.Add(MyProgramDTO.convertToDTOAdmin(item));
                 }
                 break;
-            case 1: //Intern
+            case 1:
                 myPrograms.Add(MyProgramDTO.convertToDTOIntern(user.editionIntern.program, user.editionIntern));
-                //TODO: filter
+
                 break;
-            default: //Other
+            default:
                 foreach (var item in user.memberships)
                 {
                     myPrograms.Add(MyProgramDTO.convertToDTOOthers(item.edition.program, item.edition));
                 }
-                //TODO: filter
+
                 break;
         }
-        
+
         programs.RemoveAll(p => myPrograms.Any(m => m.id == p.id));
 
         var programDTO = new ProgramDTO
@@ -75,7 +75,6 @@ public class ProgramService : IProgramService
 
     public async Task<ProgramInfoDTO> getProgramInfo(int id1, int idUser)
     {
-
         var user = await _dbContext.users.Where(u => u.id == idUser)
                                     .Include(user => user.editionIntern)
                                     .ThenInclude(user => user.program)
@@ -117,5 +116,18 @@ public class ProgramService : IProgramService
         var program = await _dbContext.programs.Where(p => p.id == id1).FirstOrDefaultAsync();
         return program;
     }
-    
+
+    public async Task<int> UpdateProgram(ProgramModel program)
+    {
+        _dbContext.programs.Update(program);
+        _dbContext.Entry(program).Collection(p => p.owners).IsModified = false;
+        int entries = await _dbContext.SaveChangesAsync();
+        return entries;
+    }
+
+    public async Task<ProgramModel> GetProgram(int id)
+    {
+        var program = await _dbContext.programs.Where(p => p.id == id).FirstOrDefaultAsync();
+        return program;
+    }
 }
