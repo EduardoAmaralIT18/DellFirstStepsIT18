@@ -155,7 +155,7 @@ export default defineComponent({
           <div class="dds__card">
             <div class="dds__card__content">
               <div class="addProgramIcon dds__card__body">
-                <RouterLink style="text-decoration: none" to="/createprogram">
+                <RouterLink style="text-decoration: none" to="/edition">
                   +
                 </RouterLink>
               </div>
