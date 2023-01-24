@@ -41,10 +41,10 @@ public class ProgramController : ControllerBase
         return result == null ? NoContent() : Ok(result);
     }
 
-    [HttpGet("shwoBasicInfo")]
+    [HttpGet("showBasicInfo")]
     public async Task<ActionResult<ProgramInfoDTO>> showBasicInfo(int id1) {
         var result = await _service.getProgramInfoNoPermission(id1);
-        return ProgramInfoDTO.convertModel2DTONoPermission(result);
+        return result;
     }
 
 }
