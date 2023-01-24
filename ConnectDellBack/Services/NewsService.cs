@@ -18,6 +18,7 @@ public class NewsService : INewsService
         //bananinha
         var news = await dbnews.news.Include(news => news.program)
                                     .Include(news => news.author)
+                                    .Include(news => news.image)
                                     .OrderByDescending(news => news.date).ToListAsync();
         return news;
     }
@@ -39,13 +40,18 @@ public class NewsService : INewsService
         if (content.image is not null)
         {
             MemoryStream ms = new MemoryStream();
-            content.image.CopyTo(ms);
+            await content.image.CopyToAsync(ms);
+
+            if(ms.Length > 2097152) return false;
 
             var image = new ImageModel()
             {
                 imageTitle = content.imageName,
                 imageData = ms.ToArray(),
             };
+
+            ms.Close();
+            ms.Dispose();
 
             await dbnews.images.AddAsync(image);
 

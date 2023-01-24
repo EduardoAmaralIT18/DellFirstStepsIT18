@@ -19,9 +19,9 @@
                                 </div>
                                 <div class="dds__select__wrapper">
                                     <select :value="0" v-model="program.id" id="program.id" class="dds__select__field"
-                                        aria-describedby="select-helper-374041805">
+                                        aria-describedby="select-helper-374041805" required="true">
                                         <option :value="0" selected>Select</option>
-                                        <option v-for="item in programs" v-bind:value="item.id" v-bind:key="item.id">
+                                        <option v-for="item in programs" :value="item.id" :key="item.id">
                                             {{ item.name }}
                                         </option>
                                     </select>
@@ -68,13 +68,12 @@
                         </div>
                     </div>
                 </fieldset>
-                <button class="dds__button dds__button--lg" @click="addContent" type="submit">Add Content</button>
+                <button class="dds__button dds__button--lg" type="submit" @click.prevent="addContent">Add Content</button>
             </form>
         </div>
     </div>
 </template>
 <script lang="ts">
-/* eslint-disable */
 import { defineComponent } from 'vue';
 import axios from 'axios';
 import FormData from 'form-data';
@@ -142,6 +141,7 @@ export default defineComponent({
 
         addContent(): void {
             var program = this.programs?.find(prog => prog.id == this.program.id);
+            
             this.data?.append('author', this.user);
             this.data?.append('program', program?.id);
             this.data?.append('title', this.title);
@@ -160,14 +160,11 @@ export default defineComponent({
             }).then(response => {
                 console.log("chegou depois aqui");
                 if (response.status == 200) {
-                    this.$router.replace('/news');
-                    return;
+                    this.$router.push({ name: 'NewsPage' });
                 } else if (response.status == 404) {
                     alert("Database error! Please try again later");
-                    return;
                 } else {
                     console.log(response.status);
-                    return;
                 }
             })
         },
