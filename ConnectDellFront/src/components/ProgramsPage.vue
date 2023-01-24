@@ -26,6 +26,7 @@ export default defineComponent({
   created() {
     if (this.cookiesPermission == -1) {
       axios.get(`/Program/showInfoProgram?id1=${this.cookiesId}&idUser=${this.cookiesUser}`)
+
         .then(function (response) {
           return response;
         })
@@ -39,6 +40,7 @@ export default defineComponent({
           }
         })
     } else if (this.cookiesId == -1) {
+
       axios.get(`/Program/showBasicInfo?id1=${this.cookiesPermission}`)
         .then(function (response) {
           return response
@@ -144,6 +146,7 @@ export default defineComponent({
     </h4>
 
     <div class="row">
+
 
 
 
