@@ -16,7 +16,10 @@ public class ProgramService : IProgramService
         var user = _dbContext.users.Where(u => u.id == idUser)
                                     .Include(user => user.ProgramsAdmins)
                                     .Include(user => user.editionIntern)
+                                    .ThenInclude(edt => edt.program)
                                     .Include(user => user.memberships)
+                                    .ThenInclude(memb => memb.edition)
+                                    .ThenInclude(edt => edt.program)
                                     .FirstOrDefault();
 
         var allPrograms = await _dbContext.programs.OrderBy(p => p.startDate).ToListAsync();
@@ -72,24 +75,37 @@ public class ProgramService : IProgramService
         int entries = await _dbContext.SaveChangesAsync();
         return entries;
     }
+  
 
     public async Task<ProgramInfoDTO> getProgramInfo(int id1, int idUser)
     {
         var user = await _dbContext.users.Where(u => u.id == idUser)
                                     .Include(user => user.editionIntern)
                                     .ThenInclude(user => user.program)
+                                    .ThenInclude(user => user.owners)
+                                    .ThenInclude(user => user.ownerships)
                                     .Include(user => user.ownerships)
                                     .ThenInclude(user => user.program)
                                     .ThenInclude(user => user.editions)
                                     .Include(user => user.memberships)
                                     .ThenInclude(user => user.edition)
                                     .ThenInclude(user => user.program)
+                                    .ThenInclude(user => user.owners)
+                                    .ThenInclude(user => user.ownerships)
                                     .FirstOrDefaultAsync();
+
+
+
         ProgramInfoDTO program = new ProgramInfoDTO();
         if (user.ownerships.Any(u => u.program.id == id1))
         {
-            var ownership = user.ownerships.Where(o => o.program.id == id1).FirstOrDefault();
-            program = ProgramInfoDTO.convertModel2DTOAdmin(ownership.program);
+            var multipleOwner = await _dbContext.programs.Where(p => p.id == id1)
+                                    .Include(p => p.owners)
+                                    .Include(p => p.ownerships)
+                                    .FirstOrDefaultAsync();
+                                    
+            var ownership = user.ownerships.Where(o => o.program.id == id1).ToList();
+            program = ProgramInfoDTO.convertModel2DTOAdmin(ownership, multipleOwner);
         }
         else if (user.role.Equals(Role.Intern) && user.editionIntern.program.id == id1)
         {
@@ -107,16 +123,19 @@ public class ProgramService : IProgramService
             }
             program = ProgramInfoDTO.convertModel2DTOOthers(membership[0].edition.program, editions);
         }
-
         return program;
     }
 
-    public async Task<ProgramModel> getProgramInfoNoPermission(int id1)
+    public async Task<ProgramInfoDTO> getProgramInfoNoPermission(int id1)
     {
-        var program = await _dbContext.programs.Where(p => p.id == id1).FirstOrDefaultAsync();
-        return program;
+        var program = await _dbContext.programs.Where(p => p.id == id1)
+                                                .Include(p => p.owners)
+                                                .Include(p => p.ownerships)
+                                                .FirstOrDefaultAsync();
+        return ProgramInfoDTO.convertModel2DTONoPermission(program);
     }
 
+    
     public async Task<int> UpdateProgram(ProgramModel program)
     {
          var ownerships = _dbContext.OwnershipModel.Where(o => o.program.id == program.id);

@@ -18,6 +18,7 @@ builder.Services.AddDbContext<ApplicationContext>(
 builder.Services.AddScoped<INewsService, NewsService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProgramService, ProgramService>();
+builder.Services.AddScoped<IEditionService, EditionService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
