@@ -103,7 +103,7 @@ export default defineComponent({
 
             <div v-if="isOwner" class="dds__card__content">
               <div class="addProgramIcon dds__card__body">
-                <RouterLink style="text-decoration: none" to="/createprogram">
+                <RouterLink style="text-decoration: none" to="/edition">
                   +
                 </RouterLink>
               </div>

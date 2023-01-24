@@ -172,8 +172,8 @@ export default defineComponent({
        
 
         onSubmit(): void {
-            this.$cookies.set("targetProgramId" , 1);
-            this.edition.program = this.$cookies.get("targetProgramId");
+            //this.$cookies.set("targetProgramId" , 1);
+            this.edition.program = this.$cookies.get("programId");
 
             
 
@@ -197,10 +197,10 @@ export default defineComponent({
                 })
                 .then(response => {
                     if (response.status == 200) {
-                        this.$router.push({ name: 'ProgramPage' });
+                        this.$router.push({ name: 'ProgramsPage' });
                         return;
                     } else if (response.status == 404) {
-                        this.$router.push({ name: 'ProgramPage' });
+                        this.$router.push({ name: 'ProgramsPage' });
                         alert("There was an error on our database! Please, try again later.");
                     }
                 })
