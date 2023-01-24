@@ -1,4 +1,4 @@
-#<template>  <div class="container">    <form data-dds="form" class="dds__form dds__container">      <fieldset class="dds__form__section">        <h2 class="title">Edit program Program</h2>        <div class="dds__row">          <div class="dds__col--12 dds__col--sm-12">            <div class="dds__input-text__container">              <label
+<template>  <div class="container">    <form data-dds="form" class="dds__form dds__container">      <fieldset class="dds__form__section">        <h2 class="title">Edit program Program</h2>        <div class="dds__row">          <div class="dds__col--12 dds__col--sm-12">            <div class="dds__input-text__container">              <label
     id="text-input-label-396765024"
     for="text-input-control-name-396765024"
     >Program Name <span> *</span></label
@@ -53,7 +53,7 @@ class="submitbutton dds__button dds__button--lg"
 type="submit"
 @click.prevent="onSubmit()"
 >        Submit
-</button>    </form>  </div></template><script lang="ts">import { defineComponent } from "vue";
+<script lang="ts">import { defineComponent } from "vue";
 import MultiSelect from "./MultipleSelect.vue";
 import axios from "axios";
 type User = {
@@ -131,7 +131,7 @@ this.getData();
 },
 },
 });
-</script><style scoped>body {
+<style scoped>body {
 font-family: "Roboto", sans-serif;
 }
 .container {
@@ -182,7 +182,7 @@ margin-left: 4px;
 color: #0063b8;
 font-weight: bold;
 }
-</style><style>.multiselect {
+<style>.multiselect {
 border: 0.0625rem solid #7e7e7e;
 border-radius: 0.125rem;
 background-clip: padding-box;
