@@ -24,17 +24,6 @@ public class NewsService : INewsService
 
     public async Task<bool> addContent(ContentDTO content)
     {
-        MemoryStream ms = new MemoryStream();
-        content.image.CopyTo(ms);
-
-        var image = new ImageModel()
-        {
-            imageTitle = content.imageName,
-            imageData = ms.ToArray(),
-        };
-
-        await dbnews.images.AddAsync(image);
-
         var news = new NewsModel()
         {
             title = content.title,
@@ -45,16 +34,34 @@ public class NewsService : INewsService
         };
 
         await dbnews.news.AddAsync(news);
-        await dbnews.SaveChangesAsync();
-
-        image.news = news;
-        image.newsId = news.id;
-        news.image = image;
-        
         var task = await dbnews.SaveChangesAsync();
-        if(task > 0){
+
+        if (content.image is not null)
+        {
+            MemoryStream ms = new MemoryStream();
+            content.image.CopyTo(ms);
+
+            var image = new ImageModel()
+            {
+                imageTitle = content.imageName,
+                imageData = ms.ToArray(),
+            };
+
+            await dbnews.images.AddAsync(image);
+
+            image.news = news;
+            image.newsId = news.id;
+            news.image = image;
+
+            task = await dbnews.SaveChangesAsync();
+        }
+
+        if (task > 0)
+        {
             return true;
-        } else {
+        }
+        else
+        {
             return false;
         }
 

@@ -11,6 +11,12 @@
                     <div class="dds__row">
                         <div class="dds__col--1 dds__col--sm-3">
                             <div class="dds__select" data-dds="select">
+                                <div class="dds__text-area__header">
+                                    <label id="text-input-label-332997731" for="program.id"
+                                        class="dds__label dds__label--required">
+                                        Program <span> *</span>
+                                    </label>
+                                </div>
                                 <div class="dds__select__wrapper">
                                     <select :value="0" v-model="program.id" id="program.id" class="dds__select__field"
                                         aria-describedby="select-helper-374041805">
@@ -86,7 +92,7 @@ interface Data {
     data: FormData | undefined,
     title: string,
     text: string,
-    image: Image,
+    image: Image | null,
     programs: null | Program,
     program: { id: Number; name: string; },
 }
@@ -99,7 +105,7 @@ export default defineComponent({
             data: new FormData(),
             title: "",
             text: "",
-            image: [],
+            image: null,
             programs: null,
             program: { id: 0, name: "", }
         };
@@ -149,12 +155,14 @@ export default defineComponent({
                     'Content-Type': 'multipart/form-data'
                 }
             }).then(function (response) {
+                console.log("chegou aqui");
                 return response;
             }).then(response => {
-                if(response.status == 200){
-                    this.$router.push('/news');
+                console.log("chegou depois aqui");
+                if (response.status == 200) {
+                    this.$router.replace('/news');
                     return;
-                } else if (response.status == 404){
+                } else if (response.status == 404) {
                     alert("Database error! Please try again later");
                     return;
                 } else {

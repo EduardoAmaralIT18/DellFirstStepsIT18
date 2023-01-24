@@ -3,9 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace ConnectDellBack.Models;
 public class ImageModel
 {
-    //lelelel
-    [Key]
-    public int imageId { get; set; }
+    public int id { get; set; }
 
     [Required]
     public string imageTitle { get; set; } = null!;
