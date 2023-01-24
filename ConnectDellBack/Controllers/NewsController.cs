@@ -34,7 +34,7 @@ public class NewsController : ControllerBase
     }
 
     [HttpPost("addContent")]
-    public async Task<ActionResult> AddContent([FromForm] ContentModel content){
+    public async Task<ActionResult> AddContent([FromForm] ContentDTO content){
         Console.WriteLine(content.author);
         Console.WriteLine(content.program);
         Console.WriteLine(content.title);
