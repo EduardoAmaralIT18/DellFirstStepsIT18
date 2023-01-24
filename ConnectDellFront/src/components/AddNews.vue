@@ -150,6 +150,17 @@ export default defineComponent({
                 }
             }).then(function (response) {
                 return response;
+            }).then(response => {
+                if(response.status == 200){
+                    this.$router.push('/news');
+                    return;
+                } else if (response.status == 404){
+                    alert("Database error! Please try again later");
+                    return;
+                } else {
+                    console.log(response.status);
+                    return;
+                }
             })
         },
 
