@@ -20,7 +20,7 @@ export default defineComponent({
       program: [],
       owners: [],
       editions: [],
-      showMore: true
+      showMore: true,
     }
   },
   created() {
@@ -71,14 +71,30 @@ export default defineComponent({
     },
     toggleShowMore() {
       this.showMore = !this.showMore;
+    },
+    commaAnd() {
+      var pos = 0;
+      var retorno = '';
+      this.owners.forEach(owner => {
+        if (this.owners.length == 1) {
+          retorno += owner.name;
+        } else {
+           if (pos == this.owners.length - 2) {
+            retorno += owner.name + ' and '
+           } else if (pos != this.owners.length - 1) {
+            retorno += owner.name + ', '
+           } else {
+            retorno += owner.name;
+           }
+        }
+        pos++;
+      })
+      return retorno;
     }
-    
-
   },
   computed: {
     isOwner() {
       const idAccess = this.$cookies.get("id");
-      console.log(idAccess);
       var boolean = false;
       this.owners.forEach(owner => {
         if (owner.id == idAccess) {
@@ -91,13 +107,17 @@ export default defineComponent({
       if (!this.showMoreMethod() || !this.showMore) {
         return this.program.description;
       } else {
-        return this.program.description.slice(0,500) + "...";
+        return this.program.description.slice(0, 500) + "...";
       }
-    }
-
-
+    },
+    toggleShowS() {
+      if (this.owners.length == 1) {
+        return ''
+      } else {
+        return 's'
+      }
+    } 
   }
-
 })
 </script>
 
@@ -107,10 +127,12 @@ export default defineComponent({
   <div class="container">
     <p class="title">{{ program.name }}</p>
     <p class="date">{{ formatDate(this.program.startDate) }}{{ hasEndDate() }}</p>
-    <p class="description">{{ howMuchOfDescriptionShown }} &nbsp; <a @click="toggleShowMore()" v-if="showMoreMethod()" href="#">Show {{ showMore ? 'More' : 'Less'}}</a></p>
-    
+    <p class="description">{{ howMuchOfDescriptionShown }} &nbsp; <a @click="toggleShowMore()" v-if="showMoreMethod()"
+        href="#">View {{ showMore? 'More': 'Less' }}</a></p>
+
     <div class="bottomInfo">
-      <p class="owner" v-for="owner in owners" :key="owner.id">{{ owner.name }}</p>
+      <p class="owner">Owner{{ toggleShowS }}: &nbsp; </p>
+      <p class="owner"> {{ commaAnd() }}</p>
       <p v-if="isOwner" class="button dds__button dds__button--primary" type="button">
         <img src="../assets/pencil.png" alt="pencil icon" width="19">
         Edit Program
@@ -148,7 +170,7 @@ export default defineComponent({
                   <h5 class="dds__card__header__title">{{ edition.name }}</h5>
                 </span>
               </div>
-              <div class="dds__card__body">{{ edition.description }} 
+              <div class="dds__card__body">{{ edition.description }}
               </div>
               <div class="dds__card__footer">
                 <RouterLink
@@ -194,6 +216,11 @@ body {
   position: relative;
 }
 
+.description a{
+  color: #0672CB;
+  font-size: 15px;
+}
+
 .date {
   text-align: left;
   font-size: 13px;
@@ -207,6 +234,7 @@ body {
   margin-top: 1%;
   display: flex;
   float: left;
+  font-weight: 590;
 }
 
 .button {

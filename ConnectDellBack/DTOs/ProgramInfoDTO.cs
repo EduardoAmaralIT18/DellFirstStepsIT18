@@ -11,17 +11,17 @@ public class ProgramInfoDTO
     public List<EditionModel>? editions { get; set; } = new List<EditionModel>();
     public List<UserModel> owners { get; set; } = new List<UserModel>();
 
-    public static ProgramInfoDTO convertModel2DTOAdmin(ProgramModel program)
+    public static ProgramInfoDTO convertModel2DTOAdmin(List<OwnershipModel> ownership, ProgramModel programOwners)
     {
         ProgramInfoDTO aux = new ProgramInfoDTO();
-        aux.name = program.name;
-        aux.startDate = program.startDate;
-        if (program.endDate != null)
+        aux.name = ownership[0].program.name;
+        aux.startDate = ownership[0].program.startDate;
+        if (ownership[0].program.endDate != null)
         {
-            aux.endDate = program.endDate;
+            aux.endDate = ownership[0].program.endDate;
         }
-        aux.description = program.description;
-        foreach (var item in program.editions)
+        aux.description = ownership[0].program.description;
+        foreach (var item in ownership[0].program.editions)
         {
             aux.editions.Add(new EditionModel()
             {
@@ -31,7 +31,7 @@ public class ProgramInfoDTO
             });
         }
         aux.editions = aux.editions.OrderByDescending(i => i.startDate).ToList<EditionModel>();
-        foreach (var item in program.owners)
+        foreach (var item in programOwners.owners)
         {
             aux.owners.Add(new UserModel()
             {

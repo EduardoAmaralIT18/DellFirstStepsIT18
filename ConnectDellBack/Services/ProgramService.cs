@@ -93,11 +93,19 @@ public class ProgramService : IProgramService
                                     .ThenInclude(user => user.owners)
                                     .ThenInclude(user => user.ownerships)
                                     .FirstOrDefaultAsync();
+
+
+
         ProgramInfoDTO program = new ProgramInfoDTO();
         if (user.ownerships.Any(u => u.program.id == id1))
         {
-            var ownership = user.ownerships.Where(o => o.program.id == id1).FirstOrDefault();
-            program = ProgramInfoDTO.convertModel2DTOAdmin(ownership.program);
+            var multipleOwner = await _dbContext.programs.Where(p => p.id == id1)
+                                    .Include(p => p.owners)
+                                    .Include(p => p.ownerships)
+                                    .FirstOrDefaultAsync();
+                                    
+            var ownership = user.ownerships.Where(o => o.program.id == id1).ToList();
+            program = ProgramInfoDTO.convertModel2DTOAdmin(ownership, multipleOwner);
         }
         else if (user.role.Equals(Role.Intern) && user.editionIntern.program.id == id1)
         {
@@ -115,7 +123,6 @@ public class ProgramService : IProgramService
             }
             program = ProgramInfoDTO.convertModel2DTOOthers(membership[0].edition.program, editions);
         }
-
         return program;
     }
 
