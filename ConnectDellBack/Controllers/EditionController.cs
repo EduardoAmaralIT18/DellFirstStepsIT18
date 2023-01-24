@@ -27,7 +27,7 @@ public class EditionController : ControllerBase{
     }
 */
     [HttpPost("addEdition")]
-    public async Task<ActionResult> addEdition(EditionModel edition) {        
+    public async Task<ActionResult> addEdition(EditionDTO edition) {        
         int entries = await _service.addEdition(edition);
         if (entries > 0) {
             return Ok();

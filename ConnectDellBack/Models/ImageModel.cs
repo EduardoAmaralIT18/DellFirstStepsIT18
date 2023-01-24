@@ -8,11 +8,11 @@ public class ImageModel
     public int imageId { get; set; }
 
     [Required]
-    public string imageTitle { get; set; } = null!;
+    public string imageTitle { get; set; }
     [Required]
-    public byte[] imageData { get; set; } = null!;
+    public byte[] imageData { get; set; }
 
     public int newsId { get; set; }
-    public NewsModel news {get; set;} = null!;
+    public NewsModel news {get; set;}
 
 }

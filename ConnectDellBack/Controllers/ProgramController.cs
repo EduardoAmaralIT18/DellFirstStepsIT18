@@ -41,11 +41,6 @@ public class ProgramController : ControllerBase
         return result == null ? NoContent() : Ok(result);
     }
 
-    [HttpGet("getProgramById")]
-    public async Task<ActionResult> getProgramById (int id) {
-        var result = await _service.getProgramById(id);
-        return result == null ? NotFound() : Ok(result);
-    }
 
     [HttpGet("shwoBasicInfo")]
     public async Task<ActionResult<ProgramInfoDTO>> showBasicInfo(int id1) {

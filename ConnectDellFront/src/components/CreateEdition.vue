@@ -34,7 +34,7 @@
                             <label id="text-input-label-396765024" for="text-input-control-name-396765024">Number of interns </label>
                         </div>
                         <div id="intern_select">
-                            <input v-model="edition.interns" type="number" min="1" max="22" >
+                            <input v-model="edition.numberOfInterns" type="number" min="1" max="22" >
                         </div>
 
                     </div>
@@ -44,7 +44,7 @@
                             <label id="text-input-label-396765024" for="text-input-control-name-396765024">Number of members </label>
                          </div>
                             <div id="member_select">
-                            <input v-model="edition.members" type="number" min="1" max="25">
+                            <input v-model="edition.numberOfMembers" type="number" min="1" max="25">
                         </div>
                     </div>
                 </div>
@@ -131,81 +131,51 @@
 <script lang ='ts'>
 import { defineComponent } from 'vue';
 import axios from 'axios';
-// type User = {
-//     id: number,
-//     name: string
-// }[];
 
-type Program = {
-    id: number,
-    name: string,
-    // members: User,
-    description: string,
-    // startDate: string | Date,
-    // endDate: null | Date | string
-}[];
+
 
 interface Data {
     edition: {
         name: string,
-        interns: Number,
-        members: Number,
+        numberOfInterns: Number,
+        numberOfMembers: Number,
         description: string,
         courses: string,
         mode: Number,
         startDate: string | Date,
         endDate: null | Date | string,
-        program: Program
-    },
-    programEdition: Program,
-    //total: null | User,
-    //options: null | User
+        program: Number
+    }
+    
 }
 export default defineComponent({
     data(): Data {   
         return {
             edition: {
                 name: '',
-                interns: 0,
-                members: 0,
+                numberOfInterns: 0,
+                numberOfMembers: 0,
                 description: '',
                 courses: '',
                 mode: 1,
                 startDate: new Date().toISOString().slice(0,10),
                 endDate: null,
-                program: []
+                program: 0
             },
-            //total: null,
-            //options: null,
-            programEdition: []
+            
 
             
         };
     },
     methods: {
 
-        // setProgram(): void {
-        //                         //Alterar aqui    !
-        //     this.programEdition = this.getProgram(1);
-        //     console.log(this.programEdition);
-        // },
+       
 
-        onSubmit(): void { // axios.post(nome do controller/nome do metodo)
-            //this.$cookies.set("targetProgramId" , 1);
+        onSubmit(): void {
+            this.$cookies.set("targetProgramId" , 1);
+            this.edition.program = this.$cookies.get("targetProgramId");
 
-            //this.setProgram();
-
-            this.programEdition = this.getProgram(1);
-
-            console.log(this.programEdition);
-            // console.log(this.edition.name);
-            // console.log(this.edition.startDate);
-            // console.log(this.edition.endDate);
-            // console.log(this.edition.description);
-            // console.log(this.edition.courses);
-            // console.log(this.edition.members);
-            // console.log(this.edition.interns);
-            // console.log(this.edition.program);
+            
 
             axios.post('/edition/addEdition', { //nome do controle na rota de EditionController (linha 9)
                 
@@ -213,10 +183,12 @@ export default defineComponent({
                 startDate: this.edition.startDate = new Date(),
                 endDate: this.edition.endDate,
                 description: this.edition.description,
-                courses:this.edition.courses,
-                member: this.edition.members, 
-                intern: this.edition.interns,
-                program : this.programEdition
+                courses: this.edition.courses,
+                mode: this.edition.mode,
+                numberOfMembers: this.edition.numberOfMembers, 
+                numberOfInterns: this.edition.numberOfInterns,
+                program: this.edition.program,
+
             })
 
 
@@ -225,30 +197,20 @@ export default defineComponent({
                 })
                 .then(response => {
                     if (response.status == 200) {
-                        this.$router.push({ name: 'program' });
+                        this.$router.push({ name: 'ProgramPage' });
                         return;
                     } else if (response.status == 404) {
-                        this.$router.push({ name: 'program'});
+                        this.$router.push({ name: 'ProgramPage' });
                         alert("There was an error on our database! Please, try again later.");
                     }
                 })
+                
         },
-        getProgram(id : number) : Program {
-            axios.get('/program/getProgramById', {params: {id}})
-            //axios.get('program/getProgramById')
-            .then(function(response){
-                return response;})
-            .then((response) => {
-                this.programEdition = response.data;
-                    return this.programEdition;
-                })
-                return this.programEdition;
-            }
-        }
-        
-        
+
+
+
     }
-);
+});
 </script>
 
 <style scoped>
