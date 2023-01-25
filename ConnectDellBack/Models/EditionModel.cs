@@ -38,6 +38,7 @@ public class EditionModel{
 
     [StringLength(500, MinimumLength = 10, ErrorMessage = "The program's curriculum must be at most 500 characters.")]
     public string curriculum {get;set;}
+
     public ProgramModel program {get;set;}
     public List<UserModel> members {get;set;}  = new List<UserModel>();
     public List<MembershipModel> memberships {get;set;} = new List<MembershipModel>();
