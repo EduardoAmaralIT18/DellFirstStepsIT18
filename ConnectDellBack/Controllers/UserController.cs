@@ -18,7 +18,6 @@ public class UserController : ControllerBase
         _service = service;
     }
 
-    [Route("GetOwners")]
     [HttpGet("GetOwners")]
     public IEnumerable<UserModel> GetOwners()
     {
@@ -27,14 +26,11 @@ public class UserController : ControllerBase
         // foreach(var item in owners) {
         //     ownersDTO.Add(OwnerDTO.convertModel2DTO(item));
         // }
-        return owners; 
+        return owners;
     }
 
     // [HttpPost("createProgram")]
     // public async Task<ActionResult<string>> createProgram(ProgramModel program) {
 
     // }
-
-  
-
 }
