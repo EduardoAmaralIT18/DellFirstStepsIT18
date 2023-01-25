@@ -18,7 +18,7 @@ public class EditionService : IEditionService
             startDate = edition.startDate,
             endDate = edition.endDate,
             description = edition.description,
-            curriculum = edition.courses,
+            curriculum = edition.curriculum,
             numberOfInterns = edition.numberOfInterns,
             numberOfMembers = edition.numberOfMembers,
             mode = (Mode)edition.mode,
