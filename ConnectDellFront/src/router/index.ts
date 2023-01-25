@@ -36,13 +36,23 @@ const router = createRouter({
     {
       path: '/edition',
       name: 'CreateEdition',
-      component: () => import('../views/CreateEditionView.vue') 
+      component: () => import('../views/CreateEditionView.vue')
     },
 
+    {
+      path: '/updateedition',
+      name: 'UpdateEdition',
+      component: () => import('../views/UpdateEditionView.vue')
+    },
     {
       path: '/programinfo',
       name: 'ProgramsPage',
       component: () => import('../components/ProgramsPage.vue')
+    },
+    {
+      path: '/editioninfo',
+      name: 'EditionsPage',
+      component: () => import('../components/EditionsPage.vue')
     },
     {
       path: '/addnews',

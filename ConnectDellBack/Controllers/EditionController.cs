@@ -7,7 +7,8 @@ namespace ConnectDellBack.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class EditionController : ControllerBase{
+public class EditionController : ControllerBase
+{
 
     private readonly ILogger<EditionController> _logger;
     private readonly IEditionService _service;
@@ -18,24 +19,41 @@ public class EditionController : ControllerBase{
         _service = service;
     }
 
-    ///// GRUPO 4 ////
-   /* [HttpGet("GetPrograms")]
-    public async Task<ActionResult<ProgramDTO>> GetPrograms(int idUser,int role)
-    {
-        var result = await _service.GetPrograms(idUser, role);
-        return result == null ? NotFound() : Ok(result);
-    }
-*/
+
     [HttpPost("addEdition")]
-    public async Task<ActionResult> addEdition(EditionDTO edition) {        
+    public async Task<ActionResult> addEdition(EditionDTO edition)
+    {
         int entries = await _service.addEdition(edition);
-        if (entries > 0) {
+        if (entries > 0)
+        {
             return Ok();
-        } else {
+        }
+        else
+        {
             return NotFound();
         }
     }
 
+    // [HttpPost("updateEdition")]
+    // public async Task<ActionResult> updateEdition(EditionDTO edition)
+    // {
+    //     int entries = await _service.updateEdition(edition);
+    //     if (entries > 0)
+    //     {
+    //         return Ok();
+    //     }
+    //     else
+    //     {
+    //         return NotFound();
+    //     }
+    // }
 
+
+    [HttpGet("showInfoEdition")]
+    public async Task<ActionResult<EditionDTO>> showInfoEdition(int idProgram, int idEdition)
+    {
+        var result = await _service.getEditionInfo(idProgram, idEdition);
+        return result == null ? NoContent() : Ok(result);
+    }
 
 }
