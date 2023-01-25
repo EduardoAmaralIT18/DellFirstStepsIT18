@@ -4,7 +4,7 @@
             <h2>Add News</h2>
         </div>
         <div class="container2">
-            <p>All fields marked with an (<span>*</span>) are required.</p>
+            <p class="warning">All fields marked with an (*) are required.</p>
             <br />
             <form data-dds="form" class="dds__form" enctype="multipart/form-data">
                 <fieldset class="dds__form__section">
@@ -60,7 +60,7 @@
                             </div>
                         </div>
                         <div class="dds__col--1 dds__col--sm-3">
-                            <div class="dds__file-input" data-dds="file-input" role="group"
+                            <div class="imageStyle dds__file-input" data-dds="file-input" role="group"
                                 aria-labelledby="file-input-label-795580561">
                                 <label id="file-input-label-795580561" class="dds__label" for="image">Image </label>
                                 <small id="file-input-helper-795580561" class="dds__file-input__helper-text"> Limit 2MB
@@ -237,5 +237,30 @@ button {
 
 .dds__file-input {
     margin-top: 3%;
+}
+
+label{
+    margin-top: 7px;
+    width: 50%;
+    display: flex;
+    text-align: left;
+}
+.imageStyle{
+    width: 100%;
+}
+.imageStyle small{
+    display: flex;
+}
+.imageStyle input{
+    display: flex;
+    margin-top: 8px;
+}
+button{
+    margin-top: 30px;
+}
+.warning{
+    display: flex;
+    margin-top: 31px;
+    margin-bottom: -3px;
 }
 </style>
