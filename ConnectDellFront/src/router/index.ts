@@ -49,6 +49,11 @@ const router = createRouter({
       name: 'addnews',
       component: () => import('../views/AddNewsView.vue')
     },
+    // {
+    //   path: '/editprogram/:idProgram',
+    //   name: 'EditProgram',
+    //   component: () => import('../views/EditProgramView.vue')
+    // }
   ]
 })
 
