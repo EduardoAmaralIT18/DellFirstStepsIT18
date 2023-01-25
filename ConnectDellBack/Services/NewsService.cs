@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ConnectDellBack.Models;
+using ConnectDellBack.DTOs;
 
 namespace ConnectDellBack.Services;
 
@@ -19,4 +20,10 @@ public class NewsService : INewsService
                                     .OrderByDescending(news => news.date).ToListAsync();
         return news;
     }
+
+    public async Task<int> addContent(ContentDTO content)
+    {
+        throw new NotImplementedException();
+    }
+
 }

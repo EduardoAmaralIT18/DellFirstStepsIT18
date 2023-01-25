@@ -18,7 +18,6 @@ public class NewsController : ControllerBase
         _newsService = newsService;
     }
 
-    [Route("getNews")]
     [HttpGet("getNews")]
     public async Task<ActionResult<IEnumerable<NewsDTO>>> GetNews()
     {
@@ -26,11 +25,24 @@ public class NewsController : ControllerBase
         var news = await _newsService.getNews();
 
         var newsDTO = new List<NewsDTO>();
-        foreach (var item in news)        
+        foreach (var item in news)
         {
-            newsDTO.Add(NewsDTO.convertModel2DTO(item));            
+            newsDTO.Add(NewsDTO.convertModel2DTO(item));
         }
 
         return news == null ? NotFound() : Ok(newsDTO);
+    }
+
+    [HttpPost("addContent")]
+    public async Task<ActionResult> AddContent([FromForm] ContentDTO content){
+        Console.WriteLine(content.author);
+        Console.WriteLine(content.program);
+        Console.WriteLine(content.title);
+        Console.WriteLine(content.text);
+        Console.WriteLine(content.imageName);
+        Console.WriteLine(content.image);
+
+        return Ok();
+
     }
 }

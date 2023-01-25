@@ -2,8 +2,10 @@
 import SideBar from '../components/SideBar.vue';
 import { defineComponent } from 'vue';
 import axios from 'axios';
-import ApiHandler from '../libs/ApiHandler';
+// import ApiHandler from '../libs/ApiHandler';
 import moment from 'moment';
+
+
 export default defineComponent({
   components: {
     NavBar,
@@ -16,36 +18,40 @@ export default defineComponent({
       cookiesUser: this.$cookies.get("id"),
       program: [],
       owners: [],
-      editions: []
+      editions: [],
+      showMore: true,
     }
   },
   created() {
     if (this.cookiesPermission == -1) {
-      axios.get(ApiHandler.URL(`/Program/showInfoProgram?id1=${this.cookiesId}&idUser=${this.cookiesUser}`))
-      .then(function (response) {
-        return response;
-      })
-      .then(response => {
-        if (response.status == 200) {
-          this.program = response.data;
-          this.owners = response.data.owners;
-          this.editions = response.data.editions;
-        } else if (response.status == 204) {
-          alert("There was an error on our database! Please, try again later.");
-        }
-      })
+      axios.get(`/Program/showInfoProgram?id1=${this.cookiesId}&idUser=${this.cookiesUser}`)
+
+        .then(function (response) {
+          return response;
+        })
+        .then(response => {
+          if (response.status == 200) {
+            this.program = response.data;
+            this.owners = response.data.owners;
+            this.editions = response.data.editions;
+          } else if (response.status == 204) {
+            alert("There was an error on our database! Please, try again later.");
+          }
+        })
     } else if (this.cookiesId == -1) {
-      axios.get(ApiHandler.URL(`/Program/showInfoProgram?id1=${this.cookiesPermission}`))
-            .then(function (response) {
-              return response            })
-            .then(response => {
-        if (response.status == 200) {
-          this.program = response.data;
-          this.owners = response.data.owners;
-        } else if (response.status == 204) {
-          alert("There was an error on our database! Please, try again later.");
-        }
-      })
+
+      axios.get(`/Program/showBasicInfo?id1=${this.cookiesPermission}`)
+        .then(function (response) {
+          return response
+        })
+        .then(response => {
+          if (response.status == 200) {
+            this.program = response.data;
+            this.owners = response.data.owners;
+          } else if (response.status == 204) {
+            alert("There was an error on our database! Please, try again later.");
+          }
+        })
     }
   },
   methods: {
@@ -57,11 +63,38 @@ export default defineComponent({
         return moment(String(value)).format('MM/DD/YYYY')
       }
     },
+    showMoreMethod() {
+      if (this.program.description.length > 500 && (this.editions.length != 0 || this.isOwner)) {
+        return true;
+      }
+      return false;
+    },
+    toggleShowMore() {
+      this.showMore = !this.showMore;
+    },
+    commaAnd() {
+      var pos = 0;
+      var retorno = '';
+      this.owners.forEach(owner => {
+        if (this.owners.length == 1) {
+          retorno += owner.name;
+        } else {
+           if (pos == this.owners.length - 2) {
+            retorno += owner.name + ' and '
+           } else if (pos != this.owners.length - 1) {
+            retorno += owner.name + ', '
+           } else {
+            retorno += owner.name;
+           }
+        }
+        pos++;
+      })
+      return retorno;
+    }
   },
   computed: {
     isOwner() {
       const idAccess = this.$cookies.get("id");
-      console.log(idAccess);
       var boolean = false;
       this.owners.forEach(owner => {
         if (owner.id == idAccess) {
@@ -69,11 +102,97 @@ export default defineComponent({
         }
       });
       return boolean;
-    }
+    },
+    howMuchOfDescriptionShown() {
+      if (!this.showMoreMethod() || !this.showMore) {
+        return this.program.description;
+      } else {
+        return this.program.description.slice(0, 500) + "...";
+      }
+    },
+    toggleShowS() {
+      if (this.owners.length == 1) {
+        return ''
+      } else {
+        return 's'
+      }
+    } 
   }
 })
-</script><template>  <main>    <NavBar></NavBar>    <SideBar></SideBar>    <div class="container">      <p class="title">{{ program.name }}</p>      <p class="date">{{ formatDate(this.program.startDate) }}{{ hasEndDate() }}</p>      <p class="description">{{ program.description }}</p>      <div class="bottomInfo">        <p class="owner" v-for="owner in owners" :key="owner.id">{{ owner.name }}</p>        <RouterLink style="text-decoration: none" to="/editprogram" @click="settingCookies(item.id)">        <p v-if="isOwner" class="button dds__button dds__button--primary" type="button">          <img src="../assets/pencil.png" alt="pencil icon" width="19">            Edit Program          </p>          </RouterLink>      </div>      <div  class="initialCard col-2  dds__ml-3 dds__mr-4 dds__mb-3">        <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">          <div class="dds__card">            <div v-if="isOwner" class="dds__card__content">              <div  class="addProgramIcon dds__card__body">                <RouterLink style="text-decoration: none" to="/createprogram">                  +                </RouterLink>              </div>            </div>            <div v-if="cookiesPermission == -1">              <div class="initialCard col-2 dds__ml-3 dds__mr-4 dds__mb-3" v-for="(edition, i) in editions" :key="i">                <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">                  <div class="dds__card">                    <div class="dds__card__content">                      <div class="dds__card__header">                        <span class="dds__card__header__text">                          <h5 class="dds__card__header__title">{{ edition.name }}</h5>                        </span>                      </div>                      <div class="dds__card__body">{{ edition.description }}
-                      </div>                      <div class="dds__card__footer">                        <RouterLink to="#">                          Edit Edition ➔                        </RouterLink>                      </div>                    </div>                  </div>                </div>              </div>            </div>          </div>        </div>      </div>    </div>  </main></template><style scoped>body {
+</script>
+
+<template>
+  <NavBar></NavBar>
+  <SideBar></SideBar>
+  <div class="container">
+    <p class="title">{{ program.name }}</p>
+    <p class="date">{{ formatDate(this.program.startDate) }}{{ hasEndDate() }}</p>
+    <p class="description">{{ howMuchOfDescriptionShown }} &nbsp; <a @click="toggleShowMore()" v-if="showMoreMethod()"
+        href="#">View {{ showMore? 'More': 'Less' }}</a></p>
+
+    <div class="bottomInfo">
+      <p class="owner">Owner{{ toggleShowS }}: &nbsp; </p>
+      <p class="owner"> {{ commaAnd() }}</p>
+      <p v-if="isOwner" class="button dds__button dds__button--primary" type="button">
+        <img src="../assets/pencil.png" alt="pencil icon" width="19">
+        Edit Program
+      </p>
+    </div>
+
+    <h4 class="subtitle" v-if="cookiesPermission == -1">
+      Editions
+    </h4>
+
+    <div class="row">
+
+
+
+
+      <div v-if="isOwner" class="initialCard col-3 dds__ml-3 dds__mr-4 dds__mb-3">
+        <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
+          <div class="dds__card">
+            <div class="dds__card__content">
+              <div class="addProgramIcon dds__card__body">
+                <RouterLink style="text-decoration: none" to="/edition">
+                  +
+                </RouterLink>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="initialCard col-3 dds__ml-3 dds__mr-4 dds__mb-3" v-for="(edition, i) in editions" :key="i">
+        <div v-if="cookiesPermission == -1" class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
+          <div class="dds__card">
+            <div class="dds__card__content">
+              <div class="dds__card__header">
+                <span class="dds__card__header__text">
+                  <h5 class="dds__card__header__title">{{ edition.name }}</h5>
+                </span>
+              </div>
+              <div class="dds__card__body">{{ edition.description }}
+              </div>
+              <div class="dds__card__footer">
+                <RouterLink
+                  style="text-decoration: none;   font-size: 15px;  position: absolute;  bottom: 0;  text-align: center;   left: 0;  margin-left: 20px;  margin-top: 10px;  padding-bottom: 17px;"
+                  to="/programinfo">
+                  Learn more ➔
+                </RouterLink>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div> <!-- ends the container-->
+</template>
+
+<style scoped>
+body {
   font-family: 'Roboto', sans-serif;
 }
 .container {
@@ -94,6 +213,12 @@ export default defineComponent({
   left: 0;
   position: relative;
 }
+
+.description a{
+  color: #0672CB;
+  font-size: 15px;
+}
+
 .date {
   text-align: left;
   font-size: 13px;
@@ -106,6 +231,7 @@ export default defineComponent({
   margin-top: 1%;
   display: flex;
   float: left;
+  font-weight: 590;
 }
 .button {
   width: 120px;
