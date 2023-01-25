@@ -16,9 +16,10 @@
                                         class="dds__label dds__label--required">
                                         Program <span> *</span>
                                     </label>
+                                    <small v-if="v$.program.id.$error" class="help-block">The Program field is required</small>
                                 </div>
                                 <div class="dds__select__wrapper">
-                                    <select :value="0" v-model="program.id" id="program.id" class="dds__select__field"
+                                    <select :value="0" v-model="v$.program.id.$model" id="program.id" class="dds__select__field"
                                         aria-describedby="select-helper-374041805" required="true">
                                         <option :value="0" selected>Select</option>
                                         <option v-for="item in programs" :value="item.id" :key="item.id">
@@ -35,10 +36,11 @@
                                         class="dds__label dds__label--required">
                                         Title <span> *</span>
                                     </label>
+                                    <small v-if="v$.title.$error" class="help-block">The Title field is required</small>
                                 </div>
                                 <div class="dds__input-text__wrapper">
-                                    <input type="text" v-model="title" id="title" name="title" class="dds__input-text"
-                                        required="true" />
+                                    <input type="text" v-model="v$.title.$model" id="title" name="title"
+                                        class="dds__input-text" required="true" />
                                 </div>
                             </div>
                         </div>
@@ -49,9 +51,10 @@
                                         class="dds__label dds__label--required">
                                         Text <span> *</span>
                                     </label>
+                                    <small v-if="v$.text.$error" class="help-block">The Text field is required</small>
                                 </div>
                                 <div class="dds__text-area__wrapper">
-                                    <textarea class="dds__text-area" name="text" v-model="text" id="text" rows="5"
+                                    <textarea class="dds__text-area" name="text" v-model="v$.text.$model" id="text" rows="5"
                                         cols="33" required="true"></textarea>
                                 </div>
                             </div>
@@ -68,7 +71,8 @@
                         </div>
                     </div>
                 </fieldset>
-                <button class="dds__button dds__button--lg" type="submit" @click.prevent="addContent">Add Content</button>
+                <button class="dds__button dds__button--lg" type="submit" @click.prevent="addContent">Add
+                    Content</button>
             </form>
         </div>
     </div>
@@ -77,6 +81,8 @@
 import { defineComponent } from 'vue';
 import axios from 'axios';
 import FormData from 'form-data';
+import { useVuelidate } from '@vuelidate/core';
+import { required, maxValue, minValue } from '@vuelidate/validators';
 
 type Image = {
 }[];
@@ -94,9 +100,13 @@ interface Data {
     image: Image | null,
     programs: null | Program,
     program: { id: Number; name: string; },
+    imageSize: number;
 }
 
 export default defineComponent({
+    setup() {
+        return { v$: useVuelidate() }
+    },
     data(): Data {
         return {
             user: null,
@@ -106,8 +116,17 @@ export default defineComponent({
             text: "",
             image: null,
             programs: null,
-            program: { id: 0, name: "", }
+            program: { id: 0, name: "", },
+            imageSize: 0,
         };
+    },
+    validations() {
+        return {
+            program: { id: { required, minValue: minValue(1) } },
+            title: { required },
+            text: { required },
+            imageSize: { maxValue: maxValue(2097152) },
+        }
     },
     created() {
         // fetch the data when the view is created and the data is
@@ -140,37 +159,40 @@ export default defineComponent({
         },
 
         addContent(): void {
-            var program = this.programs?.find(prog => prog.id == this.program.id);
-            
-            this.data?.append('author', this.user);
-            this.data?.append('program', program?.id);
-            this.data?.append('title', this.title);
-            this.data?.append('text', this.text);
-            this.data?.append('imageName', this.title);
-            this.data?.append('image', this.image);
+            if (!this.v$.$invalid) {
+                var program = this.programs?.find(prog => prog.id == this.program.id);
 
-            axios.post('news/addContent', this.data, {
-                headers: {
-                    'accept': 'application/json',
-                    'Content-Type': 'multipart/form-data'
-                }
-            }).then(function (response) {
-                console.log("chegou aqui");
-                return response;
-            }).then(response => {
-                console.log("chegou depois aqui");
-                if (response.status == 200) {
-                    this.$router.push({ name: 'NewsPage' });
-                } else if (response.status == 404) {
-                    alert("Database error! Please try again later");
-                } else {
-                    console.log(response.status);
-                }
-            })
+                this.data?.append('author', this.user);
+                this.data?.append('program', program?.id);
+                this.data?.append('title', this.title);
+                this.data?.append('text', this.text);
+                this.data?.append('imageName', this.title);
+                this.data?.append('image', this.image);
+
+                axios.post('news/addContent', this.data, {
+                    headers: {
+                        'accept': 'application/json',
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(function (response) {
+                    console.log("chegou aqui");
+                    return response;
+                }).then(response => {
+                    console.log("chegou depois aqui");
+                    if (response.status == 200) {
+                        this.$router.push({ name: 'NewsPage' });
+                    } else if (response.status == 404) {
+                        alert("Database error! Please try again later");
+                    } else {
+                        console.log(response.status);
+                    }
+                })
+            }
         },
 
         updateImage(e: any): void {
             this.image = e.target.files[0];
+            this.imageSize = e.target.files[0].size;
         }
     },
 });

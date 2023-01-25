@@ -32,6 +32,12 @@
                 </div>
             </div>
         </div>
+        <div v-else>
+            <div class="dds__loading-indicator">
+                <div class="dds__loading-indicator__label">Loading...</div>
+                <div class="dds__loading-indicator__spinner"></div>
+            </div>
+        </div>
         <div v-if="countNews != totalNews">
             <button class="dds__button dds__button--primary dds__button--lg" type="button" @click="moreNews">
                 See More
@@ -101,11 +107,13 @@ export default defineComponent({
                 .then(response => {
                     if (response.status == 404) {
                         this.news = null;
+                        alert("No news found!");
                     } else if (response.status == 200) {
                         this.news = response.data;
                         this.totalNews = this.news?.length;
                         this.moreNews();
                     } else {
+                        alert("Databade error. Please try again later.");
                         console.log(response.status);
                     }
 
