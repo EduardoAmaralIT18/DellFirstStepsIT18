@@ -6,7 +6,7 @@
 </script>
 
 <template>
-  
+
     <main>
       <NavBar></NavBar>
       <SideBar view="home"></SideBar>
@@ -15,3 +15,6 @@
     </main>
 
 </template> -->
+<template>
+  <div></div>
+</template>
