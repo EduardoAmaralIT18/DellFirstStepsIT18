@@ -1,4 +1,5 @@
-<script>import NavBar from '../components/NavBar.vue';
+<script>
+import NavBar from '../components/NavBar.vue';
 import SideBar from '../components/SideBar.vue';
 import { defineComponent } from 'vue';
 import axios from 'axios';
@@ -133,10 +134,12 @@ export default defineComponent({
     <div class="bottomInfo">
       <p class="owner">Owner{{ toggleShowS }}: &nbsp; </p>
       <p class="owner"> {{ commaAnd() }}</p>
+        <RouterLink style="text-decoration: none" :to= "{name: 'EditProgram', params:{idProgram:cookiesId}}">
       <p v-if="isOwner" class="button dds__button dds__button--primary" type="button">
         <img src="../assets/pencil.png" alt="pencil icon" width="19">
         Edit Program
       </p>
+    </RouterLink>
     </div>
 
     <h4 class="subtitle" v-if="cookiesPermission == -1">
@@ -144,9 +147,6 @@ export default defineComponent({
     </h4>
 
     <div class="row">
-
-
-
 
       <div v-if="isOwner" class="initialCard col-3 dds__ml-3 dds__mr-4 dds__mb-3">
         <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
