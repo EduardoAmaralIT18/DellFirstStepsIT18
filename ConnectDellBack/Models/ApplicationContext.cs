@@ -12,10 +12,12 @@ public class ApplicationContext : DbContext
     public DbSet<PhasesModel> phases { get; set;} = null!;
     public DbSet<NewsModel> news { get; set;} = null!;
     public DbSet<ImageModel> images {get; set;} = null!;
+    public DbSet<OwnershipModel> OwnershipModel {get; set;} = null!;
 
     
     public ApplicationContext(DbContextOptions options) : base(options)
     {
+        
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
