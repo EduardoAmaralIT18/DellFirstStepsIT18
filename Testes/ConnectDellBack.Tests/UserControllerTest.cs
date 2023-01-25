@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using ConnectDellBack.Models;
-using NUnit.Framework;
+﻿using ConnectDellBack.Controllers;
 using ConnectDellBack.Services;
+using ConnectDellBack.Models;
+using Microsoft.AspNetCore.Mvc;
+using ConnectDellBack.DTOs;
+using Microsoft.EntityFrameworkCore;
+using NUnit.Framework;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace ConnectDellBack.Tests
 {
     [TestFixture]
-    internal class UserServiceTest
+    public class UserControllerTest
     {
         private static DbContextOptions<ApplicationContext> dbContextOptions = new DbContextOptionsBuilder<ApplicationContext>()
-                                                                                .UseInMemoryDatabase(databaseName: "DbTest")
+                                                                                .UseInMemoryDatabase(databaseName: "DbControllerTest")
                                                                                 .Options;
         ApplicationContext context;
         UserService userService;
+        UserController userController;
 
         [OneTimeSetUp]
         public void SetUp()
@@ -26,20 +26,13 @@ namespace ConnectDellBack.Tests
             context.Database.EnsureCreated();
 
             userService = new UserService(context);
+            userController = new UserController(new NullLogger<UserController>(), userService);
         }
 
         [Test]
-        public void get_AllUsersFromDB_ReturnUserCount()
+        public void Get_OwnersFromDB_ReturnOwnerCountOnController()
         {
-            var result = userService.listUsers();
-
-            Assert.That(result.Count, Is.EqualTo(15));
-        }
-
-        [Test]
-        public void get_OwnersFromDB_ReturnOwnerCount()
-        {
-            var result = userService.GetOwners();
+            var result = userController.GetOwners();
             Assert.That(result.Count, Is.EqualTo(1));
         }
 
