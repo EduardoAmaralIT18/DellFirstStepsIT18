@@ -54,7 +54,7 @@ public class ProgramController : ControllerBase
     }
 
     [HttpPost("UpdateProgram")]
-    public async Task<ActionResult> UpdateProgram(int id)
+    public async Task<ActionResult> UpdateProgram(ProgramModel program)
     {
         int entries = await _service.UpdateProgram(program);
         return entries > 0 ? Ok() : NotFound();

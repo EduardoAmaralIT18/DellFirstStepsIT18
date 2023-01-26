@@ -147,9 +147,6 @@
                 this.user.name = this.$cookies.get("name");
                 this.user.role = this.$cookies.get("role");
 
-                console.log(this.user.role);
-                console.log(this.IsAdmin);
-
                 axios.get(ApiHandler.URL(`/Program/GetPrograms?idUser=${this.user.id}&role=${this.user.role}`))
                     .then(function (response) {
                         return response;
