@@ -12,12 +12,10 @@ public class ApplicationContext : DbContext
     public DbSet<PhasesModel> phases { get; set;} = null!;
     public DbSet<NewsModel> news { get; set;} = null!;
     public DbSet<ImageModel> images {get; set;} = null!;
-    public DbSet<OwnershipModel> OwnershipModel {get; set;} = null!;
 
     
     public ApplicationContext(DbContextOptions options) : base(options)
     {
-        
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -55,7 +53,7 @@ public class ApplicationContext : DbContext
                 id = 2,
                 name = "Design Academy",  
                 startDate = new DateTime(2022,10,08),
-                description = "The Design Academy is a capacitation program for students from Unisinos, focusing on Digital Product Design activities, with the goal to qualify interns to execute final functions on the Information Communication Technologies (ICT) area. It focuses on supplying the companies needs of digital design professionals, more specifically related to User Experience and User Interface, and to allow young professionals to complete their academic journey with a scientific and technical knowledge and to be oriented by the market needs. ",
+                description = "The Design Academy is a capacitation program for students from Unisinos, focusing on Digital Product Design activities, with the goal to qualify interns to execute final functions on the Information Communication Technologies (ICT) area. It focuses on supplying the companies needs of digital design professionals, more specifically related to User Experience and User Interface, and to allow young professionals to complete their academic journey with a scientific and technical knowledge and to be oriented by the market needs. ",
             }
         );
         modelBuilder.Entity<ProgramModel>().HasData(
