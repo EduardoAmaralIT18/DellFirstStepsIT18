@@ -205,8 +205,7 @@ export default defineComponent({
             //this.$cookies.set("targetProgramId" , 1);
             this.edition.program = this.$cookies.get("editionId");
 
-            //Antes era /update
-            axios.post('/updateedition/update', { 
+            axios.post('/edition/updateEdition', { 
                 name: this.edition.name,
                 startDate: this.edition.startDate,
                 endDate: this.edition.endDate,

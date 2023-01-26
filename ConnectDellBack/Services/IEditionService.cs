@@ -7,8 +7,8 @@ namespace ConnectDellBack.Services
     {
         //public Task<EditionDTO> GetEdition(int idUser, int role); // grupo 4
         public Task<int> addEdition(EditionDTO edition);
-        public Task<EditionDTO> getEditionInfo(int idProgram, int idEdition);
         public Task<int> updateEdition(EditionDTO editionForm);
+        public Task<EditionDTO> getEditionInfo(int idProgram, int idEdition);
     }
 
 }
