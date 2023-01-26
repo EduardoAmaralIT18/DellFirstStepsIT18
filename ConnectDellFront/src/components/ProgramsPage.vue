@@ -66,7 +66,7 @@ export default defineComponent({
       }
     },
     showMoreMethod() {
-      if (this.program.description.length > 500 && (this.editions.length != 0 || this.isOwner)) {
+      if ((this.program != null) && (this.program.description.length > 500 && (this.editions.length != 0 || this.isOwner))) {
         return true;
       }
       return false;
