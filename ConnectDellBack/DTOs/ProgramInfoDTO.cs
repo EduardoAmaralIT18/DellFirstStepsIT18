@@ -79,12 +79,15 @@ public class ProgramInfoDTO
         {
             aux.name = program.name;
             aux.startDate = program.startDate;
-            if (program.endDate != null)
-            {
-                name = item.name,
-                description = item.description,
-                startDate = item.startDate
-            });
+            if (program.endDate != null)        
+            {            
+                aux.endDate = program.endDate;
+            }        
+            aux.description = program.description;        
+            foreach (var item in editions)        
+            {            
+                aux.editions.Add(new EditionModel()            
+            {                name = item.name,                description = item.description,                startDate = item.startDate,                id = item.id            });        }        foreach (var item in program.owners)        {            aux.owners.Add(new UserModel()            {                name = item.name,            });        }
         }
         aux.editions = aux.editions.OrderByDescending(i => i.startDate).ToList<EditionModel>();
         foreach (var item in program.owners)
