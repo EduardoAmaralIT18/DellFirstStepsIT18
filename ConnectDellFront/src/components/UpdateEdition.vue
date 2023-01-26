@@ -1,14 +1,3 @@
-<!--
-
- 
-PASSO 1 - setar cookie com id da edição  --- OK
-PASSO 2 - criar método que busque no bd as informações da edição através do id
-PASSO 3 - setar as informações iniciais do formulário com as informações trazidas do bd
-PASSO 4 - pegar as informações do novo furmlário e dar update no bd da mesma forma que fizemos para adicionar as informações no bd no creation
-
-PASSO X - adicionar select com interns/members
-
--->
 <template>
 
     <div class="container">
@@ -22,8 +11,9 @@ PASSO X - adicionar select com interns/members
                     <div class="dds__input-text__container">
                         <label id="text-input-label-396765024" for="text-input-control-name-396765024">Edition
                             name <span> *</span></label>
+                            <small v-if="v$.edition.name.$error" class="help-block">The Name field is required</small>
                         <div class="dds__input-text__wrapper">
-                            <input v-model="edition.name" type="text" class="dds__input-text"
+                            <input v-model="v$.edition.name.$model" type="text" class="dds__input-text"
                                 name="text-input-control-name-396765024" id="text-input-control-396765024"
                                 aria-labelledby="text-input-label-396765024 text-input-helper-396765024"
                                 required="true" />
@@ -65,7 +55,8 @@ PASSO X - adicionar select com interns/members
                 <div class="dds__col--3 dds__col--sm-3">
                     <div>
                         <label for="startDate">Start date <span>*</span></label>
-                        <input v-model="edition.startDate" type="date" id="startDate" name="startDate">
+                        <small v-if="v$.edition.startDate.$error" class="help-block">The Start Date field is required</small>
+                        <input v-model="v$.edition.startDate.$model" type="date" id="startDate" name="startDate">
                     </div>
                 </div>
                 <div class="enddate dds__col--3 dds__col--sm-3">
@@ -143,6 +134,8 @@ PASSO X - adicionar select com interns/members
 <script lang ='ts'>
 import { defineComponent } from 'vue';
 import axios from 'axios';
+import {useVuelidate} from '@vuelidate/core';
+import {required} from '@vuelidate/validators';
 //import moment from 'moment';
 
 interface Data {
@@ -162,6 +155,9 @@ interface Data {
     cookiesEdit: Number | null
 }
 export default defineComponent({
+    setup(){
+        return {v$:useVuelidate()}
+    },
     data(): Data {
         return {
             edition: {
@@ -179,6 +175,11 @@ export default defineComponent({
             cookiesId: this.$cookies.get("programId"),
             cookiesEdit: this.$cookies.get("editionId")
         };
+    },
+    validations(){
+        return {
+            edition: {name : {required}, startDate: {required}}
+        }
     },
     created() {
         axios.get(`/edition/showInfoEdition?idProgram=${this.cookiesId}&idEdition=${this.cookiesEdit}`)
@@ -205,32 +206,35 @@ export default defineComponent({
     methods: {
         onSubmit(): void {
             //this.edition.program = this.$cookies.get("programId");
+            if (!this.v$.$invalid){
+                axios.post('/edition/updateEdition', { 
+                    id: this.edition.id,
+                    name: this.edition.name,
+                    startDate: this.edition.startDate,
+                    endDate: this.edition.endDate,
+                    description: this.edition.description,
+                    curriculum: this.edition.curriculum, 
+                    mode: this.edition.mode,
+                    numberOfMembers: this.edition.numberOfMembers,
+                    numberOfInterns: this.edition.numberOfInterns,
+                    //program: this.edition.program,
 
-            axios.post('/edition/updateEdition', { 
-                id: this.edition.id,
-                name: this.edition.name,
-                startDate: this.edition.startDate,
-                endDate: this.edition.endDate,
-                description: this.edition.description,
-                curriculum: this.edition.curriculum, 
-                mode: this.edition.mode,
-                numberOfMembers: this.edition.numberOfMembers,
-                numberOfInterns: this.edition.numberOfInterns,
-                //program: this.edition.program,
-
-            })
-                .then(function (response) {
-                    return response;
                 })
-                .then(response => {
-                    if (response.status == 200) {
-                        this.$router.push({ name: 'ProgramsPage' });
-                        return;
-                    } else if (response.status == 404) {
-                        this.$router.push({ name: 'ProgramsPage' });
-                        alert("There was an error on our database! Please, try again later.");
-                    }
-                })
+                    .then(function (response) {
+                        return response;
+                    })
+                    .then(response => {
+                        if (response.status == 200) {
+                            this.$router.push({ name: 'ProgramsPage' });
+                            return;
+                        } else if (response.status == 404) {
+                            this.$router.push({ name: 'ProgramsPage' });
+                            alert("There was an error on our database! Please, try again later.");
+                        }
+                    })
+            } else {
+                this.v$.$validate();
+            }
 
         },
 
@@ -241,6 +245,10 @@ export default defineComponent({
 <style scoped>
 body {
     font-family: 'Roboto', sans-serif;
+}
+
+small {
+    color: red;
 }
 
 .container {
