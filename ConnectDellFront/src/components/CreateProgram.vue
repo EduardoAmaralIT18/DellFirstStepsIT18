@@ -46,7 +46,7 @@
                             <label id="select-label-141366292" for="select-control-141366292">Owners <span>
                                     *</span></label>
                             <div class="multiselec dds__select__wrapper">
-                                <MultiSelect style="box-shadow: none ;" v-model="program.members" />
+                                <MultiSelect style="box-shadow: none ;" v-model="program.members"/>
                             </div>
                         </div>
                     </div>
@@ -77,13 +77,13 @@
         </form>
     </div>
 
-
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import MultiSelect from './MultipleSelect.vue';
 import axios from 'axios';
+
 
 type User = {
     id: number,
@@ -117,11 +117,12 @@ export default defineComponent({
             },
             total: null,
             options: null
+
         };
     },
     methods: {
         onSubmit(): void {
-            axios.post('/program/addProgram', {
+                axios.post('/program/addProgram', {
                 name: this.program.name,
                 startDate: this.program.startDate = new Date(),
                 endDate: this.program.endDate,
