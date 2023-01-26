@@ -66,7 +66,7 @@ export default defineComponent({
       }
     },
     showMoreMethod() {
-      if (this.program.description.length > 500 && (this.editions.length != 0 || this.isOwner)) {
+      if ((this.program != null) && (this.program.description.length > 500 && (this.editions.length != 0 || this.isOwner))) {
         return true;
       }
       return false;
@@ -155,7 +155,7 @@ export default defineComponent({
           <div class="dds__card">
             <div class="dds__card__content">
               <div class="addProgramIcon dds__card__body">
-                <RouterLink style="text-decoration: none" to="/createprogram">
+                <RouterLink style="text-decoration: none" to="/edition">
                   +
                 </RouterLink>
               </div>

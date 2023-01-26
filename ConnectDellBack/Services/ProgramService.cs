@@ -34,15 +34,15 @@ public class ProgramService : IProgramService
 
         switch (role)
         {
-            case 0: //Admin  
+            case 0:
                 foreach (var item in user.ProgramsAdmins)
                 {
                     myPrograms.Add(MyProgramDTO.convertToDTOAdmin(item));
                 }
                 break;
-            case 1: //Intern
+            case 1:
                 myPrograms.Add(MyProgramDTO.convertToDTOIntern(user.editionIntern.program, user.editionIntern));
-                //TODO: filter
+
                 break;
             default: //Other
                 var membership = user.memberships.DistinctBy(user => user.edition.program);
@@ -50,7 +50,7 @@ public class ProgramService : IProgramService
                 {
                     myPrograms.Add(MyProgramDTO.convertToDTOOthers(item.edition.program, item.edition));
                 }
-                //TODO: filter
+
                 break;
         }
 
@@ -76,10 +76,10 @@ public class ProgramService : IProgramService
         int entries = await _dbContext.SaveChangesAsync();
         return entries;
     }
+  
 
     public async Task<ProgramInfoDTO> getProgramInfo(int id1, int idUser)
     {
-
         var user = await _dbContext.users.Where(u => u.id == idUser)
                                     .Include(user => user.editionIntern)
                                     .ThenInclude(user => user.program)
@@ -134,4 +134,24 @@ public class ProgramService : IProgramService
         return ProgramInfoDTO.convertModel2DTONoPermission(program);
     }
 
+    
+    public async Task<int> UpdateProgram(ProgramModel program)
+    {
+         var ownerships = _dbContext.OwnershipModel.Where(o => o.program.id == program.id);
+        _dbContext.OwnershipModel.RemoveRange(ownerships);
+        await _dbContext.SaveChangesAsync();
+
+        _dbContext.programs.Update(program);
+
+        int entries = await _dbContext.SaveChangesAsync();
+        return entries;
+    }
+
+    public async Task<ProgramModel> GetProgram(int id)
+    {
+        var program = await _dbContext.programs.Where(p => p.id == id)
+                                               .Include(p => p.owners)
+                                               .FirstOrDefaultAsync();
+        return program;
+    }
 }

@@ -32,6 +32,13 @@ const router = createRouter({
       name: 'CreateProgram',
       component: () => import('../views/CreateProgramView.vue')
     },
+
+    {
+      path: '/edition',
+      name: 'CreateEdition',
+      component: () => import('../views/CreateEditionView.vue') 
+    },
+
     {
       path: '/programinfo',
       name: 'ProgramsPage',
@@ -42,6 +49,11 @@ const router = createRouter({
       name: 'addnews',
       component: () => import('../views/AddNewsView.vue')
     },
+    // {
+    //   path: '/editprogram/:idProgram',
+    //   name: 'EditProgram',
+    //   component: () => import('../views/EditProgramView.vue')
+    // }
   ]
 })
 
