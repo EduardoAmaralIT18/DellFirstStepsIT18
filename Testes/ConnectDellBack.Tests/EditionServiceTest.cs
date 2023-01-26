@@ -60,7 +60,7 @@ namespace ConnectDellBack.Tests
            
             Assert.That(result.name, Is.EqualTo(edition.name));
         }
-
+        
         [OneTimeTearDown]
         public void CleanUp()
         {

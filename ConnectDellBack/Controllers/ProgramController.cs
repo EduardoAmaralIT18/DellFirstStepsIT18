@@ -50,7 +50,7 @@ public class ProgramController : ControllerBase
     public async Task<ActionResult<ProgramInfoDTO>> showBasicInfo(int id1)
     {
         var result = await _service.getProgramInfoNoPermission(id1);
-        return result;
+        return result == null ? NoContent() : Ok(result);
     }
 
     [HttpPost("UpdateProgram")]
