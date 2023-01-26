@@ -25,7 +25,11 @@ public class NewsDTO
         aux.text = news.text;
         aux.program = news.program.name;
         aux.author = news.author.name;
-        if(news.image is not null)aux.image = news.image.imageTitle;
+        if(news.image is not null)
+        {
+            string imageBase64Data = Convert.ToBase64String(news.image.imageData);
+            aux.image = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
+        }
         aux.date = news.date.ToLongDateString() + " - " + news.date.ToShortTimeString();
         return aux;
     }

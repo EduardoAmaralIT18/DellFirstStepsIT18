@@ -19,7 +19,7 @@ const router = createRouter({
     },
     {
       path: '/news',
-      name: 'news',
+      name: 'NewsPage',
       component: () => import('../views/NewsView.vue')
     },
     {
