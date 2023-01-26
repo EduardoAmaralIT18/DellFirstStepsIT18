@@ -79,59 +79,49 @@ public class ProgramInfoDTO
         {
             aux.name = program.name;
             aux.startDate = program.startDate;
-            if (program.endDate != null)        
-            {            
-                aux.endDate = program.endDate;
-            }        
-            aux.description = program.description;        
-            foreach (var item in editions)        
-            {            
-                aux.editions.Add(new EditionModel()            
-            {                name = item.name,                description = item.description,                startDate = item.startDate,                id = item.id            });        }        foreach (var item in program.owners)        {            aux.owners.Add(new UserModel()            {                name = item.name,            });        }
-        }
-        aux.editions = aux.editions.OrderByDescending(i => i.startDate).ToList<EditionModel>();
-        foreach (var item in program.owners)
-        {
-            aux.owners.Add(new UserModel()
-            {
-                aux.editions.Add(new EditionModel()
-                {
-                    name = item.name,
-                    description = item.description,
-                    startDate = item.startDate
-                });
-            }
-            foreach (var item in program.owners)
-            {
-                aux.owners.Add(new UserModel()
-                {
-                    name = item.name,
-                });
-            }
-        }
-        return aux;
-    }
-
-    public static ProgramInfoDTO convertModel2DTONoPermission(ProgramModel program)
-    {
-        ProgramInfoDTO aux = new ProgramInfoDTO();
-        if (program!= null) { 
-            aux.name = program.name;
-            aux.startDate = program.startDate;
             if (program.endDate != null)
             {
                 aux.endDate = program.endDate;
             }
             aux.description = program.description;
-            foreach (var item in program.owners)
+            foreach (var item in editions)
             {
-                aux.owners.Add(new UserModel()
-                {
-                    name = item.name,
-                });
+                aux.editions.Add(new EditionModel()
+                { name = item.name, description = item.description, startDate = item.startDate, id = item.id });
+            }
+            aux.editions = aux.editions.OrderByDescending(i => i.startDate).ToList<EditionModel>();
+            foreach (var item in program.owners) 
+            { 
+                aux.owners.Add(new UserModel() 
+                { 
+                    name = item.name, 
+                }); 
             }
         }
         return aux;
     }
+
+public static ProgramInfoDTO convertModel2DTONoPermission(ProgramModel program)
+{
+    ProgramInfoDTO aux = new ProgramInfoDTO();
+    if (program != null)
+    {
+        aux.name = program.name;
+        aux.startDate = program.startDate;
+        if (program.endDate != null)
+        {
+            aux.endDate = program.endDate;
+        }
+        aux.description = program.description;
+        foreach (var item in program.owners)
+        {
+            aux.owners.Add(new UserModel()
+            {
+                name = item.name,
+            });
+        }
+    }
+    return aux;
+}
 
 }
