@@ -136,7 +136,6 @@ PASSO X - adicionar select com interns/members
             <button class="submitbutton dds__button dds__button--lg" type="submit"
                 @click.prevent="onSubmit()">Submit</button>
         </form>
-        <p>{{ edition }}</p>
     </div>
 
 </template>
