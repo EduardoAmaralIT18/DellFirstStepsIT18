@@ -105,16 +105,16 @@
                     <div class="dds__col--12 dds__col--sm-12">
                         <div class="dds__text-area__container" data-dds="text-area">
                             <div class="dds__text-area__header">
-                                <label id="text-area-label-980579425" for="text-area-control-980579425">Courses/Trainings
+                                <label id="text-area-label-980579425" for="text-area-control-980579425">Curriculum
                                     </label>
                             </div>
                             <div class="dds__text-area__wrapper">
                                 <textarea class="dds__text-area" name="text-area-control-name-980579425"
                                     id="text-area-control-980579425" data-maxlength="null" required="true"
                                     aria-labelledby="text-area-label-980579425 text-area-helper-980579425"
-                                    v-model="edition.courses"></textarea>
+                                    v-model="edition.curriculum"></textarea>
                                 <small id="text-area-helper-980579425" class="dds__input-text__helper"></small>
-                                <small id="text-area-error-980579425" class="dds__invalid-feedback">Enter a Course
+                                <small id="text-area-error-980579425" class="dds__invalid-feedback">Enter your curriculum
                                     to continue</small>
                             </div>
 
@@ -140,7 +140,7 @@ interface Data {
         numberOfInterns: Number,
         numberOfMembers: Number,
         description: string,
-        courses: string,
+        curriculum: string,
         mode: Number,
         startDate: string | Date,
         endDate: null | Date | string,
@@ -156,7 +156,7 @@ export default defineComponent({
                 numberOfInterns: 0,
                 numberOfMembers: 0,
                 description: '',
-                courses: '',
+                curriculum: '',
                 mode: 1,
                 startDate: new Date().toISOString().slice(0,10),
                 endDate: null,
@@ -184,7 +184,7 @@ export default defineComponent({
                 startDate: this.edition.startDate = new Date(),
                 endDate: this.edition.endDate,
                 description: this.edition.description,
-                courses: this.edition.courses,
+                curriculum: this.edition.curriculum,
                 mode: this.edition.mode,
                 numberOfMembers: this.edition.numberOfMembers,
                 numberOfInterns: this.edition.numberOfInterns,

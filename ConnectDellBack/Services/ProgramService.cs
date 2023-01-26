@@ -75,7 +75,7 @@ public class ProgramService : IProgramService
         int entries = await _dbContext.SaveChangesAsync();
         return entries;
     }
-  
+
 
     public async Task<ProgramInfoDTO> getProgramInfo(int id1, int idUser)
     {
@@ -94,8 +94,6 @@ public class ProgramService : IProgramService
                                     .ThenInclude(user => user.ownerships)
                                     .FirstOrDefaultAsync();
 
-
-
         ProgramInfoDTO program = new ProgramInfoDTO();
         if (user.ownerships.Any(u => u.program.id == id1))
         {
@@ -103,7 +101,7 @@ public class ProgramService : IProgramService
                                     .Include(p => p.owners)
                                     .Include(p => p.ownerships)
                                     .FirstOrDefaultAsync();
-                                    
+
             var ownership = user.ownerships.Where(o => o.program.id == id1).ToList();
             program = ProgramInfoDTO.convertModel2DTOAdmin(ownership, multipleOwner);
         }
@@ -135,7 +133,7 @@ public class ProgramService : IProgramService
         return ProgramInfoDTO.convertModel2DTONoPermission(program);
     }
 
-    
+
     public async Task<int> UpdateProgram(ProgramModel program)
     {
          var ownerships = _dbContext.OwnershipModel.Where(o => o.program.id == program.id);
