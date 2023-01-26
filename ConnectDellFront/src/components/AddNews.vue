@@ -264,7 +264,9 @@ label {
 button {
     margin-top: 30px;
 }
-
+small{
+    color: red;
+}
 .warning {
     display: flex;
     margin-top: 31px;
