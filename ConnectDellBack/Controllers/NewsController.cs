@@ -21,7 +21,6 @@ public class NewsController : ControllerBase
     [HttpGet("getNews")]
     public async Task<ActionResult<IEnumerable<NewsDTO>>> GetNews()
     {
-        //abacaxi
         var news = await _newsService.getNews();
 
         var newsDTO = new List<NewsDTO>();
@@ -34,12 +33,16 @@ public class NewsController : ControllerBase
     }
 
     [HttpPost("addContent")]
-    public async Task<ActionResult> AddContent([FromForm] ContentDTO content){
+    public async Task<ActionResult> AddContent([FromForm] ContentDTO content)
+    {
         var result = await _newsService.addContent(content);
 
-        if(result){
+        if (result)
+        {
             return Ok();
-        } else {
+        }
+        else
+        {
             return NotFound();
         }
     }

@@ -16,11 +16,13 @@
                                         class="dds__label dds__label--required">
                                         Program <span> *</span>
                                     </label>
-                                    <small v-if="v$.program.id.$error" class="help-block">The Program field is required</small>
+                                    <small v-if="v$.program.id.$error" class="help-block">The Program field is
+                                        required</small>
                                 </div>
                                 <div class="dds__select__wrapper">
-                                    <select :value="0" v-model="v$.program.id.$model" id="program.id" class="dds__select__field"
-                                        aria-describedby="select-helper-374041805" required="true">
+                                    <select :value="0" v-model="v$.program.id.$model" id="program.id"
+                                        class="dds__select__field" aria-describedby="select-helper-374041805"
+                                        required="true">
                                         <option :value="0" selected>Select</option>
                                         <option v-for="item in programs" :value="item.id" :key="item.id">
                                             {{ item.name }}
@@ -54,8 +56,8 @@
                                     <small v-if="v$.text.$error" class="help-block">The Text field is required</small>
                                 </div>
                                 <div class="dds__text-area__wrapper">
-                                    <textarea class="dds__text-area" name="text" v-model="v$.text.$model" id="text" rows="5"
-                                        cols="33" required="true"></textarea>
+                                    <textarea class="dds__text-area" name="text" v-model="v$.text.$model" id="text"
+                                        rows="5" cols="33" required="true"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -139,7 +141,6 @@ export default defineComponent({
     },
     methods: {
         fetchData(): void {
-
             this.role = this.$cookies.get("role");
             this.user = this.$cookies.get("id");
 
@@ -157,7 +158,6 @@ export default defineComponent({
                     else { console.log(response.status); }
                 })
         },
-
         addContent(): void {
             if (!this.v$.$invalid) {
                 var program = this.programs?.find(prog => prog.id == this.program.id);
@@ -187,6 +187,8 @@ export default defineComponent({
                         console.log(response.status);
                     }
                 })
+            } else {
+                this.v$.$validate();
             }
         },
 
@@ -216,7 +218,7 @@ h2 {
 }
 
 .container2 {
-    width: 65%;
+    width: 80%;
     align-self: center;
 }
 
@@ -239,26 +241,31 @@ button {
     margin-top: 3%;
 }
 
-label{
+label {
     margin-top: 7px;
     width: 50%;
     display: flex;
     text-align: left;
 }
-.imageStyle{
+
+.imageStyle {
     width: 100%;
 }
-.imageStyle small{
+
+.imageStyle small {
     display: flex;
 }
-.imageStyle input{
+
+.imageStyle input {
     display: flex;
     margin-top: 8px;
 }
-button{
+
+button {
     margin-top: 30px;
 }
-.warning{
+
+.warning {
     display: flex;
     margin-top: 31px;
     margin-bottom: -3px;
