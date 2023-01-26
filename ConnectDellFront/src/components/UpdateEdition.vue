@@ -144,7 +144,7 @@ PASSO X - adicionar select com interns/members
 <script lang ='ts'>
 import { defineComponent } from 'vue';
 import axios from 'axios';
-import moment from 'moment';
+//import moment from 'moment';
 
 interface Data {
     edition: {
@@ -204,7 +204,9 @@ export default defineComponent({
         onSubmit(): void {
             //this.$cookies.set("targetProgramId" , 1);
             this.edition.program = this.$cookies.get("editionId");
-            axios.post('/edition/addEdition', { //nome do controle na rota de EditionController (linha 9)
+
+            //Antes era /update
+            axios.post('/updateedition/update', { 
                 name: this.edition.name,
                 startDate: this.edition.startDate,
                 endDate: this.edition.endDate,

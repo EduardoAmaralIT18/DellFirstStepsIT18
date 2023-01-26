@@ -34,19 +34,15 @@ public class EditionController : ControllerBase
         }
     }
 
-    // [HttpPost("updateEdition")]
-    // public async Task<ActionResult> updateEdition(EditionDTO edition)
-    // {
-    //     int entries = await _service.updateEdition(edition);
-    //     if (entries > 0)
-    //     {
-    //         return Ok();
-    //     }
-    //     else
-    //     {
-    //         return NotFound();
-    //     }
-    // }
+    [HttpPost("update")] 
+    public async Task<ActionResult> updateEdition(EditionDTO editionForm) {
+        int entries = await _service.updateEdition(editionForm);
+        if (entries > 0) {
+            return Ok();
+        } else {
+            return NotFound();
+        }
+    }
 
 
     [HttpGet("showInfoEdition")]

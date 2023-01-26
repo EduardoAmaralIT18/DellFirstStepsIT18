@@ -31,36 +31,34 @@ public class EditionService : IEditionService
     }
 
 
-    // public async Task<EditionDTO> updateEdition(int editionId, int idProgram) {
-    //     //Referencias: https://stackoverflow.com/questions/18604714/update-database-from-dataset
-    //     // using (SqlConnection connection = new SqlConnection(connString))
-    //     // using (SqlCommand cmd = new SqlCommand("UPDATE Inventory SET qty = @qty WHERE sku = @sku", connection))
-    //     // {
-    //     //     connection.Open();
-    //     //     var paramqty=  cmd.Parameters.Add("@qty", SqlDbType.Int);
-    //     //     var parasku = cmd.Parameters.Add("@sku", SqlDbType.VarChar);
-    //     // foreach (DataRow row in amzInventoryDataSet.Tables[0].Rows)
-    //     //     {
-    //     //         parasku.Value = row["seller-sku"].ToString();
-    //     //         paramqty.Value = int.Parse(row["quantity"].ToString());
-    //     //         cmd.ExecuteNonQuery();
-    //     //     }
-    //     // }
+    public async Task<int> updateEdition(EditionDTO editionForm)
+    {
+        //Puxar objeto do database
+        //mexer nas váriáveis dele na mão
+        //Descobrir como enviar esse objeto atualizado, sem criar um novo.
 
+        var edition =  _dbContext.editions.Where(ed => ed.id == editionForm.id).FirstOrDefault();
 
-    //     //Segunda opção
-    //     // public async Task<int> UpdateProgram(ProgramModel program)
-    //     // {
-    //     //     var ownerships = _dbContext.OwnershipModel.Where(o => o.program.id == program.id);
-    //     //     _dbContext.OwnershipModel.RemoveRange(ownerships);
-    //     //     await _dbContext.SaveChangesAsync();
+        if(edition != null) {
+            edition.name = editionForm.name;
+            edition.startDate = editionForm.startDate;
+            edition.endDate = editionForm.endDate;
+            edition.description = editionForm.description;
+            edition.curriculum = editionForm.curriculum;
+            edition.numberOfMembers = editionForm.numberOfMembers;
+            edition.numberOfInterns = editionForm.numberOfInterns;
+            edition.mode = (Mode) editionForm.mode;
 
-    //     //     _dbContext.programs.Update(program);
+            int entries = await _dbContext.SaveChangesAsync();
+            return 1;
 
-    //     //     int entries = await _dbContext.SaveChangesAsync();
-    //     //     return entries;
-    //     // }
-    // }
+        } else {
+
+            return 0;
+
+        }
+
+    }
 
     public async Task<EditionDTO> getEditionInfo(int idProgram, int idEdition) {
         var edition = await _dbContext.editions.Where(ed => ed.id == idEdition)

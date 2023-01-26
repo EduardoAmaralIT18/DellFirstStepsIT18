@@ -13,6 +13,11 @@ public class EditionDTO
     public DateTime? endDate { get; set; }
     public int program { get; set; }
     public string programName {get;set;}
+
+    public List<UserModel> members {get;set;}  = new List<UserModel>();
+    public List<MembershipModel> memberships {get;set;} = new List<MembershipModel>();
+    public List<UserModel> interns {get;set;} = new List<UserModel>();
+    public List<PhasesModel> phases {get;set;} = new List<PhasesModel>();
     public static EditionDTO convertModel2DTO(EditionModel edition)
     {
         EditionDTO aux = new EditionDTO();
