@@ -138,20 +138,28 @@ public class ProgramService : IProgramService
 
     public async Task<int> UpdateProgram(ProgramModel program)
     {
-        var ownerships = _dbContext.OwnershipModel.Where(o => o.program.id == program.id);
-        _dbContext.OwnershipModel.RemoveRange(ownerships);
-        await _dbContext.SaveChangesAsync();
+        var ProgramDB = await _dbContext.programs.Where(prog => prog.id == program.id)
+                                                                .Include(prog => prog.owners)
+                                                                .Include(prog => prog.ownerships)
+                                                                .FirstOrDefaultAsync();
+        ProgramDB.name = program.name;
+        ProgramDB.startDate = program.startDate;
+        ProgramDB.endDate = program.endDate;
+        ProgramDB.description = program.description;
+        ProgramDB.owners.Clear();
 
-        for (int i = 0; i < program.owners.Count; i++)
+        List<UserModel> users = new List<UserModel>();
+
+        foreach (var item in program.owners)
         {
-            var user = _dbContext.users.Where(usr => usr.id == program.owners[i].id).FirstOrDefault();
-            program.owners[i] = user;
+            users.Add(await _dbContext.users.Where(user => user.id == item.id).FirstOrDefaultAsync());
         }
-
-        _dbContext.programs.Update(program);
+        
+        ProgramDB.owners.AddRange(users);
 
         int entries = await _dbContext.SaveChangesAsync();
         return entries;
+
     }
 
     public async Task<ProgramModel> GetProgram(int id)
