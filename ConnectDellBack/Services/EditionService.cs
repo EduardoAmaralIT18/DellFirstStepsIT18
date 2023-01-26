@@ -38,7 +38,7 @@ public class EditionService : IEditionService
         //Descobrir como enviar esse objeto atualizado, sem criar um novo.
 
         //                                                      !
-        var edition =  _dbContext.editions.Where(ed => ed.id == 1).FirstOrDefault();
+        var edition =  _dbContext.editions.Where(ed => ed.id == editionForm.id).FirstOrDefault();
 
         if(edition != null) {
             edition.name = editionForm.name;

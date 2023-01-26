@@ -116,7 +116,7 @@ PASSO X - adicionar select com interns/members
                 <div class="dds__col--12 dds__col--sm-12">
                     <div class="dds__text-area__container" data-dds="text-area">
                         <div class="dds__text-area__header">
-                            <label id="text-area-label-980579425" for="text-area-control-980579425">Courses/Trainings
+                            <label id="text-area-label-980579425" for="text-area-control-980579425">Curriculum
                             </label>
                         </div>
                         <div class="dds__text-area__wrapper">
@@ -125,7 +125,7 @@ PASSO X - adicionar select com interns/members
                                 aria-labelledby="text-area-label-980579425 text-area-helper-980579425"
                                 v-model="edition.curriculum"></textarea>
                             <small id="text-area-helper-980579425" class="dds__input-text__helper"></small>
-                            <small id="text-area-error-980579425" class="dds__invalid-feedback">Enter a Course
+                            <small id="text-area-error-980579425" class="dds__invalid-feedback">Enter your curriculum
                                 to continue</small>
                         </div>
 
@@ -148,6 +148,7 @@ import axios from 'axios';
 
 interface Data {
     edition: {
+        id: number,
         name: string,
         numberOfInterns: Number,
         numberOfMembers: Number,
@@ -165,6 +166,7 @@ export default defineComponent({
     data(): Data {
         return {
             edition: {
+                id: 0,
                 name: '',
                 numberOfInterns: 0,
                 numberOfMembers: 0,
@@ -186,6 +188,7 @@ export default defineComponent({
             })
             .then(response => {
                 if (response.status == 200) {
+                    this.edition.id = response.data.id;
                     this.edition.name = response.data.name;
                     this.edition.numberOfInterns = response.data.numberOfInterns;
                     this.edition.numberOfMembers = response.data.numberOfMembers;
@@ -202,19 +205,19 @@ export default defineComponent({
     },
     methods: {
         onSubmit(): void {
-            //this.$cookies.set("targetProgramId" , 1);
-            this.edition.program = this.$cookies.get("editionId");
+            //this.edition.program = this.$cookies.get("programId");
 
             axios.post('/edition/updateEdition', { 
+                id: this.edition.id,
                 name: this.edition.name,
                 startDate: this.edition.startDate,
                 endDate: this.edition.endDate,
                 description: this.edition.description,
-                courses: this.edition.curriculum,
+                curriculum: this.edition.curriculum, 
                 mode: this.edition.mode,
                 numberOfMembers: this.edition.numberOfMembers,
                 numberOfInterns: this.edition.numberOfInterns,
-                program: this.edition.program,
+                //program: this.edition.program,
 
             })
                 .then(function (response) {

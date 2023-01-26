@@ -21,7 +21,7 @@ public class EditionDTO
     public static EditionDTO convertModel2DTO(EditionModel edition)
     {
         EditionDTO aux = new EditionDTO();
-        aux.id = edition.id;
+          aux.id = edition.id;
           aux.name = edition.name;
           aux.numberOfInterns = edition.numberOfInterns;
           aux.numberOfMembers = edition.numberOfMembers;
