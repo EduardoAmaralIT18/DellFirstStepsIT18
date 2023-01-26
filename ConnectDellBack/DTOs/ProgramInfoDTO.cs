@@ -90,6 +90,7 @@ public class ProgramInfoDTO
                 startDate = item.startDate
             });
         }
+        aux.editions = aux.editions.OrderByDescending(i => i.startDate).ToList<EditionModel>();
         foreach (var item in program.owners)
         {
             aux.owners.Add(new UserModel()
