@@ -52,7 +52,7 @@ const router = createRouter({
     {
        path: '/editprogram/:idProgram',
        name: 'EditProgram',
-       component: () => import('../components/EditProgram.vue')
+       component: () => import('../views/EditProgramView.vue')
      },
   ]
 })

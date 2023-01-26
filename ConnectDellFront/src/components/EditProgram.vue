@@ -72,6 +72,7 @@
 </template>
 
 <script lang="ts">
+
 import { defineComponent } from "vue";
 import MultiSelect from "./MultipleSelect.vue";
 import axios from "axios";
@@ -129,7 +130,7 @@ export default defineComponent({
         if (response.status == 200) {
           this.program = response.data;
           this.program.startDate = new Date(response.data.startDate).toISOString().slice(0, 10);
-          this.program.endDate = new Date(response.data.endDate).toISOString().slice(0, 10);
+          this.program.endDate = response.data.endDate ? new Date(response.data.endDate).toISOString().slice(0, 10) : null;
           return;
         } else if (response.status == 404) {
           this.$router.push({ name: "ProgramsPage" });
@@ -176,6 +177,7 @@ body {
 
 .container {
   padding-top: 3%;
+  padding-left: 20%;
   display: flex;
   flex-direction: column;
 }
