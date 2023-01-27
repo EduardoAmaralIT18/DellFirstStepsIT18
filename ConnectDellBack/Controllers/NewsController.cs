@@ -35,24 +35,24 @@ public class NewsController : ControllerBase
     [HttpPost("addContent")]
     public async Task<ActionResult> AddContent([FromForm] ContentDTO content)
     {
-        var cookies = Request.Cookies;
+        // var cookies = Request.Cookies;
 
-        if (cookies["role"].Equals("0"))
+        // if (cookies["role"].Equals("0"))
+        // {
+        var result = await _newsService.addContent(content);
+
+        if (result)
         {
-            var result = await _newsService.addContent(content);
-
-            if (result)
-            {
-                return Ok();
-            }
-            else
-            {
-                return NotFound();
-            }
+            return Ok();
         }
         else
         {
-            return BadRequest();
+            return NotFound();
         }
+        // }
+        // else
+        // {
+        //     return BadRequest();
+        // }
     }
 }
