@@ -1,5 +1,5 @@
-<!-- <script setup lang="ts">
-  import EditEdition from '../components/EditEdition.vue';
+<script setup lang="ts">
+  import UpdateEdition from '../components/UpdateEdition.vue';
   import NavBar from '../components/NavBar.vue';
   import SideBar from '../components/SideBar.vue';
   import { RouterView } from 'vue-router';
@@ -9,12 +9,9 @@
 
     <main>
       <NavBar></NavBar>
-      <SideBar view="home"></SideBar>
-      <EditEdition />
+      <SideBar></SideBar>
+      <UpdateEdition />
       <RouterView />
     </main>
 
-</template> -->
-<template>
-  <div></div>
 </template>

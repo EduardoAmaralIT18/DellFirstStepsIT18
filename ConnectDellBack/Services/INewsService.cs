@@ -7,5 +7,5 @@ public interface INewsService
 {
     public Task<IEnumerable<NewsModel>> getNews();   
 
-    public Task<int> addContent(ContentDTO content);
+    public Task<bool> addContent(ContentDTO content);
 }

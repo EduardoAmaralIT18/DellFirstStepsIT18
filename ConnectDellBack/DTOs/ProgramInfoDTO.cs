@@ -27,7 +27,8 @@ public class ProgramInfoDTO
             {
                 name = item.name,
                 description = item.description,
-                startDate = item.startDate
+                startDate = item.startDate,
+                id = item.id
             });
         }
         aux.editions = aux.editions.OrderByDescending(i => i.startDate).ToList<EditionModel>();

@@ -70,11 +70,38 @@ namespace ConnectDellBack.Tests
 
 
 
+        [TestCase(ExpectedResult = true)]
+        public async Task<bool> get_SpecificProgram_ReturnTrue()
+        {
+            var programExpected = context.programs.Where(prog => prog.id == 1).FirstOrDefault();
+
+            var programServices = await programService.GetProgram(1);
+
+            return programServices.Equals(programExpected);
+
+        }
+
+        [Test]
+        [TestCase(ExpectedResult = true)]
+        public async Task<bool> update_SpecificProgram_ReturnTrue()
+        {
+            var programOriginal = context.programs.Where(prog => prog.id == 1).FirstOrDefault();
+
+            programOriginal.name = "novo nome para string";
+
+            var entries = await programService.UpdateProgram(programOriginal);
+
+            return entries > 0;
+
+        }
+
         [OneTimeTearDown]
         public void CleanUp()
         {
             context.Database.EnsureDeleted();
         }
+
+
 
     }
 }

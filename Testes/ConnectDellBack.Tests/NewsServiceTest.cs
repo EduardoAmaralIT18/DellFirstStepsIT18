@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using ConnectDellBack.Models;
 using NUnit.Framework;
 using ConnectDellBack.Services;
+using ConnectDellBack.DTOs;
+using Microsoft.AspNetCore.Http;
 
 namespace ConnectDellBack.Tests
 {
@@ -28,13 +30,56 @@ namespace ConnectDellBack.Tests
             newsService = new NewsService(context);
         }
 
-        [Test]
+        [Test, Order(1)]
         [TestCase(ExpectedResult = 1)]
         public async Task<int> get_AllNewsFromDB_ReturnNewsCount()
         {
             var result = await newsService.getNews();
 
             return result.Count();
+        }
+
+        [Test, Order(2)]
+        [TestCase(ExpectedResult = true)]
+        public async Task<bool> AddContent_WithoutImage_ReturnTrue()
+        {
+            var content = new ContentDTO()
+            {
+                title = "Title Test",
+                text = "Text Test",
+                author = 1,
+                program = 1,
+            };
+            
+            var result = await newsService.addContent(content);
+
+            return result;
+        }
+
+        [Test, Order(3)]
+        [TestCase(ExpectedResult = true)]
+        public async Task<bool> AddContent_WithImage_ReturnTrue()
+        {
+            byte[] image = File.ReadAllBytes("../../../Assets/testImage.png");
+            var stream = new MemoryStream();
+            var writer = new StreamWriter(stream);
+            writer.Write(image);
+            writer.Flush();
+            IFormFile file = new FormFile(stream, 0, stream.Length, "image", "TitleTestImage");
+
+            var content = new ContentDTO()
+            {
+                title = "Title Test",
+                text = "Text Test",
+                author = 1,
+                program = 1,
+                image = file,
+                imageName = "TitleTestImge"
+            };
+            
+            var result = await newsService.addContent(content);
+
+            return result;
         }
 
         [OneTimeTearDown]

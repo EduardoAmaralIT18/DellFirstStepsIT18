@@ -3,7 +3,6 @@ import NavBar from '../components/NavBar.vue';
 import SideBar from '../components/SideBar.vue';
 import { defineComponent } from 'vue';
 import axios from 'axios';
-// import ApiHandler from '../libs/ApiHandler';
 import moment from 'moment';
 
 
@@ -26,7 +25,6 @@ export default defineComponent({
   created() {
     if (this.cookiesPermission == -1) {
       axios.get(`/Program/showInfoProgram?id1=${this.cookiesId}&idUser=${this.cookiesUser}`)
-
         .then(function (response) {
           return response;
         })
@@ -58,7 +56,6 @@ export default defineComponent({
   methods: {
     hasEndDate() {
       return this.program.endDate == null ? '' : (' - ' + this.formatDate(this.program.endDate));
-
     },
     formatDate(value) {
       if (value) {
@@ -81,18 +78,27 @@ export default defineComponent({
         if (this.owners.length == 1) {
           retorno += owner.name;
         } else {
-           if (pos == this.owners.length - 2) {
+          if (pos == this.owners.length - 2) {
             retorno += owner.name + ' and '
-           } else if (pos != this.owners.length - 1) {
+          } else if (pos != this.owners.length - 1) {
             retorno += owner.name + ', '
-           } else {
+          } else {
             retorno += owner.name;
-           }
+          }
         }
         pos++;
       })
       return retorno;
-    }
+    },
+    settingCookies(id) {
+      console.log("id" + id);
+      this.$cookies.set("editionId", id);
+      if (this.isOwner) {
+        this.$cookies.set("isOwner", 1);
+      } else {
+        this.$cookies.set("isOwner", 0);
+      }
+    },
   },
   computed: {
     isOwner() {
@@ -118,7 +124,7 @@ export default defineComponent({
       } else {
         return 's'
       }
-    } 
+    }
   }
 })
 </script>
@@ -135,10 +141,12 @@ export default defineComponent({
     <div class="bottomInfo">
       <p class="owner">Owner{{ toggleShowS }}: &nbsp; </p>
       <p class="owner"> {{ commaAnd() }}</p>
+        <RouterLink style="text-decoration: none" :to= "{name: 'EditProgram', params:{idProgram:cookiesId}}">
       <p v-if="isOwner" class="button dds__button dds__button--primary" type="button">
         <img src="../assets/pencil.png" alt="pencil icon" width="19">
         Edit Program
       </p>
+    </RouterLink>
     </div>
 
     <h4 class="subtitle" v-if="cookiesPermission == -1">
@@ -146,9 +154,6 @@ export default defineComponent({
     </h4>
 
     <div class="row">
-
-
-
 
       <div v-if="isOwner" class="initialCard col-3 dds__ml-3 dds__mr-4 dds__mb-3">
         <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
@@ -164,7 +169,7 @@ export default defineComponent({
         </div>
       </div>
 
-      <div class="initialCard col-3 dds__ml-3 dds__mr-4 dds__mb-3" v-for="(edition, i) in editions" :key="i">
+      <div class="initialCard col-3 dds__ml-3 dds__mr-4 dds__mb-3" v-for="edition in editions" :key="edition.id">
         <div v-if="cookiesPermission == -1" class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
           <div class="dds__card">
             <div class="dds__card__content">
@@ -173,13 +178,11 @@ export default defineComponent({
                   <h5 class="dds__card__header__title">{{ edition.name }}</h5>
                 </span>
               </div>
-              <div class="dds__card__body">{{ edition.description }}
-              </div>
+              <div class="dds__card__body">{{ edition.description }} </div>
               <div class="dds__card__footer">
                 <RouterLink
                   style="text-decoration: none;   font-size: 15px;  position: absolute;  bottom: 0;  text-align: center;   left: 0;  margin-left: 20px;  margin-top: 10px;  padding-bottom: 17px;"
-                  to="/programinfo">
-                  Learn more ➔
+                  to="/editioninfo" @click="settingCookies(edition.id)"> View More ➔
                 </RouterLink>
               </div>
             </div>
@@ -197,21 +200,18 @@ export default defineComponent({
 body {
   font-family: 'Roboto', sans-serif;
 }
-
 .container {
   padding-top: 3%;
   padding-left: 17%;
   display: flex;
   flex-direction: column;
 }
-
 .title {
   color: #0672CB;
   font-size: 190%;
   text-align: left;
   margin-top: 55px;
 }
-
 .description {
   text-align: justify;
   padding-right: 30px;
@@ -219,7 +219,7 @@ body {
   position: relative;
 }
 
-.description a{
+.description a {
   color: #0672CB;
   font-size: 15px;
 }
@@ -229,7 +229,6 @@ body {
   font-size: 13px;
   color: #7E7E7E;
 }
-
 .owner {
   text-align: left;
   font-size: 14px;
@@ -239,7 +238,6 @@ body {
   float: left;
   font-weight: 590;
 }
-
 .button {
   width: 120px;
   font-size: 13px;
@@ -251,28 +249,23 @@ body {
   float: right;
   margin-top: 9px;
 }
-
 .button img {
   margin-right: 5px;
   margin-top: 1px;
   width: 20px;
 }
-
 .bottomInfo {
   display: inline;
 }
-
 body {
   font-family: 'Roboto', sans-serif;
 }
-
 .container {
   padding-top: 5%;
   padding-left: 15%;
   display: inline-flex;
   flex-direction: column;
 }
-
 .dds__card {
   box-shadow: rgba(0, 0, 0, 0.176) 0px 3px 8px;
   border-radius: 10px;
@@ -280,17 +273,14 @@ body {
   width: 250px;
   height: 225px;
 }
-
 .dds__card__content {
   padding: 20px;
 }
-
 .dds__card__header__title {
   font-size: 19px;
   color: #0672CB;
   text-align: left;
 }
-
 .dds__card__body {
   font-size: 15px;
   color: #0e0e0e;
@@ -302,7 +292,6 @@ body {
   padding-top: 20px;
   text-align: left;
 }
-
 .title {
   margin-left: 0px !important;
   text-align: left;
@@ -310,29 +299,24 @@ body {
   margin: 2.5%;
   font-weight: bold;
 }
-
 .subtitle {
   margin-left: 0px !important;
   text-align: left;
   color: #0672CB;
   margin: 2.5%;
 }
-
 .message {
   text-align: center;
   color: #0672CB;
   margin-top: 5%;
   font-size: 1.5rem;
 }
-
 .dds__icon__search {
   color: #0672CB;
   font-size: 1.5rem;
   font-weight: bold;
   padding-right: 1%;
-
 }
-
 .link {
   color: #0672CB;
   font-size: 15px;
@@ -344,7 +328,6 @@ body {
   margin-top: 10px;
   padding-bottom: 17px;
 }
-
 .addProgramIcon {
   color: #0672CB;
   text-align: center;
@@ -353,7 +336,6 @@ body {
   padding-bottom: 35px;
   text-decoration: none;
 }
-
 .initialCard {
   display: block;
 }

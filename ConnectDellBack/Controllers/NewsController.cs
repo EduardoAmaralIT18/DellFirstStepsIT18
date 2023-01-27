@@ -21,7 +21,6 @@ public class NewsController : ControllerBase
     [HttpGet("getNews")]
     public async Task<ActionResult<IEnumerable<NewsDTO>>> GetNews()
     {
-        //abacaxi
         var news = await _newsService.getNews();
 
         var newsDTO = new List<NewsDTO>();
@@ -34,15 +33,26 @@ public class NewsController : ControllerBase
     }
 
     [HttpPost("addContent")]
-    public async Task<ActionResult> AddContent([FromForm] ContentDTO content){
-        Console.WriteLine(content.author);
-        Console.WriteLine(content.program);
-        Console.WriteLine(content.title);
-        Console.WriteLine(content.text);
-        Console.WriteLine(content.imageName);
-        Console.WriteLine(content.image);
+    public async Task<ActionResult> AddContent([FromForm] ContentDTO content)
+    {
+        // var cookies = Request.Cookies;
 
-        return Ok();
+        // if (cookies["role"].Equals("0"))
+        // {
+        var result = await _newsService.addContent(content);
 
+        if (result)
+        {
+            return Ok();
+        }
+        else
+        {
+            return NotFound();
+        }
+        // }
+        // else
+        // {
+        //     return BadRequest();
+        // }
     }
 }

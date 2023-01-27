@@ -76,7 +76,7 @@ public class ProgramService : IProgramService
         int entries = await _dbContext.SaveChangesAsync();
         return entries;
     }
-  
+
 
     public async Task<ProgramInfoDTO> getProgramInfo(int id1, int idUser)
     {
@@ -134,17 +134,31 @@ public class ProgramService : IProgramService
         return ProgramInfoDTO.convertModel2DTONoPermission(program);
     }
 
-    
+
     public async Task<int> UpdateProgram(ProgramModel program)
     {
-         var ownerships = _dbContext.OwnershipModel.Where(o => o.program.id == program.id);
-        _dbContext.OwnershipModel.RemoveRange(ownerships);
-        await _dbContext.SaveChangesAsync();
+        var ProgramDB = await _dbContext.programs.Where(prog => prog.id == program.id)
+                                                                .Include(prog => prog.owners)
+                                                                .Include(prog => prog.ownerships)
+                                                                .FirstOrDefaultAsync();
+        ProgramDB.name = program.name;
+        ProgramDB.startDate = program.startDate;
+        ProgramDB.endDate = program.endDate;
+        ProgramDB.description = program.description;
+        ProgramDB.owners.Clear();
 
-        _dbContext.programs.Update(program);
+        List<UserModel> users = new List<UserModel>();
+
+        foreach (var item in program.owners)
+        {
+            users.Add(await _dbContext.users.Where(user => user.id == item.id).FirstOrDefaultAsync());
+        }
+        
+        ProgramDB.owners.AddRange(users);
 
         int entries = await _dbContext.SaveChangesAsync();
         return entries;
+
     }
 
     public async Task<ProgramModel> GetProgram(int id)

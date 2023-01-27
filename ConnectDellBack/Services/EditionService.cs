@@ -30,5 +30,42 @@ public class EditionService : IEditionService
             return entries;
     }
 
-    
+
+    public async Task<int> updateEdition(EditionDTO editionForm)
+    {
+        //Puxar objeto do database
+        //mexer nas váriáveis dele na mão
+        //Descobrir como enviar esse objeto atualizado, sem criar um novo.
+
+        //                                                      !
+        var edition =  _dbContext.editions.Where(ed => ed.id == editionForm.id).FirstOrDefault();
+
+        if(edition != null) {
+            edition.name = editionForm.name;
+            edition.startDate = editionForm.startDate;
+            edition.endDate = editionForm.endDate;
+            edition.description = editionForm.description;
+            edition.curriculum = editionForm.curriculum;
+            edition.numberOfMembers = editionForm.numberOfMembers;
+            edition.numberOfInterns = editionForm.numberOfInterns;
+            edition.mode = (Mode) editionForm.mode;
+
+            int entries = await _dbContext.SaveChangesAsync();
+            return 1;
+
+        } else {
+
+            return 0;
+
+        }
+
+    }
+
+    public async Task<EditionDTO> getEditionInfo(int idProgram, int idEdition) {
+        var edition = await _dbContext.editions.Where(ed => ed.id == idEdition)
+                                                .Include(ed => ed.program)
+                                                .FirstOrDefaultAsync();
+        return EditionDTO.convertModel2DTO(edition);
+    }
+
 }
