@@ -16,8 +16,9 @@
                 <label id="text-input-label-396765024" for="text-input-control-name-396765024">Program Name<span>
                     *</span>
                 </label>
+                <small v-if="v$.program.name.$error" class="help-block">The program name is required</small>
                 <div class="dds__input-text__wrapper">
-                  <input v-model="program.name" type="text" class="dds__input-text"
+                  <input v-model="v$.program.name.$model" type="text" class="dds__input-text"
                     name="text-input-control-name-396765024" id="text-input-control-396765024"
                     aria-labelledby="text-input-label-396765024 text-input-helper-396765024" required="true" />
                   <small id="text-input-helper-396765024" class="dds__input-text__helper"></small>
@@ -32,7 +33,8 @@
             <div class="dds__col--3 dds__col--sm-3">
               <div>
                 <label for="startDate">Start date <span> *</span></label>
-                <input v-model="program.startDate" type="date" id="startDate" name="startDate" />
+                <small v-if="v$.program.startDate.$error" class="help-block">A start date is required</small>
+                <input v-model="v$.program.startDate.$model" type="date" id="startDate" name="startDate" />
               </div>
             </div>
             <div class="enddate dds__col--3 dds__col--sm-3">
@@ -58,12 +60,14 @@
                 <div class="dds__text-area__header">
                   <label id="text-area-label-980579425" for="text-area-control-980579425">Description<span>
                       *</span></label>
+                  <small v-if="v$.program.description.$error" class="help-block">Please enter a proper description
+                    (between 10 and 500 characters).</small>
                 </div>
                 <div class="dds__text-area__wrapper">
                   <textarea class="dds__text-area" name="text-area-control-name-980579425"
                     id="text-area-control-980579425" data-maxlength="null" required="true"
                     aria-labelledby="text-area-label-980579425 text-area-helper-980579425"
-                    v-model="program.description"></textarea>
+                    v-model="v$.program.description.$model"></textarea>
                   <small id="text-area-helper-980579425" class="dds__input-text__helper"></small>
                   <small id="text-area-error-980579425" class="dds__invalid-feedback">Enter a description to
                     continue</small>
@@ -81,9 +85,12 @@
 </template>
 
 <script lang="ts">
+import { useVuelidate } from '@vuelidate/core';
+import { required, maxLength, minLength } from '@vuelidate/validators';
 import { defineComponent } from "vue";
 import MultiSelect from "./MultipleSelect.vue";
 import axios from "axios";
+
 
 type User = {
   id: number;
@@ -105,6 +112,7 @@ interface Data {
 }
 
 export default defineComponent({
+
   components: {
     MultiSelect,
   },
@@ -113,6 +121,13 @@ export default defineComponent({
     Description: String,
     startDate: Date,
   },
+  setup() {
+    return {
+      v$: useVuelidate(),
+
+    }
+  },
+
   data(): Data {
     return {
       program: {
@@ -128,6 +143,17 @@ export default defineComponent({
       idProgram: this.$route.params.idProgram
     };
   },
+  validations() {
+    return {
+      program: {
+        name: { required },
+        description: { required, maxLength: maxLength(500), minLength: minLength(10) },
+        startDate: { required }
+      }
+    }
+
+  },
+
   created() {
     axios
       .get(`/Program/GetProgram?id=${this.idProgram}`)
@@ -148,32 +174,38 @@ export default defineComponent({
   },
   methods: {
     onSubmit(): void {
-      axios.post('/Program/UpdateProgram', {
-        id: this.program.id,
-        name: this.program.name,
-        startDate: this.program.startDate,
-        endDate: this.program.endDate,
-        description: this.program.description,
-        owners: this.program.owners,
-        editions: null,
-        ownerships: null,
-        memberships: null,
-      })
-        .then(function (response) {
-          alert("Program updated!");
-          return response;
+      if (!this.v$.$invalid) {
+
+        axios.post('/Program/UpdateProgram', {
+          id: this.program.id,
+          name: this.program.name,
+          startDate: this.program.startDate,
+          endDate: this.program.endDate,
+          description: this.program.description,
+          owners: this.program.owners,
+          editions: null,
+          ownerships: null,
+          memberships: null,
         })
-        .then((response) => {
-          if (response.status == 200) {
-            this.$router.push({ name: "ProgramsPage" });
-            return;
-          } else if (response.status == 404) {
-            this.$router.push({ name: "ProgramsPage" });
-            alert(
-              "There was an error on our database! Please, try again later."
-            );
-          }
-        });
+          .then(function (response) {
+            alert("Program updated!");
+            return response;
+          })
+          .then((response) => {
+            if (response.status == 200) {
+              this.$router.push({ name: "ProgramsPage" });
+              return;
+              //ver se daria apra fazer um !=200
+            } else if (response.status == 404) {
+              this.$router.push({ name: "ProgramsPage" });
+              alert(
+                "There was an error on our database! Please, try again later."
+              );
+            }
+          });
+      }else{
+        this.v$.$validate();
+      }
     }
   },
 });
@@ -278,5 +310,9 @@ span {
   margin-left: 4px;
   color: #0063b8;
   font-weight: bold;
+}
+
+small {
+  color: red;
 }
 </style>
