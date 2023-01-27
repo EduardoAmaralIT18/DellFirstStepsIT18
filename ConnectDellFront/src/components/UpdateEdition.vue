@@ -1,5 +1,5 @@
 <template>
-
+<!-- Comentário AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-->
     <div class="container">
         <form data-dds="form" class="dds__form dds__container">
             <!-- <fieldset class="dds__form__section"> -->
@@ -11,7 +11,7 @@
                     <div class="dds__input-text__container">
                         <label id="text-input-label-396765024" for="text-input-control-name-396765024">Edition
                             name <span> *</span></label>
-                            <small v-if="v$.edition.name.$error" class="help-block">The Name field is required</small>
+                        <small v-if="v$.edition.name.$error" class="help-block">The Name field is required</small>
                         <div class="dds__input-text__wrapper">
                             <input v-model="v$.edition.name.$model" type="text" class="dds__input-text"
                                 name="text-input-control-name-396765024" id="text-input-control-396765024"
@@ -27,19 +27,22 @@
             </div>
 
 
-            <div class="dates dds__row">
-                <div class="dds__col--3 dds__col--sm-3">
+            <div class="numberIntern dds__row">
+                <div class="dds__col--12 dds__col--sm-12">
                     <div class="dds__input-text__container">
                         <label id="text-input-label-396765024" for="text-input-control-name-396765024">Number of interns
                         </label>
                     </div>
                     <div id="intern_select">
-                        <input v-model="edition.numberOfInterns" type="number" min="1" max="22">
+                        <input style="width:100%;" v-model="edition.numberOfInterns" type="number" min="1" max="22">
                     </div>
-
                 </div>
 
-                <div class="dds__col--3 dds__col--sm-3">
+                <!-- <div class="multiselec dds__select__wrapper">
+                        <MultiSelect style="box-shadow: none ;" v-model="program.members" />
+                </div> -->
+
+                <!-- <div class="dds__col--3 dds__col--sm-3">
                     <div class="dds__input-text__container">
                         <label id="text-input-label-396765024" for="text-input-control-name-396765024">Number of members
                         </label>
@@ -47,7 +50,7 @@
                     <div id="member_select">
                         <input v-model="edition.numberOfMembers" type="number" min="1" max="25">
                     </div>
-                </div>
+                </div> -->
             </div>
 
 
@@ -55,7 +58,8 @@
                 <div class="dds__col--3 dds__col--sm-3">
                     <div>
                         <label for="startDate">Start date <span>*</span></label>
-                        <small v-if="v$.edition.startDate.$error" class="help-block">The Start Date field is required</small>
+                        <small v-if="v$.edition.startDate.$error" class="help-block">The Start Date field is
+                            required</small>
                         <input v-model="v$.edition.startDate.$model" type="date" id="startDate" name="startDate">
                     </div>
                 </div>
@@ -134,8 +138,8 @@
 <script lang ='ts'>
 import { defineComponent } from 'vue';
 import axios from 'axios';
-import {useVuelidate} from '@vuelidate/core';
-import {required} from '@vuelidate/validators';
+import { useVuelidate } from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
 //import moment from 'moment';
 
 interface Data {
@@ -155,8 +159,8 @@ interface Data {
     cookiesEdit: Number | null
 }
 export default defineComponent({
-    setup(){
-        return {v$:useVuelidate()}
+    setup() {
+        return { v$: useVuelidate() }
     },
     data(): Data {
         return {
@@ -176,9 +180,9 @@ export default defineComponent({
             cookiesEdit: this.$cookies.get("editionId")
         };
     },
-    validations(){
+    validations() {
         return {
-            edition: {name : {required}, startDate: {required}}
+            edition: { name: { required }, startDate: { required } }
         }
     },
     created() {
@@ -195,8 +199,8 @@ export default defineComponent({
                     this.edition.description = response.data.description;
                     this.edition.curriculum = response.data.curriculum;
                     this.edition.mode = response.data.mode;
-                    this.edition.startDate = new Date(response.data.startDate).toISOString().substring(0,10);
-                    this.edition.endDate = new Date(response.data.endDate).toISOString().substring(0,10);
+                    this.edition.startDate = new Date(response.data.startDate).toISOString().substring(0, 10);
+                    this.edition.endDate = new Date(response.data.endDate).toISOString().substring(0, 10);
                     this.edition.program = response.data.program;
                 } else if (response.status == 204) {
                     alert("There was an error on our database! Please, try again later.");
@@ -213,7 +217,7 @@ export default defineComponent({
                     startDate: this.edition.startDate,
                     endDate: this.edition.endDate,
                     description: this.edition.description,
-                    curriculum: this.edition.curriculum, 
+                    curriculum: this.edition.curriculum,
                     mode: this.edition.mode,
                     numberOfMembers: this.edition.numberOfMembers,
                     numberOfInterns: this.edition.numberOfInterns,
@@ -300,6 +304,20 @@ label {
     margin-bottom: 12%;
 }
 
+.numberIntern input {
+    width: 100%;
+    height: 45px;
+    font-size: 18px;
+    color: #525151;
+    padding-left: 2%;
+    border: .0625rem solid #7e7e7e;
+    border-radius: .125rem;
+    background-clip: padding-box;
+}
+
+#intern_select{
+    width: 100%;
+}
 .dates {
     text-align: left;
     display: flex;
