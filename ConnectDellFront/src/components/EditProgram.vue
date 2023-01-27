@@ -81,8 +81,6 @@
 </template>
 
 <script lang="ts">
-/* eslint-disable */
-
 import { defineComponent } from "vue";
 import MultiSelect from "./MultipleSelect.vue";
 import axios from "axios";
