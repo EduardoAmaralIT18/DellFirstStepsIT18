@@ -34,9 +34,9 @@ public class ApplicationContext : DbContext
                     .WithMany(edition => edition.interns);
 
         modelBuilder.Entity<NewsModel>()
-            .HasOne(n => n.image)
-            .WithOne(i => i.news)
-            .HasForeignKey<ImageModel>(i => i.newsId);
+                    .HasOne(n => n.image)
+                    .WithOne(i => i.news)
+                    .HasForeignKey<ImageModel>(i => i.newsId);
 
         //CRIAÇÃO DOS PROGRAMAS NA DATABASE
         modelBuilder.Entity<ProgramModel>().HasData(
