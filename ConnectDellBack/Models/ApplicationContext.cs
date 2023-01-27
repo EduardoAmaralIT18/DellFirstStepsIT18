@@ -12,7 +12,6 @@ public class ApplicationContext : DbContext
     public DbSet<PhasesModel> phases { get; set;} = null!;
     public DbSet<NewsModel> news { get; set;} = null!;
     public DbSet<ImageModel> images {get; set;} = null!;
-    public DbSet<OwnershipModel> OwnershipModel {get; set;} = null!;
 
     
     public ApplicationContext(DbContextOptions options) : base(options)
@@ -38,7 +37,7 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<NewsModel>()
                     .HasOne(n => n.image)
                     .WithOne(i => i.news)
-                    .HasForeignKey<ImageModel>(i => i.imageId);
+                    .HasForeignKey<ImageModel>(i => i.newsId);
 
         //CRIAÇÃO DOS PROGRAMAS NA DATABASE
         modelBuilder.Entity<ProgramModel>().HasData(
