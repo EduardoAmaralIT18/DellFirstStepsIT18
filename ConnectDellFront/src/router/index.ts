@@ -64,11 +64,11 @@ const router = createRouter({
       name: 'NotFound', 
       component:() => import ('..views/NotFoundView.vue')},
     
-    // {
-    //   path: '/editprogram/:idProgram',
-    //   name: 'EditProgram',
-    //   component: () => import('../views/EditProgramView.vue')
-    // }
+    {
+       path: '/editprogram/:idProgram',
+       name: 'EditProgram',
+       component: () => import('../views/EditProgramView.vue')
+     },
   ]
 })
 
