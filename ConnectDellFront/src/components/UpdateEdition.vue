@@ -28,7 +28,7 @@
 
 
             <div class="numberIntern dds__row">
-                <div class="dds__col--3 dds__col--sm-3">
+                <div class="dds__col--12 dds__col--sm-12">
                     <div class="dds__input-text__container">
                         <label id="text-input-label-396765024" for="text-input-control-name-396765024">Number of interns
                         </label>
@@ -309,7 +309,7 @@ label {
     height: 45px;
     font-size: 18px;
     color: #525151;
-    padding-left: 4%;
+    padding-left: 2%;
     border: .0625rem solid #7e7e7e;
     border-radius: .125rem;
     background-clip: padding-box;
