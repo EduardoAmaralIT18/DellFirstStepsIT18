@@ -147,7 +147,7 @@ export default defineComponent({
     return {
       program: {
         name: { required },
-        description: { required, maxLength: maxLength(500), minLength: minLength(10) },
+        description: { required, maxLength: maxLength(1500), minLength: minLength(10) },
         startDate: { required }
       }
     }

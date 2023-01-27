@@ -25,11 +25,33 @@ namespace ConnectDellBack.Tests
             programService = new ProgramService(context);
             programController = new ProgramController(new NullLogger<ProgramController>(), programService);
         }
+
         [Test]
         [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
         public async Task<String> HTTPGET_GetProgram_ReturnOk()
         {
             ActionResult<ProgramModel> actionResult = await programController.GetProgram(1);
+            return actionResult.Result.ToString();
+        }
+
+        [Test]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult")]
+        public async Task<String> HTTPPOST_UpdateSpecificProgram_ReturnTrue()
+        {
+            var programOriginal = context.programs.Where(prog => prog.id == 1).FirstOrDefault();
+
+            programOriginal.name = "novo nome para string";
+
+            ActionResult result = await programController.UpdateProgram(programOriginal);
+
+            return result.ToString();
+        }
+
+        [Test]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
+        public async Task<String> HTTPGET_GetPrograms_ReturnOk()
+        {
+            ActionResult<ProgramDTO> actionResult = await programController.GetPrograms(1, 0);
             return actionResult.Result.ToString();
         }
 
