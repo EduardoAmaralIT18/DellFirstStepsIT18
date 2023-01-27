@@ -18,19 +18,41 @@ public class NewsController : ControllerBase
         _newsService = newsService;
     }
 
-    [Route("getNews")]
     [HttpGet("getNews")]
     public async Task<ActionResult<IEnumerable<NewsDTO>>> GetNews()
     {
-        //abacaxi
         var news = await _newsService.getNews();
 
         var newsDTO = new List<NewsDTO>();
-        foreach (var item in news)        
+        foreach (var item in news)
         {
-            newsDTO.Add(NewsDTO.convertModel2DTO(item));            
+            newsDTO.Add(NewsDTO.convertModel2DTO(item));
         }
 
         return news == null ? NotFound() : Ok(newsDTO);
+    }
+
+    [HttpPost("addContent")]
+    public async Task<ActionResult> AddContent([FromForm] ContentDTO content)
+    {
+        // var cookies = Request.Cookies;
+
+        // if (cookies["role"].Equals("0"))
+        // {
+        var result = await _newsService.addContent(content);
+
+        if (result)
+        {
+            return Ok();
+        }
+        else
+        {
+            return NotFound();
+        }
+        // }
+        // else
+        // {
+        //     return BadRequest();
+        // }
     }
 }

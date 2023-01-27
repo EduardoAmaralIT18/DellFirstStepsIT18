@@ -11,10 +11,11 @@ public class ApplicationContext : DbContext
     public DbSet<EditionModel> editions { get; set;} = null!;
     public DbSet<PhasesModel> phases { get; set;} = null!;
     public DbSet<NewsModel> news { get; set;} = null!;
-
+    public DbSet<ImageModel> images {get; set;} = null!;
     
     public ApplicationContext(DbContextOptions options) : base(options)
     {
+        
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,13 +37,13 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<NewsModel>()
             .HasOne(n => n.image)
             .WithOne(i => i.news)
-            .HasForeignKey<ImageModel>(i => i.imageId);
+            .HasForeignKey<ImageModel>(i => i.newsId);
 
         modelBuilder.Entity<ProgramModel>().HasData(
-            new {
+           new {
                 id = 1,
                 name = "IT Academy",  
-                startDate = new DateTime(08/10/2022),
+                startDate = new DateTime(2022,10,08),
                 description = "Internship Program in partnership with PUCRS, focused in software development",
             }
         );
@@ -124,7 +125,7 @@ public class ApplicationContext : DbContext
                 id = 11,
                 editionInternid = 1,
                 name = "Yolanda",
-                email = " yolanda.colombo@dellteam.com",
+                email = "yolanda.colombo@dellteam.com",
                 role = Role.Intern,
                 notes = "I need to learn Vue.js."
             },
@@ -166,8 +167,8 @@ public class ApplicationContext : DbContext
                 id = 1,
                 programid = 1,
                 name = "IT Academy 17",
-                startDate = new DateTime(10/10/2022),
-                endDate = new DateTime(02/28/2023),
+                startDate = new DateTime(2022,10,10),
+                endDate = new DateTime(2023,02,28),
                 description = "First edition of the IT Academy program focused solely on the self-titled female audience",
                 numberOfMembers = 25,
                 numberOfInterns = 21, 
@@ -181,8 +182,8 @@ public class ApplicationContext : DbContext
                 editionid = 1,
                 newsmodelid = 1,
                 name = "Enrollment",
-                startDate = new DateTime(08/10/2022),
-                endDate = new DateTime(08/23/22),
+                startDate = new DateTime(2022,08,10),
+                endDate = new DateTime(2022,08,23),
                 peopleInvolved = "Puc and Dell Staff",
                 description = "Enrollment stage",
                 type = Type.Set_Up,
@@ -194,7 +195,7 @@ public class ApplicationContext : DbContext
                 programid = 1,
                 title = "IT 17 team starts development of the Dell FirstSteps Project",
                 text = "The all-girls team starts development of the Dell FirstSteps Project, that will help organize all contents about Dell's Internship Programs.",
-                date = new DateTime(01/04/2022),
+                date = new DateTime(2022,01,04),
             }
          );
         modelBuilder.Entity<OwnershipModel>().HasData(

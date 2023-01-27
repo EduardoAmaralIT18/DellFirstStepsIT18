@@ -4,6 +4,7 @@ namespace ConnectDellBack.DTOs;
 
 public class NewsDTO
 {
+    public int id {get; set;}
     public string title { get; set; } = null!;
     public string text { get; set; } = null!;
 
@@ -19,11 +20,16 @@ public class NewsDTO
     {
         //uhul obg alexya
         NewsDTO aux = new NewsDTO();
+        aux.id = news.id;
         aux.title = news.title;
         aux.text = news.text;
         aux.program = news.program.name;
         aux.author = news.author.name;
-        if(news.image is not null)aux.image = news.image.imageTitle;
+        if(news.image is not null)
+        {
+            string imageBase64Data = Convert.ToBase64String(news.image.imageData);
+            aux.image = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
+        }
         aux.date = news.date.ToLongDateString() + " - " + news.date.ToShortTimeString();
         return aux;
     }

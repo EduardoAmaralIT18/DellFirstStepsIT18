@@ -1,5 +1,6 @@
 <template>
-    <Multiselect mode="tags" :close-on-select="false" :searchable="true" :create-option="true" :options="transformOptions()" />
+    <!-- mode="tags" é a opção antiga -->
+    <Multiselect mode="multiple" :close-on-select="false" :searchable="true" :create-option="false" :options="transformOptions()"/>
 </template>
 
 <script lang="ts">
@@ -15,6 +16,7 @@ type User = {
 
 interface Data {
     options: null | User,
+    //esconder: boolean
 }
 
 export default defineComponent ({
@@ -38,10 +40,13 @@ export default defineComponent ({
     },
     methods: {
         transformOptions() {
-            return this.options?.map(option => ({
+            var list = this.options?.map(option => ({
                 value: option,
                 label: option.name
             }))
+
+            console.log(list);
+            return list;
         }
     }
 });

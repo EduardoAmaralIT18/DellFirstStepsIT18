@@ -2,11 +2,12 @@
 
 namespace ConnectDellBack.DTOs
 {
-    public class ProgramDTO
+    public class ProgramDTO 
     {
-        public List<ProgramModel> Programs { get; set; }
+        public List<MyProgramDTO> Programs { get; set; }
 
-        public List<ProgramModel> MyPrograms { get; set; }
+        public List<MyProgramDTO> MyPrograms { get; set; }
 
     }
 }
+

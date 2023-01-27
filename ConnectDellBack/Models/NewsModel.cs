@@ -20,6 +20,4 @@ public class NewsModel {
     public ImageModel? image {get; set;}
 
     public DateTime date {get; set;}
-
-    public List<NewsModel>? news { get; set; }
 }
