@@ -71,11 +71,11 @@ const router = createRouter({
       component: () => import('../views/EditProgramView.vue')
     },
     
-    // {
-    //   path: '/usertable',
-    //   name: 'usertable', 
-    //   component: () => import('../views/UserTableView.vue')
-    // }
+    {
+      path: '/usertable',
+      name: 'usertable', 
+      component: () => import('../views/UserTableView.vue')
+    }
   ]
 })
 

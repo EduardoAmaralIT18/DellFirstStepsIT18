@@ -44,8 +44,9 @@ public class ProgramService : IProgramService
                 myPrograms.Add(MyProgramDTO.convertToDTOIntern(user.editionIntern.program, user.editionIntern));
 
                 break;
-            default:
-                foreach (var item in user.memberships)
+            default: //Other
+                var membership = user.memberships.DistinctBy(user => user.edition.program);
+                foreach (var item in membership)
                 {
                     myPrograms.Add(MyProgramDTO.convertToDTOOthers(item.edition.program, item.edition));
                 }

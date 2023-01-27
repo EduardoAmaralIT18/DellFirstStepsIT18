@@ -210,8 +210,8 @@ export default defineComponent({
     methods: {
         onSubmit(): void {
             //this.edition.program = this.$cookies.get("programId");
-            if (!this.v$.$invalid) {
-                axios.post('/edition/updateEdition', {
+            if (!this.v$.$invalid){
+                axios.post('/edition/updateEdition', { 
                     id: this.edition.id,
                     name: this.edition.name,
                     startDate: this.edition.startDate,

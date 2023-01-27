@@ -60,7 +60,7 @@ namespace ConnectDellBack.Tests
         [TestCase(ExpectedResult = true)]
         public async Task<bool> AddContent_WithImage_ReturnTrue()
         {
-            byte[] image = File.ReadAllBytes("C:/Users/Larissa_Rosa/Documents/IT_Academy/01 - Projeto IT Academy/ConnectDellFull/Testes/ConnectDellBack.Tests/Assets/testImage.png");
+            byte[] image = File.ReadAllBytes("../../../Assets/testImage.png");
             var stream = new MemoryStream();
             var writer = new StreamWriter(stream);
             writer.Write(image);

@@ -24,6 +24,7 @@
                             <small id="text-input-helper-396765024" class="dds__input-text__helper"></small>
                             <div id="text-input-error-396765024" class="dds__invalid-feedback">Enter a edition number
                                 to continue</div>
+
                         </div>
                     </div>
                 </div>
@@ -139,8 +140,6 @@ import {useVuelidate} from '@vuelidate/core';
 import {required} from '@vuelidate/validators';
 
 
-
-
 interface Data {
     edition: {
         name: string,
@@ -158,14 +157,12 @@ interface Data {
 export default defineComponent({
     setup(){
             return {v$:useVuelidate()}
-    },
-
-    validations(){
+        },
+        validations(){
             return {
                 edition: {name : {required}, startDate: {required}}
             }
-    },
-
+        },
     data(): Data {
         return {
             edition: {
@@ -185,9 +182,7 @@ export default defineComponent({
         };
 
     },
-    
     methods: {        
-
         onSubmit(): void {
             //this.$cookies.set("targetProgramId" , 1);
             this.edition.program = this.$cookies.get("programId");
@@ -205,10 +200,7 @@ export default defineComponent({
                     numberOfMembers: this.edition.numberOfMembers,
                     numberOfInterns: this.edition.numberOfInterns,
                     program: this.edition.program,
-
                 })
-
-
                     .then(function (response) {
                         return response;
                     })

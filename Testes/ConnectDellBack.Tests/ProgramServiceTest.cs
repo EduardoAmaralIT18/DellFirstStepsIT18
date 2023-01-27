@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using ConnectDellBack.Models;
 using NUnit.Framework;
 using ConnectDellBack.Services;
+using ConnectDellBack.DTOs;
+using System.Runtime.CompilerServices;
 
 namespace ConnectDellBack.Tests
 {
@@ -18,6 +20,8 @@ namespace ConnectDellBack.Tests
                                                                                 .Options;
         ApplicationContext context;
         ProgramService programService;
+        ProgramModel program;
+        ProgramInfoDTO programDTO;
 
         [OneTimeSetUp]
         public void SetUp()
@@ -25,6 +29,15 @@ namespace ConnectDellBack.Tests
             context = new ApplicationContext(dbContextOptions);
             context.Database.EnsureCreated();
 
+            program = new ProgramModel()
+            {
+                id = 20,
+                name = "Test",
+                startDate = DateTime.Now,
+                endDate = DateTime.Now,
+                description = "test description"
+            };
+            programDTO = ProgramInfoDTO.convertModel2DTONoPermission(program);
             programService = new ProgramService(context);
         }
 
@@ -38,6 +51,25 @@ namespace ConnectDellBack.Tests
         }
 
         [Test]
+        public void addProgramToDB_ReturnTrue()
+        {
+            programService.addProgram(program);
+            var result = context.programs.Where(progra => progra.id == 20)
+                                          .FirstOrDefault();
+            Assert.That(result.name, Is.EqualTo(program.name));
+        }
+
+        [Test]
+        [TestCase(ExpectedResult = "Test")]
+        public async Task<String> getProgramInfoNoPermissionFromDBAsDTO_ReturnTrue()
+        {
+            ProgramInfoDTO program = await programService.getProgramInfoNoPermission(20);
+
+            return program.name;
+        }
+
+
+
         [TestCase(ExpectedResult = true)]
         public async Task<bool> get_SpecificProgram_ReturnTrue()
         {
