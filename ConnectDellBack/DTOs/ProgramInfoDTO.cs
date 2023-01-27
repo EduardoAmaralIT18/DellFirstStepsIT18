@@ -46,20 +46,21 @@ public class ProgramInfoDTO
     public static ProgramInfoDTO convertModel2DTOIntern(ProgramModel program, EditionModel edition)
     {
         ProgramInfoDTO aux = new ProgramInfoDTO();
-        aux.name = program.name;
-        aux.startDate = program.startDate;
-        if (program.endDate != null)
+        if (program != null)
         {
-            aux.endDate = program.endDate;
-        }
-        aux.description = program.description;
-        aux.editions.Add(new EditionModel()
-        {
-            name = edition.name,
-            description = edition.description,
-            startDate = edition.startDate,
-            id = edition.id
-        });
+            aux.name = program.name;
+            aux.startDate = program.startDate;
+            if (program.endDate != null)
+            {
+                aux.endDate = program.endDate;
+            }
+            aux.description = program.description;
+            aux.editions.Add(new EditionModel()
+            {
+                name = edition.name,
+                description = edition.description,
+                startDate = edition.startDate
+            });
 
             foreach (var item in program.owners)
             {
@@ -68,44 +69,44 @@ public class ProgramInfoDTO
                     name = item.name
                 });
             }
-
-
+        }
         return aux;
     }
 
     public static ProgramInfoDTO convertModel2DTOOthers(ProgramModel program, List<EditionModel> editions)
     {
         ProgramInfoDTO aux = new ProgramInfoDTO();
-        aux.name = program.name;
-        aux.startDate = program.startDate;
-        if (program.endDate != null)
+        if (program != null)
         {
-            aux.endDate = program.endDate;
-        }
-        aux.description = program.description;
-        foreach (var item in editions)
-        {
-            aux.editions.Add(new EditionModel()
+            aux.name = program.name;
+            aux.startDate = program.startDate;
+            if (program.endDate != null)
             {
-                name = item.name,
-                description = item.description,
-                startDate = item.startDate,
-                id = item.id
-            });
-        }
-        foreach (var item in program.owners)
-        {
-            aux.owners.Add(new UserModel()
+                aux.endDate = program.endDate;
+            }
+            aux.description = program.description;
+            foreach (var item in editions)
             {
-                name = item.name,
-            });
+                aux.editions.Add(new EditionModel()
+                { name = item.name, description = item.description, startDate = item.startDate, id = item.id });
+            }
+            aux.editions = aux.editions.OrderByDescending(i => i.startDate).ToList<EditionModel>();
+            foreach (var item in program.owners) 
+            { 
+                aux.owners.Add(new UserModel() 
+                { 
+                    name = item.name, 
+                }); 
+            }
         }
         return aux;
     }
 
-    public static ProgramInfoDTO convertModel2DTONoPermission(ProgramModel program)
+public static ProgramInfoDTO convertModel2DTONoPermission(ProgramModel program)
+{
+    ProgramInfoDTO aux = new ProgramInfoDTO();
+    if (program != null)
     {
-        ProgramInfoDTO aux = new ProgramInfoDTO();
         aux.name = program.name;
         aux.startDate = program.startDate;
         if (program.endDate != null)
@@ -120,7 +121,8 @@ public class ProgramInfoDTO
                 name = item.name,
             });
         }
-        return aux;
     }
+    return aux;
+}
 
 }

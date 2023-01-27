@@ -5,6 +5,30 @@ import { defineComponent } from 'vue';
 import axios from 'axios';
 import moment from 'moment';
 
+// interface Data {
+//   cookiesId: number,
+//   cookiesPermission: number,
+//   cookiesUser: number,
+//   program: Program | null,
+//   owners: Owner | null,
+//   editions: [],
+//   showMore: boolean,
+// }
+
+// type Program = {
+//   name: string,
+//   endDate: Date | string | null,
+//   startDate: Date | string, 
+//   description: string
+// }[];
+
+// type Owner = {
+//   name: string,
+//   id: number
+// }[];
+
+
+
 
 export default defineComponent({
   components: {
@@ -63,7 +87,7 @@ export default defineComponent({
       }
     },
     showMoreMethod() {
-      if (this.program.description.length > 500 && (this.editions.length != 0 || this.isOwner)) {
+      if ((this.program != null) && (this.program.description.length > 500 && (this.editions.length != 0 || this.isOwner))) {
         return true;
       }
       return false;
