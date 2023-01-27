@@ -88,7 +88,7 @@ Para executar a aplicação desenvolvida no projeto, após fazer o clone do git 
 #### Erros comuns
   
 - Axios:
-  - Caso occora um erro de Axios, rode o seguinte comando no terminal do frontend: `install --save axios vue-axios`
+  - Caso occora um erro de Axios, rode o seguinte comando no terminal do frontend: `npm install --save axios vue-axios`
 
 - Database
   - Caso sua database não esteja funcionando corretamente, delete a pasta Migrations do seu projeto, e rode os seguintes comandos no terminal do Backend:
