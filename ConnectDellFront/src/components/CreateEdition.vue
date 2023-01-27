@@ -13,6 +13,7 @@
                         <div class="dds__input-text__container">
                             <label id="text-input-label-396765024" for="text-input-control-name-396765024">Edition
                                 name <span> *</span></label>
+                                <small v-if="v$.edition.name.$error" class="help-block">The Name field is required</small>
                             <div class="dds__input-text__wrapper">
                                 <input v-model="edition.name" type="text" class="dds__input-text"
                                     name="text-input-control-name-396765024" id="text-input-control-396765024"
@@ -54,7 +55,8 @@
                     <div class="dds__col--3 dds__col--sm-3">
                         <div>
                             <label for="startDate">Start date <span>*</span></label>
-                            <input v-model="edition.startDate" type="date" id="startDate" name="startDate">
+                            <small v-if="v$.edition.startDate.$error" class="help-block">The Start Date field is required</small>
+                            <input v-model="v$.edition.startDate.$model" type="date" id="startDate" name="startDate">
                         </div>
                     </div>
                     <div class="enddate dds__col--3 dds__col--sm-3">
@@ -131,6 +133,8 @@
 <script lang ='ts'>
 import { defineComponent } from 'vue';
 import axios from 'axios';
+import {useVuelidate} from '@vuelidate/core';
+import {required} from '@vuelidate/validators';
 
 
 
@@ -149,6 +153,9 @@ interface Data {
 
 }
 export default defineComponent({
+    setup(){
+            return {v$:useVuelidate()}
+        },
     data(): Data {
         return {
             edition: {
@@ -170,41 +177,51 @@ export default defineComponent({
     
     methods: {
 
+        validations(){
+            return {
+                edition: {name : {required}, startDate: {required}}
+            }
+        },
 
+        
 
         onSubmit(): void {
             //this.$cookies.set("targetProgramId" , 1);
             this.edition.program = this.$cookies.get("programId");
 
 
+            if (!this.v$.$invalid){
+                axios.post('/edition/addEdition', { //nome do controle na rota de EditionController (linha 9)
 
-            axios.post('/edition/addEdition', { //nome do controle na rota de EditionController (linha 9)
+                    name: this.edition.name,
+                    startDate: this.edition.startDate = new Date(),
+                    endDate: this.edition.endDate,
+                    description: this.edition.description,
+                    curriculum: this.edition.curriculum,
+                    mode: this.edition.mode,
+                    numberOfMembers: this.edition.numberOfMembers,
+                    numberOfInterns: this.edition.numberOfInterns,
+                    program: this.edition.program,
 
-                name: this.edition.name,
-                startDate: this.edition.startDate = new Date(),
-                endDate: this.edition.endDate,
-                description: this.edition.description,
-                curriculum: this.edition.curriculum,
-                mode: this.edition.mode,
-                numberOfMembers: this.edition.numberOfMembers,
-                numberOfInterns: this.edition.numberOfInterns,
-                program: this.edition.program,
-
-            })
-
-
-                .then(function (response) {
-                    return response;
                 })
-                .then(response => {
-                    if (response.status == 200) {
-                        this.$router.push({ name: 'ProgramsPage' });
-                        return;
-                    } else if (response.status == 404) {
-                        this.$router.push({ name: 'ProgramsPage' });
-                        alert("There was an error on our database! Please, try again later.");
-                    }
-                })
+
+
+                    .then(function (response) {
+                        return response;
+                    })
+                    .then(response => {
+                        if (response.status == 200) {
+                            this.$router.push({ name: 'ProgramsPage' });
+                            return;
+                        } else if (response.status == 404) {
+                            this.$router.push({ name: 'ProgramsPage' });
+                            alert("There was an error on our database! Please, try again later.");
+                        }
+                    })
+                
+            } else {
+                this.v$.$validate();
+            }
 
         },
 
@@ -217,6 +234,10 @@ export default defineComponent({
 <style scoped>
 body {
     font-family: 'Roboto', sans-serif;
+}
+
+small{
+    color: red;
 }
 
 .container {
@@ -258,6 +279,8 @@ label {
     text-align: left;
     margin-bottom: 10px;
 }
+
+
 
 .submitbutton {
     margin-top: 30px;

@@ -22,6 +22,7 @@ namespace ConnectDellBack.Tests
         EditionService editionService;
         EditionDTO edition;
         EditionModel model;
+        EditionDTO modelUpdate;
 
         [OneTimeSetUp]
         public void SetUp()
@@ -30,6 +31,20 @@ namespace ConnectDellBack.Tests
             context.Database.EnsureCreated();
 
             editionService = new EditionService(context);
+
+            modelUpdate = new EditionDTO()
+            {
+                id = 2,
+                name = "Test",
+                startDate = DateTime.Now,
+                endDate = DateTime.Now,
+                description = "Testing the database",
+                numberOfMembers = 3,
+                numberOfInterns = 3,
+                mode = 2,
+                curriculum = "Test",
+                program = 1
+            };
 
             model = new EditionModel()
             {
@@ -43,6 +58,7 @@ namespace ConnectDellBack.Tests
                 curriculum = "vue :c",
                 program = context.programs.Where(prog => prog.id == 1).FirstOrDefault()
             };
+
             edition = EditionDTO.convertModel2DTO(model);
         }
 
@@ -59,6 +75,23 @@ namespace ConnectDellBack.Tests
                          context.editions.Where(ed => ed.id == 2).FirstOrDefault());
            
             Assert.That(result.name, Is.EqualTo(edition.name));
+        }
+
+        [Test]
+        public void update_FirstEdition_AssertEqual()
+        {
+            editionService.updateEdition(modelUpdate);
+            var editionUpdated = context.editions.Where(ed => ed.id == 2).FirstOrDefault();
+
+            Mode workModeUpdated = (Mode)modelUpdate.mode;
+            
+            Assert.That(editionUpdated.id, Is.EqualTo(modelUpdate.id));
+            Assert.That(editionUpdated.name, Is.EqualTo(modelUpdate.name));
+            Assert.That(editionUpdated.description, Is.EqualTo(modelUpdate.description));
+            Assert.That(editionUpdated.numberOfMembers, Is.EqualTo(modelUpdate.numberOfMembers));
+            Assert.That(editionUpdated.numberOfInterns, Is.EqualTo(modelUpdate.numberOfInterns));
+            Assert.That(editionUpdated.curriculum, Is.EqualTo(modelUpdate.curriculum));
+            Assert.That(editionUpdated.mode, Is.EqualTo(workModeUpdated));
         }
 
         [OneTimeTearDown]
