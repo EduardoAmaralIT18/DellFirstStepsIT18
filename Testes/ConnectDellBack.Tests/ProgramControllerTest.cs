@@ -15,43 +15,48 @@ namespace ConnectDellBack.Tests
     {
         private static DbContextOptions<ApplicationContext> dbContextOptions = new DbContextOptionsBuilder<ApplicationContext>()
                                                                                 .UseInMemoryDatabase(databaseName: "DbControllerTest")
-                                                                             .Options;
+                                                                                .Options;
         ApplicationContext context;
         ProgramService programService;
         ProgramController programController;
-        ProgramModel program;
-
-
         [OneTimeSetUp]
-        public void Setup()
+        public void SetUp()
         {
             context = new ApplicationContext(dbContextOptions);
             context.Database.EnsureCreated();
-
-            program = new ProgramModel()
-            {
-                id = 20,
-                name = "Test",
-                startDate = DateTime.Now,
-                endDate = DateTime.Now,
-                description = "test description"
-            };
-
-
             programService = new ProgramService(context);
             programController = new ProgramController(new NullLogger<ProgramController>(), programService);
         }
 
         [Test]
-        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult")]
-        public async Task<String> AddProgramToDBByController_ReturnTrue()
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
+        public async Task<String> HTTPGET_GetProgram_ReturnOk()
         {
-            ActionResult<IEnumerable<ProgramModel>> actionResult = await programController.addProgram(program);
+            ActionResult<ProgramModel> actionResult = await programController.GetProgram(1);
             return actionResult.Result.ToString();
         }
 
         [Test]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult")]
+        public async Task<String> HTTPPOST_UpdateSpecificProgram_ReturnTrue()
+        {
+            var programOriginal = context.programs.Where(prog => prog.id == 1).FirstOrDefault();
+
+            programOriginal.name = "novo nome para string";
+
+            ActionResult result = await programController.UpdateProgram(programOriginal);
+
+            return result.ToString();
+        }
+
+        [Test]
         [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
+        public async Task<String> HTTPGET_GetPrograms_ReturnOk()
+        {
+            ActionResult<ProgramDTO> actionResult = await programController.GetPrograms(1, 0);
+            return actionResult.Result.ToString();
+        }
+
         public async Task<String> ShowBasicInfoByController_ReturnTrue()
         {
             ActionResult<ProgramInfoDTO> actionResult = await programController.showBasicInfo(20);
@@ -64,4 +69,6 @@ namespace ConnectDellBack.Tests
             context.Database.EnsureDeleted();
         }
     }
+
 }
+
