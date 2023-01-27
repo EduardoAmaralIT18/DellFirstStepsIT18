@@ -156,6 +156,11 @@ export default defineComponent({
     setup(){
             return {v$:useVuelidate()}
         },
+        validations(){
+            return {
+                edition: {name : {required}, startDate: {required}}
+            }
+        },
     data(): Data {
         return {
             edition: {
@@ -176,12 +181,6 @@ export default defineComponent({
     },
     
     methods: {
-
-        validations(){
-            return {
-                edition: {name : {required}, startDate: {required}}
-            }
-        },
 
         
 
