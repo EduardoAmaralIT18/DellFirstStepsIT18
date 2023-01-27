@@ -41,14 +41,14 @@
 
                     </div>
 
-                    <div class="dds__col--3 dds__col--sm-3">
+                    <!-- <div class="dds__col--3 dds__col--sm-3">
                         <div class="dds__input-text__container">
                             <label id="text-input-label-396765024" for="text-input-control-name-396765024">Number of members </label>
                          </div>
                             <div id="member_select">
                             <input v-model="edition.numberOfMembers" type="number" min="1" max="25">
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
 
@@ -170,7 +170,7 @@ export default defineComponent({
             edition: {
                 name: '',
                 numberOfInterns: 0,
-                numberOfMembers: 0,
+                numberOfMembers: 1,
                 description: '',
                 curriculum: '',
                 mode: 1,
