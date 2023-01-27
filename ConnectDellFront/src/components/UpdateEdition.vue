@@ -39,6 +39,9 @@
 
                 </div>
 
+                <!-- <div class="multiselec dds__select__wrapper">
+                        <MultiSelect style="box-shadow: none ;" v-model="program.members" />
+                </div> -->
                 <div class="dds__col--3 dds__col--sm-3">
                     <div class="dds__input-text__container">
                         <label id="text-input-label-396765024" for="text-input-control-name-396765024">Number of members

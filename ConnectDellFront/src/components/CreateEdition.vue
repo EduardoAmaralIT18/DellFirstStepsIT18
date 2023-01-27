@@ -9,24 +9,25 @@
                 <p class="title">Create Edition</p>
 
                 <div class="dds__row">
-                    <div class="dds__col--12 dds__col--sm-12">
-                        <div class="dds__input-text__container">
-                            <label id="text-input-label-396765024" for="text-input-control-name-396765024">Edition
-                                name <span> *</span></label>
-                                <small v-if="v$.edition.name.$error" class="help-block">The Name field is required</small>
-                            <div class="dds__input-text__wrapper">
-                                <input v-model="edition.name" type="text" class="dds__input-text"
-                                    name="text-input-control-name-396765024" id="text-input-control-396765024"
-                                    aria-labelledby="text-input-label-396765024 text-input-helper-396765024"
-                                    required="true" />
+                <div class="dds__col--12 dds__col--sm-12">
+                    <div class="dds__input-text__container">
+                        <label id="text-input-label-396765024" for="text-input-control-name-396765024">Edition
+                            name <span> *</span></label>
+                            <small v-if="v$.edition.name.$error" class="help-block">The Name field is required</small>
+                        <div class="dds__input-text__wrapper">
+                            <input v-model="v$.edition.name.$model" type="text" class="dds__input-text"
+                                name="text-input-control-name-396765024" id="text-input-control-396765024"
+                                aria-labelledby="text-input-label-396765024 text-input-helper-396765024"
+                                required="true" />
 
-                                <small id="text-input-helper-396765024" class="dds__input-text__helper"></small>
-                                <div id="text-input-error-396765024" class="dds__invalid-feedback">Enter a edition number
-                                    to continue</div>
-                            </div>
+                            <small id="text-input-helper-396765024" class="dds__input-text__helper"></small>
+                            <div id="text-input-error-396765024" class="dds__invalid-feedback">Enter a edition number
+                                to continue</div>
                         </div>
                     </div>
                 </div>
+            </div>
+
 
 
                 <div class="dates dds__row">
@@ -52,20 +53,20 @@
 
 
                 <div class="dates dds__row">
-                    <div class="dds__col--3 dds__col--sm-3">
-                        <div>
-                            <label for="startDate">Start date <span>*</span></label>
-                            <small v-if="v$.edition.startDate.$error" class="help-block">The Start Date field is required</small>
-                            <input v-model="v$.edition.startDate.$model" type="date" id="startDate" name="startDate">
-                        </div>
-                    </div>
-                    <div class="enddate dds__col--3 dds__col--sm-3">
-                        <div>
-                            <label for="endDate"> End date </label>
-                            <input v-model="edition.endDate" type="date" id="endDate" name="endDate">
-                        </div>
+                <div class="dds__col--3 dds__col--sm-3">
+                    <div>
+                        <label for="startDate">Start date <span>*</span></label>
+                        <small v-if="v$.edition.startDate.$error" class="help-block">The Start Date field is required</small>
+                        <input v-model="v$.edition.startDate.$model" type="date" id="startDate" name="startDate">
                     </div>
                 </div>
+                <div class="enddate dds__col--3 dds__col--sm-3">
+                    <div>
+                        <label for="endDate"> End date </label>
+                        <input v-model="edition.endDate" type="date" id="endDate" name="endDate">
+                    </div>
+                </div>
+            </div>
 
                 <div class="mode dds__row">
 
@@ -138,6 +139,7 @@ import {required} from '@vuelidate/validators';
 
 
 
+
 interface Data {
     edition: {
         name: string,
@@ -155,7 +157,14 @@ interface Data {
 export default defineComponent({
     setup(){
             return {v$:useVuelidate()}
-        },
+    },
+
+    validations(){
+            return {
+                edition: {name : {required}, startDate: {required}}
+            }
+    },
+
     data(): Data {
         return {
             edition: {
@@ -173,17 +182,10 @@ export default defineComponent({
 
 
         };
+
     },
     
-    methods: {
-
-        validations(){
-            return {
-                edition: {name : {required}, startDate: {required}}
-            }
-        },
-
-        
+    methods: {        
 
         onSubmit(): void {
             //this.$cookies.set("targetProgramId" , 1);

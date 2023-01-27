@@ -8,7 +8,7 @@ import { RouterView } from 'vue-router';
     <main>
         <NavBar></NavBar>
         <SideBar></SideBar>
-        <NotFound />
+        <NotFound/>
         <RouterView />
     </main>
 

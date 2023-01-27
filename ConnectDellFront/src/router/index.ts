@@ -60,9 +60,9 @@ const router = createRouter({
       component: () => import('../views/AddNewsView.vue')
     },
     
-    { path: '/notfound(.*)*', 
-      name: 'NotFound', 
-      component:() => import ('..views/NotFoundView.vue')},
+    // { path: '/notfound(.*)*', 
+    //   name: 'NotFound', 
+    //   component:() => import ('..views/NotFoundView.vue')},
     
     {
        path: '/editprogram/:idProgram',
