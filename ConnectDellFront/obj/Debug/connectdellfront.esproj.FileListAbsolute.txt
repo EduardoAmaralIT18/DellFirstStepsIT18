@@ -1,9 +1,4 @@
 C:\Users\Larissa_Rosa\Documents\IT_Academy\01 - Projeto IT Academy\ConnectDellFront\obj\Debug\connectdellfront.esproj.SuggestedBindingRedirects.cache
 C:\Users\Larissa_Rosa\Documents\IT_Academy\01 - Projeto IT Academy\ConnectDellFront\obj\Debug\connectdellfront.esproj.CoreCompileInputs.cache
-<<<<<<< HEAD
 C:\Projetos\DellFirstSteps\Dell_FirstSteps\ConnectDellFront\obj\Debug\connectdellfront.esproj.SuggestedBindingRedirects.cache
 C:\Projetos\DellFirstSteps\Dell_FirstSteps\ConnectDellFront\obj\Debug\connectdellfront.esproj.CoreCompileInputs.cache
-=======
-C:\Projects\HandsOn\Dell_FirstSteps\ConnectDellFront\obj\Debug\connectdellfront.esproj.SuggestedBindingRedirects.cache
-C:\Projects\HandsOn\Dell_FirstSteps\ConnectDellFront\obj\Debug\connectdellfront.esproj.CoreCompileInputs.cache
->>>>>>> 8ed4ca8ea0e580bb69561801b99c44c937c23304
