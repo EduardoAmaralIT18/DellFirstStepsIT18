@@ -94,8 +94,6 @@ public class ProgramService : IProgramService
                                     .ThenInclude(user => user.ownerships)
                                     .FirstOrDefaultAsync();
 
-
-
         ProgramInfoDTO program = new ProgramInfoDTO();
         if (user.ownerships.Any(u => u.program.id == id1))
         {

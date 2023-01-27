@@ -3,7 +3,6 @@ import NavBar from '../components/NavBar.vue';
 import SideBar from '../components/SideBar.vue';
 import { defineComponent } from 'vue';
 import axios from 'axios';
-// import ApiHandler from '../libs/ApiHandler';
 import moment from 'moment';
 
 
@@ -26,7 +25,6 @@ export default defineComponent({
   created() {
     if (this.cookiesPermission == -1) {
       axios.get(`/Program/showInfoProgram?id1=${this.cookiesId}&idUser=${this.cookiesUser}`)
-
         .then(function (response) {
           return response;
         })
@@ -80,18 +78,27 @@ export default defineComponent({
         if (this.owners.length == 1) {
           retorno += owner.name;
         } else {
-           if (pos == this.owners.length - 2) {
+          if (pos == this.owners.length - 2) {
             retorno += owner.name + ' and '
-           } else if (pos != this.owners.length - 1) {
+          } else if (pos != this.owners.length - 1) {
             retorno += owner.name + ', '
-           } else {
+          } else {
             retorno += owner.name;
-           }
+          }
         }
         pos++;
       })
       return retorno;
-    }
+    },
+    settingCookies(id) {
+      console.log("id" + id);
+      this.$cookies.set("editionId", id);
+      if (this.isOwner) {
+        this.$cookies.set("isOwner", 1);
+      } else {
+        this.$cookies.set("isOwner", 0);
+      }
+    },
   },
   computed: {
     isOwner() {
@@ -117,7 +124,7 @@ export default defineComponent({
       } else {
         return 's'
       }
-    } 
+    }
   }
 })
 </script>
@@ -162,7 +169,7 @@ export default defineComponent({
         </div>
       </div>
 
-      <div class="initialCard col-3 dds__ml-3 dds__mr-4 dds__mb-3" v-for="(edition, i) in editions" :key="i">
+      <div class="initialCard col-3 dds__ml-3 dds__mr-4 dds__mb-3" v-for="edition in editions" :key="edition.id">
         <div v-if="cookiesPermission == -1" class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
           <div class="dds__card">
             <div class="dds__card__content">
@@ -171,13 +178,11 @@ export default defineComponent({
                   <h5 class="dds__card__header__title">{{ edition.name }}</h5>
                 </span>
               </div>
-              <div class="dds__card__body">{{ edition.description }}
-              </div>
+              <div class="dds__card__body">{{ edition.description }} </div>
               <div class="dds__card__footer">
                 <RouterLink
                   style="text-decoration: none;   font-size: 15px;  position: absolute;  bottom: 0;  text-align: center;   left: 0;  margin-left: 20px;  margin-top: 10px;  padding-bottom: 17px;"
-                  to="/programinfo">
-                  Learn more ➔
+                  to="/editioninfo" @click="settingCookies(edition.id)"> View More ➔
                 </RouterLink>
               </div>
             </div>
@@ -214,7 +219,7 @@ body {
   position: relative;
 }
 
-.description a{
+.description a {
   color: #0672CB;
   font-size: 15px;
 }
