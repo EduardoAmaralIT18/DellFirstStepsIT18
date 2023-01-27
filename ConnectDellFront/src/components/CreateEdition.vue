@@ -247,7 +247,6 @@ small{
     padding-left: 20%;
     display: flex;
     flex-direction: column;
-
 }
 
 .mode{
