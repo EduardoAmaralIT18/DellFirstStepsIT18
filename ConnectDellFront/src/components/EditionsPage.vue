@@ -9,87 +9,93 @@ import moment from 'moment';
 
 
 export default defineComponent({
-    components: {
-        NavBar,
-        SideBar,
-    },
-    data() {
-        return {
-            cookiesId: this.$cookies.get("programId"),
-            cookiesEdit: this.$cookies.get("editionId"),
-            cookiesUser: this.$cookies.get("id"),
-            edition: [],
-            showMore: true,
-        }
-    },
-    created() {
-        axios.get(`/Edition/showInfoEdition?idProgram=${this.cookiesId}&idEdition=${this.cookiesEdit}`)
-            .then(function (response) {
-                return response;
-            })
-            .then(response => {
-                if (response.status == 200) {
-                    this.edition = response.data;
-                } else if (response.status == 204) {
-                    alert("There was an error on our database! Please, try again later.");
-                }
-            })
-    },
-    methods: {
-
-        hasEndDate() {
-            return this.edition.endDate == null ? '' : (' - ' + this.formatDate(this.edition.endDate));
-        },
-        formatDate(value) {
-            if (value) {
-                return moment(String(value)).format('MM/DD/YYYY')
-            }
-        },
-        settingCookies(id) {
-            this.$cookies.set("editionId", id);
-        },
-        modeToString() {
-            switch (this.edition.mode) {
-                case 0:
-                    return "REMOTE"
-                case 1:
-                    return "HYBRID"
-                case 2:
-                    return "IN-OFFICE"
-            }
-        },
-
-    },
-    computed: {
-        isOwner() {
-            if (this.$cookies.get("isOwner") == 1)
-                return true;
-            else
-                return false;
-        },
-
+  components: {
+    NavBar,
+    SideBar,
+  },
+  data() {
+    return {
+      cookiesId: this.$cookies.get("programId"),
+      cookiesEdit: this.$cookies.get("editionId"),
+      cookiesUser: this.$cookies.get("id"),
+      edition: [],
+      showMore: true,
     }
+  },
+  created() {
+    axios.get(`/Edition/showInfoEdition?idProgram=${this.cookiesId}&idEdition=${this.cookiesEdit}`)
+      .then(function (response) {
+        return response;
+      })
+      .then(response => {
+        if (response.status == 200) {
+          this.edition = response.data;
+        } else if (response.status == 204) {
+          alert("There was an error on our database! Please, try again later.");
+        }
+      })
+  },
+  methods: {
+
+    hasEndDate() {
+      return this.edition.endDate == null ? '' : (' - ' + this.formatDate(this.edition.endDate));
+    },
+    formatDate(value) {
+      if (value) {
+        return moment(String(value)).format('MM/DD/YYYY')
+      }
+    },
+    settingCookies(id) {
+      this.$cookies.set("editionId", id);
+    },
+    modeToString() {
+      switch (this.edition.mode) {
+        case 0:
+          return "REMOTE"
+        case 1:
+          return "HYBRID"
+        case 2:
+          return "IN-OFFICE"
+      }
+    },
+    goBack() {
+      this.$router.push({ name: 'ProgramsPage' });
+      return;
+    }
+
+  },
+  computed: {
+    isOwner() {
+      if (this.$cookies.get("isOwner") == 1)
+        return true;
+      else
+        return false;
+    },
+
+  }
 })
 </script>
 
 <template>
 
-    <NavBar></NavBar>
-    <SideBar></SideBar>
-    <div class="container">
+  <NavBar></NavBar>
+  <SideBar></SideBar>
+  <div class="container">
+    <RouterLink to="/programinfo" class="goBack"> &larr; Go back</RouterLink>
 
-        <p class="title">{{ edition.programName }} - {{ edition.name }} &nbsp; [ {{ modeToString() }} ]</p>
-        <p class="date">{{ formatDate(this.edition.startDate) }}{{ hasEndDate() }}</p>
-        <p class="description">{{ edition.description }}</p>
+    <p class="title">{{ edition.programName }} - {{ edition.name }} &nbsp; [ {{ modeToString() }} ]</p>
+    <p class="date">{{ formatDate(this.edition.startDate) }}{{ hasEndDate() }}</p>
+    <p class="description">{{ edition.description }}</p>
 
-        <div class="bottomInfo">
-            <RouterLink v-if="isOwner" class="button dds__button dds__button--primary" style="color:white ; text-decoration : none" type="button" to="/UpdateEdition">
-                <img src="../assets/pencil.png" alt="pencil icon" width="19">
-                Update Edition
-            </RouterLink>
-        </div>
-
+    <div class="bottomInfo">
+      <RouterLink v-if="isOwner" class="button dds__button dds__button--primary"
+        style="color:white ; text-decoration : none" type="button" to="/UpdateEdition">
+        <img src="../assets/pencil.png" alt="pencil icon" width="19">
+        Update Edition
+      </RouterLink>
     </div>
+
+  </div>
 </template>
 
 <style scoped>
@@ -255,5 +261,13 @@ body {
 
 .initialCard {
   display: block;
+}
+
+.goBack {
+  position: relative;
+  right: 46%;
+  text-decoration: none;
+  color: #0672CB;
+  font-weight: 300;
 }
 </style>
