@@ -3,8 +3,31 @@ import NavBar from '../components/NavBar.vue';
 import SideBar from '../components/SideBar.vue';
 import { defineComponent } from 'vue';
 import axios from 'axios';
-// import ApiHandler from '../libs/ApiHandler';
 import moment from 'moment';
+
+// interface Data {
+//   cookiesId: number,
+//   cookiesPermission: number,
+//   cookiesUser: number,
+//   program: Program | null,
+//   owners: Owner | null,
+//   editions: [],
+//   showMore: boolean,
+// }
+
+// type Program = {
+//   name: string,
+//   endDate: Date | string | null,
+//   startDate: Date | string, 
+//   description: string
+// }[];
+
+// type Owner = {
+//   name: string,
+//   id: number
+// }[];
+
+
 
 
 export default defineComponent({
@@ -81,13 +104,13 @@ export default defineComponent({
         if (this.owners.length == 1) {
           retorno += owner.name;
         } else {
-           if (pos == this.owners.length - 2) {
+          if (pos == this.owners.length - 2) {
             retorno += owner.name + ' and '
-           } else if (pos != this.owners.length - 1) {
+          } else if (pos != this.owners.length - 1) {
             retorno += owner.name + ', '
-           } else {
+          } else {
             retorno += owner.name;
-           }
+          }
         }
         pos++;
       })
@@ -118,7 +141,7 @@ export default defineComponent({
       } else {
         return 's'
       }
-    } 
+    }
   }
 })
 </script>
@@ -219,7 +242,7 @@ body {
   position: relative;
 }
 
-.description a{
+.description a {
   color: #0672CB;
   font-size: 15px;
 }

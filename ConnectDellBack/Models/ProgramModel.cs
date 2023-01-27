@@ -13,8 +13,8 @@ public class ProgramModel{
     [Required]
     public DateTime startDate {get;set;}
     
-    [IsValidEndDate ("startDate")]
-    public DateTime? endDate {get;set;}
+    //[IsValidEndDate ("startDate")]
+    public DateTime? endDate {get;set;} 
 
     [Required]
     [StringLength(1500, MinimumLength = 10, ErrorMessage = "The program's description must be at most 500 characters.")]

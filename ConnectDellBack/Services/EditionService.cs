@@ -10,6 +10,8 @@ public class EditionService : IEditionService
         _dbContext = dbContext;
     }
 
+    
+
     public async Task<int> addEdition(EditionDTO edition)
     {
         var edt = new EditionModel()
@@ -30,5 +32,11 @@ public class EditionService : IEditionService
             return entries;
     }
 
-    
+    public async Task<UserDTO> showUser(int idEdition)
+    {
+        // var interns = _dbContext.users.Include(i => i.editionIntern)
+        //                               .Where(i => i.role == Role.Intern)
+        //                               .Where(i => i.listEditions.)
+    return new UserDTO();
+    }
 }

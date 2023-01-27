@@ -22,7 +22,7 @@ public class PhasesModel {
     [Required]
     public DateTime startDate {get;set;}
     
-    [IsValidEndDate ("startDate")]
+    //[IsValidEndDate ("startDate")]
     public DateTime? endDate {get;set;}
 
     [StringLength(500, MinimumLength = 10, ErrorMessage = "The program's member list must be at most 500 characters.")]
