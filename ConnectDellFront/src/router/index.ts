@@ -59,13 +59,23 @@ const router = createRouter({
       name: 'addnews',
       component: () => import('../views/AddNewsView.vue')
     },
-    //{ path: '/notfound(.*)*', name: 'NotFound', component:() => import ('..views/NotFoundView.vue'},
+
+    {
+      path: '/notfound(.*)*',
+      name: 'NotFound',
+      component: () => import('../views/NotFoundView.vue')
+    },
+    {
+      path: '/editprogram/:idProgram',
+      name: 'EditProgram',
+      component: () => import('../views/EditProgramView.vue')
+    },
     
     {
-       path: '/editprogram/:idProgram',
-       name: 'EditProgram',
-       component: () => import('../views/EditProgramView.vue')
-     },
+      path: '/usertable',
+      name: 'usertable', 
+      component: () => import('../views/UserTableView.vue')
+    }
   ]
 })
 

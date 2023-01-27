@@ -9,6 +9,8 @@ namespace ConnectDellBack.Services
         public Task<int> addEdition(EditionDTO edition);
         public Task<int> updateEdition(EditionDTO editionForm);
         public Task<EditionDTO> getEditionInfo(int idProgram, int idEdition);
+        public Task<UserDTO> showUser(int idEdition);
+
     }
 
 }

@@ -8,17 +8,21 @@
                 <div class="dds__row">
                     <div class="dds__col--12 dds__col--sm-12">
                         <div class="dds__input-text__container">
-                            <label id="text-input-label-396765024" for="text-input-control-name-396765024">Program
-                                Name <span> *</span></label>
+
+                            <label id="text-input-label-396765024" for="text-input-control-name-396765024">Program Name
+                                <span> * </span></label>
+
                             <div class="dds__input-text__wrapper">
-                                <input v-model="program.name" type="text" class="dds__input-text"
+
+                                <input v-model="v$.program.name.$model" type="text" class="dds__input-text"
                                     name="text-input-control-name-396765024" id="text-input-control-396765024"
                                     aria-labelledby="text-input-label-396765024 text-input-helper-396765024"
                                     required="true" />
 
                                 <small id="text-input-helper-396765024" class="dds__input-text__helper"></small>
-                                <div id="text-input-error-396765024" class="dds__invalid-feedback">Enter a program name
-                                    to continue</div>
+                                <small class="warning" v-if="v$.program.name.$error">The Name field is required with at
+                                    least
+                                    5 and at most 50 characters.</small>
                             </div>
                         </div>
                     </div>
@@ -29,13 +33,18 @@
                     <div class="dds__col--3 dds__col--sm-3">
                         <div>
                             <label for="startDate">Start date <span> *</span></label>
-                            <input v-model="program.startDate" type="date" id="startDate" name="startDate">
+                            <input v-model="v$.program.startDate.$model" type="date" id="startDate" name="startDate">
+                            <small class="warning" v-if="v$.program.startDate.$error">The Start Date is
+                                required.</small>
                         </div>
                     </div>
                     <div class="enddate dds__col--3 dds__col--sm-3">
                         <div>
                             <label for="endDate">End date</label>
-                            <input v-model="program.endDate" type="date" id="endDate" name="endDate">
+                            <input v-model="v$.program.endDate.$model" type="date" id="endDate" name="endDate"
+                            :min="program.startDate">
+                            <small class="warning" v-if="v$.program.endDate.$error">The End Date must be after the Start
+                                Date.</small>
                         </div>
                     </div>
                 </div>
@@ -45,8 +54,11 @@
                         <div class="dds__select" data-dds="select">
                             <label id="select-label-141366292" for="select-control-141366292">Owners <span>
                                     *</span></label>
+
                             <div class="multiselec dds__select__wrapper">
-                                <MultiSelect style="box-shadow: none ;" v-model="program.members" />
+                                <MultiSelect style="box-shadow: none ;" v-model="v$.program.members.$model" />
+                                <small class="warning" v-if="v$.program.members.$error">The Members field is
+                                    required.</small>
                             </div>
                         </div>
                     </div>
@@ -63,19 +75,21 @@
                                 <textarea class="dds__text-area" name="text-area-control-name-980579425"
                                     id="text-area-control-980579425" data-maxlength="null" required="true"
                                     aria-labelledby="text-area-label-980579425 text-area-helper-980579425"
-                                    v-model="program.description"></textarea>
+                                    v-model="v$.program.description.$model"></textarea>
                                 <small id="text-area-helper-980579425" class="dds__input-text__helper"></small>
-                                <small id="text-area-error-980579425" class="dds__invalid-feedback">Enter a description
-                                    to continue</small>
+                                <small class="warning" v-if="v$.program.description.$error">The Description field is
+                                    required with at least 10 and at most 1500 characters.</small>
                             </div>
                         </div>
                     </div>
                 </div>
             </fieldset>
-            <button class="submitbutton dds__button dds__button--lg" type="submit"
-                @click.prevent="onSubmit()">Submit</button>
+            <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()"
+                :disabled="v$.$invalid">Submit</button>
         </form>
+
     </div>
+
 
 
 </template>
@@ -84,6 +98,8 @@
 import { defineComponent } from 'vue';
 import MultiSelect from './MultipleSelect.vue';
 import axios from 'axios';
+import { useVuelidate } from '@vuelidate/core';
+import { minLength, maxLength, required } from '@vuelidate/validators';
 
 type User = {
     id: number,
@@ -100,9 +116,34 @@ interface Data {
     },
     total: null | User,
     options: null | User
+
 }
 
 export default defineComponent({
+    setup() {
+        return { v$: useVuelidate() }
+    },
+    validations() {
+        return {
+            program: {
+                name: {
+                    required,
+                    minLength: minLength(5),
+                    maxLength: maxLength(50)
+                },
+                members: { required },
+                description: {
+                    required,
+                    minLength: minLength(10),
+                    maxLength: maxLength(1500)
+                },
+                startDate: { required },
+                endDate: {
+
+                }
+            }
+        }
+    },
     components: {
         MultiSelect
     },
@@ -117,14 +158,38 @@ export default defineComponent({
             },
             total: null,
             options: null
+
         };
     },
     methods: {
         onSubmit(): void {
+            if(this.program.endDate == null){
             axios.post('/program/addProgram', {
                 name: this.program.name,
                 startDate: this.program.startDate = new Date(),
-                endDate: this.program.endDate,
+                description: this.program.description,
+                owners: this.program.members,
+                editions: null,
+                ownerships: null,
+                memberships: null
+            })
+                .then(function (response) {
+                    return response;
+                })
+                .then(response => {
+                    if (response.status == 200) {
+                        this.$router.push({ name: 'HomePage' });
+                        return;
+                    } else if (response.status == 404) {
+                        this.$router.push({ name: 'HomePage' });
+                        alert("There was an error on our database! Please, try again later.");
+                    }
+                })
+        } else {
+            axios.post('/program/addProgram', {
+                name: this.program.name,
+                startDate: this.program.startDate = new Date(),
+                endDate: this.program.endDate = new Date(),
                 description: this.program.description,
                 owners: this.program.members,
                 editions: null,
@@ -144,6 +209,7 @@ export default defineComponent({
                     }
                 })
         }
+    }
     }
 });
 </script>
@@ -207,6 +273,12 @@ span {
     margin-left: 4px;
     color: #0063B8;
     font-weight: bold;
+}
+
+.warning {
+    display: flex;
+    color: rgb(150 29 29);
+    margin-top: 2px;
 }
 </style>
 

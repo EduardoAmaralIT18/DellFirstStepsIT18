@@ -6,6 +6,8 @@ using ConnectDellBack.DTOs;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
+
 namespace ConnectDellBack.Tests
 {
     [TestFixture]
@@ -55,10 +57,18 @@ namespace ConnectDellBack.Tests
             return actionResult.Result.ToString();
         }
 
-        [OneTimeTearDown]
+        public async Task<String> ShowBasicInfoByController_ReturnTrue()
+        {
+            ActionResult<ProgramInfoDTO> actionResult = await programController.showBasicInfo(20);
+            return actionResult.Result.ToString();
+        }
+
+        [OneTimeTearDown] 
         public void CleanUp()
         {
             context.Database.EnsureDeleted();
         }
     }
+
 }
+

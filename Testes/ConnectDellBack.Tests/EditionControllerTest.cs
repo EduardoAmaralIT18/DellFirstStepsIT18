@@ -64,6 +64,16 @@ namespace ConnectDellBack.Tests
             return actionResult.Result.ToString();
         }
 
+        [Test]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult" )]
+        public async Task<String> HTTTPGET_updateEdition_ReturnOK()
+        {
+            ActionResult<IEnumerable<EditionDTO>> actionResult = await editionController.updateEdition(edition);
+
+            Console.WriteLine(actionResult);
+            return actionResult.Result.ToString();
+        }
+
         [OneTimeTearDown]
         public void CleanUp()
         {
