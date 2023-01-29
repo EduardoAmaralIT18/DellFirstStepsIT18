@@ -41,7 +41,7 @@
             <div class="enddate dds__col--3 dds__col--sm-3">
               <div>
                 <label for="endDate">End date</label>
-                <input v-model="program.endDate" type="date" id="endDate" name="endDate" />
+                <input v-model="program.endDate" type="date" id="endDate" name="endDate" :min="program.startDate"/>
               </div>
             </div>
           </div>
@@ -50,7 +50,8 @@
               <div class="dds__select" data-dds="select">
                 <label id="select-label-141366292" for="select-control-141366292">Owners <span> *</span></label>
                 <div class="multiselec dds__select__wrapper">
-                  <MultiSelect v-model="program.owners" />
+                  <MultiSelect v-model="v$.program.owners.$model"/>
+                  <small v-if="v$.program.owners.$error" class="help-block">Please select at least one owner.</small>
                 </div>
               </div>
             </div>
@@ -149,7 +150,8 @@ export default defineComponent({
       program: {
         name: { required },
         description: { required, maxLength: maxLength(1500), minLength: minLength(10) },
-        startDate: { required }
+        startDate: { required },
+        owners: { required }
       }
     }
 
