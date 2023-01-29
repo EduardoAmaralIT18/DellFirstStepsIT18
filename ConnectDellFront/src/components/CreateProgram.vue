@@ -328,7 +328,13 @@ span {
 .multiselect:hover {
     border: .0625rem solid rgb(6, 114, 203);
 }
-
+.goBack {
+  position: relative;
+  right: 46%;
+  text-decoration: none;
+  color: #0672CB;
+  font-weight: 300;
+}
 .dates input:hover {
     border: .0625rem solid rgb(6, 114, 203);
 }

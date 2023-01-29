@@ -1,6 +1,7 @@
 <template>
     <div v-if="role == 0" class="container">
         <div class="top">
+            <RouterLink to="/news" class="goBack"> &larr; Go back</RouterLink>
             <h2>Add News</h2>
         </div>
         <div class="container2">
@@ -175,11 +176,10 @@ export default defineComponent({
                         'Content-Type': 'multipart/form-data'
                     }
                 }).then(function (response) {
-                    console.log("chegou aqui");
                     return response;
                 }).then(response => {
-                    console.log("chegou depois aqui");
                     if (response.status == 200) {
+                        alert("Content added!");
                         this.$router.push({ name: 'NewsPage' });
                     } else if (response.status == 404) {
                         alert("Database error! Please try again later");
@@ -266,6 +266,13 @@ button {
 }
 small{
     color: red;
+}
+.goBack {
+  position: relative;
+  right: 46%;
+  text-decoration: none;
+  color: #0672CB;
+  font-weight: 300;
 }
 .warning {
     display: flex;

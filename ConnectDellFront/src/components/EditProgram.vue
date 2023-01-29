@@ -189,11 +189,11 @@ export default defineComponent({
           memberships: null,
         })
           .then(function (response) {
-            alert("Program updated!");
             return response;
           })
           .then((response) => {
             if (response.status == 200) {
+              alert("Program updated!");
               this.$router.push({ name: "ProgramsPage" });
               return;
               //ver se daria apra fazer um !=200

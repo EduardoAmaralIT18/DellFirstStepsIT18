@@ -67,7 +67,7 @@
                 <div class="enddate dds__col--3 dds__col--sm-3">
                     <div>
                         <label for="endDate"> End date </label>
-                        <input v-model="edition.endDate" type="date" id="endDate" name="endDate">
+                        <input v-model="edition.endDate" type="date" id="endDate" name="endDate" :min="edition.startDate">
                     </div>
                 </div>
             </div>
@@ -183,7 +183,7 @@ export default defineComponent({
     },
     validations() {
         return {
-            edition: { name: { required }, startDate: { required } }
+            edition: { name: { required }, startDate: { required },endDate: {required} }
         }
     },
     created() {
@@ -230,6 +230,7 @@ export default defineComponent({
                     })
                     .then(response => {
                         if (response.status == 200) {
+                            alert("Edition updated!");
                             this.$router.push({ name: 'ProgramsPage' });
                             return;
                         } else if (response.status == 404) {
@@ -338,9 +339,6 @@ label {
     background-clip: padding-box;
 }
 
-.enddate input {
-    background-color: rgba(181, 181, 181, 0.233);
-}
 
 span {
     margin-left: 4px;
