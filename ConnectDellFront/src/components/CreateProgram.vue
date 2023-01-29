@@ -1,6 +1,7 @@
 <template>
 
     <div class="container">
+        <RouterLink to="/home" class="goBack"> &larr; Go back</RouterLink>
         <form data-dds="form" class="dds__form dds__container">
             <fieldset class="dds__form__section">
                 <h2 class="title">Create Program</h2>

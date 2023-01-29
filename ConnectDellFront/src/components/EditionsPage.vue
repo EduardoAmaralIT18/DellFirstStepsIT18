@@ -80,7 +80,7 @@ export default defineComponent({
 
   <NavBar></NavBar>
   <SideBar></SideBar>
-  <div class="container">
+  <div class="container" v-if="edition.length != 0">
     <RouterLink to="/programinfo" class="goBack"> &larr; Go back</RouterLink>
 
     <p class="title">{{ edition.programName }} - {{ edition.name }} &nbsp; [ {{ modeToString() }} ]</p>
@@ -95,6 +95,12 @@ export default defineComponent({
       </RouterLink>
     </div>
 
+  </div>
+  <div v-else class="container">
+    <div class="dds__loading-indicator">
+      <div class="dds__loading-indicator__label">Loading...</div>
+      <div class="dds__loading-indicator__spinner"></div>
+    </div>
   </div>
 </template>
 

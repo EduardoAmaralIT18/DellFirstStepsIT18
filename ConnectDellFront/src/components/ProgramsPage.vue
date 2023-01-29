@@ -156,7 +156,7 @@ export default defineComponent({
 <template>
   <NavBar></NavBar>
   <SideBar></SideBar>
-  <div class="container">
+  <div class="container" v-if="program.length != 0">
     <p class="title">{{ program.name }}</p>
     <p class="date">{{ formatDate(this.program.startDate) }}{{ hasEndDate() }}</p>
     <p class="description">{{ howMuchOfDescriptionShown }} &nbsp; <a @click="toggleShowMore()" v-if="showMoreMethod()"
@@ -218,6 +218,12 @@ export default defineComponent({
 
 
   </div> <!-- ends the container-->
+  <div v-else class="container">
+    <div class="dds__loading-indicator">
+      <div class="dds__loading-indicator__label">Loading...</div>
+      <div class="dds__loading-indicator__spinner"></div>
+    </div>
+  </div>
 </template>
 
 <style scoped>

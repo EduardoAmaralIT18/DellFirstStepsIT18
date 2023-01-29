@@ -4,6 +4,7 @@
 <template>
 
 <div class="container">
+    <RouterLink to="/programinfo" class="goBack"> &larr; Go back</RouterLink>
         <form data-dds="form" class="dds__form dds__container">
             <!-- <fieldset class="dds__form__section"> -->
 
@@ -327,5 +328,13 @@ span {
     margin-left: 4px;
     color: #0063B8;
     font-weight: bold;
+}
+
+.goBack {
+  position: relative;
+  right: 40%;
+  text-decoration: none;
+  color: #0672CB;
+  font-weight: 300;
 }
 </style>
