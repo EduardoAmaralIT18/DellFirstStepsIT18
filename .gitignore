@@ -29,8 +29,8 @@ bld/
 */**/obj/Debug
 */**/obj/Release
 
-# Migration Folder ?
-*/**/ConnectDellBack/Migrations
+# Migration Folder
+Migrations
 
 # Visual Studio 2015 cache/options directory
 .vs/
