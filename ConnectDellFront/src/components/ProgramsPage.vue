@@ -205,7 +205,7 @@ export default defineComponent({
               <div class="dds__card__body">{{ edition.description }} </div>
               <div class="dds__card__footer">
                 <RouterLink
-                  style="text-decoration: none;   font-size: 15px;  position: absolute;  bottom: 0;  text-align: center;   left: 0;  margin-left: 20px;  margin-top: 10px;  padding-bottom: 17px;"
+                  style=" color: #0672CB; text-decoration: none;   font-size: 15px;  position: absolute;  bottom: 0;  text-align: center;   left: 0;  margin-left: 20px;  margin-top: 10px;  padding-bottom: 17px;"
                   to="/editioninfo" @click="settingCookies(edition.id)"> View More ➔
                 </RouterLink>
               </div>
