@@ -21,6 +21,7 @@ public class EditionModel{
     public DateTime startDate {get;set;}
 
     //[IsValidEndDate ("startDate")]
+    [Required]
     public DateTime? endDate {get;set;}
 
     [StringLength(500, MinimumLength = 10, ErrorMessage = "The program's description must be at most 500 characters.")]
