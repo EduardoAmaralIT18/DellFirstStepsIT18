@@ -64,7 +64,7 @@ Agora na pasta do projeto, chamada Dell_FirstSteps, rodar o comanado para instal
 
 Após isso. instale o Vuelidate.
 
-- npm install @vuelidate/core @vuelidate/validators
+- `npm install @vuelidate/core @vuelidate/validators`
 
 Para buildar o projeto, utilize o comando: `dotnet build`.
 Para rodar o projeto, utilize os seguintes comandos nas pastas de backend ou frontend: 
