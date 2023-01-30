@@ -1,5 +1,5 @@
 <template>
-<!-- Comentário AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-->
+    <!-- Comentário AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-->
     <div class="container">
         <RouterLink to="/editioninfo" class="goBack"> &larr; Go back</RouterLink>
         <form data-dds="form" class="dds__form dds__container">
@@ -57,19 +57,24 @@
 
             <div class="dates dds__row">
                 <div class="dds__col--3 dds__col--sm-3">
-                    <div>
+                    <div class="dds__text-area__header">
                         <label for="startDate">Start date <span>*</span></label>
                         <small v-if="v$.edition.startDate.$error" class="help-block">The Start Date field is
                             required</small>
+                    </div>
+                    <div class="dds__text-area__wrapper">
                         <input v-model="v$.edition.startDate.$model" type="date" id="startDate" name="startDate">
                     </div>
                 </div>
                 <div class="enddate dds__col--3 dds__col--sm-3">
-                    <div>
+                    <div class="dds__text-area__header">
                         <label for="endDate"> End date <span>*</span></label>
-                        <!-- <small v-if="v$.edition.endDate.$error" class="help-block">The End Date field is
-                            required</small> -->
-                        <input v-model="edition.endDate" type="date" id="endDate" name="endDate">
+                        <small v-if="v$.edition.endDate.$error" class="help-block">The End Date field is
+                            required</small>
+                    </div>
+                    <div class="dds__text-area__wrapper">
+                        <input v-model="v$.edition.endDate.$model" type="date" id="endDate" name="endDate"
+                            :min="edition.startDate">
                     </div>
                 </div>
             </div>
@@ -131,8 +136,8 @@
                 </div>
             </div>
             <!-- </fieldset> -->
-            <button class="submitbutton dds__button dds__button--lg" type="submit"
-                @click.prevent="onSubmit()" :disabled="v$.$invalid">Submit</button>
+            <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()"
+                :disabled="v$.$invalid">Submit</button>
         </form>
     </div>
 
@@ -185,7 +190,7 @@ export default defineComponent({
     },
     validations() {
         return {
-            edition: { name: { required }, startDate: { required },endDate: {required} }
+            edition: { name: { required }, startDate: { required }, endDate: { required } }
         }
     },
     created() {
@@ -213,8 +218,8 @@ export default defineComponent({
     methods: {
         onSubmit(): void {
             //this.edition.program = this.$cookies.get("programId");
-            if (!this.v$.$invalid){
-                axios.post('/edition/updateEdition', { 
+            if (!this.v$.$invalid) {
+                axios.post('/edition/updateEdition', {
                     id: this.edition.id,
                     name: this.edition.name,
                     startDate: this.edition.startDate,
@@ -319,9 +324,10 @@ label {
     background-clip: padding-box;
 }
 
-#intern_select{
+#intern_select {
     width: 100%;
 }
+
 .dates {
     text-align: left;
     display: flex;
@@ -349,10 +355,10 @@ span {
 }
 
 .goBack {
-  position: relative;
-  right: 40%;
-  text-decoration: none;
-  color: #0672CB;
-  font-weight: 300;
+    position: relative;
+    right: 40%;
+    text-decoration: none;
+    color: #0672CB;
+    font-weight: 300;
 }
 </style>
