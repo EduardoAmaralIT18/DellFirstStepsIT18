@@ -5,8 +5,6 @@
             <h2>Add News</h2>
         </div>
         <div class="container2">
-            <p class="warning">All fields marked with an (*) are required.</p>
-            <br />
             <form data-dds="form" class="dds__form" enctype="multipart/form-data">
                 <fieldset class="dds__form__section">
                     <div class="dds__row">
@@ -74,8 +72,7 @@
                         </div>
                     </div>
                 </fieldset>
-                <button class="dds__button dds__button--lg" type="submit" @click.prevent="addContent">Add
-                    Content</button>
+                <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="addContent" :disabled="v$.$invalid">Submit</button>
             </form>
         </div>
     </div>
@@ -269,7 +266,7 @@ small{
 }
 .goBack {
   position: relative;
-  right: 46%;
+  right: 40%;
   text-decoration: none;
   color: #0672CB;
   font-weight: 300;
@@ -278,5 +275,10 @@ small{
     display: flex;
     margin-top: 31px;
     margin-bottom: -3px;
+}
+
+.submitbutton {
+    display: flex;
+    float: left;
 }
 </style>

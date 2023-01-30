@@ -91,7 +91,7 @@ export default defineComponent({
       <RouterLink v-if="isOwner" class="button dds__button dds__button--primary"
         style="color:white ; text-decoration : none" type="button" to="/UpdateEdition">
         <img src="../assets/pencil.png" alt="pencil icon" width="19">
-        Update Edition
+        Manage Edition
       </RouterLink>
     </div>
 

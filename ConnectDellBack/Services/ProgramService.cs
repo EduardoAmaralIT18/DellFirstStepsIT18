@@ -153,7 +153,7 @@ public class ProgramService : IProgramService
         {
             users.Add(await _dbContext.users.Where(user => user.id == item.id).FirstOrDefaultAsync());
         }
-        
+
         ProgramDB.owners.AddRange(users);
 
         int entries = await _dbContext.SaveChangesAsync();

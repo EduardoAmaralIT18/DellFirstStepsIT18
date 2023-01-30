@@ -168,7 +168,7 @@ export default defineComponent({
         <RouterLink style="text-decoration: none" :to= "{name: 'EditProgram', params:{idProgram:cookiesId}}">
       <p v-if="isOwner" class="button dds__button dds__button--primary" type="button">
         <img src="../assets/pencil.png" alt="pencil icon" width="19">
-        Edit Program
+        Manage Program
       </p>
     </RouterLink>
     </div>

@@ -65,8 +65,10 @@
                 </div>
                 <div class="enddate dds__col--3 dds__col--sm-3">
                     <div>
-                        <label for="endDate"> End date </label>
-                        <input v-model="edition.endDate" type="date" id="endDate" name="endDate" :min="edition.startDate">
+                        <label for="endDate"> End date <span>*</span></label>
+                        <small v-if="v$.edition.endDate.$error" class="help-block">The End Date field is
+                            required</small>
+                        <input v-model="v$.edition.endDate.$model" type="date" id="endDate" name="endDate" :min="edition.startDate">
                     </div>
                 </div>
             </div>
@@ -128,7 +130,7 @@
                     </div>
                 </div>
             <!-- </fieldset> -->
-            <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()">Submit</button>
+            <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()" :disabled="v$.$invalid">Submit</button>
         </form>
     </div>
 
@@ -296,7 +298,7 @@ label {
 .submitbutton {
     margin-top: 30px;
     display: flex;
-    float: right;
+    float: left;
     width: 20%;
     font-size: 20px;
     margin-bottom: 12%;

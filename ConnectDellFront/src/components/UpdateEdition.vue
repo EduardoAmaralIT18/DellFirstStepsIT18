@@ -5,7 +5,7 @@
         <form data-dds="form" class="dds__form dds__container">
             <!-- <fieldset class="dds__form__section"> -->
 
-            <p class="title">Update Edition</p>
+            <p class="title">Manage Edition</p>
 
             <div class="dds__row">
                 <div class="dds__col--12 dds__col--sm-12">
@@ -66,8 +66,10 @@
                 </div>
                 <div class="enddate dds__col--3 dds__col--sm-3">
                     <div>
-                        <label for="endDate"> End date </label>
-                        <input v-model="edition.endDate" type="date" id="endDate" name="endDate" :min="edition.startDate">
+                        <label for="endDate"> End date <span>*</span></label>
+                        <small v-if="v$.edition.endDate.$error" class="help-block">The End Date field is
+                            required</small>
+                        <input v-model="v$.edition.endDate.$model" type="date" id="endDate" name="endDate" :min="edition.startDate">
                     </div>
                 </div>
             </div>
@@ -130,7 +132,7 @@
             </div>
             <!-- </fieldset> -->
             <button class="submitbutton dds__button dds__button--lg" type="submit"
-                @click.prevent="onSubmit()">Submit</button>
+                @click.prevent="onSubmit()" :disabled="v$.$invalid">Submit</button>
         </form>
     </div>
 
@@ -216,7 +218,7 @@ export default defineComponent({
                     id: this.edition.id,
                     name: this.edition.name,
                     startDate: this.edition.startDate,
-                    endDate: this.edition.endDate,
+                    endDate: this.edition.endDate ? this.edition.endDate : null,
                     description: this.edition.description,
                     curriculum: this.edition.curriculum,
                     mode: this.edition.mode,
@@ -300,7 +302,7 @@ label {
 .submitbutton {
     margin-top: 30px;
     display: flex;
-    float: right;
+    float: left;
     width: 20%;
     font-size: 20px;
     margin-bottom: 12%;
