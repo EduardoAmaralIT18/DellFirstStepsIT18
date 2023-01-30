@@ -62,6 +62,10 @@ Agora na pasta do projeto, chamada Dell_FirstSteps, rodar o comanado para instal
 - Vue: `npm install vue-router@4`
 - Cookies: `npm install vue-cookies --save`
 
+Após isso. instale o Vuelidate.
+
+- npm install @vuelidate/core @vuelidate/validators
+
 Para buildar o projeto, utilize o comando: `dotnet build`.
 Para rodar o projeto, utilize os seguintes comandos nas pastas de backend ou frontend: 
 
