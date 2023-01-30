@@ -170,7 +170,11 @@ export default defineComponent({
         if (response.status == 200) {
           this.program = response.data;
           this.program.startDate = new Date(response.data.startDate).toISOString().slice(0, 10);
-          this.program.endDate = response.data.endDate ? new Date(response.data.endDate).toISOString().slice(0, 10) : null;
+
+          // EndDate desse if é o valor igual ao nulo na database
+          if (this.program.endDate != null) {
+            this.program.endDate = new Date(response.data.endDate).toISOString().substring(0, 10);
+          }
           return;
         } else if (response.status == 404) {
           this.$router.push({ name: "ProgramsPage" });
