@@ -269,7 +269,7 @@ body {
   font-weight: 590;
 }
 .button {
-  width: 120px;
+  width: 140px;
   font-size: 13px;
   height: 8%;
   margin-left: auto;
