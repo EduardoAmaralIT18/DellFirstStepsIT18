@@ -3,16 +3,18 @@
         <div class="top">
             <h2>News</h2>
             <div v-if="role == 0">
-                <button class="dds__button dds__button--primary dds__button--lg" type="button">
-                    <i class="dds__icon dds__icon--plus-add" aria-hidden="true"></i>Add News
-                </button>
+                <RouterLink to="/addnews"> <button class="dds__button dds__button--primary dds__button--lg"
+                        type="button">
+                        <i class="dds__icon dds__icon--plus-add" aria-hidden="true"></i>Add News
+                    </button>
+                </RouterLink>
             </div>
         </div>
         <div v-if="news != null" class="dds__col-12 dds__col--md-6 dds__col--lg-4 dds__mb-3">
             <div v-for="item in newsShown" :key="item.id" class="dds__card" id="card-news">
-                <div class="dds__card__media">
-                    <!-- <div v-if="item.image != null" class="dds__card__media"></div> -->
-                    <img src="https://super.abril.com.br/wp-content/uploads/2017/12/a-verdadeira-histc3b3ria-de-natal.png?w=1024" />
+                <!-- <div class="dds__card__media"></div> -->
+                <div v-if="item.image != null" class="dds__card__media">
+                    <img :src=item.image />
                 </div>
                 <div class="dds__card__content">
                     <div class="dds__card__header">
@@ -30,6 +32,12 @@
                 </div>
             </div>
         </div>
+        <div v-else>
+            <div class="dds__loading-indicator">
+                <div class="dds__loading-indicator__label">Loading...</div>
+                <div class="dds__loading-indicator__spinner"></div>
+            </div>
+        </div>
         <div v-if="countNews != totalNews">
             <button class="dds__button dds__button--primary dds__button--lg" type="button" @click="moreNews">
                 See More
@@ -40,8 +48,16 @@
 <script lang="ts" >
 import { defineComponent } from 'vue';
 import axios from 'axios';
+import { RouterLink } from 'vue-router';
 
 type News = {
+    id: number,
+    title: string,
+    text: string,
+    author: string,
+    program: string,
+    date: string,
+    image: null | string,
 }[];
 
 interface Data {
@@ -54,9 +70,13 @@ interface Data {
 }
 
 export default defineComponent({
+    name: 'NewsPage',
+    components: {
+        RouterLink,
+    },
     data(): Data {
         return {
-            user: null, 
+            user: null,
             news: null,
             role: 5,
             newsShown: [],
@@ -77,7 +97,6 @@ export default defineComponent({
         fetchData(): void {
             this.news = null;
 
-            //por enquano cookies nao setados
             this.role = this.$cookies.get("role");
             this.user = this.$cookies.get("id");
 
@@ -88,15 +107,14 @@ export default defineComponent({
                 .then(response => {
                     if (response.status == 404) {
                         this.news = null;
-                        return;
+                        alert("No news found!");
                     } else if (response.status == 200) {
                         this.news = response.data;
                         this.totalNews = this.news?.length;
                         this.moreNews();
-                        return;
                     } else {
+                        alert("Databade error. Please try again later.");
                         console.log(response.status);
-                        return;
                     }
 
                 });
@@ -150,6 +168,10 @@ h2 {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+a {
+    text-decoration: none;
 }
 
 #card-news {

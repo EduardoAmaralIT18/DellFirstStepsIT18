@@ -8,7 +8,7 @@
   
   <main>
     <NavBar></NavBar>
-    <SideBar view="home"></SideBar>
+    <SideBar></SideBar>
     <CreateProgram />
     <RouterView />
   </main>
