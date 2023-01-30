@@ -65,7 +65,9 @@
                 </div>
                 <div class="enddate dds__col--3 dds__col--sm-3">
                     <div>
-                        <label for="endDate"> End date </label>
+                        <label for="endDate"> End date <span>*</span></label>
+                        <!-- <small v-if="v$.edition.endDate.$error" class="help-block">The End Date field is
+                            required</small> -->
                         <input v-model="edition.endDate" type="date" id="endDate" name="endDate">
                     </div>
                 </div>
