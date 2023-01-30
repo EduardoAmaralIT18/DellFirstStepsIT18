@@ -1,8 +1,9 @@
 <template>
   <div class="container">
+    <RouterLink to="/programinfo" class="goBack"> &larr; Go back</RouterLink>
     <form data-dds="form" class="dds__form dds__container">
       <fieldset class="dds__form__section">
-        <h2 class="title">Edit Program</h2>
+        <h2 class="title">Manage Program</h2>
         <div v-if="program.id === null">
           <div class="dds__loading-indicator">
             <div class="dds__loading-indicator__label">Loading...</div>
@@ -40,16 +41,19 @@
             <div class="enddate dds__col--3 dds__col--sm-3">
               <div>
                 <label for="endDate">End date</label>
-                <input v-model="program.endDate" type="date" id="endDate" name="endDate" />
+                <input v-model="program.endDate" type="date" id="endDate" name="endDate" :min="program.startDate" />
               </div>
             </div>
           </div>
           <div class="dds__row">
             <div class="dds__col--12 dds__col--sm-12">
               <div class="dds__select" data-dds="select">
-                <label id="select-label-141366292" for="select-control-141366292">Owners <span> *</span></label>
+                <div class="dds__text-area__header">
+                  <label id="select-label-141366292" for="select-control-141366292">Owners <span> *</span></label>
+                  <small v-if="v$.program.owners.$error" class="help-block">Please select at least one owner.</small>
+                </div>
                 <div class="multiselec dds__select__wrapper">
-                  <MultiSelect v-model="program.owners" />
+                  <MultiSelect v-model="v$.program.owners.$model" />
                 </div>
               </div>
             </div>
@@ -75,7 +79,8 @@
               </div>
             </div>
           </div>
-          <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()">
+          <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()"
+            :disabled="v$.$invalid">
             Submit
           </button>
         </div>
@@ -148,7 +153,8 @@ export default defineComponent({
       program: {
         name: { required },
         description: { required, maxLength: maxLength(1500), minLength: minLength(10) },
-        startDate: { required }
+        startDate: { required },
+        owners: { required }
       }
     }
 
@@ -184,7 +190,7 @@ export default defineComponent({
           id: this.program.id,
           name: this.program.name,
           startDate: this.program.startDate,
-          endDate: this.program.endDate,
+          ednDate: this.program.endDate ? this.program.endDate : null,
           description: this.program.description,
           owners: this.program.owners,
           editions: null,
@@ -192,11 +198,11 @@ export default defineComponent({
           memberships: null,
         })
           .then(function (response) {
-            alert("Program updated!");
             return response;
           })
           .then((response) => {
             if (response.status == 200) {
+              alert("Program updated!");
               this.$router.push({ name: "ProgramsPage" });
               return;
               //ver se daria apra fazer um !=200
@@ -207,7 +213,7 @@ export default defineComponent({
               );
             }
           });
-      }else{
+      } else {
         this.v$.$validate();
       }
     }
@@ -242,7 +248,7 @@ label {
 .submitbutton {
   margin-top: 30px;
   display: flex;
-  float: right;
+  float: left;
   width: 20%;
   font-size: 20px;
   margin-bottom: 12%;
@@ -318,5 +324,13 @@ span {
 
 small {
   color: red;
+}
+
+.goBack {
+  position: relative;
+  right: 40%;
+  text-decoration: none;
+  color: #0672CB;
+  font-weight: 300;
 }
 </style>

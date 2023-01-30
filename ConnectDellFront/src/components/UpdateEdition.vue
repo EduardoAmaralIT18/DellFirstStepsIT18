@@ -1,10 +1,11 @@
 <template>
 <!-- Comentário AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-->
     <div class="container">
+        <RouterLink to="/editioninfo" class="goBack"> &larr; Go back</RouterLink>
         <form data-dds="form" class="dds__form dds__container">
             <!-- <fieldset class="dds__form__section"> -->
 
-            <p class="title">Update Edition</p>
+            <p class="title">Manage Edition</p>
 
             <div class="dds__row">
                 <div class="dds__col--12 dds__col--sm-12">
@@ -131,7 +132,7 @@
             </div>
             <!-- </fieldset> -->
             <button class="submitbutton dds__button dds__button--lg" type="submit"
-                @click.prevent="onSubmit()">Submit</button>
+                @click.prevent="onSubmit()" :disabled="v$.$invalid">Submit</button>
         </form>
     </div>
 
@@ -184,7 +185,7 @@ export default defineComponent({
     },
     validations() {
         return {
-            edition: { name: { required }, startDate: { required } }
+            edition: { name: { required }, startDate: { required },endDate: {required} }
         }
     },
     created() {
@@ -217,7 +218,7 @@ export default defineComponent({
                     id: this.edition.id,
                     name: this.edition.name,
                     startDate: this.edition.startDate,
-                    endDate: this.edition.endDate,
+                    endDate: this.edition.endDate ? this.edition.endDate : null,
                     description: this.edition.description,
                     curriculum: this.edition.curriculum,
                     mode: this.edition.mode,
@@ -231,6 +232,7 @@ export default defineComponent({
                     })
                     .then(response => {
                         if (response.status == 200) {
+                            alert("Edition updated!");
                             this.$router.push({ name: 'ProgramsPage' });
                             return;
                         } else if (response.status == 404) {
@@ -300,7 +302,7 @@ label {
 .submitbutton {
     margin-top: 30px;
     display: flex;
-    float: right;
+    float: left;
     width: 20%;
     font-size: 20px;
     margin-bottom: 12%;
@@ -339,13 +341,18 @@ label {
     background-clip: padding-box;
 }
 
-.enddate input {
-    background-color: rgba(181, 181, 181, 0.233);
-}
 
 span {
     margin-left: 4px;
     color: #0063B8;
     font-weight: bold;
+}
+
+.goBack {
+  position: relative;
+  right: 40%;
+  text-decoration: none;
+  color: #0672CB;
+  font-weight: 300;
 }
 </style>
