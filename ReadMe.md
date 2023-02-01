@@ -57,7 +57,7 @@ Após ela ter sido criada, ela tera um numero associado a mesma, como no caso de
 
 #### Finalizações
 
-Agora na pasta do projeto, chamada Dell_FirstSteps, rodar o comanado para instalar o Vue e os Cookies.
+Agora na pasta do projeto, chamada Dell_FirstSteps, rodar o comando para instalar o Vue e os Cookies, no frontend.
 
 - Vue: `npm install vue-router@4`
 - Cookies: `npm install vue-cookies --save`
