@@ -61,7 +61,7 @@
                   <label id="text-area-label-980579425" for="text-area-control-980579425">Description<span>
                       *</span></label>
                   <small v-if="v$.program.description.$error" class="help-block">Please enter a proper description
-                    (between 10 and 500 characters).</small>
+                    (between 10 and 1500 characters).</small>
                 </div>
                 <div class="dds__text-area__wrapper">
                   <textarea class="dds__text-area" name="text-area-control-name-980579425"
