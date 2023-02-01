@@ -266,9 +266,6 @@ label {
     background-clip: padding-box;
 }
 
-.enddate input {
-    background-color: rgba(181, 181, 181, 0.233);
-}
 
 span {
     margin-left: 4px;
@@ -315,9 +312,6 @@ span {
     background-clip: padding-box;
 }
 
-.enddate input {
-    background-color: rgba(181, 181, 181, 0.233);
-}
 
 span {
     margin-left: 4px;
