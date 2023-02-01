@@ -80,7 +80,7 @@ export default defineComponent({
 
   <NavBar></NavBar>
   <SideBar></SideBar>
-  <div class="container">
+  <div class="container" v-if="edition.length != 0">
     <RouterLink to="/programinfo" class="goBack"> &larr; Go back</RouterLink>
 
     <p class="title">{{ edition.programName }} - {{ edition.name }} &nbsp; [ {{ modeToString() }} ]</p>
@@ -91,10 +91,16 @@ export default defineComponent({
       <RouterLink v-if="isOwner" class="button dds__button dds__button--primary"
         style="color:white ; text-decoration : none" type="button" to="/UpdateEdition">
         <img src="../assets/pencil.png" alt="pencil icon" width="19">
-        Update Edition
+        Manage Edition
       </RouterLink>
     </div>
 
+  </div>
+  <div v-else class="container">
+    <div class="dds__loading-indicator">
+      <div class="dds__loading-indicator__label">Loading...</div>
+      <div class="dds__loading-indicator__spinner"></div>
+    </div>
   </div>
 </template>
 
@@ -146,7 +152,7 @@ body {
 }
 
 .button {
-  width: 120px;
+  width: 140px;
   font-size: 13px;
   height: 8%;
   margin-left: auto;

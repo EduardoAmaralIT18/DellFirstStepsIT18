@@ -57,10 +57,14 @@ Após ela ter sido criada, ela tera um numero associado a mesma, como no caso de
 
 #### Finalizações
 
-Agora na pasta do projeto, chamada Dell_FirstSteps, rodar o comanado para instalar o Vue e os Cookies.
+Agora na pasta do projeto, chamada Dell_FirstSteps, rodar o comando para instalar o Vue e os Cookies, no frontend.
 
 - Vue: `npm install vue-router@4`
 - Cookies: `npm install vue-cookies --save`
+
+Após isso. instale o Vuelidate.
+
+- `npm install @vuelidate/core @vuelidate/validators`
 
 Para buildar o projeto, utilize o comando: `dotnet build`.
 Para rodar o projeto, utilize os seguintes comandos nas pastas de backend ou frontend: 
@@ -88,7 +92,7 @@ Para executar a aplicação desenvolvida no projeto, após fazer o clone do git 
 #### Erros comuns
   
 - Axios:
-  - Caso occora um erro de Axios, rode o seguinte comando no terminal do frontend: `install --save axios vue-axios`
+  - Caso occora um erro de Axios, rode o seguinte comando no terminal do frontend: `npm install --save axios vue-axios`
 
 - Database
   - Caso sua database não esteja funcionando corretamente, delete a pasta Migrations do seu projeto, e rode os seguintes comandos no terminal do Backend:

@@ -1,10 +1,11 @@
 <template>
 
     <div class="container">
+        <RouterLink to="/home" class="goBack"> &larr; Go back</RouterLink>
         <form data-dds="form" class="dds__form dds__container">
             <fieldset class="dds__form__section">
+                
                 <h2 class="title">Create Program</h2>
-
                 <div class="dds__row">
                     <div class="dds__col--12 dds__col--sm-12">
                         <div class="dds__input-text__container">
@@ -242,7 +243,7 @@ label {
 .submitbutton {
     margin-top: 30px;
     display: flex;
-    float: right;
+    float: left;
     width: 20%;
     font-size: 20px;
     margin-bottom: 12%;
@@ -327,7 +328,13 @@ span {
 .multiselect:hover {
     border: .0625rem solid rgb(6, 114, 203);
 }
-
+.goBack {
+  position: relative;
+  right: 40%;
+  text-decoration: none;
+  color: #0672CB;
+  font-weight: 300;
+}
 .dates input:hover {
     border: .0625rem solid rgb(6, 114, 203);
 }
