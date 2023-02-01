@@ -185,12 +185,15 @@ export default defineComponent({
   methods: {
     onSubmit(): void {
       if (!this.v$.$invalid) {
-
+        let targetEndDate = null;
+        if (this.program.endDate != "") {
+          targetEndDate = this.program.endDate;
+        }
         axios.post('/Program/UpdateProgram', {
           id: this.program.id,
           name: this.program.name,
           startDate: this.program.startDate,
-          endDate: this.program.endDate,
+          endDate: targetEndDate,
           description: this.program.description,
           owners: this.program.owners,
           editions: null,
@@ -271,10 +274,6 @@ label {
   background-clip: padding-box;
 }
 
-.enddate input {
-  background-color: rgba(181, 181, 181, 0.233);
-}
-
 span {
   margin-left: 4px;
   color: #0063b8;
@@ -312,9 +311,6 @@ span {
   background-clip: padding-box;
 }
 
-.enddate input {
-  background-color: rgba(181, 181, 181, 0.233);
-}
 
 span {
   margin-left: 4px;
