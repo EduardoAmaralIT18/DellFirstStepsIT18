@@ -70,12 +70,17 @@ const router = createRouter({
       name: 'EditProgram',
       component: () => import('../views/EditProgramView.vue')
     },
-    
+
     {
       path: '/usertable',
-      name: 'usertable', 
+      name: 'usertable',
       component: () => import('../views/UserTableView.vue')
-    }
+    },
+    { 
+      path: '/calendar', 
+      name: 'calendar', 
+      component: () => import('../components/CalendarCreate.vue') 
+    },
   ]
 })
 
