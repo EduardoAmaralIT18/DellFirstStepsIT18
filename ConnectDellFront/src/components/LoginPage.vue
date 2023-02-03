@@ -12,31 +12,60 @@
   </header>
 
   <div class="container">
-    <p class="title">Sign in</p>
+
+    <button class="dds__button" id="example" type="button">Launch modal button</button>
+    <div role="dialog" data-dds="modal" class="dds__modal" data-trigger="#example" id="uniqueid" ref="uniqueid"
+      aria-labelledby="modal-headline-165940478">
+      <div class="dds__modal__content">
+        <div class="dds__modal__header">
+          <h3 class="dds__modal__title" id="modal-headline-165940478">Present new laptop</h3>
+        </div>
+        <div id="modal-body-594623040" class="dds__modal__body">
+          <p>
+            Small, light, and stylish laptops and 2-in-1s designed for ultimate productivity. A new era of collaboration
+            and connectivity to
+            work anywhere. XPS laptops and 2-in-1s are precision crafted with premium materials, featuring stunning
+            displays and the performance
+            you demand to express your creative self and your big ideas.
+            <a href="https://www.dell.com">dell.com</a>
+          </p>
+        </div>
+        <div class="dds__modal__footer">
+          <button class="dds__button dds__button--secondary dds__button--md" type="button"
+            name="modal-primary-button">No</button>
+          <button class="dds__button dds__button--md" type="button" name="modal-secondary-button">Yes</button>
+        </div>
+      </div>
+    </div>
 
 
+    <form>
 
-  <form>
-
-    <div class="dds__select" data-dds="select">
-    <div class="dds__select__wrapper">
-    <select :value="0" v-model="us.id" id="select-control-374041805" class="dds__select__field" aria-describedby="select-helper-374041805">
-      <option :value="0" selected>Select</option>
-      <option v-for="item in user" v-bind:value="item.id" v-bind:key="item.id">
-        {{ item.email }}
-      </option>
-    </select>
+      <div class="dds__select" data-dds="select">
+        <div class="dds__select__wrapper">
+          <select :value="0" v-model="us.id" id="select-control-374041805" class="dds__select__field"
+            aria-describedby="select-helper-374041805">
+            <option :value="0" selected>Select</option>
+            <option v-for="item in user" v-bind:value="item.id" v-bind:key="item.id">
+              {{ item.email }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <button class="submitbutton dds__button dds__button--lg" type="submit"
+        @click.prevent="setCookies()">Login</button>
+    </form>
   </div>
-</div>
-    <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="setCookies()">Login</button>
-  </form>
-</div>
 </template>
 
 <script lang="ts">
-
 import { defineComponent } from "vue";
 import axios from "axios";
+
+import { ref} from 'vue';
+const root = ref<HTMLElement | null>(null);
+
+declare var DDS: any;
 
 type User = {
   id: Number;
@@ -89,6 +118,12 @@ export default defineComponent({
           this.user = response.data;
           return;
         });
+        
+      const element = root;
+      console.log(element);
+      console.log(DDS);
+      DDS.Modal(element, { trigger: "#example" });
+
     },
     setCookies(): void {
       var user = this.user?.find(u => u.id == this.us.id);
@@ -114,10 +149,10 @@ body {
 }
 
 button {
-   display: flex;
+  display: flex;
   width: 50%;
   margin: 8% auto;
-  }
+}
 
 .container {
   padding-top: 3%;
@@ -160,8 +195,6 @@ div {
   top: 0;
   position: relative;
 }
-
-
 </style>
 
 <style>
