@@ -10,7 +10,7 @@ public class EditionService : IEditionService
         _dbContext = dbContext;
     }
 
-    
+
 
     public async Task<int> addEdition(EditionDTO edition)
     {
@@ -23,13 +23,14 @@ public class EditionService : IEditionService
             curriculum = edition.curriculum,
             numberOfInterns = edition.numberOfInterns,
             numberOfMembers = edition.numberOfMembers,
+            members = edition.members,
             mode = (Mode)edition.mode,
             program = _dbContext.programs.Where(prog => prog.id == edition.program).FirstOrDefault(),
         };
 
         await _dbContext.editions.AddAsync(edt);
         int entries = await _dbContext.SaveChangesAsync();
-            return entries;
+        return entries;
     }
 
 
@@ -40,9 +41,10 @@ public class EditionService : IEditionService
         //Descobrir como enviar esse objeto atualizado, sem criar um novo.
 
         //                                                      !
-        var edition =  _dbContext.editions.Where(ed => ed.id == editionForm.id).FirstOrDefault();
+        var edition = _dbContext.editions.Where(ed => ed.id == editionForm.id).FirstOrDefault();
 
-        if(edition != null) {
+        if (edition != null)
+        {
             edition.name = editionForm.name;
             edition.startDate = editionForm.startDate;
             edition.endDate = editionForm.endDate;
@@ -50,12 +52,15 @@ public class EditionService : IEditionService
             edition.curriculum = editionForm.curriculum;
             edition.numberOfMembers = editionForm.numberOfMembers;
             edition.numberOfInterns = editionForm.numberOfInterns;
-            edition.mode = (Mode) editionForm.mode;
+            edition.members = editionForm.members;
+            edition.mode = (Mode)editionForm.mode;
 
             int entries = await _dbContext.SaveChangesAsync();
             return 1;
 
-        } else {
+        }
+        else
+        {
 
             return 0;
 
@@ -63,7 +68,8 @@ public class EditionService : IEditionService
 
     }
 
-    public async Task<EditionDTO> getEditionInfo(int idProgram, int idEdition) {
+    public async Task<EditionDTO> getEditionInfo(int idProgram, int idEdition)
+    {
         var edition = await _dbContext.editions.Where(ed => ed.id == idEdition)
                                                 .Include(ed => ed.program)
                                                 .FirstOrDefaultAsync();
@@ -75,6 +81,19 @@ public class EditionService : IEditionService
         // var interns = _dbContext.users.Include(i => i.editionIntern)
         //                               .Where(i => i.role == Role.Intern)
         //                               .Where(i => i.listEditions.)
-    return new UserDTO();
+        return new UserDTO();
+    }
+
+    public async Task<IEnumerable<UserDTO>> getUsersNotAdmin()
+    {
+        var aux = await _dbContext.users.Where(usr => ((int)usr.role) != 0)
+                                    .ToArrayAsync<UserModel>();
+        
+        var members = new List<UserDTO>();
+        foreach (var item in aux)
+        {
+            members.Add(UserDTO.convertToDTO(item));
+        }
+        return members;
     }
 }

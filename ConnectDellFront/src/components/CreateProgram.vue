@@ -57,7 +57,7 @@
                                     *</span></label>
 
                             <div class="multiselec dds__select__wrapper">
-                                <MultiSelect style="box-shadow: none ;" v-model="v$.program.members.$model" />
+                                <MultiSelect style="box-shadow: none ;" v-model="v$.program.members.$model" tipo="owner"/>
                                 <small class="warning" v-if="v$.program.members.$error">The Members field is
                                     required.</small>
                             </div>

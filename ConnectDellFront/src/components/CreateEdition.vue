@@ -45,6 +45,20 @@
 
                 </div>
 
+                <div class="dds__col--12 dds__col--sm-12">
+                        <div class="dds__select" data-dds="select">
+                            <label id="select-label-141366292" for="select-control-141366292">Members <span>
+                                    *</span></label>
+
+                            <div class="multiselec dds__select__wrapper">
+                                                        <!--Colocar os  v$.editon.members.$model-->
+                                <MultiSelect style="box-shadow: none ;" v-model="edition.members" tipo="members"/>
+                                <!-- <small class="warning" v-if="v$.edition.members.$error">The Members field is
+                                    required.</small> -->
+                            </div>
+                        </div>
+                    </div>
+
                 <!-- <div class="dds__col--3 dds__col--sm-3">
                         <div class="dds__input-text__container">
                             <label id="text-input-label-396765024" for="text-input-control-name-396765024">Number of members </label>
@@ -150,13 +164,20 @@ import { defineComponent } from 'vue';
 import axios from 'axios';
 import { useVuelidate } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
+import MultiSelect from './MultipleSelect.vue';
 
+
+type User = {
+    id: number,
+    name: string
+}[];
 
 interface Data {
     edition: {
         name: string,
         numberOfInterns: Number,
         numberOfMembers: Number,
+        members: User | null,
         description: string,
         curriculum: string,
         mode: Number,
@@ -175,12 +196,16 @@ export default defineComponent({
             edition: { name: { required }, startDate: { required }, endDate: { required } }
         }
     },
+    components:{
+        MultiSelect
+    },
     data(): Data {
         return {
             edition: {
                 name: '',
                 numberOfInterns: 0,
                 numberOfMembers: 1,
+                members: null,
                 description: '',
                 curriculum: '',
                 mode: 1,
@@ -188,8 +213,6 @@ export default defineComponent({
                 endDate: new Date().toISOString().slice(0, 10),
                 program: 0
             },
-
-
 
         };
 
@@ -209,8 +232,9 @@ export default defineComponent({
                     description: this.edition.description,
                     curriculum: this.edition.curriculum,
                     mode: this.edition.mode,
-                    numberOfMembers: this.edition.numberOfMembers,
                     numberOfInterns: this.edition.numberOfInterns,
+                    numberOfMembers: this.edition.members?.length,
+                    members: this.edition.members,
                     program: this.edition.program,
                 })
                     .then(function (response) {

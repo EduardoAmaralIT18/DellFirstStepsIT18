@@ -52,4 +52,13 @@ public class EditionController : ControllerBase
         return result == null ? NoContent() : Ok(result);
     }
 
+    //GetUsers que não são admins. 
+    [HttpGet("getUsersNotAdmin")]
+    public async Task<ActionResult<UserDTO>> getUsersNotAdmin() {
+        var result = await _service.getUsersNotAdmin();
+        return result == null ? NoContent() : Ok(result);
+    }
+
+    
+
 }

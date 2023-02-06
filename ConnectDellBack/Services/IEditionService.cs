@@ -10,6 +10,7 @@ namespace ConnectDellBack.Services
         public Task<int> updateEdition(EditionDTO editionForm);
         public Task<EditionDTO> getEditionInfo(int idProgram, int idEdition);
         public Task<UserDTO> showUser(int idEdition);
+        public Task<IEnumerable<UserDTO>> getUsersNotAdmin();
 
     }
 

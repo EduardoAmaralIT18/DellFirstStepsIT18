@@ -25,6 +25,7 @@ public class EditionDTO
           aux.name = edition.name;
           aux.numberOfInterns = edition.numberOfInterns;
           aux.numberOfMembers = edition.numberOfMembers;
+          aux.members = edition.members;
           aux.description = edition.description;
           aux.curriculum = edition.curriculum;
           aux.mode = (int)edition.mode;
