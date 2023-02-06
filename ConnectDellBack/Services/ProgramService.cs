@@ -141,23 +141,27 @@ public class ProgramService : IProgramService
                                                                 .Include(prog => prog.owners)
                                                                 .Include(prog => prog.ownerships)
                                                                 .FirstOrDefaultAsync();
-        ProgramDB.name = program.name;
-        ProgramDB.startDate = program.startDate;
-        ProgramDB.endDate = program.endDate;
-        ProgramDB.description = program.description;
-        ProgramDB.owners.Clear();
-
-        List<UserModel> users = new List<UserModel>();
-
-        foreach (var item in program.owners)
-        {
-            users.Add(await _dbContext.users.Where(user => user.id == item.id).FirstOrDefaultAsync());
-        }
         
-        ProgramDB.owners.AddRange(users);
+        if(ProgramDB != null) {
+            ProgramDB.name = program.name;
+            ProgramDB.startDate = program.startDate;
+            ProgramDB.endDate = program.endDate;
+            ProgramDB.description = program.description;
+            ProgramDB.owners.Clear();
 
-        int entries = await _dbContext.SaveChangesAsync();
-        return entries;
+            List<UserModel> users = new List<UserModel>();
+
+            foreach (var item in program.owners)
+            {
+                users.Add(await _dbContext.users.Where(user => user.id == item.id).FirstOrDefaultAsync());
+            }
+            
+            ProgramDB.owners.AddRange(users);
+
+            int entries = await _dbContext.SaveChangesAsync();
+            return 1;
+        }
+        return 0;
 
     }
 
