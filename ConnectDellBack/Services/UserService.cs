@@ -74,4 +74,6 @@ public class UserService : IUserService
         var userList = dbUser.users.OrderBy(user => user.email).ToList();
         return userList;
     }
+
+    
 }

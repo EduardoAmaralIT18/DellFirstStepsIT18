@@ -29,8 +29,16 @@ public class UserController : ControllerBase
         return owners;
     }
 
+
+    [HttpGet("listUsers")]
+    public IEnumerable<UserModel> ListUsers()
+    {
+        var list = _service.listUsers();
+        return list;
+    }
+}
+
     // [HttpPost("createProgram")]
     // public async Task<ActionResult<string>> createProgram(ProgramModel program) {
 
     // }
-}
