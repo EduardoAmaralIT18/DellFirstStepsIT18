@@ -53,7 +53,8 @@ public class EditionService : IEditionService
         //Descobrir como enviar esse objeto atualizado, sem criar um novo.
 
         //                                                      !
-        var edition = _dbContext.editions.Where(ed => ed.id == editionForm.id).FirstOrDefault();
+        var edition = _dbContext.editions.Where(ed => ed.id == editionForm.id)
+                                        .FirstOrDefault();
 
         if (edition != null)
         {
@@ -90,6 +91,8 @@ public class EditionService : IEditionService
     {
         var edition = await _dbContext.editions.Where(ed => ed.id == idEdition)
                                                 .Include(ed => ed.program)
+                                                //.Include(ed => ed.membership)
+                                                .Include(ed => ed.members)
                                                 .FirstOrDefaultAsync();
         return EditionDTO.convertModel2DTO(edition);
     }

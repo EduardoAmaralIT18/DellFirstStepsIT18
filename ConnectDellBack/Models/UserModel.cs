@@ -20,7 +20,8 @@ public class UserModel{
     [Required(ErrorMessage = "Email can't be empty.")]
     [EmailAddress]
     //natalya.goelzer@edu.pucrs.br  
-    //[RegularExpression(@".+\@dell(team){0,1}\.com$")]
+    //  OLD REGEX:  [RegularExpression(@".+\@dell(team){0,1}\.com$")]
+    [RegularExpression(@"(.+\@dell(team){0,1}\.com$)|(.+\@edu.pucrs.br$)")]
     public String email { get; set; } =  null!;
     [Required]
     public Role role { get; set; }
@@ -35,6 +36,6 @@ public class UserModel{
     public List<MembershipModel>? memberships {get;set;} = new List<MembershipModel>();
     public List<NewsModel>? listNews {get; set;} = new List<NewsModel>();
 
-    //Comentando Projeto 
+
 
 }

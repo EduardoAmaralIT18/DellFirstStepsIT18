@@ -12,27 +12,33 @@ public class EditionDTO
     public DateTime startDate { get; set; }
     public DateTime? endDate { get; set; }
     public int program { get; set; }
-    public string programName {get;set;}
+    public string programName { get; set; }
 
-    public List<UserModel> members {get;set;}  = new List<UserModel>();
-    public List<MembershipModel> memberships {get;set;} = new List<MembershipModel>();
-    public List<UserModel> interns {get;set;} = new List<UserModel>();
-    public List<PhasesModel> phases {get;set;} = new List<PhasesModel>();
+    public List<UserModel> members { get; set; } = new List<UserModel>();
+    public List<MembershipModel> memberships { get; set; } = new List<MembershipModel>();
+    public List<UserModel> interns { get; set; } = new List<UserModel>();
+    public List<PhasesModel> phases { get; set; } = new List<PhasesModel>();
     public static EditionDTO convertModel2DTO(EditionModel edition)
     {
         EditionDTO aux = new EditionDTO();
-          aux.id = edition.id;
-          aux.name = edition.name;
-          aux.numberOfInterns = edition.numberOfInterns;
-          aux.numberOfMembers = edition.numberOfMembers;
-          aux.members = edition.members;
-          aux.description = edition.description;
-          aux.curriculum = edition.curriculum;
-          aux.mode = (int)edition.mode;
-          aux.startDate = edition.startDate;
-          aux.endDate = edition.endDate;
-          aux.program = edition.program.id;
-          aux.programName = edition.program.name;
+        aux.id = edition.id;
+        aux.name = edition.name;
+        aux.numberOfInterns = edition.numberOfInterns;
+        aux.numberOfMembers = edition.numberOfMembers;
+
+        foreach (var item in edition.members)
+        {
+            //edition.members.Add(item)
+            aux.members.Add(item);
+        }
+
+        aux.description = edition.description;
+        aux.curriculum = edition.curriculum;
+        aux.mode = (int)edition.mode;
+        aux.startDate = edition.startDate;
+        aux.endDate = edition.endDate;
+        aux.program = edition.program.id;
+        aux.programName = edition.program.name;
         return aux;
     }
 }

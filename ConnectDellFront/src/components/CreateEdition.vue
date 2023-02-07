@@ -40,7 +40,7 @@
                         </label>
                     </div>
                     <div id="intern_select">
-                        <input v-model="edition.numberOfInterns" type="number" min="1" max="22">
+                        <input style="width:100%;" v-model="edition.numberOfInterns" type="number" min="1" max="22">
                     </div>
 
                 </div>
@@ -256,7 +256,6 @@ export default defineComponent({
 
             if (!this.v$.$invalid && this.validateInterns) {
                 axios.post('/edition/addEdition', { //nome do controle na rota de EditionController (linha 9)
-
                     name: this.edition.name,
                     startDate: this.edition.startDate = new Date(),
                     endDate: this.edition.endDate,

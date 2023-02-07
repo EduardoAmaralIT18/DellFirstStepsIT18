@@ -1,5 +1,5 @@
 <template>
-    <!-- Comentário AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-->
+
     <div class="container">
         <RouterLink to="/editioninfo" class="goBack"> &larr; Go back</RouterLink>
         <form data-dds="form" class="dds__form dds__container">
@@ -35,23 +35,23 @@
                         </label>
                     </div>
                     <div id="intern_select">
-                        <input style="width:100%;" v-model="edition.numberOfInterns" type="number" min="1" max="22">
+                        <input style="width:100%;" v-model="v$.edition.numberOfInterns.$model" type="number" min="1" max="22">
                     </div>
                 </div>
 
-                <!-- <div class="multiselec dds__select__wrapper">
-                        <MultiSelect style="box-shadow: none ;" v-model="program.members" />
-                </div> -->
+                <div class="dds__col--12 dds__col--sm-12">
+                    <div class="member__select" data-dds="select">
+                        <label id="select-label-141366292" for="select-control-141366292">Members</label>
+                        <div class="multiselec dds__select__wrapper">
+                            <!--Colocar os  v$.editon.members.$model-->
+                            <MultiSelect style="box-shadow: none ;" v-model="v$.edition.members.$model"
+                                tipo="members" />
+                            <!-- <small class="warning" v-if="v$.edition.members.$error">The Members field is
+                                    required.</small> -->
+                        </div>
+                    </div>
+                </div>
 
-                <!-- <div class="dds__col--3 dds__col--sm-3">
-                    <div class="dds__input-text__container">
-                        <label id="text-input-label-396765024" for="text-input-control-name-396765024">Number of members
-                        </label>
-                    </div>
-                    <div id="member_select">
-                        <input v-model="edition.numberOfMembers" type="number" min="1" max="25">
-                    </div>
-                </div> -->
             </div>
 
 
@@ -147,8 +147,16 @@
 import { defineComponent } from 'vue';
 import axios from 'axios';
 import { useVuelidate } from '@vuelidate/core';
-import { required } from '@vuelidate/validators';
+import { required, maxLength, maxValue } from '@vuelidate/validators';
+import MultiSelect from './MultipleSelect.vue';
+
 //import moment from 'moment';
+
+type User = {
+    id: number,
+    name: string
+    role: number,
+}[];
 
 interface Data {
     edition: {
@@ -156,6 +164,7 @@ interface Data {
         name: string,
         numberOfInterns: Number,
         numberOfMembers: Number,
+        members: User | null,
         description: string,
         curriculum: string,
         mode: Number,
@@ -177,6 +186,7 @@ export default defineComponent({
                 name: '',
                 numberOfInterns: 0,
                 numberOfMembers: 0,
+                members: null,
                 description: '',
                 curriculum: '',
                 mode: 1,
@@ -190,8 +200,27 @@ export default defineComponent({
     },
     validations() {
         return {
-            edition: { name: { required }, startDate: { required }, endDate: { required } }
+            edition: {
+                name: {
+                    required
+                },
+                startDate: {
+                    required
+                },
+                endDate: {
+                    required
+                },
+                members: {
+                    maxLength: maxLength(25)
+                },
+                numberOfInterns: {
+                    maxValue: maxValue(21)
+                }
+            }
         }
+    },
+    components: {
+        MultiSelect
     },
     created() {
         axios.get(`/edition/showInfoEdition?idProgram=${this.cookiesId}&idEdition=${this.cookiesEdit}`)
@@ -200,16 +229,23 @@ export default defineComponent({
             })
             .then(response => {
                 if (response.status == 200) {
+                    //this.edition = response.data;
                     this.edition.id = response.data.id;
                     this.edition.name = response.data.name;
                     this.edition.numberOfInterns = response.data.numberOfInterns;
                     this.edition.numberOfMembers = response.data.numberOfMembers;
+                    this.edition.members = response.data.members;
+
+                    // response.data.members?.forEach(i => {
+                    //        this.edition.members?.push(i);
+                    // })
+
                     this.edition.description = response.data.description;
                     this.edition.curriculum = response.data.curriculum;
                     this.edition.mode = response.data.mode;
                     this.edition.startDate = new Date(response.data.startDate).toISOString().substring(0, 10);
                     this.edition.endDate = new Date(response.data.endDate).toISOString().substring(0, 10);
-                    this.edition.program = response.data.program;
+                    //this.edition.program = response.data.program;
                 } else if (response.status == 204) {
                     alert("There was an error on our database! Please, try again later.");
                 }
@@ -218,19 +254,19 @@ export default defineComponent({
     methods: {
         onSubmit(): void {
             //this.edition.program = this.$cookies.get("programId");
-            if (!this.v$.$invalid) {
+            if (!this.v$.$invalid && this.validateInterns) {
                 axios.post('/edition/updateEdition', {
                     id: this.edition.id,
                     name: this.edition.name,
-                    startDate: this.edition.startDate,
-                    endDate: this.edition.endDate ? this.edition.endDate : null,
+                    startDate: this.edition.startDate = new Date(),
+                    endDate: this.edition.endDate,
                     description: this.edition.description,
                     curriculum: this.edition.curriculum,
                     mode: this.edition.mode,
-                    numberOfMembers: this.edition.numberOfMembers,
                     numberOfInterns: this.edition.numberOfInterns,
+                    numberOfMembers: this.edition.members?.length,
+                    members: this.edition.members,
                     //program: this.edition.program,
-
                 })
                     .then(function (response) {
                         return response;
@@ -251,7 +287,23 @@ export default defineComponent({
 
         },
 
-    }
+    },
+    computed: {
+        validateInterns(): boolean {
+            var nInterns = 0;
+            this.edition.members?.forEach(i => {
+                if (i.role == 1) {
+                    nInterns++;
+                }
+            })
+
+            if (nInterns < 22 && nInterns > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    },
 });
 </script>
 
@@ -326,6 +378,7 @@ label {
 
 #intern_select {
     width: 100%;
+    margin-bottom: 2%;
 }
 
 .dates {
