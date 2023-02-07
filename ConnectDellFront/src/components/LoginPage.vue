@@ -13,14 +13,15 @@
 
   <div class="container">
 
+
+
     <button class="dds__button" id="example" type="button">Launch modal button</button>
-    <div role="dialog" data-dds="modal" class="dds__modal" data-trigger="#example" id="uniqueid" ref="uniqueid"
-      aria-labelledby="modal-headline-165940478">
+    <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
       <div class="dds__modal__content">
         <div class="dds__modal__header">
-          <h3 class="dds__modal__title" id="modal-headline-165940478">Present new laptop</h3>
+          <h3 class="dds__modal__title" id="modal-headline-369536123">Present new laptop</h3>
         </div>
-        <div id="modal-body-594623040" class="dds__modal__body">
+        <div id="modal-body-532887773" class="dds__modal__body">
           <p>
             Small, light, and stylish laptops and 2-in-1s designed for ultimate productivity. A new era of collaboration
             and connectivity to
@@ -37,7 +38,6 @@
         </div>
       </div>
     </div>
-
 
     <form>
 
@@ -61,11 +61,12 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import axios from "axios";
+//import {nextTick} from 'vue'
+//import {ref, Ref} from 'vue';
+//const root = ref<HTMLElement | null>(uniqueid);
+ declare var DDS: any;
 
-import { ref} from 'vue';
-const root = ref<HTMLElement | null>(null);
 
-declare var DDS: any;
 
 type User = {
   id: Number;
@@ -97,17 +98,27 @@ export default defineComponent({
       },
     };
   },
-
   created() {
     // fetch the data when the view is created and the data is
     // already being observed
     this.fetchData();
+  },
+  mounted() {
+    this.teste();
   },
   watch: {
     // call again the method if the route changes
     $route: "fetchData",
   },
   methods: {
+    teste(): void {
+      const element = this.$refs.uniqueid;
+      // console.log(element);
+      console.log(DDS);
+      console.log(element);
+      const modal = new DDS.Modal(element, { trigger: "#example" });
+      console.log(modal);
+    },
     fetchData(): void {
       axios
         .get("/Login/getUserList")
@@ -118,11 +129,6 @@ export default defineComponent({
           this.user = response.data;
           return;
         });
-        
-      const element = root;
-      console.log(element);
-      console.log(DDS);
-      DDS.Modal(element, { trigger: "#example" });
 
     },
     setCookies(): void {
