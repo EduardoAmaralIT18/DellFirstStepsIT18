@@ -79,6 +79,12 @@ export default defineComponent({
     }
   },
   methods: {
+ isEqual(){
+      if (this.v$.program.name != this.program.name){
+        return alert
+      }
+    },
+
     hasEndDate() {
       return this.program.endDate == null ? '' : (' - ' + this.formatDate(this.program.endDate));
     },

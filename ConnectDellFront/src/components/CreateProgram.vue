@@ -84,13 +84,13 @@
                     </div>
                 </div>
             </fieldset>
-            <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()"
+            <button class="submitbutton dds__button dds__button--lg" id="example" type="submit" @click.prevent="onSubmit()"
                 :disabled="v$.$invalid">Submit</button>
+                
         </form>
-
     </div>
 
-
+    <FeedbackModal/>
 
 </template>
 
@@ -100,6 +100,8 @@ import MultiSelect from './MultipleSelect.vue';
 import axios from 'axios';
 import { useVuelidate } from '@vuelidate/core';
 import { minLength, maxLength, required } from '@vuelidate/validators';
+import FeedbackModal from './FeedbackModal.vue';
+
 
 type User = {
     id: number,
@@ -118,6 +120,7 @@ interface Data {
     options: null | User
 
 }
+
 
 export default defineComponent({
     setup() {
@@ -145,7 +148,8 @@ export default defineComponent({
         }
     },
     components: {
-        MultiSelect
+        MultiSelect,
+        FeedbackModal
     },
     data(): Data {
         return {
@@ -215,6 +219,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
 body {
     font-family: 'Roboto', sans-serif;
 }
