@@ -31,7 +31,7 @@ public class EditionModel {
     [RegularExpression(@"\b([1-9]|[1-9][0-9])\b")]
     public int numberOfMembers {get;set;}
 
-    [Range (1,25, ErrorMessage = "The program must have at least 1 intern!")] // ask PO about the maximum number of interns
+    [Range (1,21, ErrorMessage = "The program must have at least 1 intern!")] // ask PO about the maximum number of interns
     [RegularExpression(@"\b([1-9]|[1-9][0-9])\b")]
     public int numberOfInterns {get;set;}
 

@@ -19,7 +19,8 @@ public class UserModel{
     public String name { get; set; } =  null!;
     [Required(ErrorMessage = "Email can't be empty.")]
     [EmailAddress]
-    [RegularExpression(@".+\@dell(team){0,1}\.com$")]
+    //natalya.goelzer@edu.pucrs.br  
+    //[RegularExpression(@".+\@dell(team){0,1}\.com$")]
     public String email { get; set; } =  null!;
     [Required]
     public Role role { get; set; }

@@ -14,6 +14,16 @@ public class EditionService : IEditionService
 
     public async Task<int> addEdition(EditionDTO edition)
     {
+        var aux = new List<UserModel>();
+        foreach (var item in edition.members)
+        {
+            var member = _dbContext.users.Where(usr => usr.id == item.id).FirstOrDefault();
+            aux.Add(member);
+        }
+
+        var targetInterns = aux;
+        targetInterns.Where(usr => usr.role == Role.Intern).ToList();
+        
         var edt = new EditionModel()
         {
             name = edition.name,
@@ -23,7 +33,9 @@ public class EditionService : IEditionService
             curriculum = edition.curriculum,
             numberOfInterns = edition.numberOfInterns,
             numberOfMembers = edition.numberOfMembers,
-            members = edition.members,
+            members = aux,
+            interns = targetInterns,
+
             mode = (Mode)edition.mode,
             program = _dbContext.programs.Where(prog => prog.id == edition.program).FirstOrDefault(),
         };
@@ -52,7 +64,13 @@ public class EditionService : IEditionService
             edition.curriculum = editionForm.curriculum;
             edition.numberOfMembers = editionForm.numberOfMembers;
             edition.numberOfInterns = editionForm.numberOfInterns;
-            edition.members = editionForm.members;
+            // edition.members = editionForm.members;
+
+            foreach (var item in editionForm.members)
+            {
+                 edition.members.Add(await _dbContext.users.Where(user => user.id == item.id).FirstOrDefaultAsync());
+            }
+            
             edition.mode = (Mode)editionForm.mode;
 
             int entries = await _dbContext.SaveChangesAsync();
@@ -87,7 +105,8 @@ public class EditionService : IEditionService
     public async Task<IEnumerable<UserDTO>> getUsersNotAdmin()
     {
         var aux = await _dbContext.users.Where(usr => ((int)usr.role) != 0)
-                                    .ToArrayAsync<UserModel>();
+                                        .OrderBy(usr => usr.name)
+                                        .ToArrayAsync<UserModel>();
         
         var members = new List<UserDTO>();
         foreach (var item in aux)

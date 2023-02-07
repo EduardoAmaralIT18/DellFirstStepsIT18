@@ -46,13 +46,11 @@
                 </div>
 
                 <div class="dds__col--12 dds__col--sm-12">
-                        <div class="dds__select" data-dds="select">
-                            <label id="select-label-141366292" for="select-control-141366292">Members <span>
-                                    *</span></label>
-
+                        <div class="member__select" data-dds="select">
+                            <label id="select-label-141366292" for="select-control-141366292">Members</label>
                             <div class="multiselec dds__select__wrapper">
                                                         <!--Colocar os  v$.editon.members.$model-->
-                                <MultiSelect style="box-shadow: none ;" v-model="edition.members" tipo="members"/>
+                                <MultiSelect style="box-shadow: none ;" v-model="v$.edition.members.$model" tipo="members"/>
                                 <!-- <small class="warning" v-if="v$.edition.members.$error">The Members field is
                                     required.</small> -->
                             </div>
@@ -153,7 +151,7 @@
             </div>
             <!-- </fieldset> -->
             <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()"
-                :disabled="v$.$invalid">Submit</button>
+                :disabled="v$.$invalid  && !validateInterns">Submit</button>
         </form>
     </div>
 
@@ -163,13 +161,14 @@
 import { defineComponent } from 'vue';
 import axios from 'axios';
 import { useVuelidate } from '@vuelidate/core';
-import { required } from '@vuelidate/validators';
+import { required, maxLength, maxValue } from '@vuelidate/validators';
 import MultiSelect from './MultipleSelect.vue';
 
 
 type User = {
     id: number,
     name: string
+    role: number,
 }[];
 
 interface Data {
@@ -193,7 +192,23 @@ export default defineComponent({
     },
     validations() {
         return {
-            edition: { name: { required }, startDate: { required }, endDate: { required } }
+            edition: { 
+                name: { 
+                    required 
+                }, 
+                startDate: { 
+                    required 
+                }, 
+                endDate: { 
+                    required 
+                },
+                members: {
+                    maxLength: maxLength(25)
+                },
+                numberOfInterns: {
+                    maxValue: maxValue(21)
+                }
+            }
         }
     },
     components:{
@@ -204,7 +219,7 @@ export default defineComponent({
             edition: {
                 name: '',
                 numberOfInterns: 0,
-                numberOfMembers: 1,
+                numberOfMembers: 0,
                 members: null,
                 description: '',
                 curriculum: '',
@@ -217,13 +232,29 @@ export default defineComponent({
         };
 
     },
+    computed: {
+        validateInterns() : boolean {
+            var nInterns = 0;
+            this.edition.members?.forEach(i => {
+                if (i.role == 1) {
+                    nInterns++;
+                }
+            })
+            
+            if(nInterns < 22 && nInterns > 0){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    },
     methods: {
         onSubmit(): void {
             //this.$cookies.set("targetProgramId" , 1);
             this.edition.program = this.$cookies.get("programId");
 
 
-            if (!this.v$.$invalid) {
+            if (!this.v$.$invalid && this.validateInterns) {
                 axios.post('/edition/addEdition', { //nome do controle na rota de EditionController (linha 9)
 
                     name: this.edition.name,
@@ -290,8 +321,10 @@ small {
     background-clip: padding-box;
 }
 
+
 #intern_select {
     width: 100%;
+    margin-bottom: 2%;
 }
 
 .mode {
