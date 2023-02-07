@@ -12,35 +12,7 @@
   </header>
 
   <div class="container">
-
-    <button class="dds__button" id="example" type="button">Launch modal button</button>
-    <div role="dialog" data-dds="modal" class="dds__modal" data-trigger="#example" id="uniqueid" ref="uniqueid"
-      aria-labelledby="modal-headline-165940478">
-      <div class="dds__modal__content">
-        <div class="dds__modal__header">
-          <h3 class="dds__modal__title" id="modal-headline-165940478">Present new laptop</h3>
-        </div>
-        <div id="modal-body-594623040" class="dds__modal__body">
-          <p>
-            Small, light, and stylish laptops and 2-in-1s designed for ultimate productivity. A new era of collaboration
-            and connectivity to
-            work anywhere. XPS laptops and 2-in-1s are precision crafted with premium materials, featuring stunning
-            displays and the performance
-            you demand to express your creative self and your big ideas.
-            <a href="https://www.dell.com">dell.com</a>
-          </p>
-        </div>
-        <div class="dds__modal__footer">
-          <button class="dds__button dds__button--secondary dds__button--md" type="button"
-            name="modal-primary-button">No</button>
-          <button class="dds__button dds__button--md" type="button" name="modal-secondary-button">Yes</button>
-        </div>
-      </div>
-    </div>
-
-
     <form>
-
       <div class="dds__select" data-dds="select">
         <div class="dds__select__wrapper">
           <select :value="0" v-model="us.id" id="select-control-374041805" class="dds__select__field"
@@ -61,11 +33,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import axios from "axios";
-
-import { ref} from 'vue';
-const root = ref<HTMLElement | null>(null);
-
-declare var DDS: any;
 
 type User = {
   id: Number;
@@ -118,11 +85,6 @@ export default defineComponent({
           this.user = response.data;
           return;
         });
-        
-      const element = root;
-      console.log(element);
-      console.log(DDS);
-      DDS.Modal(element, { trigger: "#example" });
 
     },
     setCookies(): void {
