@@ -159,7 +159,6 @@ button {
   width: 50%;
   margin: 8% auto;
 }
-
 .container {
   padding-top: 3%;
   display: flex;
@@ -170,10 +169,6 @@ button {
   position: relative;
 }
 
-div {
-  display: flex;
-  justify-content: center;
-}
 
 .title {
   color: #0063B8;
@@ -201,6 +196,8 @@ div {
   top: 0;
   position: relative;
 }
+
+
 </style>
 
 <style>
