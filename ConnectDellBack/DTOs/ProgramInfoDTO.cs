@@ -93,38 +93,47 @@ public class ProgramInfoDTO
                 { name = item.name, description = item.description, startDate = item.startDate, id = item.id, endDate = item.endDate });
             }
             aux.editions = aux.editions.OrderByDescending(i => i.startDate).ToList<EditionModel>();
-            foreach (var item in program.owners) 
-            { 
-                aux.owners.Add(new UserModel() 
-                { 
-                    name = item.name, 
-                }); 
+            foreach (var item in program.owners)
+            {
+                aux.owners.Add(new UserModel()
+                {
+                    name = item.name,
+                });
             }
         }
         return aux;
     }
 
-public static ProgramInfoDTO convertModel2DTONoPermission(ProgramModel program)
-{
-    ProgramInfoDTO aux = new ProgramInfoDTO();
-    if (program != null)
+    public static ProgramInfoDTO convertModel2DTONoPermission(ProgramModel program)
     {
-        aux.name = program.name;
-        aux.startDate = program.startDate;
-        if (program.endDate != null)
+        ProgramInfoDTO aux = new ProgramInfoDTO();
+        if (program != null)
         {
-            aux.endDate = program.endDate;
-        }
-        aux.description = program.description;
-        foreach (var item in program.owners)
-        {
-            aux.owners.Add(new UserModel()
+            aux.name = program.name;
+            aux.startDate = program.startDate;
+            if (program.endDate != null)
             {
-                name = item.name,
-            });
+                aux.endDate = program.endDate;
+            }
+            aux.description = program.description;
+            foreach (var item in program.owners)
+            {
+                aux.owners.Add(new UserModel()
+                {
+                    name = item.name,
+                });
+            }
         }
+        return aux;
     }
-    return aux;
-}
 
+public static ProgramInfoDTO convertModel2DTOProgramsName(ProgramModel program)
+    {
+        ProgramInfoDTO aux = new ProgramInfoDTO();
+        if (program != null)
+        {
+            aux.name = program.name;
+        }
+        return aux;
+    }
 }
