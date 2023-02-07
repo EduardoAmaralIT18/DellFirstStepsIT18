@@ -28,6 +28,7 @@ public class ProgramInfoDTO
                 name = item.name,
                 description = item.description,
                 startDate = item.startDate,
+                endDate = item.endDate,
                 id = item.id
             });
         }
@@ -59,7 +60,8 @@ public class ProgramInfoDTO
             {
                 name = edition.name,
                 description = edition.description,
-                startDate = edition.startDate
+                startDate = edition.startDate,
+                endDate = edition.endDate
             });
 
             foreach (var item in program.owners)
@@ -88,7 +90,7 @@ public class ProgramInfoDTO
             foreach (var item in editions)
             {
                 aux.editions.Add(new EditionModel()
-                { name = item.name, description = item.description, startDate = item.startDate, id = item.id });
+                { name = item.name, description = item.description, startDate = item.startDate, id = item.id, endDate = item.endDate });
             }
             aux.editions = aux.editions.OrderByDescending(i => i.startDate).ToList<EditionModel>();
             foreach (var item in program.owners) 
