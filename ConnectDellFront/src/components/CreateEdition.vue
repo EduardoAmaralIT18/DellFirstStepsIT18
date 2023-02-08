@@ -1,9 +1,27 @@
 
-<!-- Comentário AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA -->
-
 <template>
 
     <div class="container">
+
+        <!-- Linha abaixo alterar (Tirar do botão)-->
+        <!-- <button class="dds__button" id="example" type="button">Launch modal button</button> -->
+        <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
+            <div class="dds__modal__content">
+                <div class="dds__modal__header">
+                    <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
+                </div>
+                <div id="modal-body-532887773" class="dds__modal__body">
+                    <p>
+                       {{ messageError }}
+                    </p>
+                </div>
+                <div class="dds__modal__footer">
+                    <button class="dds__button dds__button--md" :class="{errorButton: buttonColor}" type="button" name="modal-secondary-button"  @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
+                </div>
+            </div>
+        </div>
+
+
         <RouterLink to="/programinfo" class="goBack"> &larr; Go back</RouterLink>
         <form data-dds="form" class="dds__form dds__container">
             <!-- <fieldset class="dds__form__section"> -->
@@ -150,7 +168,7 @@
                 </div>
             </div>
             <!-- </fieldset> -->
-            <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()"
+            <button class="submitbutton dds__button dds__button--lg" type="button"  id="example" @click.prevent="onSubmit()"
                 :disabled="v$.$invalid  && !validateInterns">Submit</button>
         </form>
     </div>
@@ -163,6 +181,7 @@ import axios from 'axios';
 import { useVuelidate } from '@vuelidate/core';
 import { required, maxLength, maxValue } from '@vuelidate/validators';
 import MultiSelect from './MultipleSelect.vue';
+declare var DDS: any;
 
 
 type User = {
@@ -183,12 +202,18 @@ interface Data {
         startDate: string | Date,
         endDate: null | Date | string,
         program: Number
-    }
+    },
+    messageError: string,
+    titleError: string,
+    buttonColor: boolean
 
 }
 export default defineComponent({
     setup() {
         return { v$: useVuelidate() }
+    },
+    mounted() {
+        this.teste();
     },
     validations() {
         return {
@@ -228,7 +253,9 @@ export default defineComponent({
                 endDate: new Date().toISOString().slice(0, 10),
                 program: 0
             },
-
+            messageError: '',
+            titleError: '',
+            buttonColor: true
         };
 
     },
@@ -249,6 +276,23 @@ export default defineComponent({
         }
     },
     methods: {
+        teste(): void {
+            const element = this.$refs.uniqueid;
+            // console.log(element);
+            console.log(DDS);
+            console.log(element);
+            const modal = new DDS.Modal(element, { trigger: "#example" });
+            console.log(modal);
+        },
+
+        checkName(): void {
+            //array.forEach(element => {
+                //if(element.name == this.name) {
+                    
+                //}
+            //});
+        },
+
         onSubmit(): void {
             //this.$cookies.set("targetProgramId" , 1);
             this.edition.program = this.$cookies.get("programId");
@@ -272,12 +316,22 @@ export default defineComponent({
                     })
                     .then(response => {
                         if (response.status == 200) {
-                            alert("Edition Created!");
-                            this.$router.push({ name: 'ProgramsPage' });
+                            // alert("Edition Created!");
+                            // this.$router.push({ name: 'ProgramsPage' });
+                            this.titleError = "Edition Created";
+                            this.messageError = `The edition "${this.edition.name}" of ${this.$cookies.get("programName")} was successfully created.`;
                             return;
                         } else if (response.status == 404) {
-                            this.$router.push({ name: 'ProgramsPage' });
-                            alert("There was an error on our database! Please, try again later.");
+                            //this.$router.push({ name: 'ProgramsPage' });
+                            //alert("There was an error on our database! Please, try again later.");
+
+                            this.titleError = "Error";
+                            this.messageError = "I'm sorry, something went wrong in our database. Try again later.";
+                            this.buttonColor = false;
+                        } else {
+                            this.titleError = "Error";
+                            this.messageError = "I'm sorry, something went wrong. Try again later.";
+                            this.buttonColor = false;
                         }
                     })
 
@@ -400,5 +454,15 @@ span {
     text-decoration: none;
     color: #0672CB;
     font-weight: 300;
+}
+
+.errorButton{
+    background-color: rgb(206,17,38);
+    border-color: rgb(206,17,38);
+}
+
+.errorButton:hover {
+    background-color: rgb(145, 13, 29);
+    border-color: rgb(145, 13, 29);
 }
 </style>

@@ -44,9 +44,12 @@ export default defineComponent({
       owners: [],
       editions: [],
       showMore: true,
+      programName: ''
     }
   },
-  created() {
+  mounted() {
+
+
     if (this.cookiesPermission == -1) {
       axios.get(`/Program/showInfoProgram?id1=${this.cookiesId}&idUser=${this.cookiesUser}`)
         .then(function (response) {
@@ -55,6 +58,7 @@ export default defineComponent({
         .then(response => {
           if (response.status == 200) {
             this.program = response.data;
+            this.$cookies.set("programName", response.data.name);
             this.owners = response.data.owners;
             this.editions = response.data.editions;
           } else if (response.status == 204) {
@@ -70,12 +74,14 @@ export default defineComponent({
         .then(response => {
           if (response.status == 200) {
             this.program = response.data;
+            this.$cookies.set("programName", response.data.name);
             this.owners = response.data.owners;
           } else if (response.status == 204) {
             alert("There was an error on our database! Please, try again later.");
           }
         })
     }
+    
   },
   methods: {
     hasEndDate() {
@@ -117,6 +123,7 @@ export default defineComponent({
     settingCookies(id) {
       console.log("id" + id);
       this.$cookies.set("editionId", id);
+
       if (this.isOwner) {
         this.$cookies.set("isOwner", 1);
       } else {
@@ -165,12 +172,12 @@ export default defineComponent({
     <div class="bottomInfo">
       <p class="owner">Owner{{ toggleShowS }}: &nbsp; </p>
       <p class="owner"> {{ commaAnd() }}</p>
-        <RouterLink style="text-decoration: none" :to= "{name: 'EditProgram', params:{idProgram:cookiesId}}">
-      <p v-if="isOwner" class="button dds__button dds__button--primary" type="button">
-        <img src="../assets/pencil.png" alt="pencil icon" width="19">
-        Manage Program
-      </p>
-    </RouterLink>
+      <RouterLink style="text-decoration: none" :to="{ name: 'EditProgram', params: { idProgram: cookiesId } }">
+        <p v-if="isOwner" class="button dds__button dds__button--primary" type="button">
+          <img src="../assets/pencil.png" alt="pencil icon" width="19">
+          Manage Program
+        </p>
+      </RouterLink>
     </div>
 
     <h4 class="subtitle" v-if="cookiesPermission == -1">
@@ -230,18 +237,21 @@ export default defineComponent({
 body {
   font-family: 'Roboto', sans-serif;
 }
+
 .container {
   padding-top: 3%;
   padding-left: 17%;
   display: flex;
   flex-direction: column;
 }
+
 .title {
   color: #0672CB;
   font-size: 190%;
   text-align: left;
   margin-top: 55px;
 }
+
 .description {
   text-align: justify;
   padding-right: 30px;
@@ -259,6 +269,7 @@ body {
   font-size: 13px;
   color: #7E7E7E;
 }
+
 .owner {
   text-align: left;
   font-size: 14px;
@@ -268,6 +279,7 @@ body {
   float: left;
   font-weight: 590;
 }
+
 .button {
   width: 140px;
   font-size: 13px;
@@ -279,23 +291,28 @@ body {
   float: right;
   margin-top: 9px;
 }
+
 .button img {
   margin-right: 5px;
   margin-top: 1px;
   width: 20px;
 }
+
 .bottomInfo {
   display: inline;
 }
+
 body {
   font-family: 'Roboto', sans-serif;
 }
+
 .container {
   padding-top: 5%;
   padding-left: 15%;
   display: inline-flex;
   flex-direction: column;
 }
+
 .dds__card {
   box-shadow: rgba(0, 0, 0, 0.176) 0px 3px 8px;
   border-radius: 10px;
@@ -303,14 +320,17 @@ body {
   width: 250px;
   height: 225px;
 }
+
 .dds__card__content {
   padding: 20px;
 }
+
 .dds__card__header__title {
   font-size: 19px;
   color: #0672CB;
   text-align: left;
 }
+
 .dds__card__body {
   font-size: 15px;
   color: #0e0e0e;
@@ -322,6 +342,7 @@ body {
   padding-top: 20px;
   text-align: left;
 }
+
 .title {
   margin-left: 0px !important;
   text-align: left;
@@ -329,24 +350,28 @@ body {
   margin: 2.5%;
   font-weight: bold;
 }
+
 .subtitle {
   margin-left: 0px !important;
   text-align: left;
   color: #0672CB;
   margin: 2.5%;
 }
+
 .message {
   text-align: center;
   color: #0672CB;
   margin-top: 5%;
   font-size: 1.5rem;
 }
+
 .dds__icon__search {
   color: #0672CB;
   font-size: 1.5rem;
   font-weight: bold;
   padding-right: 1%;
 }
+
 .link {
   color: #0672CB;
   font-size: 15px;
@@ -358,6 +383,7 @@ body {
   margin-top: 10px;
   padding-bottom: 17px;
 }
+
 .addProgramIcon {
   color: #0672CB;
   text-align: center;
@@ -366,6 +392,7 @@ body {
   padding-bottom: 35px;
   text-decoration: none;
 }
+
 .initialCard {
   display: block;
 }

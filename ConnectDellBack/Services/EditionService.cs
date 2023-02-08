@@ -52,9 +52,7 @@ public class EditionService : IEditionService
         //mexer nas váriáveis dele na mão
         //Descobrir como enviar esse objeto atualizado, sem criar um novo.
 
-        //                                                      !
-        var edition = _dbContext.editions.Where(ed => ed.id == editionForm.id)
-                                        .FirstOrDefault();
+        var edition =  _dbContext.editions.Where(ed => ed.id == editionForm.id).FirstOrDefault();
 
         if (edition != null)
         {
@@ -96,6 +94,10 @@ public class EditionService : IEditionService
                                                 .FirstOrDefaultAsync();
         return EditionDTO.convertModel2DTO(edition);
     }
+
+    //public async Task<> getAllEditionNames(){
+        
+    //}
 
     public async Task<UserDTO> showUser(int idEdition)
     {
