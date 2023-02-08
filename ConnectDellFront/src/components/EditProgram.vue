@@ -102,6 +102,10 @@ type User = {
   name: string;
 }[];
 
+type programList = {
+  name: string
+}[];
+
 interface Data {
   program: {
     id: number | null;
@@ -114,6 +118,7 @@ interface Data {
   total: null | User;
   options: null | User;
   idProgram: any;
+  programList: programList
 }
 
 export default defineComponent({
@@ -145,7 +150,8 @@ export default defineComponent({
       },
       total: null,
       options: null,
-      idProgram: this.$route.params.idProgram
+      idProgram: this.$route.params.idProgram,
+      programList: []
     };
   },
   validations() {
@@ -181,43 +187,70 @@ export default defineComponent({
           alert("There was an error on our database! Please, try again later.");
         }
       });
+
+    axios.get(`/Program/GetProgramsName`)
+      .then(function (response) {
+        return response;
+      })
+      .then(response => {
+        if (response.status == 200) {
+          this.programList = response.data;
+          console.log(this.programList);
+        } else if (response.status == 204) {
+          alert("There was an error on our database! Please, try again later.");
+        }
+      })
+
   },
   methods: {
-    onSubmit(): void {
-      if (!this.v$.$invalid) {
-        let targetEndDate = null;
-        if (this.program.endDate != "") {
-          targetEndDate = this.program.endDate;
+    nameValidation() {
+      var retorno = 0;
+      this.programList.forEach(pL => {
+        if (pL.name.toLowerCase().trim().replaceAll(" ", "") === this.program.name.toLowerCase().trim().replaceAll(" ", "")) {
+          retorno++;
         }
-        axios.post('/Program/UpdateProgram', {
-          id: this.program.id,
-          name: this.program.name,
-          startDate: this.program.startDate,
-          endDate: targetEndDate,
-          description: this.program.description,
-          owners: this.program.owners,
-          editions: null,
-          ownerships: null,
-          memberships: null,
-        })
-          .then(function (response) {
-            return response;
-          })
-          .then((response) => {
-            if (response.status == 200) {
-              alert("Program updated!");
-              this.$router.push({ name: "ProgramsPage" });
-              return;
-              //ver se daria apra fazer um !=200
-            } else if (response.status == 404) {
-              this.$router.push({ name: "ProgramsPage" });
-              alert(
-                "There was an error on our database! Please, try again later."
-              );
-            }
-          });
+      })
+      return retorno;
+    },
+    onSubmit(): void {
+      if (this.nameValidation() != 0) {
+        alert("NOME JA EXISTENTE");
       } else {
-        this.v$.$validate();
+        if (!this.v$.$invalid) {
+          let targetEndDate = null;
+          if (this.program.endDate != "") {
+            targetEndDate = this.program.endDate;
+          }
+          axios.post('/Program/UpdateProgram', {
+            id: this.program.id,
+            name: this.program.name,
+            startDate: this.program.startDate,
+            endDate: targetEndDate,
+            description: this.program.description,
+            owners: this.program.owners,
+            editions: null,
+            ownerships: null,
+            memberships: null,
+          })
+            .then(function (response) {
+              return response;
+            })
+            .then((response) => {
+              if (response.status == 200) {
+                alert("Program updated!");
+                this.$router.push({ name: "ProgramsPage" });
+                return;
+                //ver se daria apra fazer um !=200
+              } else if (response.status == 404) {
+                this.$router.push({ name: "ProgramsPage" });
+                alert(
+                  "There was an error on our database! Please, try again later."
+                );
+              }
+            });
+        } else {
+          this.v$.$validate();
+        }
       }
     }
   },
