@@ -20,7 +20,6 @@ public class UserDTO
         aux.name = usr.name;
         aux.email = usr.email;
         aux.role = usr.role;
-        aux.roleName = Enum.GetName(typeof(Role), usr.role);
         return aux;
     }
 

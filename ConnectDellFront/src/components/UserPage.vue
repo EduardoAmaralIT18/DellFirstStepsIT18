@@ -15,10 +15,9 @@
           <td class="dds__td">{{ user.email }}</td>
           <td class="dds__td">
             <div class="dds__select__wrapper">
-              <select :value="user.role" v-model="user.role" id="user.role" class="dds__select__field"
-                aria-describedby="select-helper-374041805" required="true" @change="roleChange(user.id)">
-                <option :value="user.role" selected>{{ user.roleName }}</option>
-                <option v-for="item in role" :value="item.indexOf(item)" :key="item.indexOf(item)">
+              <select v-model="user.role" class="dds__select__field"
+                aria-describedby="select-helper-374041805" required="true" @change="roleChange(user.id, user.role)">
+                <option v-for="item in role" :value="role.indexOf(item)" :key="item">
                   {{ item }}
                 </option>
               </select>
@@ -39,12 +38,11 @@ type User = {
   name: string,
   email: string,
   role: number,
-  roleName: string,
 }[];
 
 interface Data {
   users: User | null
-  role: string[]
+  role: string[],
 }
 
 export default defineComponent({
@@ -54,11 +52,11 @@ export default defineComponent({
   data(): Data {
     return {
       users: null,
-      role: [ "Admin",
+      role: ["Admin",
         "Intern",
         "DellManager",
         "DellMember",
-        "PucrsStaff"]
+        "PucrsStaff"],
     };
   },
   created() {
@@ -86,8 +84,9 @@ export default defineComponent({
           }
         });
     },
-    roleChange(userid: number): void{
+    roleChange(userid: number, role:number): void {
       console.log(userid);
+      console.log(role)
     }
   }
 });
@@ -102,7 +101,4 @@ export default defineComponent({
   flex-direction: column;
 }
 
-table{
-  width: 50%;
-}
 </style>
