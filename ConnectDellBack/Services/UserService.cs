@@ -69,9 +69,9 @@ public class UserService : IUserService
             return Ok;
         }*/
 
-    public IEnumerable<UserModel> listUsers()
+    public async Task<IEnumerable<UserModel>> listUsers()
     {
-        var userList = dbUser.users.OrderBy(user => user.email).ToList();
+        var userList = await dbUser.users.OrderBy(user => user.email).ToListAsync();
         return userList;
     }
 

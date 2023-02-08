@@ -10,6 +10,7 @@ public class UserDTO
     public string name { get; set; }
     public string email { get; set; }
     public Role role { get; set; }
+    public string roleName {get; set;}
 
 
     public static UserDTO convertToDTO(UserModel usr)
@@ -19,6 +20,7 @@ public class UserDTO
         aux.name = usr.name;
         aux.email = usr.email;
         aux.role = usr.role;
+        aux.roleName = Enum.GetName(typeof(Role), usr.role);
         return aux;
     }
 

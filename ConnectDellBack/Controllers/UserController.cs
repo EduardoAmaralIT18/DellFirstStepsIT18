@@ -31,10 +31,15 @@ public class UserController : ControllerBase
 
 
     [HttpGet("listUsers")]
-    public IEnumerable<UserModel> ListUsers()
+    public async Task<ActionResult<IEnumerable<UserDTO>>> ListUsers()
     {
-        var list = _service.listUsers();
-        return list;
+        var list = await _service.listUsers();
+        var listUser = new List<UserDTO>();
+        foreach (var item in list)
+        {
+            listUser.Add(UserDTO.convertToDTO(item));
+        }
+        return listUser == null ? NotFound() : Ok(listUser);
     }
 }
 
