@@ -72,7 +72,8 @@
                         </div>
                     </div>
                 </fieldset>
-                <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="addContent" :disabled="v$.$invalid">Submit</button>
+                <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="addContent"
+                    :disabled="v$.$invalid">Submit</button>
             </form>
         </div>
     </div>
@@ -129,9 +130,40 @@ export default defineComponent({
         }
     },
     created() {
-        // fetch the data when the view is created and the data is
-        // already being observed
-        this.fetchData();
+        // axios
+        //     .get(`/News/GetNews?id=${this.idNews}`)
+        //     .then(function (response) {
+        //         return response;
+        //     })
+        //     .then((response) => {
+        //         if (response.status == 200) {
+        //             this.program = response.data;
+        //             this.program.startDate = new Date(response.data.startDate).toISOString().slice(0, 10);
+
+        //             // EndDate desse if é o valor igual ao nulo na database
+        //             if (this.program.endDate != null) {
+        //                 this.program.endDate = new Date(response.data.endDate).toISOString().substring(0, 10);
+        //             }
+        //             return;
+        //         } else if (response.status == 404) {
+        //             this.$router.push({ name: "ProgramsPage" });
+        //             alert("There was an error on our database! Please, try again later.");
+        //         }
+        //     });
+
+        // axios.get(`/Program/GetProgramsName`)
+        //     .then(function (response) {
+        //         return response;
+        //     })
+        //     .then(response => {
+        //         if (response.status == 200) {
+        //             this.programList = response.data;
+        //             console.log(this.programList);
+        //         } else if (response.status == 204) {
+        //             alert("There was an error on our database! Please, try again later.");
+        //         }
+        //     })
+        // this.fetchData();
     },
     watch: {
         // call again the method if the route changes
@@ -261,16 +293,19 @@ label {
 button {
     margin-top: 30px;
 }
-small{
+
+small {
     color: red;
 }
+
 .goBack {
-  position: relative;
-  right: 40%;
-  text-decoration: none;
-  color: #0672CB;
-  font-weight: 300;
+    position: relative;
+    right: 40%;
+    text-decoration: none;
+    color: #0672CB;
+    font-weight: 300;
 }
+
 .warning {
     display: flex;
     margin-top: 31px;
