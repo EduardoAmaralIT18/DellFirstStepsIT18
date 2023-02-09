@@ -15,8 +15,8 @@
           <td class="dds__td">{{ user.email }}</td>
           <td class="dds__td">
             <div class="dds__select__wrapper">
-              <select v-model="user.role" class="dds__select__field" aria-describedby="select-helper-374041805"
-                required="true" @change="roleChange(user.id, user.role)">
+              <select v-model="user.role" class="dds__select" aria-describedby="select-helper-374041805" required="true"
+                @change="roleChange(user.id, user.role)">
                 <option v-for="item in role" :value="role.indexOf(item)" :key="item">
                   {{ item }}
                 </option>
@@ -104,28 +104,29 @@ export default defineComponent({
           }
         });
     },
-// verificar se o admin pode deletar ele mesmo, e de alguma forma impedir issoo
-    removeUser(userid: number): void { 
-      console.log(userid);
+    // // verificar se o admin pode deletar ele mesmo, e de alguma forma impedir issoo
+    //     removeUser(userid: number): void { 
+    //       console.log(userid);
 
-      axios.get('user/removeID', {
-      params: {
-        user: userid
-      }
-    })
-    .then(function (response) {
-      return response;
-    })
-    .then(response => {
-      if (response.status == 200) {
-        alert("User removed sucessfully");
-      } else {
-        alert("Database error. Please try again later.");
-      }
-    });
-    
-  },
-})
+    //       axios.get('user/removeID', {
+    //       params: {
+    //         user: userid
+    //       }
+    //     })
+    //     .then(function (response) {
+    //       return response;
+    //     })
+    //     .then(response => {
+    //       if (response.status == 200) {
+    //         alert("User removed sucessfully");
+    //       } else {
+    //         alert("Database error. Please try again later.");
+    //       }
+    //     });
+
+    //   },
+  }
+});
 
 </script>
 
@@ -136,5 +137,21 @@ export default defineComponent({
   padding-left: 20%;
   display: flex;
   flex-direction: column;
+}
+
+select.dds__select {
+  width: 100%;
+  height: 45px;
+  font-size: 14px;
+  padding: .6875rem 4.5rem .6875rem 1rem;
+  border: .0625rem solid #7e7e7e;
+  border-radius: .125rem;
+  background-clip: padding-box;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+
+table.dds__table{
+  display:table;
 }
 </style>
