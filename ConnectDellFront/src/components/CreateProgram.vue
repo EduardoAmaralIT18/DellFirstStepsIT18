@@ -4,7 +4,7 @@
         <RouterLink to="/home" class="goBack"> &larr; Go back</RouterLink>
         <form data-dds="form" class="dds__form dds__container">
             <fieldset class="dds__form__section">
-                
+
                 <h2 class="title">Create Program</h2>
                 <div class="dds__row">
                     <div class="dds__col--12 dds__col--sm-12">
@@ -43,7 +43,7 @@
                         <div>
                             <label for="endDate">End date</label>
                             <input v-model="v$.program.endDate.$model" type="date" id="endDate" name="endDate"
-                            :min="program.startDate">
+                                :min="program.startDate">
                             <small class="warning" v-if="v$.program.endDate.$error">The End Date must be after the Start
                                 Date.</small>
                         </div>
@@ -85,13 +85,37 @@
                     </div>
                 </div>
             </fieldset>
-            <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()"
-                :disabled="v$.$invalid">Submit</button>
+            <button class="submitbutton dds__button dds__button--lg" id="btnSubmit" type="submit"
+                @click.prevent="onSubmit()" :disabled="v$.$invalid">Submit</button>
         </form>
 
     </div>
 
-
+    <!-- <button class="dds__button" id="example" type="button">Launch modal button</button> -->
+    <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
+        <div class="dds__modal__content">
+            <div class="dds__modal__header">
+                <h3 class="dds__modal__title" id="modal-headline-369536123">Present new laptop</h3>
+            </div>
+            <div id="modal-body-532887773" class="dds__modal__body">
+                <p>
+                    Small, light, and stylish laptops and 2-in-1s designed for ultimate productivity. A new era of
+                    collaboration
+                    and connectivity to
+                    work anywhere. XPS laptops and 2-in-1s are precision crafted with premium materials, featuring
+                    stunning
+                    displays and the performance
+                    you demand to express your creative self and your big ideas.
+                    <a href="https://www.dell.com">dell.com</a>
+                </p>
+            </div>
+            <div class="dds__modal__footer">
+                <button class="dds__button dds__button--secondary dds__button--md" type="button"
+                    name="modal-primary-button">No</button>
+                <button class="dds__button dds__button--md" type="button" name="modal-secondary-button">Yes</button>
+            </div>
+        </div>
+    </div>
 
 </template>
 
@@ -101,6 +125,7 @@ import MultiSelect from './MultipleSelect.vue';
 import axios from 'axios';
 import { useVuelidate } from '@vuelidate/core';
 import { minLength, maxLength, required } from '@vuelidate/validators';
+declare var DDS: any;
 
 type User = {
     id: number,
@@ -164,53 +189,60 @@ export default defineComponent({
     },
     methods: {
         onSubmit(): void {
-            if(this.program.endDate == null){
-            axios.post('/program/addProgram', {
-                name: this.program.name,
-                startDate: this.program.startDate = new Date(),
-                description: this.program.description,
-                owners: this.program.members,
-                editions: null,
-                ownerships: null,
-                memberships: null
-            })
-                .then(function (response) {
-                    return response;
+            if (this.program.endDate == null) {
+                axios.post('/program/addProgram', {
+                    name: this.program.name,
+                    startDate: this.program.startDate = new Date(),
+                    description: this.program.description,
+                    owners: this.program.members,
+                    editions: null,
+                    ownerships: null,
+                    memberships: null
                 })
-                .then(response => {
-                    if (response.status == 200) {
-                        this.$router.push({ name: 'HomePage' });
-                        return;
-                    } else if (response.status == 404) {
-                        this.$router.push({ name: 'HomePage' });
-                        alert("There was an error on our database! Please, try again later.");
-                    }
+                    .then(function (response) {
+                        return response;
+                    })
+                    .then(response => {
+                        if (response.status == 200) {
+                            const element = this.$refs.uniqueid;
+                            // console.log(element);
+                            console.log(DDS);
+                            console.log(element);
+                            const modal = new DDS.Modal(element, { trigger: "#btnSubmit" });
+                            modal.open();
+                            //this.$router.push({ name: 'HomePage' });
+                            return;
+                        } else if (response.status == 404) {
+                            this.$router.push({ name: 'HomePage' });
+                            alert("There was an error on our database! Please, try again later.");
+                        }
+                    })
+            } else {
+                axios.post('/program/addProgram', {
+                    name: this.program.name,
+                    startDate: this.program.startDate = new Date(),
+                    endDate: this.program.endDate = new Date(),
+                    description: this.program.description,
+                    owners: this.program.members,
+                    editions: null,
+                    ownerships: null,
+                    memberships: null
                 })
-        } else {
-            axios.post('/program/addProgram', {
-                name: this.program.name,
-                startDate: this.program.startDate = new Date(),
-                endDate: this.program.endDate = new Date(),
-                description: this.program.description,
-                owners: this.program.members,
-                editions: null,
-                ownerships: null,
-                memberships: null
-            })
-                .then(function (response) {
-                    return response;
-                })
-                .then(response => {
-                    if (response.status == 200) {
-                        this.$router.push({ name: 'HomePage' });
-                        return;
-                    } else if (response.status == 404) {
-                        this.$router.push({ name: 'HomePage' });
-                        alert("There was an error on our database! Please, try again later.");
-                    }
-                })
+                    .then(function (response) {
+                        return response;
+                    })
+                    .then(response => {
+                        if (response.status == 200) {
+
+                            //this.$router.push({ name: 'HomePage' });
+                            return;
+                        } else if (response.status == 404) {
+                            this.$router.push({ name: 'HomePage' });
+                            alert("There was an error on our database! Please, try again later.");
+                        }
+                    })
+            }
         }
-    }
     }
 });
 </script>
@@ -322,13 +354,15 @@ span {
 .multiselect:hover {
     border: .0625rem solid rgb(6, 114, 203);
 }
+
 .goBack {
-  position: relative;
-  right: 40%;
-  text-decoration: none;
-  color: #0672CB;
-  font-weight: 300;
+    position: relative;
+    right: 40%;
+    text-decoration: none;
+    color: #0672CB;
+    font-weight: 300;
 }
+
 .dates input:hover {
     border: .0625rem solid rgb(6, 114, 203);
 }

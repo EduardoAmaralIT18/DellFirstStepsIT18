@@ -67,22 +67,12 @@
                         <div class="member__select" data-dds="select">
                             <label id="select-label-141366292" for="select-control-141366292">Members</label>
                             <div class="multiselec dds__select__wrapper">
-                                                        <!--Colocar os  v$.editon.members.$model-->
-                                <MultiSelect style="box-shadow: none ;" v-model="v$.edition.members.$model" tipo="members"/>
-                                <!-- <small class="warning" v-if="v$.edition.members.$error">The Members field is
-                                    required.</small> -->
+                                <MultiSelect style="box-shadow: none ;" v-model="edition.members" tipo="members"/>
                             </div>
                         </div>
                     </div>
 
-                <!-- <div class="dds__col--3 dds__col--sm-3">
-                        <div class="dds__input-text__container">
-                            <label id="text-input-label-396765024" for="text-input-control-name-396765024">Number of members </label>
-                         </div>
-                            <div id="member_select">
-                            <input v-model="edition.numberOfMembers" type="number" min="1" max="25">
-                        </div>
-                    </div> -->
+
             </div>
 
 
@@ -106,7 +96,7 @@
                     </div>
                     <div class="dds__text-area__wrapper">
                         <input v-model="v$.edition.endDate.$model" type="date" id="endDate" name="endDate"
-                            :min="edition.startDate">
+                            :min="edition.startDate">       
                     </div>
                 </div>
             </div>
