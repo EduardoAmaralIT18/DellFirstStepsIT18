@@ -42,9 +42,9 @@ public class UserController : ControllerBase
         return listUser == null ? NotFound() : Ok(listUser);
     }
 
-    [HttpPost("changeRole")]
+    [HttpGet("changeRole")]
     public async Task<ActionResult> changeRole(int user, int role){
-       int entries = await _service.changeRole(user, role); 
+       var entries = await _service.changeRole(user, role); 
        if (entries >0){
         return Ok();
        } else {

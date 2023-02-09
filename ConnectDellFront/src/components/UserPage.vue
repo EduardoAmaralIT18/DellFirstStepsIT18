@@ -15,8 +15,8 @@
           <td class="dds__td">{{ user.email }}</td>
           <td class="dds__td">
             <div class="dds__select__wrapper">
-              <select v-model="user.role" class="dds__select__field"
-                aria-describedby="select-helper-374041805" required="true" @change="roleChange(user.id, user.role)">
+              <select v-model="user.role" class="dds__select__field" aria-describedby="select-helper-374041805"
+                required="true" @change="roleChange(user.id, user.role)">
                 <option v-for="item in role" :value="role.indexOf(item)" :key="item">
                   {{ item }}
                 </option>
@@ -84,26 +84,56 @@ export default defineComponent({
           }
         });
     },
-    roleChange(userid: number, role:number): void {
+    roleChange(userid: number, role: number): void {
       console.log(userid);
       console.log(role);
 
-      axios.post('user/changeRole', {user: userid, role: role})
-            .then(function(response){
-              return response;
-            }) 
-            .then(response => {
-              if (response.status == 200) {
-                alert("Role changed sucessfully.");
-              } else {
-                alert("Database error. Please try again later.");
-              }
-            });
+      axios.get('user/changeRole', {
+        params: {
+          user: userid, role: role
+        }
+      })
+        .then(function (response) {
+          return response;
+        })
+        .then(response => {
+          if (response.status == 200) {
+            alert("Role changed sucessfully.");
+          } else {
+            alert("Database error. Please try again later.");
+          }
+        });
+    },
 
 
-    }
-  }
-});
++
+
+0
+---------
+------------------------------------------------------------------
+-------------------------------------// verificar se o admin pode deletar ele mesmo, e de alguma forma impedir isso 
+    removeUser(userid: number): void { 
+      console.log(userid);
+
+      axios.get('user/removeID', {
+      params: {
+        user: userid
+      }
+    })
+    .then(function (response) {
+      return response;
+    })
+    .then(response => {
+      if (response.status == 200) {
+        alert("User removed sucessfully");
+      } else {
+        alert("Database error. Please try again later.");
+      }
+    });
+    
+  },
+})
+
 </script>
 
 <style scoped>
@@ -114,5 +144,4 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
 }
-
 </style>
