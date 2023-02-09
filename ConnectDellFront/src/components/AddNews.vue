@@ -72,8 +72,27 @@
                         </div>
                     </div>
                 </fieldset>
-                <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="addContent" :disabled="v$.$invalid">Submit</button>
+                <button class="submitbutton dds__button dds__button--lg" id="btnSubmit" type="submit"
+                    @click.prevent="addContent" :disabled="v$.$invalid">Submit</button>
             </form>
+        </div>
+    </div>
+    <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid"
+        @ddsModalClosedEvent="navigateToParent">
+        <div class="dds__modal__content">
+            <div class="dds__modal__header">
+                <h3 class="dds__modal__title" id="modal-headline-369536123">{{ modalTitle }}</h3>
+            </div>
+            <div id="modal-body-532887773" class="dds__modal__body">
+                <p>
+                    {{ modalMessage }}
+                </p>
+            </div>
+            <div class="dds__modal__footer">
+                <button class="dds__button dds__button--lg"
+                    v-bind:class="modalSuccess ? '' : 'dds__button--destructive'" type="button"
+                    name="modal-secondary-button" @click.prevent="navigateToParent">OK</button>
+            </div>
         </div>
     </div>
 </template>
@@ -83,6 +102,7 @@ import axios from 'axios';
 import FormData from 'form-data';
 import { useVuelidate } from '@vuelidate/core';
 import { required, maxValue, minValue } from '@vuelidate/validators';
+declare var DDS: any;
 
 type Image = {
 }[];
@@ -101,6 +121,9 @@ interface Data {
     programs: null | Program,
     program: { id: Number; name: string; },
     imageSize: number;
+    modalMessage: string;
+    modalTitle: string;
+    modalSuccess: boolean;
 }
 
 export default defineComponent({
@@ -118,6 +141,9 @@ export default defineComponent({
             programs: null,
             program: { id: 0, name: "", },
             imageSize: 0,
+            modalMessage: "",
+            modalTitle: "",
+            modalSuccess: false
         };
     },
     validations() {
@@ -167,6 +193,9 @@ export default defineComponent({
                 this.data?.append('imageName', this.title);
                 this.data?.append('image', this.image);
 
+                const element = this.$refs.uniqueid;
+                const modal = new DDS.Modal(element, { trigger: "#btnSubmit" });
+
                 axios.post('news/addContent', this.data, {
                     headers: {
                         'accept': 'application/json',
@@ -176,22 +205,26 @@ export default defineComponent({
                     return response;
                 }).then(response => {
                     if (response.status == 200) {
-                        alert("Content added!");
-                        this.$router.push({ name: 'NewsPage' });
-                    } else if (response.status == 404) {
-                        alert("Database error! Please try again later");
+                        this.modalTitle = "News Published";
+                        this.modalMessage = "Your news was successfully published."
+                        this.modalSuccess = true;
                     } else {
-                        console.log(response.status);
+                        this.modalTitle = "Error";
+                        this.modalMessage = "I'm sorry, something went wrong. Try again later."
+                        this.modalSuccess = false;
                     }
+                    modal.open();
                 })
             } else {
                 this.v$.$validate();
             }
         },
-
         updateImage(e: any): void {
             this.image = e.target.files[0];
             this.imageSize = e.target.files[0].size;
+        },
+        navigateToParent(): void {
+            this.$router.push({ name: 'NewsPage' });
         }
     },
 });
@@ -261,16 +294,19 @@ label {
 button {
     margin-top: 30px;
 }
-small{
+
+small {
     color: red;
 }
+
 .goBack {
-  position: relative;
-  right: 40%;
-  text-decoration: none;
-  color: #0672CB;
-  font-weight: 300;
+    position: relative;
+    right: 40%;
+    text-decoration: none;
+    color: #0672CB;
+    font-weight: 300;
 }
+
 .warning {
     display: flex;
     margin-top: 31px;
