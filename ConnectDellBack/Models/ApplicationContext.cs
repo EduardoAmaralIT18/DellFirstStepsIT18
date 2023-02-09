@@ -258,8 +258,8 @@ public class ApplicationContext : DbContext
             new {
                 id = 25,
                 editionInternid = 1,
-                name = "Yanni Partichelli",
-                email = "yanni.partichelli@dellteam.com",
+                name = "Yanny Partichelli",
+                email = "yanny.partichelli@dellteam.com",
                 role = Role.Intern,
                 notes = "N/A"
             },

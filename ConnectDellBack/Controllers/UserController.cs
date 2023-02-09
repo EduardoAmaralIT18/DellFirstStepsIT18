@@ -41,6 +41,17 @@ public class UserController : ControllerBase
         }
         return listUser == null ? NotFound() : Ok(listUser);
     }
+
+    [HttpPost("changeRole")]
+    public async Task<ActionResult> changeRole(int user, int role){
+       int entries = await _service.changeRole(user, role); 
+       if (entries >0){
+        return Ok();
+       } else {
+        return NotFound();
+       }
+    }
+
 }
 
     // [HttpPost("createProgram")]

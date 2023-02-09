@@ -79,14 +79,28 @@ export default defineComponent({
           } else if (response.status == 200) {
             this.users = response.data;
           } else {
-            alert("Databade error. Please try again later.");
+            alert("Database error. Please try again later.");
             console.log(response.status);
           }
         });
     },
     roleChange(userid: number, role:number): void {
       console.log(userid);
-      console.log(role)
+      console.log(role);
+
+      axios.post('user/changeRole', {user: userid, role: role})
+            .then(function(response){
+              return response;
+            }) 
+            .then(response => {
+              if (response.status == 200) {
+                alert("Role changed sucessfully.");
+              } else {
+                alert("Database error. Please try again later.");
+              }
+            });
+
+
     }
   }
 });

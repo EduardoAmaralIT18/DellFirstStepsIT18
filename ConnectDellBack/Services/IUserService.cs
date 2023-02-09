@@ -29,5 +29,7 @@ public interface IUserService
     public string createEdition(EditionModel edition);
 
     public Task<IEnumerable<UserModel>> listUsers();
+
+    public Task<int> changeRole(int userid, int role);
 }
 

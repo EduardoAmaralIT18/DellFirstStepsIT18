@@ -75,5 +75,13 @@ public class UserService : IUserService
         return userList;
     }
 
-    
+    public async Task<int> changeRole(int userid, int role)
+    {
+        var user = await dbUser.users.Where(user => user.id == userid).FirstOrDefaultAsync();
+
+        user.role = (Role)role;
+       int entries = await dbUser.SaveChangesAsync();
+       return entries;
+        
+    }
 }
