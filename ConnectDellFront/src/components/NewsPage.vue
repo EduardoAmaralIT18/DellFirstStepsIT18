@@ -30,8 +30,8 @@
                         <p>{{ item.date }}</p>
                     </div>
                     <div class="manageButton" v-if="isAuthor(item.authorId)">
-                        <RouterLink class="button dds__button dds__button--primary"
-                            style="color:white ; text-decoration : none" type="button" to="/editnews">
+                        <RouterLink to= "/editnews" class="button dds__button dds__button--primary"
+                            style="color:white ; text-decoration : none" type="button">
                             <img src="../assets/pencil.png" alt="pencil icon" width="19">
                             Manage News
                         </RouterLink>
