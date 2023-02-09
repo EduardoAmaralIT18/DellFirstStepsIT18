@@ -169,7 +169,6 @@ button {
   position: relative;
 }
 
-
 .title {
   color: #0063B8;
   margin-top: 8%;
