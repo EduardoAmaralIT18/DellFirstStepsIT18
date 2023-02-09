@@ -104,14 +104,7 @@ export default defineComponent({
           }
         });
     },
-
-
-+
-
-0
----------
-------------------------------------------------------------------
--------------------------------------// verificar se o admin pode deletar ele mesmo, e de alguma forma impedir isso 
+// verificar se o admin pode deletar ele mesmo, e de alguma forma impedir issoo
     removeUser(userid: number): void { 
       console.log(userid);
 
