@@ -1,10 +1,11 @@
 <template>
-<!-- Comentário AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-->
+    <!-- Comentário AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-->
     <div class="container">
+        <RouterLink to="/editioninfo" class="goBack"> &larr; Go back</RouterLink>
         <form data-dds="form" class="dds__form dds__container">
             <!-- <fieldset class="dds__form__section"> -->
 
-            <p class="title">Update Edition</p>
+            <p class="title">Manage Edition</p>
 
             <div class="dds__row">
                 <div class="dds__col--12 dds__col--sm-12">
@@ -56,17 +57,24 @@
 
             <div class="dates dds__row">
                 <div class="dds__col--3 dds__col--sm-3">
-                    <div>
+                    <div class="dds__text-area__header">
                         <label for="startDate">Start date <span>*</span></label>
                         <small v-if="v$.edition.startDate.$error" class="help-block">The Start Date field is
                             required</small>
+                    </div>
+                    <div class="dds__text-area__wrapper">
                         <input v-model="v$.edition.startDate.$model" type="date" id="startDate" name="startDate">
                     </div>
                 </div>
                 <div class="enddate dds__col--3 dds__col--sm-3">
-                    <div>
-                        <label for="endDate"> End date </label>
-                        <input v-model="edition.endDate" type="date" id="endDate" name="endDate">
+                    <div class="dds__text-area__header">
+                        <label for="endDate"> End date <span>*</span></label>
+                        <small v-if="v$.edition.endDate.$error" class="help-block">The End Date field is
+                            required</small>
+                    </div>
+                    <div class="dds__text-area__wrapper">
+                        <input v-model="v$.edition.endDate.$model" type="date" id="endDate" name="endDate"
+                            :min="edition.startDate">
                     </div>
                 </div>
             </div>
@@ -128,8 +136,8 @@
                 </div>
             </div>
             <!-- </fieldset> -->
-            <button class="submitbutton dds__button dds__button--lg" type="submit"
-                @click.prevent="onSubmit()">Submit</button>
+            <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()"
+                :disabled="v$.$invalid">Submit</button>
         </form>
     </div>
 
@@ -182,7 +190,7 @@ export default defineComponent({
     },
     validations() {
         return {
-            edition: { name: { required }, startDate: { required } }
+            edition: { name: { required }, startDate: { required }, endDate: { required } }
         }
     },
     created() {
@@ -210,12 +218,12 @@ export default defineComponent({
     methods: {
         onSubmit(): void {
             //this.edition.program = this.$cookies.get("programId");
-            if (!this.v$.$invalid){
-                axios.post('/edition/updateEdition', { 
+            if (!this.v$.$invalid) {
+                axios.post('/edition/updateEdition', {
                     id: this.edition.id,
                     name: this.edition.name,
                     startDate: this.edition.startDate,
-                    endDate: this.edition.endDate,
+                    endDate: this.edition.endDate ? this.edition.endDate : null,
                     description: this.edition.description,
                     curriculum: this.edition.curriculum,
                     mode: this.edition.mode,
@@ -229,6 +237,7 @@ export default defineComponent({
                     })
                     .then(response => {
                         if (response.status == 200) {
+                            alert("Edition updated!");
                             this.$router.push({ name: 'ProgramsPage' });
                             return;
                         } else if (response.status == 404) {
@@ -298,7 +307,7 @@ label {
 .submitbutton {
     margin-top: 30px;
     display: flex;
-    float: right;
+    float: left;
     width: 20%;
     font-size: 20px;
     margin-bottom: 12%;
@@ -315,9 +324,10 @@ label {
     background-clip: padding-box;
 }
 
-#intern_select{
+#intern_select {
     width: 100%;
 }
+
 .dates {
     text-align: left;
     display: flex;
@@ -337,13 +347,18 @@ label {
     background-clip: padding-box;
 }
 
-.enddate input {
-    background-color: rgba(181, 181, 181, 0.233);
-}
 
 span {
     margin-left: 4px;
     color: #0063B8;
     font-weight: bold;
+}
+
+.goBack {
+    position: relative;
+    right: 40%;
+    text-decoration: none;
+    color: #0672CB;
+    font-weight: 300;
 }
 </style>

@@ -130,6 +130,25 @@ export default defineComponent({
         this.$cookies.set("isOwner", 0);
       }
     },
+    showEditionStatus(initialDate, finalDate) {
+      var startDate = new Date(initialDate)
+      var endDate = new Date (finalDate)
+      var today  = new Date()
+      
+      if(startDate > today) {
+        return 'Not Started'
+      } else {
+        if(endDate < today) {
+          return 'Finished'
+        } else {
+          if((startDate < today) && (endDate > today)) {
+            return 'Ongoing'
+          } else {
+            return 'Erro'
+          }
+        }
+      }
+    },
   },
   computed: {
     isOwner() {
@@ -163,7 +182,7 @@ export default defineComponent({
 <template>
   <NavBar></NavBar>
   <SideBar></SideBar>
-  <div class="container">
+  <div class="container" v-if="program.length != 0">
     <p class="title">{{ program.name }}</p>
     <p class="date">{{ formatDate(this.program.startDate) }}{{ hasEndDate() }}</p>
     <p class="description">{{ howMuchOfDescriptionShown }} &nbsp; <a @click="toggleShowMore()" v-if="showMoreMethod()"
@@ -172,12 +191,12 @@ export default defineComponent({
     <div class="bottomInfo">
       <p class="owner">Owner{{ toggleShowS }}: &nbsp; </p>
       <p class="owner"> {{ commaAnd() }}</p>
-        <RouterLink style="text-decoration: none" :to= "{name: 'EditProgram', params:{idProgram:cookiesId}}">
-      <p v-if="isOwner" class="button dds__button dds__button--primary" type="button">
-        <img src="../assets/pencil.png" alt="pencil icon" width="19">
-        Edit Program
-      </p>
-    </RouterLink>
+      <RouterLink style="text-decoration: none" :to= "{name: 'EditProgram', params:{idProgram:cookiesId}}">
+        <p v-if="isOwner" class="button dds__button dds__button--primary" type="button">
+          <img src="../assets/pencil.png" alt="pencil icon" width="19">
+          Manage Program
+        </p>
+      </RouterLink>
     </div>
 
     <h4 class="subtitle" v-if="cookiesPermission == -1">
@@ -208,11 +227,14 @@ export default defineComponent({
                 <span class="dds__card__header__text">
                   <h5 class="dds__card__header__title">{{ edition.name }}</h5>
                 </span>
+                <span class="dds__badge dds__badge--md" style="background-color: #FFFFFF; border-width: 1px; border-color: #0672CB; border-style: solid;">
+                  <span class="dds__badge__label" style="color: #0672CB; font-weight: 100px;">{{ showEditionStatus(edition.startDate, edition.endDate) }}</span>
+                </span>
               </div>
               <div class="dds__card__body">{{ edition.description }} </div>
               <div class="dds__card__footer">
                 <RouterLink
-                  style="text-decoration: none;   font-size: 15px;  position: absolute;  bottom: 0;  text-align: center;   left: 0;  margin-left: 20px;  margin-top: 10px;  padding-bottom: 17px;"
+                  style=" color: #0672CB; text-decoration: none;   font-size: 15px;  position: absolute;  bottom: 0;  text-align: center;   left: 0;  margin-left: 20px;  margin-top: 10px;  padding-bottom: 17px;"
                   to="/editioninfo" @click="settingCookies(edition.id)"> View More ➔
                 </RouterLink>
               </div>
@@ -225,6 +247,12 @@ export default defineComponent({
 
 
   </div> <!-- ends the container-->
+  <div v-else class="container">
+    <div class="dds__loading-indicator">
+      <div class="dds__loading-indicator__label">Loading...</div>
+      <div class="dds__loading-indicator__spinner"></div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -270,7 +298,7 @@ body {
   font-weight: 590;
 }
 .button {
-  width: 120px;
+  width: 140px;
   font-size: 13px;
   height: 8%;
   margin-left: auto;
@@ -370,4 +398,5 @@ body {
 .initialCard {
   display: block;
 }
+
 </style>

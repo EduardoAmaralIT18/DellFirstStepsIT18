@@ -1,11 +1,10 @@
 <template>
     <div v-if="role == 0" class="container">
         <div class="top">
+            <RouterLink to="/news" class="goBack"> &larr; Go back</RouterLink>
             <h2>Add News</h2>
         </div>
         <div class="container2">
-            <p class="warning">All fields marked with an (*) are required.</p>
-            <br />
             <form data-dds="form" class="dds__form" enctype="multipart/form-data">
                 <fieldset class="dds__form__section">
                     <div class="dds__row">
@@ -73,8 +72,7 @@
                         </div>
                     </div>
                 </fieldset>
-                <button class="dds__button dds__button--lg" type="submit" @click.prevent="addContent">Add
-                    Content</button>
+                <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="addContent" :disabled="v$.$invalid">Submit</button>
             </form>
         </div>
     </div>
@@ -175,11 +173,10 @@ export default defineComponent({
                         'Content-Type': 'multipart/form-data'
                     }
                 }).then(function (response) {
-                    console.log("chegou aqui");
                     return response;
                 }).then(response => {
-                    console.log("chegou depois aqui");
                     if (response.status == 200) {
+                        alert("Content added!");
                         this.$router.push({ name: 'NewsPage' });
                     } else if (response.status == 404) {
                         alert("Database error! Please try again later");
@@ -267,9 +264,21 @@ button {
 small{
     color: red;
 }
+.goBack {
+  position: relative;
+  right: 40%;
+  text-decoration: none;
+  color: #0672CB;
+  font-weight: 300;
+}
 .warning {
     display: flex;
     margin-top: 31px;
     margin-bottom: -3px;
+}
+
+.submitbutton {
+    display: flex;
+    float: left;
 }
 </style>

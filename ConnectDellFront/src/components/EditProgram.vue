@@ -1,8 +1,9 @@
 <template>
   <div class="container">
+    <RouterLink to="/programinfo" class="goBack"> &larr; Go back</RouterLink>
     <form data-dds="form" class="dds__form dds__container">
       <fieldset class="dds__form__section">
-        <h2 class="title">Edit Program</h2>
+        <h2 class="title">Manage Program</h2>
         <div v-if="program.id === null">
           <div class="dds__loading-indicator">
             <div class="dds__loading-indicator__label">Loading...</div>
@@ -40,16 +41,19 @@
             <div class="enddate dds__col--3 dds__col--sm-3">
               <div>
                 <label for="endDate">End date</label>
-                <input v-model="program.endDate" type="date" id="endDate" name="endDate" />
+                <input v-model="program.endDate" type="date" id="endDate" name="endDate" :min="program.startDate" />
               </div>
             </div>
           </div>
           <div class="dds__row">
             <div class="dds__col--12 dds__col--sm-12">
               <div class="dds__select" data-dds="select">
-                <label id="select-label-141366292" for="select-control-141366292">Owners <span> *</span></label>
+                <div class="dds__text-area__header">
+                  <label id="select-label-141366292" for="select-control-141366292">Owners <span> *</span></label>
+                  <small v-if="v$.program.owners.$error" class="help-block">Please select at least one owner.</small>
+                </div>
                 <div class="multiselec dds__select__wrapper">
-                  <MultiSelect v-model="program.owners" />
+                  <MultiSelect v-model="v$.program.owners.$model" />
                 </div>
               </div>
             </div>
@@ -61,7 +65,7 @@
                   <label id="text-area-label-980579425" for="text-area-control-980579425">Description<span>
                       *</span></label>
                   <small v-if="v$.program.description.$error" class="help-block">Please enter a proper description
-                    (between 10 and 500 characters).</small>
+                    (between 10 and 1500 characters).</small>
                 </div>
                 <div class="dds__text-area__wrapper">
                   <textarea class="dds__text-area" name="text-area-control-name-980579425"
@@ -75,7 +79,8 @@
               </div>
             </div>
           </div>
-          <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()">
+          <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()"
+            :disabled="v$.$invalid">
             Submit
           </button>
         </div>
@@ -97,6 +102,10 @@ type User = {
   name: string;
 }[];
 
+type programList = {
+  name: string
+}[];
+
 interface Data {
   program: {
     id: number | null;
@@ -109,6 +118,7 @@ interface Data {
   total: null | User;
   options: null | User;
   idProgram: any;
+  programList: programList
 }
 
 export default defineComponent({
@@ -140,7 +150,8 @@ export default defineComponent({
       },
       total: null,
       options: null,
-      idProgram: this.$route.params.idProgram
+      idProgram: this.$route.params.idProgram,
+      programList: []
     };
   },
   validations() {
@@ -148,7 +159,8 @@ export default defineComponent({
       program: {
         name: { required },
         description: { required, maxLength: maxLength(1500), minLength: minLength(10) },
-        startDate: { required }
+        startDate: { required },
+        owners: { required }
       }
     }
 
@@ -164,47 +176,81 @@ export default defineComponent({
         if (response.status == 200) {
           this.program = response.data;
           this.program.startDate = new Date(response.data.startDate).toISOString().slice(0, 10);
-          this.program.endDate = response.data.endDate ? new Date(response.data.endDate).toISOString().slice(0, 10) : null;
+
+          // EndDate desse if é o valor igual ao nulo na database
+          if (this.program.endDate != null) {
+            this.program.endDate = new Date(response.data.endDate).toISOString().substring(0, 10);
+          }
           return;
         } else if (response.status == 404) {
           this.$router.push({ name: "ProgramsPage" });
           alert("There was an error on our database! Please, try again later.");
         }
       });
+
+    axios.get(`/Program/GetProgramsName`)
+      .then(function (response) {
+        return response;
+      })
+      .then(response => {
+        if (response.status == 200) {
+          this.programList = response.data;
+          console.log(this.programList);
+        } else if (response.status == 204) {
+          alert("There was an error on our database! Please, try again later.");
+        }
+      })
+
   },
   methods: {
+    nameValidation() {
+      var retorno = 0;
+      this.programList.forEach(pL => {
+        if (pL.name.toLowerCase().trim().replaceAll(" ", "") === this.program.name.toLowerCase().trim().replaceAll(" ", "")) {
+          retorno++;
+        }
+      })
+      return retorno;
+    },
     onSubmit(): void {
-      if (!this.v$.$invalid) {
-
-        axios.post('/Program/UpdateProgram', {
-          id: this.program.id,
-          name: this.program.name,
-          startDate: this.program.startDate,
-          endDate: this.program.endDate,
-          description: this.program.description,
-          owners: this.program.owners,
-          editions: null,
-          ownerships: null,
-          memberships: null,
-        })
-          .then(function (response) {
-            alert("Program updated!");
-            return response;
+      if (this.nameValidation() != 0) {
+        alert("NOME JA EXISTENTE");
+      } else {
+        if (!this.v$.$invalid) {
+          let targetEndDate = null;
+          if (this.program.endDate != "") {
+            targetEndDate = this.program.endDate;
+          }
+          axios.post('/Program/UpdateProgram', {
+            id: this.program.id,
+            name: this.program.name,
+            startDate: this.program.startDate,
+            endDate: targetEndDate,
+            description: this.program.description,
+            owners: this.program.owners,
+            editions: null,
+            ownerships: null,
+            memberships: null,
           })
-          .then((response) => {
-            if (response.status == 200) {
-              this.$router.push({ name: "ProgramsPage" });
-              return;
-              //ver se daria apra fazer um !=200
-            } else if (response.status == 404) {
-              this.$router.push({ name: "ProgramsPage" });
-              alert(
-                "There was an error on our database! Please, try again later."
-              );
-            }
-          });
-      }else{
-        this.v$.$validate();
+            .then(function (response) {
+              return response;
+            })
+            .then((response) => {
+              if (response.status == 200) {
+                alert("Program updated!");
+                this.$router.push({ name: "ProgramsPage" });
+                return;
+                //ver se daria apra fazer um !=200
+              } else if (response.status == 404) {
+                this.$router.push({ name: "ProgramsPage" });
+                alert(
+                  "There was an error on our database! Please, try again later."
+                );
+              }
+            });
+        } else {
+          this.v$.$validate();
+        }
       }
     }
   },
@@ -238,7 +284,7 @@ label {
 .submitbutton {
   margin-top: 30px;
   display: flex;
-  float: right;
+  float: left;
   width: 20%;
   font-size: 20px;
   margin-bottom: 12%;
@@ -259,10 +305,6 @@ label {
   border: 0.0625rem solid #7e7e7e;
   border-radius: 0.125rem;
   background-clip: padding-box;
-}
-
-.enddate input {
-  background-color: rgba(181, 181, 181, 0.233);
 }
 
 span {
@@ -302,9 +344,6 @@ span {
   background-clip: padding-box;
 }
 
-.enddate input {
-  background-color: rgba(181, 181, 181, 0.233);
-}
 
 span {
   margin-left: 4px;
@@ -314,5 +353,13 @@ span {
 
 small {
   color: red;
+}
+
+.goBack {
+  position: relative;
+  right: 40%;
+  text-decoration: none;
+  color: #0672CB;
+  font-weight: 300;
 }
 </style>
