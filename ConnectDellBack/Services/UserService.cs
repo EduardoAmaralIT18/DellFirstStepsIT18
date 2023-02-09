@@ -75,13 +75,24 @@ public class UserService : IUserService
         return userList;
     }
 
-    public async Task<int> changeRole(int user, int role)
+    public async Task<int> changeRole(int userid, int role)
     {
-        var usr = await dbUser.users.Where(usr => usr.id == user).FirstOrDefaultAsync();
+        var usr = await dbUser.users.Where(usr => usr.id == userid).FirstOrDefaultAsync();
         usr.role = (Role)role;
        
        int entries = await dbUser.SaveChangesAsync();
        return entries;
         
+    }
+
+    public async Task<int> removeUser(int userid)
+    {
+        var usr = await dbUser.users.Where(usr => usr.id == userid).FirstOrDefaultAsync();
+
+        dbUser.users.Remove(usr);
+
+        var entries = await dbUser.SaveChangesAsync();
+
+        return entries;
     }
 }

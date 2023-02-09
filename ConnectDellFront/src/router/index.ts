@@ -24,7 +24,7 @@ const router = createRouter({
     },
     {
       path: '/users',
-      name: 'users',
+      name: 'UserPage',
       component: () => import('../views/UserView.vue') //teste, pode trocar, so troca so o componente, nao o path nem o name
     },
     {

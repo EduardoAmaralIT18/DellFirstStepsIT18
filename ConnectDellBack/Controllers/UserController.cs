@@ -52,6 +52,16 @@ public class UserController : ControllerBase
        }
     }
 
+    [HttpGet("removeUser")]
+    public async Task<ActionResult> removeUser(int user){
+       var entries = await _service.removeUser(user); 
+       if (entries >0){
+        return Ok();
+       } else {
+        return NotFound();
+       }
+    }
+
 }
 
     // [HttpPost("createProgram")]
