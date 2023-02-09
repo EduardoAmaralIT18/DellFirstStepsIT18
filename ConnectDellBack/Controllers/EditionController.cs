@@ -59,6 +59,12 @@ public class EditionController : ControllerBase
         return result == null ? NoContent() : Ok(result);
     }
 
+    [HttpGet("getEditionsNames")]
+    public async Task<ActionResult<EditionDTO>> getEditionsNames(int idProgram) {
+         var result = await _service.allEditions(idProgram);
+        return result == null ? NoContent() : Ok(result);
+    }
+
     
 
 }

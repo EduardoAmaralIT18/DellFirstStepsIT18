@@ -12,11 +12,14 @@
                 </div>
                 <div id="modal-body-532887773" class="dds__modal__body">
                     <p>
-                       {{ messageError }}
+                        {{ messageError }}
                     </p>
                 </div>
                 <div class="dds__modal__footer">
-                    <button class="dds__button dds__button--md" :class="{errorButton: buttonColor}" type="button" name="modal-secondary-button"  @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
+                    <button class="dds__button dds__button--md"
+                        :class="{ errorButton: buttonColor, hoverError: hovering && buttonColor }"
+                        @mouseover="hovering = true" @mouseleave="hovering = false" type="button"
+                        name="modal-secondary-button" @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
                 </div>
             </div>
         </div>
@@ -64,13 +67,18 @@
                 </div>
 
                 <div class="dds__col--12 dds__col--sm-12">
-                        <div class="member__select" data-dds="select">
-                            <label id="select-label-141366292" for="select-control-141366292">Members</label>
-                            <div class="multiselec dds__select__wrapper">
-                                <MultiSelect style="box-shadow: none ;" v-model="edition.members" tipo="members"/>
-                            </div>
+                    <div class="member__select" data-dds="select">
+                        <label id="select-label-141366292" for="select-control-141366292">Members</label>
+                        <small v-if="v$.edition.members.$error" class="help-block">Not possible to select more than 25
+                            members.</small>
+                        <small v-if="!validateInternsForm" class="help-block">Not possible to select more interns than
+                            the amount stated.</small>
+                        <div class="multiselec dds__select__wrapper">
+                            <MultiSelect style="box-shadow: none ;" v-model="v$.edition.members.$model"
+                                tipo="members" />
                         </div>
                     </div>
+                </div>
 
 
             </div>
@@ -96,7 +104,7 @@
                     </div>
                     <div class="dds__text-area__wrapper">
                         <input v-model="v$.edition.endDate.$model" type="date" id="endDate" name="endDate"
-                            :min="edition.startDate">       
+                            :min="edition.startDate">
                     </div>
                 </div>
             </div>
@@ -158,8 +166,9 @@
                 </div>
             </div>
             <!-- </fieldset> -->
-            <button class="submitbutton dds__button dds__button--lg" type="button"  id="example" @click.prevent="onSubmit()"
-                :disabled="v$.$invalid  && !validateInterns">Submit</button>
+            <button class="submitbutton dds__button dds__button--lg" type="button" id="example"
+                @click.prevent="onSubmit()"
+                :disabled="v$.$invalid || !validateInterns || !validateInternsForm">Submit</button>
         </form>
     </div>
 
@@ -180,6 +189,10 @@ type User = {
     role: number,
 }[];
 
+type EditionsNames = {
+    name: string
+}[];
+
 interface Data {
     edition: {
         name: string,
@@ -195,7 +208,10 @@ interface Data {
     },
     messageError: string,
     titleError: string,
-    buttonColor: boolean
+    buttonColor: boolean,
+    hovering: boolean,
+    editionsNames: EditionsNames | null
+
 
 }
 export default defineComponent({
@@ -203,19 +219,30 @@ export default defineComponent({
         return { v$: useVuelidate() }
     },
     mounted() {
-        this.teste();
+        this.createModal();
     },
+    created() {
+        axios.get('/edition/getEditionsNames?idProgram=' + this.$cookies.get("programId"))
+            .then(function (response) {
+                return response;
+            })
+            .then(response => {
+                this.editionsNames = response.data;
+            })
+
+    },
+
     validations() {
         return {
-            edition: { 
-                name: { 
-                    required 
-                }, 
-                startDate: { 
-                    required 
-                }, 
-                endDate: { 
-                    required 
+            edition: {
+                name: {
+                    required
+                },
+                startDate: {
+                    required
+                },
+                endDate: {
+                    required
                 },
                 members: {
                     maxLength: maxLength(25)
@@ -226,7 +253,7 @@ export default defineComponent({
             }
         }
     },
-    components:{
+    components: {
         MultiSelect
     },
     data(): Data {
@@ -243,22 +270,39 @@ export default defineComponent({
                 endDate: new Date().toISOString().slice(0, 10),
                 program: 0
             },
-            messageError: '',
-            titleError: '',
-            buttonColor: true
+            titleError: "Error",
+            messageError: "I'm sorry, something went wrong in our database. Try again later.",
+            buttonColor: true, //false
+            hovering: false,
+            editionsNames: []
         };
 
     },
     computed: {
-        validateInterns() : boolean {
+        validateInterns(): boolean {
             var nInterns = 0;
             this.edition.members?.forEach(i => {
                 if (i.role == 1) {
                     nInterns++;
                 }
             })
-            
-            if(nInterns < 22 && nInterns > 0){
+
+            if (nInterns < 22 && nInterns > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
+        validateInternsForm(): boolean {
+            var nInterns = 0;
+            this.edition.members?.forEach(i => {
+                if (i.role == 1) {
+                    nInterns++;
+                }
+            })
+
+            if (nInterns <= this.edition.numberOfInterns && nInterns >= 0) {
                 return true;
             } else {
                 return false;
@@ -266,7 +310,7 @@ export default defineComponent({
         }
     },
     methods: {
-        teste(): void {
+        createModal(): void {
             const element = this.$refs.uniqueid;
             // console.log(element);
             console.log(DDS);
@@ -275,12 +319,18 @@ export default defineComponent({
             console.log(modal);
         },
 
-        checkName(): void {
-            //array.forEach(element => {
-                //if(element.name == this.name) {
-                    
-                //}
-            //});
+        checkName(): boolean {
+
+            this.editionsNames?.forEach(element => {
+                if (element.name.toLowerCase().replaceAll(" ", "") == this.edition.name.toLowerCase().replaceAll(" ", "")) {
+                    //Elemento já existe na database
+                    return false;
+                }
+            });
+
+            //Elemento não existe na BD
+            return true;
+
         },
 
         onSubmit(): void {
@@ -288,7 +338,7 @@ export default defineComponent({
             this.edition.program = this.$cookies.get("programId");
 
 
-            if (!this.v$.$invalid && this.validateInterns) {
+            if (!this.v$.$invalid && this.validateInterns && this.validateInternsForm && !this.checkName()) {
                 axios.post('/edition/addEdition', { //nome do controle na rota de EditionController (linha 9)
                     name: this.edition.name,
                     startDate: this.edition.startDate = new Date(),
@@ -314,17 +364,15 @@ export default defineComponent({
                         } else if (response.status == 404) {
                             //this.$router.push({ name: 'ProgramsPage' });
                             //alert("There was an error on our database! Please, try again later.");
-
-                            this.titleError = "Error";
-                            this.messageError = "I'm sorry, something went wrong in our database. Try again later.";
-                            this.buttonColor = false;
+                            this.buttonColor = true;
                         } else {
-                            this.titleError = "Error";
-                            this.messageError = "I'm sorry, something went wrong. Try again later.";
-                            this.buttonColor = false;
+                            this.buttonColor = true;
                         }
                     })
 
+            } else if (this.checkName()) {
+                this.titleError = "Error";
+                this.messageError = `The edition "${this.edition.name}" already exists.`;
             } else {
                 this.v$.$validate();
             }
@@ -446,9 +494,23 @@ span {
     font-weight: 300;
 }
 
-.errorButton{
-    background-color: rgb(206,17,38);
-    border-color: rgb(206,17,38);
+
+/* #errorButton:hover {
+    background-color: rgb(145, 13, 29);
+    border-color: rgb(145, 13, 29);
+} */
+/* 
+#errorButton:hover 
+{ background-color: #000000; 
+transition: 0.5s;
+opacity: 0.7;
+} */
+</style>
+
+<style>
+.errorButton {
+    background-color: rgb(206, 17, 38);
+    border-color: rgb(206, 17, 38);
 }
 
 .errorButton:hover {

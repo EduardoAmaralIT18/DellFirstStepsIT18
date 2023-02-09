@@ -11,6 +11,7 @@ namespace ConnectDellBack.Services
         public Task<EditionDTO> getEditionInfo(int idProgram, int idEdition);
         public Task<UserDTO> showUser(int idEdition);
         public Task<IEnumerable<UserDTO>> getUsersNotAdmin();
+        public Task<IEnumerable<EditionDTO>> allEditions(int idProgram);
 
     }
 

@@ -23,7 +23,7 @@ public class EditionService : IEditionService
 
         var targetInterns = aux;
         targetInterns.Where(usr => usr.role == Role.Intern).ToList();
-        
+
         var edt = new EditionModel()
         {
             name = edition.name,
@@ -52,7 +52,7 @@ public class EditionService : IEditionService
         //mexer nas váriáveis dele na mão
         //Descobrir como enviar esse objeto atualizado, sem criar um novo.
 
-        var edition =  _dbContext.editions.Where(ed => ed.id == editionForm.id).FirstOrDefault();
+        var edition = _dbContext.editions.Where(ed => ed.id == editionForm.id).FirstOrDefault();
 
         if (edition != null)
         {
@@ -67,9 +67,9 @@ public class EditionService : IEditionService
 
             foreach (var item in editionForm.members)
             {
-                 edition.members.Add(await _dbContext.users.Where(user => user.id == item.id).FirstOrDefaultAsync());
+                edition.members.Add(await _dbContext.users.Where(user => user.id == item.id).FirstOrDefaultAsync());
             }
-            
+
             edition.mode = (Mode)editionForm.mode;
 
             int entries = await _dbContext.SaveChangesAsync();
@@ -96,7 +96,7 @@ public class EditionService : IEditionService
     }
 
     //public async Task<> getAllEditionNames(){
-        
+
     //}
 
     public async Task<UserDTO> showUser(int idEdition)
@@ -112,7 +112,7 @@ public class EditionService : IEditionService
         var aux = await _dbContext.users.Where(usr => ((int)usr.role) != 0)
                                         .OrderBy(usr => usr.name)
                                         .ToArrayAsync<UserModel>();
-        
+
         var members = new List<UserDTO>();
         foreach (var item in aux)
         {
@@ -120,4 +120,19 @@ public class EditionService : IEditionService
         }
         return members;
     }
+
+    public async Task<IEnumerable<EditionDTO>> allEditions(int idProgram)
+    {
+        var editions = await _dbContext.editions.Where(edit => edit.program.id == idProgram)
+                                                .Include(ed => ed.program)
+                                                .ToArrayAsync<EditionModel>();
+        List<EditionDTO> aux = new List<EditionDTO>();
+        foreach (var edition in editions)
+        {
+            aux.Add(EditionDTO.convertModel2DTOJustName(edition));
+        }
+        return aux;
+    }
+
+
 }

@@ -1,4 +1,4 @@
-<!-- ALTERADO -->
+
 <template>
 
   <header class="navbar shadow-lg fixed-top">
@@ -15,7 +15,7 @@
 
 
 
-    <button class="dds__button" id="example" type="button">Launch modal button</button>
+    <!-- <button class="dds__button" id="example" type="button">Launch modal button</button>
     <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
       <div class="dds__modal__content">
         <div class="dds__modal__header">
@@ -37,7 +37,7 @@
           <button class="dds__button dds__button--md" type="button" name="modal-secondary-button">Yes</button>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <form>
 
@@ -64,7 +64,7 @@ import axios from "axios";
 //import {nextTick} from 'vue'
 //import {ref, Ref} from 'vue';
 //const root = ref<HTMLElement | null>(uniqueid);
- declare var DDS: any;
+//declare var DDS: any;
 
 
 
@@ -104,21 +104,21 @@ export default defineComponent({
     this.fetchData();
   },
   mounted() {
-    this.teste();
+    //this.teste();
   },
   watch: {
     // call again the method if the route changes
     $route: "fetchData",
   },
   methods: {
-    teste(): void {
-      const element = this.$refs.uniqueid;
-      // console.log(element);
-      console.log(DDS);
-      console.log(element);
-      const modal = new DDS.Modal(element, { trigger: "#example" });
-      console.log(modal);
-    },
+    // teste(): void {
+    //   const element = this.$refs.uniqueid;
+    //   // console.log(element);
+    //   console.log(DDS);
+    //   console.log(element);
+    //   const modal = new DDS.Modal(element, { trigger: "#example" });
+    //   console.log(modal);
+    // },
     fetchData(): void {
       axios
         .get("/Login/getUserList")

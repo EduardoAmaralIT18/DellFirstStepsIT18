@@ -1,6 +1,25 @@
 <template>
 
     <div class="container">
+
+        <!-- Modal Personalizado -->
+        <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
+            <div class="dds__modal__content">
+                <div class="dds__modal__header">
+                    <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
+                </div>
+                <div id="modal-body-532887773" class="dds__modal__body">
+                    <p>
+                       {{ messageError }}
+                    </p>
+                </div>
+                <div class="dds__modal__footer">
+                    <button class="dds__button dds__button--md" :class="{errorButton: buttonColor}" type="button" name="modal-secondary-button"  @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
+                </div>
+            </div>
+        </div>
+
+
         <RouterLink to="/editioninfo" class="goBack"> &larr; Go back</RouterLink>
         <form data-dds="form" class="dds__form dds__container">
             <!-- <fieldset class="dds__form__section"> -->
@@ -149,6 +168,7 @@ import axios from 'axios';
 import { useVuelidate } from '@vuelidate/core';
 import { required, maxLength, maxValue } from '@vuelidate/validators';
 import MultiSelect from './MultipleSelect.vue';
+declare var DDS: any;
 
 //import moment from 'moment';
 
@@ -173,12 +193,20 @@ interface Data {
         program: Number
     },
     cookiesId: Number | null,
-    cookiesEdit: Number | null
+    cookiesEdit: Number | null,
+    messageError: string,
+    titleError: string,
+    buttonColor: boolean
 }
 export default defineComponent({
     setup() {
         return { v$: useVuelidate() }
     },
+
+    mounted() {
+        this.teste();
+    },
+
     data(): Data {
         return {
             edition: {
@@ -195,7 +223,10 @@ export default defineComponent({
                 program: 0
             },
             cookiesId: this.$cookies.get("programId"),
-            cookiesEdit: this.$cookies.get("editionId")
+            cookiesEdit: this.$cookies.get("editionId"),
+            messageError: '',
+            titleError: '',
+            buttonColor: true
         };
     },
     validations() {
@@ -273,18 +304,32 @@ export default defineComponent({
                     })
                     .then(response => {
                         if (response.status == 200) {
-                            alert("Edition updated!");
+                            //alert("Edition updated!");
+                            this.titleError = "Edition Updated";
+                            this.messageError = `The edition "${this.edition.name}" of ${this.$cookies.get("programName")} was successfully update.`;
                             this.$router.push({ name: 'ProgramsPage' });
                             return;
                         } else if (response.status == 404) {
+                            this.titleError = "Error";
+                            this.messageError = "I'm sorry, something went wrong in our database. Try again later.";
+                            this.buttonColor = false;
                             this.$router.push({ name: 'ProgramsPage' });
-                            alert("There was an error on our database! Please, try again later.");
+                            //alert("There was an error on our database! Please, try again later.");
                         }
                     })
             } else {
                 this.v$.$validate();
             }
 
+        },
+
+        teste(): void {
+            const element = this.$refs.uniqueid;
+            // console.log(element);
+            console.log(DDS);
+            console.log(element);
+            const modal = new DDS.Modal(element, { trigger: "#example" });
+            console.log(modal);
         },
 
     },
@@ -413,5 +458,15 @@ span {
     text-decoration: none;
     color: #0672CB;
     font-weight: 300;
+}
+
+.errorButton{
+    background-color: rgb(206,17,38);
+    border-color: rgb(206,17,38);
+}
+
+.errorButton:hover {
+    background-color: rgb(145, 13, 29);
+    border-color: rgb(145, 13, 29);
 }
 </style>

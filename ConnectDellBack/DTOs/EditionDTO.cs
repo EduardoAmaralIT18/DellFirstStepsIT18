@@ -42,4 +42,10 @@ public class EditionDTO
         aux.programName = edition.program.name;
         return aux;
     }
+
+    public static EditionDTO convertModel2DTOJustName (EditionModel edition) {
+        EditionDTO aux = new EditionDTO();
+        aux.name = edition.name;
+        return aux;
+    }
 }
