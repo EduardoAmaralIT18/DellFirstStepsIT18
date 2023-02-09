@@ -1,4 +1,22 @@
 <template>
+
+  <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
+    <div class="dds__modal__content">
+      <div class="dds__modal__header">
+        <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
+      </div>
+      <div id="modal-body-532887773" class="dds__modal__body">
+        <p>
+          {{ messageError }}
+        </p>
+      </div>
+      <div class="dds__modal__footer">
+        <button class="dds__button dds__button--md" :class="{ errorButton: buttonColor }" type="button"
+          name="modal-secondary-button" @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
+      </div>
+    </div>
+  </div>
+
   <div class="container">
     <RouterLink to="/programinfo" class="goBack"> &larr; Go back</RouterLink>
     <form data-dds="form" class="dds__form dds__container">
@@ -79,12 +97,12 @@
               </div>
             </div>
           </div>
-          <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()"
-            :disabled="v$.$invalid">
-            Submit
-          </button>
         </div>
       </fieldset>
+      <button class="submitbutton dds__button dds__button--lg" id="example" type="submit" @click.prevent="onSubmit()"
+        :disabled="v$.$invalid">
+        Submit
+      </button>
     </form>
   </div>
 </template>
@@ -95,7 +113,7 @@ import { required, maxLength, minLength } from '@vuelidate/validators';
 import { defineComponent } from "vue";
 import MultiSelect from "./MultipleSelect.vue";
 import axios from "axios";
-
+declare var DDS: any;
 
 type User = {
   id: number;
@@ -118,7 +136,10 @@ interface Data {
   total: null | User;
   options: null | User;
   idProgram: any;
-  programList: programList
+  programList: programList,
+  messageError: string,
+  titleError: string,
+  buttonColor: boolean
 }
 
 export default defineComponent({
@@ -137,7 +158,9 @@ export default defineComponent({
 
     }
   },
-
+  mounted() {
+    this.createModal();
+  },
   data(): Data {
     return {
       program: {
@@ -151,7 +174,10 @@ export default defineComponent({
       total: null,
       options: null,
       idProgram: this.$route.params.idProgram,
-      programList: []
+      programList: [],
+      messageError: '',
+      titleError: '',
+      buttonColor: false
     };
   },
   validations() {
@@ -165,7 +191,6 @@ export default defineComponent({
     }
 
   },
-
   created() {
     axios
       .get(`/Program/GetProgram?id=${this.idProgram}`)
@@ -176,8 +201,6 @@ export default defineComponent({
         if (response.status == 200) {
           this.program = response.data;
           this.program.startDate = new Date(response.data.startDate).toISOString().slice(0, 10);
-
-          // EndDate desse if é o valor igual ao nulo na database
           if (this.program.endDate != null) {
             this.program.endDate = new Date(response.data.endDate).toISOString().substring(0, 10);
           }
@@ -212,9 +235,20 @@ export default defineComponent({
       })
       return retorno;
     },
+    createModal(): void {
+      const element = this.$refs.uniqueid;
+      //console.log(element);
+      console.log(DDS);
+      console.log(element);
+      const modal = new DDS.Modal(element, { trigger: "#example" });
+      console.log(modal);
+    },
     onSubmit(): void {
       if (this.nameValidation() != 0) {
-        alert("NOME JA EXISTENTE");
+        this.titleError = "Error";
+        this.messageError = `The program "${this.program.name}" already exists.`;
+        this.buttonColor = true;
+        return;
       } else {
         if (!this.v$.$invalid) {
           let targetEndDate = null;
@@ -237,15 +271,14 @@ export default defineComponent({
             })
             .then((response) => {
               if (response.status == 200) {
-                alert("Program updated!");
-                this.$router.push({ name: "ProgramsPage" });
+                this.titleError = "Program Edited";
+                this.messageError = `Your changes were successfully apllied on the program "${this.program.name}".`;
                 return;
-                //ver se daria apra fazer um !=200
               } else if (response.status == 404) {
-                this.$router.push({ name: "ProgramsPage" });
-                alert(
-                  "There was an error on our database! Please, try again later."
-                );
+                this.titleError = "Error";
+                this.messageError = `I'm sorry, something went wrong. Try again later.`;
+                this.buttonColor = true;
+                return;
               }
             });
         } else {
@@ -313,6 +346,7 @@ span {
   font-weight: bold;
 }
 </style>
+
 <style>
 .multiselect {
   border: 0.0625rem solid #7e7e7e;
@@ -362,4 +396,14 @@ small {
   color: #0672CB;
   font-weight: 300;
 }
+
+.errorButton{
+    background-color: rgb(206,17,38);
+    border-color: rgb(206,17,38);
+}
+.errorButton:hover {
+    background-color: rgb(145, 13, 29);
+    border-color: rgb(145, 13, 29);
+}
+
 </style>

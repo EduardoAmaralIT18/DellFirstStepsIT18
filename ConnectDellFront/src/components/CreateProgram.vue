@@ -1,5 +1,22 @@
 <template>
 
+    <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
+        <div class="dds__modal__content">
+            <div class="dds__modal__header">
+                <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
+            </div>
+            <div id="modal-body-532887773" class="dds__modal__body">
+                <p>
+                    {{ messageError }}
+                </p>
+            </div>
+            <div class="dds__modal__footer">
+                <button class="dds__button dds__button--md" :class="{ errorButton: buttonColor }" type="button"
+                    name="modal-secondary-button" @click="$router.push({ name: 'HomePage' });">Ok</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <RouterLink to="/home" class="goBack"> &larr; Go back</RouterLink>
         <form data-dds="form" class="dds__form dds__container">
@@ -86,37 +103,12 @@
                 </div>
             </fieldset>
             <button class="submitbutton dds__button dds__button--lg" id="example" type="submit"
-                @click.prevent="onSubmit()" :disabled="v$.$invalid">Submit</button>
-
+                @click.prevent="onSubmit()" :disabled="v$.$invalid">
+                Submit
+            </button>
         </form>
 
-
-        <button class="dds__button" id="example" type="button">Launch modal button</button>
-        <div role="dialog" data-dds="modal" class="dds__modal" data-trigger="#example"
-            aria-labelledby="modal-headline-301084177">
-            <div class="dds__modal__content">
-                <div class="dds__modal__header">
-                    <h3 class="dds__modal__title" id="modal-headline-301084177">Present new laptop</h3>
-                </div>
-                <div id="modal-body-161924461" class="dds__modal__body">
-                    <p>
-                        Small, light, and stylish laptops and 2-in-1s designed for ultimate productivity. A new era of
-                        collaboration and connectivity to
-                        work anywhere. XPS laptops and 2-in-1s are precision crafted with premium materials, featuring
-                        stunning displays and the performance
-                        you demand to express your creative self and your big ideas.
-                        <a href="https://www.dell.com">dell.com</a>
-                    </p>
-                </div>
-                <div class="dds__modal__footer">
-                    <button class="dds__button dds__button--secondary dds__button--md" type="button"
-                        name="modal-primary-button">No</button>
-                    <button class="dds__button dds__button--md" type="button" name="modal-secondary-button">Yes</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- <FeedbackModal/> -->
+    </div>
 
 </template>
 
@@ -126,10 +118,7 @@ import MultiSelect from './MultipleSelect.vue';
 import axios from 'axios';
 import { useVuelidate } from '@vuelidate/core';
 import { minLength, maxLength, required } from '@vuelidate/validators';
-// import FeedbackModal from './FeedbackModal.vue';
-
-const element = document.getElementById("unique-id");
-DDS.Modal(element);
+declare var DDS: any;
 
 type User = {
     id: number,
@@ -150,13 +139,19 @@ interface Data {
     },
     total: null | User,
     options: null | User,
-    programList: programList
+    programList: programList,
+    messageError: string,
+    titleError: string,
+    buttonColor: boolean
 }
 
 
 export default defineComponent({
     setup() {
         return { v$: useVuelidate() }
+    },
+    mounted() {
+        this.createModal();
     },
     validations() {
         return {
@@ -180,8 +175,7 @@ export default defineComponent({
         }
     },
     components: {
-        MultiSelect,
-        // FeedbackModal
+        MultiSelect
     },
     data(): Data {
         return {
@@ -194,7 +188,10 @@ export default defineComponent({
             },
             total: null,
             options: null,
-            programList: []
+            programList: [],
+            messageError: '',
+            titleError: '',
+            buttonColor: false
         };
     },
     created() {
@@ -216,15 +213,25 @@ export default defineComponent({
             var retorno = 0;
             this.programList.forEach(pL => {
                 if (pL.name.toLowerCase().trim().replaceAll(" ", "") === this.program.name.toLowerCase().trim().replaceAll(" ", "")) {
-                    retorno++;
+                    retorno = 1;
                 }
             })
             return retorno;
         },
+        createModal(): void {
+            const element = this.$refs.uniqueid;
+            //console.log(element);
+            console.log(DDS);
+            console.log(element);
+            const modal = new DDS.Modal(element, { trigger: "#example" });
+            console.log(modal);
+        },
         onSubmit(): void {
             if (this.nameValidation() != 0) {
-                alert("NOME JA EXISTENTE");
-                // INSIRA A MODAL AQUI, OBRIGADA :)
+                this.titleError = "Error";
+                this.messageError = `The program "${this.program.name}" already exists.`;
+                this.buttonColor = true;
+                return;
             } else {
                 if (this.program.endDate == null) {
                     axios.post('/program/addProgram', {
@@ -241,11 +248,14 @@ export default defineComponent({
                         })
                         .then(response => {
                             if (response.status == 200) {
-                                this.$router.push({ name: 'HomePage' });
+                                this.titleError = "Program Created";
+                                this.messageError = `The program "${this.program.name}" was successfully created.`;
                                 return;
                             } else if (response.status == 404) {
-                                this.$router.push({ name: 'HomePage' });
-                                alert("There was an error on our database! Please, try again later.");
+                                this.titleError = "Error";
+                                this.messageError = `I'm sorry, something went wrong. Try again later.`;
+                                this.buttonColor = true;
+                                return;
                             }
                         })
                 } else {
@@ -264,11 +274,14 @@ export default defineComponent({
                         })
                         .then(response => {
                             if (response.status == 200) {
-                                this.$router.push({ name: 'HomePage' });
+                                this.titleError = "Program Created";
+                                this.messageError = `The program "${this.program.name}" was successfully created.`;
                                 return;
                             } else if (response.status == 404) {
-                                this.$router.push({ name: 'HomePage' });
-                                alert("There was an error on our database! Please, try again later.");
+                                this.titleError = "Error";
+                                this.messageError = `I'm sorry, something went wrong. Try again later.`;
+                                this.buttonColor = true;
+                                return;
                             }
                         })
                 }
@@ -397,4 +410,14 @@ span {
 .dates input:hover {
     border: .0625rem solid rgb(6, 114, 203);
 }
+
+.errorButton{
+    background-color: rgb(206,17,38);
+    border-color: rgb(206,17,38);
+}
+.errorButton:hover {
+    background-color: rgb(145, 13, 29);
+    border-color: rgb(145, 13, 29);
+}
+
 </style>
