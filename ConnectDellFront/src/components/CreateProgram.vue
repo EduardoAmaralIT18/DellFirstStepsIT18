@@ -4,7 +4,7 @@
         <RouterLink to="/home" class="goBack"> &larr; Go back</RouterLink>
         <form data-dds="form" class="dds__form dds__container">
             <fieldset class="dds__form__section">
-                
+
                 <h2 class="title">Create Program</h2>
                 <div class="dds__row">
                     <div class="dds__col--12 dds__col--sm-12">
@@ -43,7 +43,7 @@
                         <div>
                             <label for="endDate">End date</label>
                             <input v-model="v$.program.endDate.$model" type="date" id="endDate" name="endDate"
-                            :min="program.startDate">
+                                :min="program.startDate">
                             <small class="warning" v-if="v$.program.endDate.$error">The End Date must be after the Start
                                 Date.</small>
                         </div>
@@ -89,9 +89,12 @@
                 :disabled="v$.$invalid">Submit</button>
         </form>
 
+        <!-- <div v-for="names in programList" :key="names.name">
+            <p> {{ nameValidation() }} </p>
+            <p> {{ names.name }} </p>
+        </div> -->
+
     </div>
-
-
 
 </template>
 
@@ -107,6 +110,10 @@ type User = {
     name: string
 }[];
 
+type programList = {
+    name: string
+}[];
+
 interface Data {
     program: {
         name: string,
@@ -116,8 +123,8 @@ interface Data {
         endDate: null | Date | string
     },
     total: null | User,
-    options: null | User
-
+    options: null | User,
+    programList: programList
 }
 
 export default defineComponent({
@@ -158,59 +165,87 @@ export default defineComponent({
                 endDate: null
             },
             total: null,
-            options: null
-
+            options: null,
+            programList: []
         };
     },
+    created() {
+        axios.get(`/Program/GetProgramsName`)
+            .then(function (response) {
+                return response;
+            })
+            .then(response => {
+                if (response.status == 200) {
+                    this.programList = response.data;
+                    console.log(this.programList);
+                } else if (response.status == 204) {
+                    alert("There was an error on our database! Please, try again later.");
+                }
+            })
+    },
     methods: {
+        nameValidation() {
+            var retorno = 0;
+            this.programList.forEach(pL => {
+                if (pL.name.toLowerCase().trim().replaceAll(" ", "") === this.program.name.toLowerCase().trim().replaceAll(" ", "")) {
+                    retorno++;
+                }
+            })
+            return retorno;
+        },
         onSubmit(): void {
-            if(this.program.endDate == null){
-            axios.post('/program/addProgram', {
-                name: this.program.name,
-                startDate: this.program.startDate = new Date(),
-                description: this.program.description,
-                owners: this.program.members,
-                editions: null,
-                ownerships: null,
-                memberships: null
-            })
-                .then(function (response) {
-                    return response;
-                })
-                .then(response => {
-                    if (response.status == 200) {
-                        this.$router.push({ name: 'HomePage' });
-                        return;
-                    } else if (response.status == 404) {
-                        this.$router.push({ name: 'HomePage' });
-                        alert("There was an error on our database! Please, try again later.");
-                    }
-                })
-        } else {
-            axios.post('/program/addProgram', {
-                name: this.program.name,
-                startDate: this.program.startDate = new Date(),
-                endDate: this.program.endDate = new Date(),
-                description: this.program.description,
-                owners: this.program.members,
-                editions: null,
-                ownerships: null,
-                memberships: null
-            })
-                .then(function (response) {
-                    return response;
-                })
-                .then(response => {
-                    if (response.status == 200) {
-                        this.$router.push({ name: 'HomePage' });
-                        return;
-                    } else if (response.status == 404) {
-                        this.$router.push({ name: 'HomePage' });
-                        alert("There was an error on our database! Please, try again later.");
-                    }
-                })
+            if (this.nameValidation() != 0) {
+                alert("NOME JA EXISTENTE");
+                // INSIRA A MODAL AQUI, OBRIGADA :)
+            } else {
+                if (this.program.endDate == null) {
+                    axios.post('/program/addProgram', {
+                        name: this.program.name,
+                        startDate: this.program.startDate = new Date(),
+                        description: this.program.description,
+                        owners: this.program.members,
+                        editions: null,
+                        ownerships: null,
+                        memberships: null
+                    })
+                        .then(function (response) {
+                            return response;
+                        })
+                        .then(response => {
+                            if (response.status == 200) {
+                                this.$router.push({ name: 'HomePage' });
+                                return;
+                            } else if (response.status == 404) {
+                                this.$router.push({ name: 'HomePage' });
+                                alert("There was an error on our database! Please, try again later.");
+                            }
+                        })
+                } else {
+                    axios.post('/program/addProgram', {
+                        name: this.program.name,
+                        startDate: this.program.startDate = new Date(),
+                        endDate: this.program.endDate = new Date(),
+                        description: this.program.description,
+                        owners: this.program.members,
+                        editions: null,
+                        ownerships: null,
+                        memberships: null
+                    })
+                        .then(function (response) {
+                            return response;
+                        })
+                        .then(response => {
+                            if (response.status == 200) {
+                                this.$router.push({ name: 'HomePage' });
+                                return;
+                            } else if (response.status == 404) {
+                                this.$router.push({ name: 'HomePage' });
+                                alert("There was an error on our database! Please, try again later.");
+                            }
+                        })
+                }
+            }
         }
-    }
     }
 });
 </script>
@@ -322,13 +357,15 @@ span {
 .multiselect:hover {
     border: .0625rem solid rgb(6, 114, 203);
 }
+
 .goBack {
-  position: relative;
-  right: 40%;
-  text-decoration: none;
-  color: #0672CB;
-  font-weight: 300;
+    position: relative;
+    right: 40%;
+    text-decoration: none;
+    color: #0672CB;
+    font-weight: 300;
 }
+
 .dates input:hover {
     border: .0625rem solid rgb(6, 114, 203);
 }
