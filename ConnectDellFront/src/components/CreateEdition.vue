@@ -17,7 +17,7 @@
                 </div>
                 <div class="dds__modal__footer">
                     <button class="dds__button dds__button--md"
-                        :class="{ errorButton: buttonColor, hoverError: hovering && buttonColor }"
+                        :class="{errorButton: buttonColor}"
                         @mouseover="hovering = true" @mouseleave="hovering = false" type="button"
                         name="modal-secondary-button" @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
                 </div>
@@ -319,17 +319,17 @@ export default defineComponent({
             console.log(modal);
         },
 
-        checkName(): boolean {
-
+        checkName(): number {
+            let n : number = 0;
             this.editionsNames?.forEach(element => {
                 if (element.name.toLowerCase().replaceAll(" ", "") == this.edition.name.toLowerCase().replaceAll(" ", "")) {
-                    //Elemento já existe na database
-                    return false;
+                   
+                    n = 1;
                 }
             });
+            
 
-            //Elemento não existe na BD
-            return true;
+            return n;
 
         },
 
@@ -338,7 +338,7 @@ export default defineComponent({
             this.edition.program = this.$cookies.get("programId");
 
 
-            if (!this.v$.$invalid && this.validateInterns && this.validateInternsForm && !this.checkName()) {
+            if (!this.v$.$invalid && this.validateInterns && this.validateInternsForm && this.checkName()==0) {
                 axios.post('/edition/addEdition', { //nome do controle na rota de EditionController (linha 9)
                     name: this.edition.name,
                     startDate: this.edition.startDate = new Date(),
@@ -370,7 +370,7 @@ export default defineComponent({
                         }
                     })
 
-            } else if (this.checkName()) {
+            } else if (this.checkName()==1) {
                 this.titleError = "Error";
                 this.messageError = `The edition "${this.edition.name}" already exists.`;
             } else {
@@ -513,7 +513,7 @@ opacity: 0.7;
     border-color: rgb(206, 17, 38);
 }
 
-.errorButton:hover {
+.errorButton :hover {
     background-color: rgb(145, 13, 29);
     border-color: rgb(145, 13, 29);
 }
