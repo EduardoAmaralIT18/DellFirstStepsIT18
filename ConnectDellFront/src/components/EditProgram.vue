@@ -11,7 +11,7 @@
         </p>
       </div>
       <div class="dds__modal__footer">
-        <button class="dds__button dds__button--md" :class="{ errorButton: buttonColor }" type="button"
+        <button :class="buttonColor" type="button"
           name="modal-secondary-button" @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
       </div>
     </div>
@@ -139,7 +139,7 @@ interface Data {
   programList: programList,
   messageError: string,
   titleError: string,
-  buttonColor: boolean
+  buttonColor: string
 }
 
 export default defineComponent({
@@ -177,7 +177,7 @@ export default defineComponent({
       programList: [],
       messageError: '',
       titleError: '',
-      buttonColor: false
+      buttonColor: "blueButton"
     };
   },
   validations() {
@@ -247,7 +247,7 @@ export default defineComponent({
       if (this.nameValidation() != 0) {
         this.titleError = "Error";
         this.messageError = `The program "${this.program.name}" already exists.`;
-        this.buttonColor = true;
+        this.buttonColor = "errorButton";
         return;
       } else {
         if (!this.v$.$invalid) {
@@ -273,11 +273,12 @@ export default defineComponent({
               if (response.status == 200) {
                 this.titleError = "Program Edited";
                 this.messageError = `Your changes were successfully apllied on the program "${this.program.name}".`;
+                this.buttonColor = "blueButton";
                 return;
               } else if (response.status == 404) {
                 this.titleError = "Error";
                 this.messageError = `I'm sorry, something went wrong. Try again later.`;
-                this.buttonColor = true;
+                this.buttonColor = "errorButton";
                 return;
               }
             });
@@ -397,13 +398,58 @@ small {
   font-weight: 300;
 }
 
-.errorButton{
-    background-color: rgb(206,17,38);
-    border-color: rgb(206,17,38);
+.blueButton {
+    background-color: #0672cb;
+    border-color: #0672cb;
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgba(0, 0, 0, 0);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
 }
-.errorButton:hover {
-    background-color: rgb(145, 13, 29);
-    border-color: rgb(145, 13, 29);
+
+.errorButton {
+    background-color: rgb(206, 17, 38);
+    border-color: rgb(206, 17, 38);
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgba(0, 0, 0, 0);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
 }
 
 </style>
