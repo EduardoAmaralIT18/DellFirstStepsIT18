@@ -11,8 +11,8 @@
         </p>
       </div>
       <div class="dds__modal__footer">
-        <button :class="buttonColor" type="button"
-          name="modal-secondary-button" @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
+        <button :class="buttonColor" type="button" name="modal-secondary-button"
+          @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
       </div>
     </div>
   </div>
@@ -137,6 +137,7 @@ interface Data {
   options: null | User;
   idProgram: any;
   programList: programList,
+  originalName: string,
   messageError: string,
   titleError: string,
   buttonColor: string
@@ -175,6 +176,7 @@ export default defineComponent({
       options: null,
       idProgram: this.$route.params.idProgram,
       programList: [],
+      originalName: '',
       messageError: '',
       titleError: '',
       buttonColor: "nullButton"
@@ -218,6 +220,7 @@ export default defineComponent({
       .then(response => {
         if (response.status == 200) {
           this.programList = response.data;
+          this.originalName = response.data.name;
           console.log(this.programList);
         } else if (response.status == 204) {
           alert("There was an error on our database! Please, try again later.");
@@ -227,13 +230,16 @@ export default defineComponent({
   },
   methods: {
     nameValidation() {
-      var retorno = 0;
-      this.programList.forEach(pL => {
-        if (pL.name.toLowerCase().trim().replaceAll(" ", "") === this.program.name.toLowerCase().trim().replaceAll(" ", "")) {
-          retorno++;
-        }
-      })
-      return retorno;
+      if (this.originalName === this.program.name) {
+        return 0;
+      } else {
+        this.programList.forEach(pL => {
+          if (pL.name.toLowerCase().trim().replaceAll(" ", "") === this.program.name.toLowerCase().trim().replaceAll(" ", "")) {
+            return 1;
+          }
+        })
+      }
+      return 0;
     },
     createModal(): void {
       const element = this.$refs.uniqueid;
@@ -399,84 +405,83 @@ small {
 }
 
 .blueButton {
-    background-color: #0672cb;
-    border-color: #0672cb;
-    color: #fff;
-    border-radius: 0.125rem;
-    font-size: .875rem;
-    line-height: 1.5rem;
-    padding: 0.4375rem 0.9375rem;
-    border-radius: 0.125rem;
-    font-size: 1rem;
-    line-height: 1.5rem;
-    padding: 0.6875rem 1.1875rem;
-    border: 0.0625rem solid rgba(0, 0, 0, 0);
-    cursor: pointer;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 500;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    vertical-align: middle;
-    white-space: normal;
-    fill: currentColor;
+  background-color: #0672cb;
+  border-color: #0672cb;
+  color: #fff;
+  border-radius: 0.125rem;
+  font-size: .875rem;
+  line-height: 1.5rem;
+  padding: 0.4375rem 0.9375rem;
+  border-radius: 0.125rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 0.6875rem 1.1875rem;
+  border: 0.0625rem solid rgba(0, 0, 0, 0);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  vertical-align: middle;
+  white-space: normal;
+  fill: currentColor;
 }
 
 .errorButton {
-    background-color: rgb(206, 17, 38);
-    border-color: rgb(206, 17, 38);
-    color: #fff;
-    border-radius: 0.125rem;
-    font-size: .875rem;
-    line-height: 1.5rem;
-    padding: 0.4375rem 0.9375rem;
-    border-radius: 0.125rem;
-    font-size: 1rem;
-    line-height: 1.5rem;
-    padding: 0.6875rem 1.1875rem;
-    border: 0.0625rem solid rgba(0, 0, 0, 0);
-    cursor: pointer;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 500;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    vertical-align: middle;
-    white-space: normal;
-    fill: currentColor;
+  background-color: rgb(206, 17, 38);
+  border-color: rgb(206, 17, 38);
+  color: #fff;
+  border-radius: 0.125rem;
+  font-size: .875rem;
+  line-height: 1.5rem;
+  padding: 0.4375rem 0.9375rem;
+  border-radius: 0.125rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 0.6875rem 1.1875rem;
+  border: 0.0625rem solid rgba(0, 0, 0, 0);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  vertical-align: middle;
+  white-space: normal;
+  fill: currentColor;
 }
 
 .nullButton {
-    background-color: rgb(255, 255, 255);
-    border-color: rgb(255, 255, 255);
-    color: #fff;
-    border-radius: 0.125rem;
-    font-size: .875rem;
-    line-height: 1.5rem;
-    padding: 0.4375rem 0.9375rem;
-    border-radius: 0.125rem;
-    font-size: 1rem;
-    line-height: 1.5rem;
-    padding: 0.6875rem 1.1875rem;
-    border: 0.0625rem solid rgb(255, 255, 255);
-    cursor: pointer;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 500;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    vertical-align: middle;
-    white-space: normal;
-    fill: currentColor;
+  background-color: rgb(255, 255, 255);
+  border-color: rgb(255, 255, 255);
+  color: #fff;
+  border-radius: 0.125rem;
+  font-size: .875rem;
+  line-height: 1.5rem;
+  padding: 0.4375rem 0.9375rem;
+  border-radius: 0.125rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 0.6875rem 1.1875rem;
+  border: 0.0625rem solid rgb(255, 255, 255);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  vertical-align: middle;
+  white-space: normal;
+  fill: currentColor;
 }
-
 </style>
