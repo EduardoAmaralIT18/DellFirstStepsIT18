@@ -15,11 +15,16 @@ public class EditionService : IEditionService
     public async Task<int> addEdition(EditionDTO edition)
     {
         var aux = new List<UserModel>();
-        foreach (var item in edition.members)
+        if (edition.members != null)
         {
-            var member = _dbContext.users.Where(usr => usr.id == item.id).FirstOrDefault();
-            aux.Add(member);
+            foreach (var item in edition.members)
+            {
+                var member = _dbContext.users.Where(usr => usr.id == item.id).FirstOrDefault();
+                aux.Add(member);
+            }
         }
+
+
 
         var targetInterns = aux;
         targetInterns.Where(usr => usr.role == Role.Intern).ToList();

@@ -16,10 +16,10 @@
                     </p>
                 </div>
                 <div class="dds__modal__footer">
-                    <button class="dds__button dds__button--md"
-                        :class="{errorButton: buttonColor}"
-                        @mouseover="hovering = true" @mouseleave="hovering = false" type="button"
-                        name="modal-secondary-button" @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
+                    <button 
+                        :class="buttonColor"
+                        type="button" name="modal-secondary-button"
+                        @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
                 </div>
             </div>
         </div>
@@ -208,8 +208,7 @@ interface Data {
     },
     messageError: string,
     titleError: string,
-    buttonColor: boolean,
-    hovering: boolean,
+    buttonColor: string,
     editionsNames: EditionsNames | null
 
 
@@ -272,8 +271,7 @@ export default defineComponent({
             },
             titleError: "Error",
             messageError: "I'm sorry, something went wrong in our database. Try again later.",
-            buttonColor: true, //false
-            hovering: false,
+            buttonColor: "errorButton",
             editionsNames: []
         };
 
@@ -287,7 +285,7 @@ export default defineComponent({
                 }
             })
 
-            if (nInterns < 22 && nInterns > 0) {
+            if (nInterns < 22 && nInterns >= 0) {
                 return true;
             } else {
                 return false;
@@ -320,14 +318,14 @@ export default defineComponent({
         },
 
         checkName(): number {
-            let n : number = 0;
+            let n: number = 0;
             this.editionsNames?.forEach(element => {
                 if (element.name.toLowerCase().replaceAll(" ", "") == this.edition.name.toLowerCase().replaceAll(" ", "")) {
-                   
+
                     n = 1;
                 }
             });
-            
+
 
             return n;
 
@@ -338,7 +336,7 @@ export default defineComponent({
             this.edition.program = this.$cookies.get("programId");
 
 
-            if (!this.v$.$invalid && this.validateInterns && this.validateInternsForm && this.checkName()==0) {
+            if (!this.v$.$invalid && this.validateInterns && this.validateInternsForm && this.checkName() == 0) {
                 axios.post('/edition/addEdition', { //nome do controle na rota de EditionController (linha 9)
                     name: this.edition.name,
                     startDate: this.edition.startDate = new Date(),
@@ -360,17 +358,20 @@ export default defineComponent({
                             // this.$router.push({ name: 'ProgramsPage' });
                             this.titleError = "Edition Created";
                             this.messageError = `The edition "${this.edition.name}" of ${this.$cookies.get("programName")} was successfully created.`;
+                            this.buttonColor = "blueButton";
                             return;
                         } else if (response.status == 404) {
                             //this.$router.push({ name: 'ProgramsPage' });
                             //alert("There was an error on our database! Please, try again later.");
-                            this.buttonColor = true;
+                            this.buttonColor = "errorButton";
+                           
                         } else {
-                            this.buttonColor = true;
+                            this.buttonColor = "errorButton";
+                            
                         }
                     })
 
-            } else if (this.checkName()==1) {
+            } else if (this.checkName() == 1) {
                 this.titleError = "Error";
                 this.messageError = `The edition "${this.edition.name}" already exists.`;
             } else {
@@ -494,6 +495,44 @@ span {
     font-weight: 300;
 }
 
+/* .dds__button:hover,
+.dds__notification__close-icon:hover,
+.dds__input__action.dds__input__action--switch:hover,
+.dds__input__action button:hover,
+.dds__button:focus,
+.dds__notifications__close-icon:focus,
+.dds__input__action.dds__input__action--switch:focus,
+.dds__input__action button:focus {
+    text-decoration: none;
+}
+.dds__button--primary, .dds__button :hover {
+    background-color: #0672cb;
+    border-color: #0672cb;
+    color: #fff;
+}
+ */
+
+ .blueButton {
+    background-color: #0672cb;
+    border-color: #0672cb;
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+}
+
+.errorButton {
+    background-color: rgb(206, 17, 38);
+    border-color: rgb(206, 17, 38);
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+}
+ 
+
 
 /* #errorButton:hover {
     background-color: rgb(145, 13, 29);
@@ -508,13 +547,7 @@ opacity: 0.7;
 </style>
 
 <style>
-.errorButton {
-    background-color: rgb(206, 17, 38);
-    border-color: rgb(206, 17, 38);
-}
 
-.errorButton :hover {
-    background-color: rgb(145, 13, 29);
-    border-color: rgb(145, 13, 29);
-}
+
+
 </style>
