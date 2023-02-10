@@ -1,5 +1,22 @@
 <template>
 
+    <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
+        <div class="dds__modal__content">
+            <div class="dds__modal__header">
+                <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
+            </div>
+            <div id="modal-body-532887773" class="dds__modal__body">
+                <p>
+                    {{ messageError }}
+                </p>
+            </div>
+            <div class="dds__modal__footer">
+                <button :class="buttonColor" type="button"
+                    name="modal-secondary-button" @click="$router.push({ name: 'HomePage' });">Ok</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <RouterLink to="/home" class="goBack"> &larr; Go back</RouterLink>
         <form data-dds="form" class="dds__form dds__container">
@@ -85,36 +102,12 @@
                     </div>
                 </div>
             </fieldset>
-            <button class="submitbutton dds__button dds__button--lg" id="btnSubmit" type="submit"
-                @click.prevent="onSubmit()" :disabled="v$.$invalid">Submit</button>
+            <button class="submitbutton dds__button dds__button--lg" id="example" type="submit"
+                @click.prevent="onSubmit()" :disabled="v$.$invalid">
+                Submit
+            </button>
         </form>
 
-    </div>
-
-    <!-- <button class="dds__button" id="example" type="button">Launch modal button</button> -->
-    <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
-        <div class="dds__modal__content">
-            <div class="dds__modal__header">
-                <h3 class="dds__modal__title" id="modal-headline-369536123">Present new laptop</h3>
-            </div>
-            <div id="modal-body-532887773" class="dds__modal__body">
-                <p>
-                    Small, light, and stylish laptops and 2-in-1s designed for ultimate productivity. A new era of
-                    collaboration
-                    and connectivity to
-                    work anywhere. XPS laptops and 2-in-1s are precision crafted with premium materials, featuring
-                    stunning
-                    displays and the performance
-                    you demand to express your creative self and your big ideas.
-                    <a href="https://www.dell.com">dell.com</a>
-                </p>
-            </div>
-            <div class="dds__modal__footer">
-                <button class="dds__button dds__button--secondary dds__button--md" type="button"
-                    name="modal-primary-button">No</button>
-                <button class="dds__button dds__button--md" type="button" name="modal-secondary-button">Yes</button>
-            </div>
-        </div>
     </div>
 
 </template>
@@ -132,6 +125,10 @@ type User = {
     name: string
 }[];
 
+type programList = {
+    name: string
+}[];
+
 interface Data {
     program: {
         name: string,
@@ -141,13 +138,20 @@ interface Data {
         endDate: null | Date | string
     },
     total: null | User,
-    options: null | User
-
+    options: null | User,
+    programList: programList,
+    messageError: string,
+    titleError: string,
+    buttonColor: string
 }
+
 
 export default defineComponent({
     setup() {
         return { v$: useVuelidate() }
+    },
+    mounted() {
+        this.createModal();
     },
     validations() {
         return {
@@ -183,64 +187,106 @@ export default defineComponent({
                 endDate: null
             },
             total: null,
-            options: null
-
+            options: null,
+            programList: [],
+            messageError: '',
+            titleError: '',
+            buttonColor: "nullButton"
         };
     },
+    created() {
+        axios.get(`/Program/GetProgramsName`)
+            .then(function (response) {
+                return response;
+            })
+            .then(response => {
+                if (response.status == 200) {
+                    this.programList = response.data;
+                    console.log(this.programList);
+                } else if (response.status == 204) {
+                    alert("There was an error on our database! Please, try again later.");
+                }
+            })
+    },
     methods: {
+        nameValidation() {
+            var retorno = 0;
+            this.programList.forEach(pL => {
+                if (pL.name.toLowerCase().trim().replaceAll(" ", "") === this.program.name.toLowerCase().trim().replaceAll(" ", "")) {
+                    retorno = 1;
+                }
+            })
+            return retorno;
+        },
+        createModal(): void {
+            const element = this.$refs.uniqueid;
+            //console.log(element);
+            console.log(DDS);
+            console.log(element);
+            const modal = new DDS.Modal(element, { trigger: "#example" });
+            console.log(modal);
+        },
         onSubmit(): void {
-            if (this.program.endDate == null) {
-                axios.post('/program/addProgram', {
-                    name: this.program.name,
-                    startDate: this.program.startDate = new Date(),
-                    description: this.program.description,
-                    owners: this.program.members,
-                    editions: null,
-                    ownerships: null,
-                    memberships: null
-                })
-                    .then(function (response) {
-                        return response;
-                    })
-                    .then(response => {
-                        if (response.status == 200) {
-                            const element = this.$refs.uniqueid;
-                            // console.log(element);
-                            console.log(DDS);
-                            console.log(element);
-                            const modal = new DDS.Modal(element, { trigger: "#btnSubmit" });
-                            modal.open();
-                            //this.$router.push({ name: 'HomePage' });
-                            return;
-                        } else if (response.status == 404) {
-                            this.$router.push({ name: 'HomePage' });
-                            alert("There was an error on our database! Please, try again later.");
-                        }
-                    })
+            if (this.nameValidation() != 0) {
+                this.titleError = "Error";
+                this.messageError = `The program "${this.program.name}" already exists.`;
+                this.buttonColor = "errorButton";
+                return;
             } else {
-                axios.post('/program/addProgram', {
-                    name: this.program.name,
-                    startDate: this.program.startDate = new Date(),
-                    endDate: this.program.endDate = new Date(),
-                    description: this.program.description,
-                    owners: this.program.members,
-                    editions: null,
-                    ownerships: null,
-                    memberships: null
-                })
-                    .then(function (response) {
-                        return response;
+                if (this.program.endDate == null) {
+                    axios.post('/program/addProgram', {
+                        name: this.program.name,
+                        startDate: this.program.startDate = new Date(),
+                        description: this.program.description,
+                        owners: this.program.members,
+                        editions: null,
+                        ownerships: null,
+                        memberships: null
                     })
-                    .then(response => {
-                        if (response.status == 200) {
-
-                            //this.$router.push({ name: 'HomePage' });
-                            return;
-                        } else if (response.status == 404) {
-                            this.$router.push({ name: 'HomePage' });
-                            alert("There was an error on our database! Please, try again later.");
-                        }
+                        .then(function (response) {
+                            return response;
+                        })
+                        .then(response => {
+                            if (response.status == 200) {
+                                this.titleError = "Program Created";
+                                this.messageError = `The program "${this.program.name}" was successfully created.`;
+                                this.buttonColor = "blueButton";
+                                return;
+                            } else if (response.status == 404) {
+                                this.titleError = "Error";
+                                this.messageError = `I'm sorry, something went wrong. Try again later.`;
+                                this.buttonColor = "errorButton";
+                                return;
+                            }
+                        })
+                } else {
+                    axios.post('/program/addProgram', {
+                        name: this.program.name,
+                        startDate: this.program.startDate = new Date(),
+                        endDate: this.program.endDate = new Date(),
+                        description: this.program.description,
+                        owners: this.program.members,
+                        editions: null,
+                        ownerships: null,
+                        memberships: null
                     })
+                        .then(function (response) {
+                            return response;
+                        })
+                        .then(response => {
+                            if (response.status == 200) {
+                                this.titleError = "Program Created";
+                                this.messageError = `The program "${this.program.name}" was successfully created.`;
+                                this.buttonColor = "blueButton";
+                                return;
+                            } else if (response.status == 404) {
+                                this.titleError = "Error";
+                                this.messageError = `I'm sorry, something went wrong. Try again later.`;
+                                this.buttonColor = "errorButton";
+                                return;
+                            }
+                        })
+                }
             }
         }
     }
@@ -321,7 +367,6 @@ span {
     font-family: 'Roboto', sans-serif;
 }
 
-
 .multiselect-tag {
     background-color: rgb(6, 114, 203);
     font-weight: lighter;
@@ -365,5 +410,86 @@ span {
 
 .dates input:hover {
     border: .0625rem solid rgb(6, 114, 203);
+}
+
+.blueButton {
+    background-color: #0672cb;
+    border-color: #0672cb;
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgba(0, 0, 0, 0);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
+}
+
+.errorButton {
+    background-color: rgb(206, 17, 38);
+    border-color: rgb(206, 17, 38);
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgba(0, 0, 0, 0);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
+}
+
+.nullButton {
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(255, 255, 255);
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
 }
 </style>

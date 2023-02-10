@@ -1,4 +1,22 @@
 <template>
+
+  <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
+    <div class="dds__modal__content">
+      <div class="dds__modal__header">
+        <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
+      </div>
+      <div id="modal-body-532887773" class="dds__modal__body">
+        <p>
+          {{ messageError }}
+        </p>
+      </div>
+      <div class="dds__modal__footer">
+        <button :class="buttonColor" type="button" name="modal-secondary-button"
+          @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
+      </div>
+    </div>
+  </div>
+
   <div class="container">
     <RouterLink to="/programinfo" class="goBack"> &larr; Go back</RouterLink>
     <form data-dds="form" class="dds__form dds__container">
@@ -79,12 +97,12 @@
               </div>
             </div>
           </div>
-          <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()"
-            :disabled="v$.$invalid">
-            Submit
-          </button>
         </div>
       </fieldset>
+      <button class="submitbutton dds__button dds__button--lg" id="example" type="submit" @click.prevent="onSubmit()"
+        :disabled="v$.$invalid">
+        Submit
+      </button>
     </form>
   </div>
 </template>
@@ -95,11 +113,15 @@ import { required, maxLength, minLength } from '@vuelidate/validators';
 import { defineComponent } from "vue";
 import MultiSelect from "./MultipleSelect.vue";
 import axios from "axios";
-
+declare var DDS: any;
 
 type User = {
   id: number;
   name: string;
+}[];
+
+type programList = {
+  name: string
 }[];
 
 interface Data {
@@ -114,6 +136,11 @@ interface Data {
   total: null | User;
   options: null | User;
   idProgram: any;
+  programList: programList,
+  originalName: string,
+  messageError: string,
+  titleError: string,
+  buttonColor: string
 }
 
 export default defineComponent({
@@ -132,7 +159,9 @@ export default defineComponent({
 
     }
   },
-
+  mounted() {
+    this.createModal();
+  },
   data(): Data {
     return {
       program: {
@@ -145,7 +174,12 @@ export default defineComponent({
       },
       total: null,
       options: null,
-      idProgram: this.$route.params.idProgram
+      idProgram: this.$route.params.idProgram,
+      programList: [],
+      originalName: '',
+      messageError: '',
+      titleError: '',
+      buttonColor: "nullButton"
     };
   },
   validations() {
@@ -159,7 +193,6 @@ export default defineComponent({
     }
 
   },
-
   created() {
     axios
       .get(`/Program/GetProgram?id=${this.idProgram}`)
@@ -170,8 +203,6 @@ export default defineComponent({
         if (response.status == 200) {
           this.program = response.data;
           this.program.startDate = new Date(response.data.startDate).toISOString().slice(0, 10);
-
-          // EndDate desse if é o valor igual ao nulo na database
           if (this.program.endDate != null) {
             this.program.endDate = new Date(response.data.endDate).toISOString().substring(0, 10);
           }
@@ -181,43 +212,85 @@ export default defineComponent({
           alert("There was an error on our database! Please, try again later.");
         }
       });
+
+    axios.get(`/Program/GetProgramsName`)
+      .then(function (response) {
+        return response;
+      })
+      .then(response => {
+        if (response.status == 200) {
+          this.programList = response.data;
+          this.originalName = response.data.name;
+          console.log(this.programList);
+        } else if (response.status == 204) {
+          alert("There was an error on our database! Please, try again later.");
+        }
+      })
+
   },
   methods: {
-    onSubmit(): void {
-      if (!this.v$.$invalid) {
-        let targetEndDate = null;
-        if (this.program.endDate != "") {
-          targetEndDate = this.program.endDate;
-        }
-        axios.post('/Program/UpdateProgram', {
-          id: this.program.id,
-          name: this.program.name,
-          startDate: this.program.startDate,
-          endDate: targetEndDate,
-          description: this.program.description,
-          owners: this.program.owners,
-          editions: null,
-          ownerships: null,
-          memberships: null,
-        })
-          .then(function (response) {
-            return response;
-          })
-          .then((response) => {
-            if (response.status == 200) {
-              alert("Program updated!");
-              this.$router.push({ name: "ProgramsPage" });
-              return;
-              //ver se daria apra fazer um !=200
-            } else if (response.status == 404) {
-              this.$router.push({ name: "ProgramsPage" });
-              alert(
-                "There was an error on our database! Please, try again later."
-              );
-            }
-          });
+    nameValidation() {
+      if (this.originalName === this.program.name) {
+        return 0;
       } else {
-        this.v$.$validate();
+        this.programList.forEach(pL => {
+          if (pL.name.toLowerCase().trim().replaceAll(" ", "") === this.program.name.toLowerCase().trim().replaceAll(" ", "")) {
+            return 1;
+          }
+        })
+      }
+      return 0;
+    },
+    createModal(): void {
+      const element = this.$refs.uniqueid;
+      //console.log(element);
+      console.log(DDS);
+      console.log(element);
+      const modal = new DDS.Modal(element, { trigger: "#example" });
+      console.log(modal);
+    },
+    onSubmit(): void {
+      if (this.nameValidation() != 0) {
+        this.titleError = "Error";
+        this.messageError = `The program "${this.program.name}" already exists.`;
+        this.buttonColor = "errorButton";
+        return;
+      } else {
+        if (!this.v$.$invalid) {
+          let targetEndDate = null;
+          if (this.program.endDate != "") {
+            targetEndDate = this.program.endDate;
+          }
+          axios.post('/Program/UpdateProgram', {
+            id: this.program.id,
+            name: this.program.name,
+            startDate: this.program.startDate,
+            endDate: targetEndDate,
+            description: this.program.description,
+            owners: this.program.owners,
+            editions: null,
+            ownerships: null,
+            memberships: null,
+          })
+            .then(function (response) {
+              return response;
+            })
+            .then((response) => {
+              if (response.status == 200) {
+                this.titleError = "Program Edited";
+                this.messageError = `Your changes were successfully apllied on the program "${this.program.name}".`;
+                this.buttonColor = "blueButton";
+                return;
+              } else if (response.status == 404) {
+                this.titleError = "Error";
+                this.messageError = `I'm sorry, something went wrong. Try again later.`;
+                this.buttonColor = "errorButton";
+                return;
+              }
+            });
+        } else {
+          this.v$.$validate();
+        }
       }
     }
   },
@@ -280,6 +353,7 @@ span {
   font-weight: bold;
 }
 </style>
+
 <style>
 .multiselect {
   border: 0.0625rem solid #7e7e7e;
@@ -328,5 +402,86 @@ small {
   text-decoration: none;
   color: #0672CB;
   font-weight: 300;
+}
+
+.blueButton {
+  background-color: #0672cb;
+  border-color: #0672cb;
+  color: #fff;
+  border-radius: 0.125rem;
+  font-size: .875rem;
+  line-height: 1.5rem;
+  padding: 0.4375rem 0.9375rem;
+  border-radius: 0.125rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 0.6875rem 1.1875rem;
+  border: 0.0625rem solid rgba(0, 0, 0, 0);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  vertical-align: middle;
+  white-space: normal;
+  fill: currentColor;
+}
+
+.errorButton {
+  background-color: rgb(206, 17, 38);
+  border-color: rgb(206, 17, 38);
+  color: #fff;
+  border-radius: 0.125rem;
+  font-size: .875rem;
+  line-height: 1.5rem;
+  padding: 0.4375rem 0.9375rem;
+  border-radius: 0.125rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 0.6875rem 1.1875rem;
+  border: 0.0625rem solid rgba(0, 0, 0, 0);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  vertical-align: middle;
+  white-space: normal;
+  fill: currentColor;
+}
+
+.nullButton {
+  background-color: rgb(255, 255, 255);
+  border-color: rgb(255, 255, 255);
+  color: #fff;
+  border-radius: 0.125rem;
+  font-size: .875rem;
+  line-height: 1.5rem;
+  padding: 0.4375rem 0.9375rem;
+  border-radius: 0.125rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 0.6875rem 1.1875rem;
+  border: 0.0625rem solid rgb(255, 255, 255);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  vertical-align: middle;
+  white-space: normal;
+  fill: currentColor;
 }
 </style>

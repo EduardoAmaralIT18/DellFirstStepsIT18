@@ -29,6 +29,13 @@
                     <div class="dds__card__footer">
                         <p>{{ item.date }}</p>
                     </div>
+                    <div class="manageButton" v-if="isAuthor(item.authorId)">
+                        <RouterLink class="button dds__button dds__button--primary"
+                            style="color:white ; text-decoration : none" type="button" to="/editnews">
+                            <img src="../assets/pencil.png" alt="pencil icon" width="19">
+                            Manage News
+                        </RouterLink>
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,6 +62,7 @@ type News = {
     title: string,
     text: string,
     author: string,
+    authorId: number,
     program: string,
     date: string,
     image: null | string,
@@ -127,8 +135,12 @@ export default defineComponent({
                     this.countNews = this.countNews + 1;
                 });
             } while ((this.countNews % 10 != 0) && (this.countNews != this.totalNews));
+        },
+        isAuthor(authorId: number): boolean {
+            let idUser = this.$cookies.get("id") ? Number(this.$cookies.get("id")) : 0;
+            return authorId === idUser;
         }
-    },
+    }
 });
 </script>
 <style scoped>
@@ -146,6 +158,10 @@ export default defineComponent({
 }
 
 i {
+    margin-right: 5px;
+}
+
+img {
     margin-right: 5px;
 }
 
@@ -180,5 +196,9 @@ a {
 
 button {
     white-space: nowrap;
+}
+
+.manageButton {
+    display: inline;
 }
 </style>
