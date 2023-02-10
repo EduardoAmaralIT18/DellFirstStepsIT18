@@ -28,8 +28,8 @@
             </div>
           </td>
           <td class="dds__td" id="delete-td">
-            <button v-if="userLogged != user.id" class="dds__button dds__button--destructive" :id="user.id" type="button"
-              @click="removeModal(user.id, user.email)"> <i class="dds__icon dds__icon--user-remove"
+            <button v-if="userLogged != user.id" class="dds__button dds__button--destructive" :id="user.id"
+              type="button" @click="removeModal(user.id, user.name)"> <i class="dds__icon dds__icon--user-remove"
                 aria-hidden="true"></i></button>
           </td>
         </tr>
@@ -37,21 +37,55 @@
     </table>
   </div>
 
-  <div role="dialog" data-dds="modal" class="dds__modal" ref="modal"
-    aria-labelledby="modal-headline-153968555">
+  <div role="dialog" data-dds="modal" class="dds__modal" ref="modalConf" aria-labelledby="modal-headline-153968555">
     <div class="dds__modal__content">
       <div class="dds__modal__header">
-        <h3 class="dds__modal__title" id="modal-headline-153968555">Present new laptop</h3>
+        <h3 class="dds__modal__title">Remove User</h3>
       </div>
       <div id="modal-body-357113985" class="dds__modal__body">
         <p>
-          {{emailSelected}}
+          You are about to revoke the access of {{ nameSelected }}. <br> Are you sure that you want to proceed?
         </p>
       </div>
       <div class="dds__modal__footer">
-        <button class="dds__button dds__button--secondary dds__button--md" type="button"
-          name="modal-primary-button">No</button>
-        <button class="dds__button dds__button--md" type="button" name="modal-secondary-button">Yes</button>
+        <button class="dds__button dds__button--secondary dds__button--md" type="button" name="modal-primary-button"
+          @click="closeModal">No</button>
+        <button class="dds__button dds__button--md" type="button" name="modal-secondary-button"
+          @click="removeUser(userSelected)">Yes</button>
+      </div>
+    </div>
+  </div>
+
+  <div role="dialog" data-dds="modal" class="dds__modal" ref="modalOk" aria-labelledby="modal-headline-153968555">
+    <div class="dds__modal__content">
+      <div class="dds__modal__header">
+        <h3 class="dds__modal__title">{{ modalTitle }}</h3>
+      </div>
+      <div id="modal-body-357113985" class="dds__modal__body">
+        <p>
+          {{ modalText }}
+        </p>
+      </div>
+      <div class="dds__modal__footer">
+        <button class="dds__button dds__button--md" type="button" name="modal-secondary-button"
+          @click="closeModal"> Ok </button>
+      </div>
+    </div>
+  </div>
+
+  <div role="dialog" data-dds="modal" class="dds__modal" ref="modalError" aria-labelledby="modal-headline-153968555">
+    <div class="dds__modal__content">
+      <div class="dds__modal__header">
+        <h3 class="dds__modal__title">Error</h3>
+      </div>
+      <div id="modal-body-357113985" class="dds__modal__body">
+        <p>
+          I'm sorry, something went wrong. Try again later.
+        </p>
+      </div>
+      <div class="dds__modal__footer">
+        <button class="dds__button dds__button--md dds__button--detructive" type="button" name="modal-secondary-button"
+          @click="closeModal"> Ok </button>
       </div>
     </div>
   </div>
@@ -77,7 +111,15 @@ interface Data {
   userLogged: number | null,
   roleLogged: number | null,
   userSelected: number | null,
-  emailSelected: string | null,
+  nameSelected: string | null,
+  modalConf: unknown | null,
+  modalOk: unknown | null,
+  elementConf: unknown | null,
+  elementOk: unknown | null,
+  modalError: unknown | null,
+  elementError: unknown | null,
+  modalText: string,
+  modalTitle: string,
 }
 
 export default defineComponent({
@@ -95,8 +137,26 @@ export default defineComponent({
       userLogged: null,
       roleLogged: null,
       userSelected: null,
-      emailSelected: null,
+      nameSelected: null,
+      modalConf: null,
+      modalOk: null,
+      elementConf: null,
+      elementOk: null,
+      elementError: null,
+      modalError: null,
+      modalText: "",
+      modalTitle: ""
     };
+  },
+  mounted() {
+    this.elementConf = this.$refs.modalConf;
+    this.modalConf = DDS.Modal(this.elementConf);
+
+    this.elementOk = this.$refs.modalOk;
+    this.modalOk = DDS.Modal(this.elementOk);
+
+    this.elementError = this.$refs.modalError;
+    this.modalError = DDS.Modal(this.elementError);
   },
   created() {
     // fetch the data when the view is created and the data is
@@ -138,25 +198,25 @@ export default defineComponent({
         })
         .then(response => {
           if (response.status == 200) {
-            alert("Role changed sucessfully.");
+            this.modalTitle = "Role Changed";
+            this.modalText = "Role changed successfully.";
+            this.modalOk.open();
           } else {
-            alert("Database error. Please try again later.");
+           this.modalError.open();
           }
         });
     },
-    removeModal(userid: number, userEmail: string) {
-          this.userSelected = userid;
-          this.emailSelected = userEmail;
+    removeModal(userid: number, userName: string) {
+      this.userSelected = userid;
+      this.nameSelected = userName;
 
-          const element = this.$refs.modal;
-          const teste = DDS.Modal(element);
-          teste.open();
-        // eslint-disable-next-line 
-          element.addEventListener("ddsModalClosedEvent", (e) => {
-            teste.dispose();
-          })
+      this.modalConf.open();
 
-          
+    },
+    closeModal(): void {
+      this.modalConf.close();
+      this.modalOk.close();
+      this.modalError.close();
     },
     removeUser(userid: number): void {
 
@@ -170,13 +230,17 @@ export default defineComponent({
         })
         .then(response => {
           if (response.status == 200) {
-            alert("User removed sucessfully");
+            this.modalConf.close();
+            this.modalTitle = "User Removed";
+            this.modalText = "The user "+ this.nameSelected +" no longer has access to Dell FirstSteps.";
+            this.modalOk.open();
             this.fetchData();
           } else {
-            alert("Database error. Please try again later.");
+            this.modalError.open();
           }
         });
 
+      
 
 
     },
@@ -213,5 +277,9 @@ table.dds__table {
 button {
   width: 25%;
   height: 70%;
+}
+
+p {
+  text-align: left;
 }
 </style>
