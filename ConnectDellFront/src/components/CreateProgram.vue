@@ -1,5 +1,22 @@
 <template>
 
+    <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
+        <div class="dds__modal__content">
+            <div class="dds__modal__header">
+                <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
+            </div>
+            <div id="modal-body-532887773" class="dds__modal__body">
+                <p>
+                    {{ messageError }}
+                </p>
+            </div>
+            <div class="dds__modal__footer">
+                <button :class="buttonColor" type="button"
+                    name="modal-secondary-button" @click="$router.push({ name: 'HomePage' });">Ok</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <RouterLink to="/home" class="goBack"> &larr; Go back</RouterLink>
         <form data-dds="form" class="dds__form dds__container">
@@ -85,14 +102,11 @@
                     </div>
                 </div>
             </fieldset>
-            <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()"
-                :disabled="v$.$invalid">Submit</button>
+            <button class="submitbutton dds__button dds__button--lg" id="example" type="submit"
+                @click.prevent="onSubmit()" :disabled="v$.$invalid">
+                Submit
+            </button>
         </form>
-
-        <!-- <div v-for="names in programList" :key="names.name">
-            <p> {{ nameValidation() }} </p>
-            <p> {{ names.name }} </p>
-        </div> -->
 
     </div>
 
@@ -104,6 +118,7 @@ import MultiSelect from './MultipleSelect.vue';
 import axios from 'axios';
 import { useVuelidate } from '@vuelidate/core';
 import { minLength, maxLength, required } from '@vuelidate/validators';
+declare var DDS: any;
 
 type User = {
     id: number,
@@ -124,12 +139,19 @@ interface Data {
     },
     total: null | User,
     options: null | User,
-    programList: programList
+    programList: programList,
+    messageError: string,
+    titleError: string,
+    buttonColor: string
 }
+
 
 export default defineComponent({
     setup() {
         return { v$: useVuelidate() }
+    },
+    mounted() {
+        this.createModal();
     },
     validations() {
         return {
@@ -166,7 +188,10 @@ export default defineComponent({
             },
             total: null,
             options: null,
-            programList: []
+            programList: [],
+            messageError: '',
+            titleError: '',
+            buttonColor: "nullButton"
         };
     },
     created() {
@@ -188,15 +213,25 @@ export default defineComponent({
             var retorno = 0;
             this.programList.forEach(pL => {
                 if (pL.name.toLowerCase().trim().replaceAll(" ", "") === this.program.name.toLowerCase().trim().replaceAll(" ", "")) {
-                    retorno++;
+                    retorno = 1;
                 }
             })
             return retorno;
         },
+        createModal(): void {
+            const element = this.$refs.uniqueid;
+            //console.log(element);
+            console.log(DDS);
+            console.log(element);
+            const modal = new DDS.Modal(element, { trigger: "#example" });
+            console.log(modal);
+        },
         onSubmit(): void {
             if (this.nameValidation() != 0) {
-                alert("NOME JA EXISTENTE");
-                // INSIRA A MODAL AQUI, OBRIGADA :)
+                this.titleError = "Error";
+                this.messageError = `The program "${this.program.name}" already exists.`;
+                this.buttonColor = "errorButton";
+                return;
             } else {
                 if (this.program.endDate == null) {
                     axios.post('/program/addProgram', {
@@ -213,11 +248,15 @@ export default defineComponent({
                         })
                         .then(response => {
                             if (response.status == 200) {
-                                this.$router.push({ name: 'HomePage' });
+                                this.titleError = "Program Created";
+                                this.messageError = `The program "${this.program.name}" was successfully created.`;
+                                this.buttonColor = "blueButton";
                                 return;
                             } else if (response.status == 404) {
-                                this.$router.push({ name: 'HomePage' });
-                                alert("There was an error on our database! Please, try again later.");
+                                this.titleError = "Error";
+                                this.messageError = `I'm sorry, something went wrong. Try again later.`;
+                                this.buttonColor = "errorButton";
+                                return;
                             }
                         })
                 } else {
@@ -236,11 +275,15 @@ export default defineComponent({
                         })
                         .then(response => {
                             if (response.status == 200) {
-                                this.$router.push({ name: 'HomePage' });
+                                this.titleError = "Program Created";
+                                this.messageError = `The program "${this.program.name}" was successfully created.`;
+                                this.buttonColor = "blueButton";
                                 return;
                             } else if (response.status == 404) {
-                                this.$router.push({ name: 'HomePage' });
-                                alert("There was an error on our database! Please, try again later.");
+                                this.titleError = "Error";
+                                this.messageError = `I'm sorry, something went wrong. Try again later.`;
+                                this.buttonColor = "errorButton";
+                                return;
                             }
                         })
                 }
@@ -324,7 +367,6 @@ span {
     font-family: 'Roboto', sans-serif;
 }
 
-
 .multiselect-tag {
     background-color: rgb(6, 114, 203);
     font-weight: lighter;
@@ -368,5 +410,86 @@ span {
 
 .dates input:hover {
     border: .0625rem solid rgb(6, 114, 203);
+}
+
+.blueButton {
+    background-color: #0672cb;
+    border-color: #0672cb;
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgba(0, 0, 0, 0);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
+}
+
+.errorButton {
+    background-color: rgb(206, 17, 38);
+    border-color: rgb(206, 17, 38);
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgba(0, 0, 0, 0);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
+}
+
+.nullButton {
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(255, 255, 255);
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
 }
 </style>
