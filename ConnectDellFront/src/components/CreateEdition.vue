@@ -7,20 +7,20 @@
         <!-- <button class="dds__button" id="example" type="button">Launch modal button</button> -->
         <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
             <div class="dds__modal__content">
-                <div class="dds__modal__header">
-                    <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
-                </div>
-                <div id="modal-body-532887773" class="dds__modal__body">
-                    <p>
-                        {{ messageError }}
-                    </p>
-                </div>
-                <div class="dds__modal__footer">
-                    <button 
-                        :class="buttonColor"
-                        type="button" name="modal-secondary-button"
-                        @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
-                </div>
+                
+                    <div class="dds__modal__header">
+                        <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
+                    </div>
+                    <div id="modal-body-532887773" class="dds__modal__body">
+                        <p>
+                            {{ messageError }}
+                        </p>
+                    </div>
+                    <div class="dds__modal__footer">
+                        <button :class="buttonColor" type="button" name="modal-secondary-button"
+                            @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
+                    </div>
+            
             </div>
         </div>
 
@@ -269,9 +269,9 @@ export default defineComponent({
                 endDate: new Date().toISOString().slice(0, 10),
                 program: 0
             },
-            titleError: "Error",
-            messageError: "I'm sorry, something went wrong in our database. Try again later.",
-            buttonColor: "errorButton",
+            titleError: "",
+            messageError: "",
+            buttonColor: "nullButton",
             editionsNames: []
         };
 
@@ -364,10 +364,10 @@ export default defineComponent({
                             //this.$router.push({ name: 'ProgramsPage' });
                             //alert("There was an error on our database! Please, try again later.");
                             this.buttonColor = "errorButton";
-                           
+
                         } else {
                             this.buttonColor = "errorButton";
-                            
+
                         }
                     })
 
@@ -495,24 +495,7 @@ span {
     font-weight: 300;
 }
 
-/* .dds__button:hover,
-.dds__notification__close-icon:hover,
-.dds__input__action.dds__input__action--switch:hover,
-.dds__input__action button:hover,
-.dds__button:focus,
-.dds__notifications__close-icon:focus,
-.dds__input__action.dds__input__action--switch:focus,
-.dds__input__action button:focus {
-    text-decoration: none;
-}
-.dds__button--primary, .dds__button :hover {
-    background-color: #0672cb;
-    border-color: #0672cb;
-    color: #fff;
-}
- */
-
- .blueButton {
+.blueButton {
     background-color: #0672cb;
     border-color: #0672cb;
     color: #fff;
@@ -520,6 +503,23 @@ span {
     font-size: .875rem;
     line-height: 1.5rem;
     padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgba(0, 0, 0, 0);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
 }
 
 .errorButton {
@@ -530,24 +530,49 @@ span {
     font-size: .875rem;
     line-height: 1.5rem;
     padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgba(0, 0, 0, 0);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
 }
- 
 
-
-/* #errorButton:hover {
-    background-color: rgb(145, 13, 29);
-    border-color: rgb(145, 13, 29);
-} */
-/* 
-#errorButton:hover 
-{ background-color: #000000; 
-transition: 0.5s;
-opacity: 0.7;
-} */
-</style>
-
-<style>
-
-
-
+.nullButton {
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(255, 255, 255);
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
+}
 </style>

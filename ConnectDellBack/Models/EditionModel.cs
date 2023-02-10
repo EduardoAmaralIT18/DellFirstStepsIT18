@@ -14,7 +14,7 @@ public class EditionModel {
 
     [Required]
     [StringLength(50, MinimumLength = 5, ErrorMessage = "The program's name must be at most 50 characters.")]
-    [RegularExpression(@"[A-Za-z0-9]*")]
+    //[RegularExpression(@"[A-Za-z0-9]*")]
     public string name {get;set;}
 
     [Required]

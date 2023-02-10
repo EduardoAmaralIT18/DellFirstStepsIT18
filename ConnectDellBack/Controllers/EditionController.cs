@@ -35,7 +35,7 @@ public class EditionController : ControllerBase
     }
 
     [HttpPost("updateEdition")] 
-    public async Task<ActionResult> updateEdition(EditionDTO editionForm) {
+    public async Task<ActionResult> updateEdition(EditionModel editionForm) {
         int entries = await _service.updateEdition(editionForm);
         if (entries > 0) {
             return Ok();

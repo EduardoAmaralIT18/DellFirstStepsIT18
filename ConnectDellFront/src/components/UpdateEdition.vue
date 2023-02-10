@@ -10,11 +10,12 @@
                 </div>
                 <div id="modal-body-532887773" class="dds__modal__body">
                     <p>
-                       {{ messageError }}
+                        {{ messageError }}
                     </p>
                 </div>
                 <div class="dds__modal__footer">
-                    <button class="dds__button dds__button--md" :class="{errorButton: buttonColor}" type="button" name="modal-secondary-button"  @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
+                    <button  :class="buttonColor" type="button"
+                        name="modal-secondary-button" @click="$router.push({ name: 'EditionsPage' });">Ok</button>
                 </div>
             </div>
         </div>
@@ -54,7 +55,8 @@
                         </label>
                     </div>
                     <div id="intern_select">
-                        <input style="width:100%;" v-model="v$.edition.numberOfInterns.$model" type="number" min="1" max="22">
+                        <input style="width:100%;" v-model="v$.edition.numberOfInterns.$model" type="number" min="1"
+                            max="22">
                     </div>
                 </div>
 
@@ -156,7 +158,7 @@
             </div>
             <!-- </fieldset> -->
             <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()"
-                :disabled="v$.$invalid">Submit</button>
+                :disabled="v$.$invalid || !validateInterns || !validateInternsForm" id="example">Submit</button>
         </form>
     </div>
 
@@ -178,6 +180,10 @@ type User = {
     role: number,
 }[];
 
+type EditionsNames = {
+    name: string
+}[];
+
 interface Data {
     edition: {
         id: number,
@@ -196,7 +202,10 @@ interface Data {
     cookiesEdit: Number | null,
     messageError: string,
     titleError: string,
-    buttonColor: boolean
+    buttonColor: string,
+    editionsNames: EditionsNames | null,
+    originalName: string
+
 }
 export default defineComponent({
     setup() {
@@ -204,7 +213,7 @@ export default defineComponent({
     },
 
     mounted() {
-        this.teste();
+        this.createModal();
     },
 
     data(): Data {
@@ -224,9 +233,12 @@ export default defineComponent({
             },
             cookiesId: this.$cookies.get("programId"),
             cookiesEdit: this.$cookies.get("editionId"),
-            messageError: '',
-            titleError: '',
-            buttonColor: true
+            titleError: "",
+            messageError: "",
+            buttonColor: "nullButton",
+            editionsNames: [],
+            originalName: ''
+
         };
     },
     validations() {
@@ -263,14 +275,10 @@ export default defineComponent({
                     //this.edition = response.data;
                     this.edition.id = response.data.id;
                     this.edition.name = response.data.name;
+                    this.originalName = response.data.name;
                     this.edition.numberOfInterns = response.data.numberOfInterns;
                     this.edition.numberOfMembers = response.data.numberOfMembers;
                     this.edition.members = response.data.members;
-
-                    // response.data.members?.forEach(i => {
-                    //        this.edition.members?.push(i);
-                    // })
-
                     this.edition.description = response.data.description;
                     this.edition.curriculum = response.data.curriculum;
                     this.edition.mode = response.data.mode;
@@ -281,11 +289,19 @@ export default defineComponent({
                     alert("There was an error on our database! Please, try again later.");
                 }
             })
+
+            axios.get('/edition/getEditionsNames?idProgram=' + this.$cookies.get("programId"))
+            .then(function (response) {
+                return response;
+            })
+            .then(response => {
+                this.editionsNames = response.data;
+            })
     },
     methods: {
         onSubmit(): void {
             //this.edition.program = this.$cookies.get("programId");
-            if (!this.v$.$invalid && this.validateInterns) {
+            if (!this.v$.$invalid && this.validateInterns && this.validateInternsForm && this.checkName() == 0) {
                 axios.post('/edition/updateEdition', {
                     id: this.edition.id,
                     name: this.edition.name,
@@ -307,29 +323,48 @@ export default defineComponent({
                             //alert("Edition updated!");
                             this.titleError = "Edition Updated";
                             this.messageError = `The edition "${this.edition.name}" of ${this.$cookies.get("programName")} was successfully update.`;
-                            this.$router.push({ name: 'ProgramsPage' });
+                            this.buttonColor = "blueButton";
                             return;
                         } else if (response.status == 404) {
-                            this.titleError = "Error";
-                            this.messageError = "I'm sorry, something went wrong in our database. Try again later.";
-                            this.buttonColor = false;
-                            this.$router.push({ name: 'ProgramsPage' });
+                            this.buttonColor = "errorButton";
                             //alert("There was an error on our database! Please, try again later.");
+                        } else {
+                            this.buttonColor = "errorButton";
                         }
                     })
+            } else if (this.checkName() == 1) {
+                this.titleError = "Error";
+                this.messageError = `The edition "${this.edition.name}" already exists.`;
+                this.buttonColor = "errorButton";
             } else {
                 this.v$.$validate();
             }
 
         },
 
-        teste(): void {
+        createModal(): void {
             const element = this.$refs.uniqueid;
             // console.log(element);
             console.log(DDS);
             console.log(element);
             const modal = new DDS.Modal(element, { trigger: "#example" });
             console.log(modal);
+        },
+
+        checkName(): number {
+            if (this.originalName === this.edition.name) {
+                return 0;
+            } else {
+                let n: number = 0;
+                this.editionsNames?.forEach(element => {
+                    if (element.name.toLowerCase().replaceAll(" ", "") == this.edition.name.toLowerCase().replaceAll(" ", "")) {
+
+                        n = 1;
+                    }
+                });
+                return n;
+            }
+
         },
 
     },
@@ -342,7 +377,22 @@ export default defineComponent({
                 }
             })
 
-            if (nInterns < 22 && nInterns > 0) {
+            if (nInterns < 22 && nInterns >= 0) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
+        validateInternsForm(): boolean {
+            var nInterns = 0;
+            this.edition.members?.forEach(i => {
+                if (i.role == 1) {
+                    nInterns++;
+                }
+            })
+
+            if (nInterns <= this.edition.numberOfInterns && nInterns >= 0) {
                 return true;
             } else {
                 return false;
@@ -460,13 +510,84 @@ span {
     font-weight: 300;
 }
 
-.errorButton{
-    background-color: rgb(206,17,38);
-    border-color: rgb(206,17,38);
+.blueButton {
+    background-color: #0672cb;
+    border-color: #0672cb;
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgba(0,0,0,0);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
 }
 
-.errorButton:hover {
-    background-color: rgb(145, 13, 29);
-    border-color: rgb(145, 13, 29);
+.errorButton {
+    background-color: rgb(206, 17, 38);
+    border-color: rgb(206, 17, 38);
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgba(0,0,0,0);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
+}
+
+.nullButton {
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(255, 255, 255);
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
 }
 </style>

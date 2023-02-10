@@ -51,13 +51,16 @@ public class EditionService : IEditionService
     }
 
 
-    public async Task<int> updateEdition(EditionDTO editionForm)
+    public async Task<int> updateEdition(EditionModel editionForm)
     {
         //Puxar objeto do database
         //mexer nas váriáveis dele na mão
         //Descobrir como enviar esse objeto atualizado, sem criar um novo.
 
-        var edition = _dbContext.editions.Where(ed => ed.id == editionForm.id).FirstOrDefault();
+        var edition = _dbContext.editions.Where(ed => ed.id == editionForm.id)
+                                         .Include(ed => ed.members)
+                                        //.Include(ed => ed.memberships)
+                                        .FirstOrDefault();
 
         if (edition != null)
         {
@@ -70,12 +73,16 @@ public class EditionService : IEditionService
             edition.numberOfInterns = editionForm.numberOfInterns;
             // edition.members = editionForm.members;
 
+            List<UserModel> members = new List<UserModel>();
+
             foreach (var item in editionForm.members)
             {
-                edition.members.Add(await _dbContext.users.Where(user => user.id == item.id).FirstOrDefaultAsync());
+                members.Add(await _dbContext.users.Where(user => user.id == item.id).FirstOrDefaultAsync());
             }
 
             edition.mode = (Mode)editionForm.mode;
+
+            edition.members.AddRange(members);
 
             int entries = await _dbContext.SaveChangesAsync();
             return 1;
