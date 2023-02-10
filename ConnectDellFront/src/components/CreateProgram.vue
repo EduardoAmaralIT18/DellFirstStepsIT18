@@ -191,7 +191,7 @@ export default defineComponent({
             programList: [],
             messageError: '',
             titleError: '',
-            buttonColor: "errorButton"
+            buttonColor: "nullButton"
         };
     },
     created() {
@@ -452,6 +452,33 @@ span {
     line-height: 1.5rem;
     padding: 0.6875rem 1.1875rem;
     border: 0.0625rem solid rgba(0, 0, 0, 0);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
+}
+
+.nullButton {
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(255, 255, 255);
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgb(255, 255, 255);
     cursor: pointer;
     display: inline-flex;
     justify-content: center;
