@@ -1,6 +1,7 @@
 <!-- bobl -->
 <template>
   <div class="container">
+    <!-- <button class="dds__button" id="example" type="button">Launch modal button</button>-->
     <table id="components-table--static" class="dds__table">
       <thead class="dds__thead">
         <tr class="dds__tr">
@@ -27,18 +28,41 @@
             </div>
           </td>
           <td class="dds__td" id="delete-td">
-            <button v-if="userLogged != user.id" class="dds__button dds__button--destructive" type="button"
-              @click="removeUser(user.id)"> <i class="dds__icon dds__icon--user-remove" aria-hidden="true"></i></button>
+            <button v-if="userLogged != user.id" class="dds__button dds__button--destructive" :id="user.id" type="button"
+              @click="removeModal(user.id, user.email)"> <i class="dds__icon dds__icon--user-remove"
+                aria-hidden="true"></i></button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <div role="dialog" data-dds="modal" class="dds__modal" ref="modal"
+    aria-labelledby="modal-headline-153968555">
+    <div class="dds__modal__content">
+      <div class="dds__modal__header">
+        <h3 class="dds__modal__title" id="modal-headline-153968555">Present new laptop</h3>
+      </div>
+      <div id="modal-body-357113985" class="dds__modal__body">
+        <p>
+          {{emailSelected}}
+        </p>
+      </div>
+      <div class="dds__modal__footer">
+        <button class="dds__button dds__button--secondary dds__button--md" type="button"
+          name="modal-primary-button">No</button>
+        <button class="dds__button dds__button--md" type="button" name="modal-secondary-button">Yes</button>
+      </div>
+    </div>
+  </div>
+
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import axios from 'axios';
+
+declare var DDS: any;
 
 type User = {
   id: number,
@@ -52,6 +76,8 @@ interface Data {
   role: string[],
   userLogged: number | null,
   roleLogged: number | null,
+  userSelected: number | null,
+  emailSelected: string | null,
 }
 
 export default defineComponent({
@@ -68,6 +94,8 @@ export default defineComponent({
         "PucrsStaff"],
       userLogged: null,
       roleLogged: null,
+      userSelected: null,
+      emailSelected: null,
     };
   },
   created() {
@@ -115,6 +143,20 @@ export default defineComponent({
             alert("Database error. Please try again later.");
           }
         });
+    },
+    removeModal(userid: number, userEmail: string) {
+          this.userSelected = userid;
+          this.emailSelected = userEmail;
+
+          const element = this.$refs.modal;
+          const teste = DDS.Modal(element);
+          teste.open();
+        // eslint-disable-next-line 
+          element.addEventListener("ddsModalClosedEvent", (e) => {
+            teste.dispose();
+          })
+
+          
     },
     removeUser(userid: number): void {
 
