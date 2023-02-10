@@ -45,9 +45,12 @@ export default defineComponent({
       owners: [],
       editions: [],
       showMore: true,
+      programName: ''
     }
   },
-  created() {
+  mounted() {
+
+
     if (this.cookiesPermission == -1) {
       axios.get(`/Program/showInfoProgram?id1=${this.cookiesId}&idUser=${this.cookiesUser}`)
         .then(function (response) {
@@ -56,6 +59,7 @@ export default defineComponent({
         .then(response => {
           if (response.status == 200) {
             this.program = response.data;
+            this.$cookies.set("programName", response.data.name);
             this.owners = response.data.owners;
             this.editions = response.data.editions;
           } else if (response.status == 204) {
@@ -71,12 +75,14 @@ export default defineComponent({
         .then(response => {
           if (response.status == 200) {
             this.program = response.data;
+            this.$cookies.set("programName", response.data.name);
             this.owners = response.data.owners;
           } else if (response.status == 204) {
             alert("There was an error on our database! Please, try again later.");
           }
         })
     }
+    
   },
   methods: {
     hasEndDate() {
@@ -118,6 +124,7 @@ export default defineComponent({
     settingCookies(id) {
       console.log("id" + id);
       this.$cookies.set("editionId", id);
+
       if (this.isOwner) {
         this.$cookies.set("isOwner", 1);
       } else {

@@ -1,4 +1,4 @@
-<!-- ALTERADO -->
+
 <template>
 
   <header class="navbar shadow-lg fixed-top">
