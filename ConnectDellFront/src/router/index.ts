@@ -70,19 +70,18 @@ const router = createRouter({
       name: 'EditProgram',
       component: () => import('../views/EditProgramView.vue')
     },
-    
+
     {
       path: '/usertable',
-      name: 'usertable', 
+      name: 'usertable',
       component: () => import('../views/UserTableView.vue')
     },
 
     {
-      path: '/editnews',
-      name: 'EditNews', 
+      path: '/editnews/:idNews',
+      name: 'EditNews',
       component: () => import('../views/EditNewsView.vue')
     }
   ]
 })
-
 export default router

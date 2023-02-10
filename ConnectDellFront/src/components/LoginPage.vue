@@ -12,33 +12,6 @@
   </header>
 
   <div class="container">
-
-
-
-    <button class="dds__button" id="example" type="button">Launch modal button</button>
-    <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
-      <div class="dds__modal__content">
-        <div class="dds__modal__header">
-          <h3 class="dds__modal__title" id="modal-headline-369536123">Present new laptop</h3>
-        </div>
-        <div id="modal-body-532887773" class="dds__modal__body">
-          <p>
-            Small, light, and stylish laptops and 2-in-1s designed for ultimate productivity. A new era of collaboration
-            and connectivity to
-            work anywhere. XPS laptops and 2-in-1s are precision crafted with premium materials, featuring stunning
-            displays and the performance
-            you demand to express your creative self and your big ideas.
-            <a href="https://www.dell.com">dell.com</a>
-          </p>
-        </div>
-        <div class="dds__modal__footer">
-          <button class="dds__button dds__button--secondary dds__button--md" type="button"
-            name="modal-primary-button">No</button>
-          <button class="dds__button dds__button--md" type="button" name="modal-secondary-button">Yes</button>
-        </div>
-      </div>
-    </div>
-
     <form>
 
       <div class="dds__select" data-dds="select">
@@ -64,7 +37,7 @@ import axios from "axios";
 //import {nextTick} from 'vue'
 //import {ref, Ref} from 'vue';
 //const root = ref<HTMLElement | null>(uniqueid);
- declare var DDS: any;
+declare var DDS: any;
 
 
 
@@ -159,6 +132,7 @@ button {
   width: 50%;
   margin: 8% auto;
 }
+
 .container {
   padding-top: 3%;
   display: flex;
@@ -195,8 +169,6 @@ button {
   top: 0;
   position: relative;
 }
-
-
 </style>
 
 <style>

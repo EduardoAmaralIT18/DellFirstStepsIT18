@@ -72,12 +72,12 @@
                         </div>
                     </div>
                 </fieldset>
-                <button class="submitbutton dds__button dds__button--lg" id="btnSubmit" type="submit"
+                <button class="submitbutton dds__button dds__button--lg" type="submit"
                     @click.prevent="addContent" :disabled="v$.$invalid">Submit</button>
             </form>
         </div>
     </div>
-    <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid"
+    <div role="dialog" data-dds="modal" class="dds__modal" id="modalId" ref="modalId"
         @ddsModalClosedEvent="navigateToParent">
         <div class="dds__modal__content">
             <div class="dds__modal__header">
@@ -184,6 +184,9 @@ export default defineComponent({
         },
         addContent(): void {
             if (!this.v$.$invalid) {
+                const element = this.$refs.modalId;
+                const modal = new DDS.Modal(element);                
+
                 var program = this.programs?.find(prog => prog.id == this.program.id);
 
                 this.data?.append('author', this.user);
@@ -192,9 +195,6 @@ export default defineComponent({
                 this.data?.append('text', this.text);
                 this.data?.append('imageName', this.title);
                 this.data?.append('image', this.image);
-
-                const element = this.$refs.uniqueid;
-                const modal = new DDS.Modal(element, { trigger: "#btnSubmit" });
 
                 axios.post('news/addContent', this.data, {
                     headers: {

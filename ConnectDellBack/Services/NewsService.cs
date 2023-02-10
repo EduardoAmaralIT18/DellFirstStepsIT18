@@ -15,7 +15,7 @@ public class NewsService : INewsService
 
     public async Task<IEnumerable<NewsModel>> getNews()
     {
-        //bananinha
+
         var news = await dbnews.news.Include(news => news.program)
                                     .Include(news => news.author)
                                     .Include(news => news.image)
@@ -23,7 +23,8 @@ public class NewsService : INewsService
         return news;
     }
 
-    public async Task<NewsModel> getSpecificNews(int formId){
+    public async Task<NewsModel> getSpecificNews(int formId)
+    {   
 
         var news = await dbnews.news.Include(news => news.program)
                                     .Include(news => news.author)
@@ -52,7 +53,7 @@ public class NewsService : INewsService
             MemoryStream ms = new MemoryStream();
             await content.image.CopyToAsync(ms);
 
-            if(ms.Length > 2097152) return false;
+            if (ms.Length > 2097152) return false;
 
             var image = new ImageModel()
             {
@@ -83,49 +84,56 @@ public class NewsService : INewsService
 
     }
 
-    public async Task<bool> updateNews(ContentDTO contentForm){
-
+    public async Task<bool> updateNews(ContentDTO contentForm)
+    {
         var news = dbnews.news.Where(news => news.id == contentForm.id).FirstOrDefault();
 
-        if(news != null){
+        if (news != null)
+        {
             news.title = contentForm.title;
             news.text = contentForm.text;
+            news.program = dbnews.programs.Where(prog => prog.id == contentForm.program).FirstOrDefault();
 
             var task = await dbnews.SaveChangesAsync();
 
             if (contentForm.image is not null)
-                    {
-                        news.image = null;
-                        MemoryStream ms = new MemoryStream();
-                        await contentForm.image.CopyToAsync(ms);
+            {
+                news.image = null;
+                MemoryStream ms = new MemoryStream();
+                await contentForm.image.CopyToAsync(ms);
 
-                        if(ms.Length > 2097152) return false;
+                if (ms.Length > 2097152) return false;
 
-                        var image = new ImageModel()
-                        {
-                            imageTitle = contentForm.imageName,
-                            imageData = ms.ToArray(),
-                        };
+                var image = new ImageModel()
+                {
+                    imageTitle = contentForm.imageName,
+                    imageData = ms.ToArray(),
+                };
 
-                        ms.Close();
-                        ms.Dispose();
+                ms.Close();
+                ms.Dispose();
 
-                        await dbnews.images.AddAsync(image);
+                await dbnews.images.AddAsync(image);
 
-                        image.news = news;
-                        image.newsId = news.id;
-                        news.image = image;
-                        
-                        task = await dbnews.SaveChangesAsync();
-                }  
+                image.news = news;
+                image.newsId = news.id;
+                news.image = image;
 
-            if (task > 0){
+                task = await dbnews.SaveChangesAsync();
+            }
+
+            if (task > 0)
+            {
                 return true;
-            } else {
+            }
+            else
+            {
                 return false;
             }
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
-} 
+}
