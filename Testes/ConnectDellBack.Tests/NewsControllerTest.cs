@@ -56,6 +56,15 @@ namespace ConnectDellBack.Tests
             return actionResult.ToString();
         }
 
+        [Test]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
+        public async Task<String> HTTPGET_GetSpecificNews_ReturnOk()
+        {
+            ActionResult<NewsDTO> actionResult = await newsController.GetSpecificNews(1);
+            return actionResult.Result.ToString();
+        }
+
+
         [OneTimeTearDown]
         public void CleanUp()
         {
