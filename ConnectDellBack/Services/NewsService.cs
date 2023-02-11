@@ -24,7 +24,7 @@ public class NewsService : INewsService
     }
 
     public async Task<NewsModel> getSpecificNews(int formId)
-    {   
+    {
 
         var news = await dbnews.news.Include(news => news.program)
                                     .Include(news => news.author)
@@ -98,7 +98,12 @@ public class NewsService : INewsService
 
             if (contentForm.image is not null)
             {
-                news.image = null;
+                news.image = dbnews.images.Where(img => img.newsId == contentForm.id)?.FirstOrDefault();
+                if (news.image != null)
+                {
+                    dbnews.Remove(news.image);
+                }
+
                 MemoryStream ms = new MemoryStream();
                 await contentForm.image.CopyToAsync(ms);
 
