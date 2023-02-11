@@ -1,7 +1,6 @@
 <!-- bobl -->
 <template>
   <div class="container">
-    <!-- <button class="dds__button" id="example" type="button">Launch modal button</button>-->
     <table id="components-table--static" class="dds__table">
       <thead class="dds__thead">
         <tr class="dds__tr">
@@ -14,7 +13,7 @@
         </tr>
       </thead>
       <tbody class="dds__tbody">
-        <tr v-for="user in users" :key="user.id" class="dds__tr">
+        <tr v-for="user in usersShow" :key="user.id" class="dds__tr">
           <td class="dds__td">{{ user.name }}</td>
           <td class="dds__td">{{ user.email }}</td>
           <td class="dds__td">
@@ -28,15 +27,45 @@
             </div>
           </td>
           <td class="dds__td" id="delete-td">
-            <button v-if="userLogged != user.id" class="dds__button dds__button--destructive" :id="user.id"
+            <button v-if="userLogged != user.id" class="red dds__button dds__button--destructive" :id="user.id"
               type="button" @click="removeModal(user.id, user.name)"> <i class="dds__icon dds__icon--user-remove"
                 aria-hidden="true"></i></button>
           </td>
         </tr>
       </tbody>
     </table>
+    <!--Pagination-->
+    <div class="dds__pagination" data-dds="pagination" id="516534716" role="navigation"
+      aria-label="pagination-516534716">
+      <div class="dds__pagination__nav">
+        <button v-if="currentPage > 1" type="button" class="dds__button dds__button--tertiary dds__button--sm dds__pagination__prev-page"
+          aria-label="Previous page" @click="userPagination(2)">
+          <span class="dds__pagination__prev-page-label">Previous</span>
+        </button>
+        <div class="dds__pagination__page-range">
+          <label class="dds__pagination__page-range-label" for="pagination-current-page-516534716">Page</label>
+          <div class="dds__input-text__container dds__input-text__container--sm">
+            <div class="dds__input-text__wrapper dds__pagination__page-range-current-wrapper">
+              {{ currentPage }}
+            </div>
+          </div>
+          <div class="dds__pagination__page-range-total-label">
+            of
+            <span class="dds__pagination__page-range-total">
+              {{ totalPages }}
+            </span>
+          </div>
+        </div>
+        <button v-if="currentPage < totalPages" type="button" class="dds__button dds__button--tertiary dds__button--sm dds__pagination__next-page"
+          aria-label="Next page" @click="userPagination(1)">
+          <span class="dds__pagination__next-page-label">Next</span>
+        </button>
+      </div>
+    </div>
   </div>
 
+
+  <!-- Modal Confirm Remove User-->
   <div role="dialog" data-dds="modal" class="dds__modal" ref="modalConf" aria-labelledby="modal-headline-153968555">
     <div class="dds__modal__content">
       <div class="dds__modal__header">
@@ -55,7 +84,7 @@
       </div>
     </div>
   </div>
-
+  <!--Modal Ok para changeRole or removeUser-->
   <div role="dialog" data-dds="modal" class="dds__modal" ref="modalOk" aria-labelledby="modal-headline-153968555">
     <div class="dds__modal__content">
       <div class="dds__modal__header">
@@ -67,12 +96,12 @@
         </p>
       </div>
       <div class="dds__modal__footer">
-        <button class="dds__button dds__button--md" type="button" name="modal-secondary-button"
-          @click="closeModal"> Ok </button>
+        <button class="dds__button dds__button--md" type="button" name="modal-secondary-button" @click="closeModal"> Ok
+        </button>
       </div>
     </div>
   </div>
-
+  <!--Modal Error message-->
   <div role="dialog" data-dds="modal" class="dds__modal" ref="modalError" aria-labelledby="modal-headline-153968555">
     <div class="dds__modal__content">
       <div class="dds__modal__header">
@@ -98,6 +127,8 @@ import axios from 'axios';
 
 declare var DDS: any;
 
+
+
 type User = {
   id: number,
   name: string,
@@ -106,7 +137,7 @@ type User = {
 }[];
 
 interface Data {
-  users: User | null
+  users: User | null,
   role: string[],
   userLogged: number | null,
   roleLogged: number | null,
@@ -120,7 +151,13 @@ interface Data {
   elementError: unknown | null,
   modalText: string,
   modalTitle: string,
+  totalPages : number,
+  currentPage : number,
+  usersShow : User | null,
+  finalUser : number,
+  initUser: number,
 }
+
 
 export default defineComponent({
   name: 'UserPage',
@@ -145,7 +182,12 @@ export default defineComponent({
       elementError: null,
       modalError: null,
       modalText: "",
-      modalTitle: ""
+      modalTitle: "",
+      totalPages : 0,
+      currentPage : 1,
+      usersShow : [],
+      finalUser : 0,
+      initUser:0
     };
   },
   mounted() {
@@ -180,6 +222,8 @@ export default defineComponent({
             this.users = null;
           } else if (response.status == 200) {
             this.users = response.data;
+            this.totalPages = Math.ceil((this.users?.length)/15);
+            this.userPagination(0);
           } else {
             alert("Database error. Please try again later.");
             console.log(response.status);
@@ -202,7 +246,7 @@ export default defineComponent({
             this.modalText = "Role changed successfully.";
             this.modalOk.open();
           } else {
-           this.modalError.open();
+            this.modalError.open();
           }
         });
     },
@@ -218,7 +262,7 @@ export default defineComponent({
       this.modalOk.close();
       this.modalError.close();
     },
-    removeUser(userid: number): void {
+    removeUser(userid: number | null): void {
 
       axios.get('user/removeUser', {
         params: {
@@ -232,17 +276,44 @@ export default defineComponent({
           if (response.status == 200) {
             this.modalConf.close();
             this.modalTitle = "User Removed";
-            this.modalText = "The user "+ this.nameSelected +" no longer has access to Dell FirstSteps.";
+            this.modalText = "The user " + this.nameSelected + " no longer has access to Dell FirstSteps.";
             this.modalOk.open();
             this.fetchData();
           } else {
             this.modalError.open();
           }
         });
-
-      
-
-
+    },
+    userPagination(mode: number): void {
+      if(mode == 2){
+        this.usersShow.length = 0;
+        this.currentPage--;
+        this.finalUser = (this.currentPage*15)-1;
+        this.initUser = this.finalUser-14;
+        for (let index = this.initUser; index <= this.finalUser; index++) {
+          this.usersShow?.push(this.users[index]);
+        }
+        this.initUser = this.finalUser+1;
+      }else if (mode == 1){
+        this.usersShow.length = 0;
+        this.currentPage++;
+        this.finalUser = (this.currentPage*15)-1;
+        for (let index = this.initUser; index <= this.finalUser; index++) {
+          if(this.users[index] == null){
+            break;
+          }
+          this.usersShow?.push(this.users[index]);
+        }
+        this.initUser = this.finalUser+1;
+      }else {
+        this.usersShow?.length = 0;
+        this.initUser = 0;
+        this.finalUser = 14;
+        for (let index = this.initUser; index <= this.finalUser; index++) {
+          this.usersShow?.push(this.users[index]);
+        }
+        this.initUser = 15;
+      }
     },
   }
 });
@@ -274,7 +345,7 @@ table.dds__table {
   display: table;
 }
 
-button {
+button.red {
   width: 25%;
   height: 70%;
 }
