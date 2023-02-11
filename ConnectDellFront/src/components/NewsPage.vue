@@ -32,7 +32,9 @@
                             <RouterLink :to="{ name: 'EditNews', params: { idNews: item.id } }"
                                 class="insideButton dds__button dds__button--primary"
                                 style="color:white ; text-decoration : none" type="button">
-                                <img src="../assets/pencil.png" alt="pencil icon" width="19">
+                                <div class="margin">
+                                    <img src="../assets/pencil.png" alt="pencil icon" width="19">
+                                </div>
                                 Manage News
                             </RouterLink>
                         </div>
@@ -163,9 +165,6 @@ i {
     margin-right: 8px;
 }
 
-img {
-    margin-right: 5px;
-}
 
 .dds__card__footer p {
     color: #7E7E7E;
@@ -223,5 +222,9 @@ button {
     padding: 4px;
     padding-right: 8px;
     width: 140px;
+}
+
+.margin {
+    margin-right: 5px;
 }
 </style>
