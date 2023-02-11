@@ -55,4 +55,27 @@ public class NewsController : ControllerBase
         //     return BadRequest();
         // }
     }
+
+    [HttpGet("getSpecificNews")]
+    public async Task<ActionResult<NewsDTO>> GetSpecificNews(int id)
+    {
+        var news = await _newsService.getSpecificNews(id);
+        NewsDTO newsDTO = NewsDTO.convertModel2DTO(news);
+        return news == null ? NotFound() : Ok(newsDTO);
+    }
+
+    [HttpPost("updateNews")]
+    public async Task<ActionResult> UpdateNews([FromForm] ContentDTO contentForm)
+    {
+        var result = await _newsService.updateNews(contentForm);
+
+        if (result)
+        {
+            return Ok();
+        }
+        else
+        {
+            return NotFound();
+        }
+    }
 }
