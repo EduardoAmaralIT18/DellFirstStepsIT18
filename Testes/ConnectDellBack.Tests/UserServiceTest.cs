@@ -29,18 +29,36 @@ namespace ConnectDellBack.Tests
         }
 
         [Test]
-        public void get_AllUsersFromDB_ReturnUserCount()
+        [TestCase(ExpectedResult = 32)]
+        public async Task<int> get_AllUsersFromDB_ReturnUserCount()
         {
-            var result = userService.listUsers();
+            var result = await userService.listUsers();
 
-            Assert.That(result.Count, Is.EqualTo(15));
+            return result.Count();
         }
 
-        [Test]
+        [Test, Order(1)]
         public void get_OwnersFromDB_ReturnOwnerCount()
         {
             var result = userService.GetOwners();
-            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result.Count, Is.EqualTo(4));
+        }
+
+        [Test]
+        [TestCase(ExpectedResult = 1)]
+        public async Task<int> changeRole_ReturnOneEntryAltered(){
+            var result = await userService.changeRole(1, 1);
+
+            return result;
+        }
+
+        [Test]
+        [TestCase(ExpectedResult = 1)]
+        public async Task<int> removeUser_ReturnOneEntryAltered()
+        {
+            var result = await userService.removeUser(1);
+
+            return result;
         }
 
         [OneTimeTearDown]

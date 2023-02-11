@@ -8,7 +8,7 @@ namespace ConnectDellBack.Services;
 public interface IUserService
 {
 
-    Task<IEnumerable<ProgramModel>> Get();
+   // Task<IEnumerable<ProgramModel>> Get();
     IEnumerable<UserModel> GetOwners();
 
 
@@ -17,7 +17,7 @@ public interface IUserService
 
     //criar usuário
 
-    public string createUser(UserModel user);
+   /*public string createUser(UserModel user);
 
     //ligando usuário ao programa
     public string assignProgram(int idUser, int idProgram);
@@ -26,7 +26,7 @@ public interface IUserService
 
     public string assignEdition(int idUser, int idEdition);
 
-    public string createEdition(EditionModel edition);
+    public string createEdition(EditionModel edition);*/
 
     public Task<IEnumerable<UserModel>> listUsers();
 

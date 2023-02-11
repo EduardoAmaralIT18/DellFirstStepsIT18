@@ -48,14 +48,15 @@ namespace ConnectDellBack.Tests
 
             model = new EditionModel()
             {
-                name = "Test",
-                startDate = DateTime.Now,
-                endDate = DateTime.Now,
-                description = "Testing the database",
-                numberOfMembers = 1,
-                numberOfInterns = 1,
-                mode = Mode.InOffice,
-                curriculum = "vue :c",
+                id = 2,
+                name = "Edição 16",
+                startDate = new DateTime(2021, 10, 10),
+                endDate = new DateTime(2022, 09, 10),
+                description = "Sixteenth edition of the IT Academy program aimed at undergraduate students in computer science courses.",
+                numberOfMembers = 25,
+                numberOfInterns = 20,
+                mode = Mode.Remote,
+                curriculum = "CSS, HTML, C#, JavaScript, SQL Server, Entity Framework, Asp.NET, Vue.js",
                 program = context.programs.Where(prog => prog.id == 1).FirstOrDefault()
             };
 

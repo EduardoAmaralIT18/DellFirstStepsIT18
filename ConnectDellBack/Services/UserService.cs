@@ -12,16 +12,14 @@ public class UserService : IUserService
 {
     public readonly ApplicationContext dbUser;
 
-    string IUserService.assignEdition(int idUser, int idEdition)
-    {
-        throw new NotImplementedException();
-    }
-
     public UserService(ApplicationContext _dbuser)
     {
         dbUser = _dbuser;
     }
-
+ /*string IUserService.assignEdition(int idUser, int idEdition)
+    {
+        throw new NotImplementedException();
+    }
     string IUserService.assignProgram(int idUser, int idProgram)
     {
         throw new NotImplementedException();
@@ -50,7 +48,7 @@ public class UserService : IUserService
     public Task<IEnumerable<ProgramModel>> Get()
     {
         throw new NotImplementedException();
-    }
+    }*/
 
     public IEnumerable<UserModel> GetOwners() {
         var owners = dbUser.users.Where(usr => ((int)usr.role) == 0)
