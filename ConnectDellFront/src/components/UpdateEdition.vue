@@ -1,6 +1,26 @@
 <template>
-    <!-- Comentário AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-->
+
     <div class="container">
+
+        <!-- Modal Personalizado -->
+        <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
+            <div class="dds__modal__content">
+                <div class="dds__modal__header">
+                    <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
+                </div>
+                <div id="modal-body-532887773" class="dds__modal__body">
+                    <p>
+                        {{ messageError }}
+                    </p>
+                </div>
+                <div class="dds__modal__footer">
+                    <button  :class="buttonColor" type="button"
+                        name="modal-secondary-button" @click="$router.push({ name: 'EditionsPage' });">Ok</button>
+                </div>
+            </div>
+        </div>
+
+
         <RouterLink to="/editioninfo" class="goBack"> &larr; Go back</RouterLink>
         <form data-dds="form" class="dds__form dds__container">
             <!-- <fieldset class="dds__form__section"> -->
@@ -35,23 +55,24 @@
                         </label>
                     </div>
                     <div id="intern_select">
-                        <input style="width:100%;" v-model="edition.numberOfInterns" type="number" min="1" max="22">
+                        <input style="width:100%;" v-model="v$.edition.numberOfInterns.$model" type="number" min="1"
+                            max="22">
                     </div>
                 </div>
 
-                <!-- <div class="multiselec dds__select__wrapper">
-                        <MultiSelect style="box-shadow: none ;" v-model="program.members" />
-                </div> -->
+                <div class="dds__col--12 dds__col--sm-12">
+                    <div class="member__select" data-dds="select">
+                        <label id="select-label-141366292" for="select-control-141366292">Members</label>
+                        <div class="multiselec dds__select__wrapper">
+                            <!--Colocar os  v$.editon.members.$model-->
+                            <MultiSelect style="box-shadow: none ;" v-model="v$.edition.members.$model"
+                                tipo="members" />
+                            <!-- <small class="warning" v-if="v$.edition.members.$error">The Members field is
+                                    required.</small> -->
+                        </div>
+                    </div>
+                </div>
 
-                <!-- <div class="dds__col--3 dds__col--sm-3">
-                    <div class="dds__input-text__container">
-                        <label id="text-input-label-396765024" for="text-input-control-name-396765024">Number of members
-                        </label>
-                    </div>
-                    <div id="member_select">
-                        <input v-model="edition.numberOfMembers" type="number" min="1" max="25">
-                    </div>
-                </div> -->
             </div>
 
 
@@ -137,7 +158,7 @@
             </div>
             <!-- </fieldset> -->
             <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()"
-                :disabled="v$.$invalid">Submit</button>
+                :disabled="v$.$invalid || !validateInterns || !validateInternsForm" id="example">Submit</button>
         </form>
     </div>
 
@@ -147,8 +168,21 @@
 import { defineComponent } from 'vue';
 import axios from 'axios';
 import { useVuelidate } from '@vuelidate/core';
-import { required } from '@vuelidate/validators';
+import { required, maxLength, maxValue } from '@vuelidate/validators';
+import MultiSelect from './MultipleSelect.vue';
+declare var DDS: any;
+
 //import moment from 'moment';
+
+type User = {
+    id: number,
+    name: string
+    role: number,
+}[];
+
+type EditionsNames = {
+    name: string
+}[];
 
 interface Data {
     edition: {
@@ -156,6 +190,7 @@ interface Data {
         name: string,
         numberOfInterns: Number,
         numberOfMembers: Number,
+        members: User | null,
         description: string,
         curriculum: string,
         mode: Number,
@@ -164,12 +199,23 @@ interface Data {
         program: Number
     },
     cookiesId: Number | null,
-    cookiesEdit: Number | null
+    cookiesEdit: Number | null,
+    messageError: string,
+    titleError: string,
+    buttonColor: string,
+    editionsNames: EditionsNames | null,
+    originalName: string
+
 }
 export default defineComponent({
     setup() {
         return { v$: useVuelidate() }
     },
+
+    mounted() {
+        this.createModal();
+    },
+
     data(): Data {
         return {
             edition: {
@@ -177,6 +223,7 @@ export default defineComponent({
                 name: '',
                 numberOfInterns: 0,
                 numberOfMembers: 0,
+                members: null,
                 description: '',
                 curriculum: '',
                 mode: 1,
@@ -185,13 +232,38 @@ export default defineComponent({
                 program: 0
             },
             cookiesId: this.$cookies.get("programId"),
-            cookiesEdit: this.$cookies.get("editionId")
+            cookiesEdit: this.$cookies.get("editionId"),
+            titleError: "",
+            messageError: "",
+            buttonColor: "nullButton",
+            editionsNames: [],
+            originalName: ''
+
         };
     },
     validations() {
         return {
-            edition: { name: { required }, startDate: { required }, endDate: { required } }
+            edition: {
+                name: {
+                    required
+                },
+                startDate: {
+                    required
+                },
+                endDate: {
+                    required
+                },
+                members: {
+                    maxLength: maxLength(25)
+                },
+                numberOfInterns: {
+                    maxValue: maxValue(21)
+                }
+            }
         }
+    },
+    components: {
+        MultiSelect
     },
     created() {
         axios.get(`/edition/showInfoEdition?idProgram=${this.cookiesId}&idEdition=${this.cookiesEdit}`)
@@ -200,58 +272,133 @@ export default defineComponent({
             })
             .then(response => {
                 if (response.status == 200) {
+                    //this.edition = response.data;
                     this.edition.id = response.data.id;
                     this.edition.name = response.data.name;
+                    this.originalName = response.data.name;
                     this.edition.numberOfInterns = response.data.numberOfInterns;
                     this.edition.numberOfMembers = response.data.numberOfMembers;
+                    this.edition.members = response.data.members;
                     this.edition.description = response.data.description;
                     this.edition.curriculum = response.data.curriculum;
                     this.edition.mode = response.data.mode;
                     this.edition.startDate = new Date(response.data.startDate).toISOString().substring(0, 10);
                     this.edition.endDate = new Date(response.data.endDate).toISOString().substring(0, 10);
-                    this.edition.program = response.data.program;
+                    //this.edition.program = response.data.program;
                 } else if (response.status == 204) {
                     alert("There was an error on our database! Please, try again later.");
                 }
+            })
+
+            axios.get('/edition/getEditionsNames?idProgram=' + this.$cookies.get("programId"))
+            .then(function (response) {
+                return response;
+            })
+            .then(response => {
+                this.editionsNames = response.data;
             })
     },
     methods: {
         onSubmit(): void {
             //this.edition.program = this.$cookies.get("programId");
-            if (!this.v$.$invalid) {
+            if (!this.v$.$invalid && this.validateInterns && this.validateInternsForm && this.checkName() == 0) {
                 axios.post('/edition/updateEdition', {
                     id: this.edition.id,
                     name: this.edition.name,
-                    startDate: this.edition.startDate,
-                    endDate: this.edition.endDate ? this.edition.endDate : null,
+                    startDate: this.edition.startDate = new Date(),
+                    endDate: this.edition.endDate,
                     description: this.edition.description,
                     curriculum: this.edition.curriculum,
                     mode: this.edition.mode,
-                    numberOfMembers: this.edition.numberOfMembers,
                     numberOfInterns: this.edition.numberOfInterns,
+                    numberOfMembers: this.edition.members?.length,
+                    members: this.edition.members,
                     //program: this.edition.program,
-
                 })
                     .then(function (response) {
                         return response;
                     })
                     .then(response => {
                         if (response.status == 200) {
-                            alert("Edition updated!");
-                            this.$router.push({ name: 'ProgramsPage' });
+                            //alert("Edition updated!");
+                            this.titleError = "Edition Updated";
+                            this.messageError = `The edition "${this.edition.name}" of ${this.$cookies.get("programName")} was successfully update.`;
+                            this.buttonColor = "blueButton";
                             return;
                         } else if (response.status == 404) {
-                            this.$router.push({ name: 'ProgramsPage' });
-                            alert("There was an error on our database! Please, try again later.");
+                            this.buttonColor = "errorButton";
+                            //alert("There was an error on our database! Please, try again later.");
+                        } else {
+                            this.buttonColor = "errorButton";
                         }
                     })
+            } else if (this.checkName() == 1) {
+                this.titleError = "Error";
+                this.messageError = `The edition "${this.edition.name}" already exists.`;
+                this.buttonColor = "errorButton";
             } else {
                 this.v$.$validate();
             }
 
         },
 
-    }
+        createModal(): void {
+            const element = this.$refs.uniqueid;
+            // console.log(element);
+            console.log(DDS);
+            console.log(element);
+            const modal = new DDS.Modal(element, { trigger: "#example" });
+            console.log(modal);
+        },
+
+        checkName(): number {
+            if (this.originalName === this.edition.name) {
+                return 0;
+            } else {
+                let n: number = 0;
+                this.editionsNames?.forEach(element => {
+                    if (element.name.toLowerCase().replaceAll(" ", "") == this.edition.name.toLowerCase().replaceAll(" ", "")) {
+
+                        n = 1;
+                    }
+                });
+                return n;
+            }
+
+        },
+
+    },
+    computed: {
+        validateInterns(): boolean {
+            var nInterns = 0;
+            this.edition.members?.forEach(i => {
+                if (i.role == 1) {
+                    nInterns++;
+                }
+            })
+
+            if (nInterns < 22 && nInterns >= 0) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
+        validateInternsForm(): boolean {
+            var nInterns = 0;
+            this.edition.members?.forEach(i => {
+                if (i.role == 1) {
+                    nInterns++;
+                }
+            })
+
+            if (nInterns <= this.edition.numberOfInterns && nInterns >= 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    },
 });
 </script>
 
@@ -326,6 +473,7 @@ label {
 
 #intern_select {
     width: 100%;
+    margin-bottom: 2%;
 }
 
 .dates {
@@ -360,5 +508,86 @@ span {
     text-decoration: none;
     color: #0672CB;
     font-weight: 300;
+}
+
+.blueButton {
+    background-color: #0672cb;
+    border-color: #0672cb;
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgba(0,0,0,0);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
+}
+
+.errorButton {
+    background-color: rgb(206, 17, 38);
+    border-color: rgb(206, 17, 38);
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgba(0,0,0,0);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
+}
+
+.nullButton {
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(255, 255, 255);
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
 }
 </style>

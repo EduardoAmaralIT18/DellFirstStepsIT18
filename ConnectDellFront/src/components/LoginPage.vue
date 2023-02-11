@@ -1,4 +1,4 @@
-<!-- ALTERADO -->
+
 <template>
 
   <header class="navbar shadow-lg fixed-top">
@@ -12,6 +12,10 @@
   </header>
 
   <div class="container">
+    <p class="title">Sign in</p>
+
+
+
     <form>
 
       <div class="dds__select" data-dds="select">
@@ -32,14 +36,9 @@
 </template>
 
 <script lang="ts">
+
 import { defineComponent } from "vue";
 import axios from "axios";
-//import {nextTick} from 'vue'
-//import {ref, Ref} from 'vue';
-//const root = ref<HTMLElement | null>(uniqueid);
-declare var DDS: any;
-
-
 
 type User = {
   id: Number;
@@ -71,27 +70,17 @@ export default defineComponent({
       },
     };
   },
+
   created() {
     // fetch the data when the view is created and the data is
     // already being observed
     this.fetchData();
-  },
-  mounted() {
-    this.teste();
   },
   watch: {
     // call again the method if the route changes
     $route: "fetchData",
   },
   methods: {
-    teste(): void {
-      const element = this.$refs.uniqueid;
-      // console.log(element);
-      console.log(DDS);
-      console.log(element);
-      const modal = new DDS.Modal(element, { trigger: "#example" });
-      console.log(modal);
-    },
     fetchData(): void {
       axios
         .get("/Login/getUserList")
@@ -102,7 +91,6 @@ export default defineComponent({
           this.user = response.data;
           return;
         });
-
     },
     setCookies(): void {
       var user = this.user?.find(u => u.id == this.us.id);
@@ -141,6 +129,11 @@ button {
   align-items: center;
   justify-content: center;
   position: relative;
+}
+
+div {
+  display: flex;
+  justify-content: center;
 }
 
 .title {

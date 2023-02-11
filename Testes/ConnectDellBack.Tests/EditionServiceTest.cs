@@ -8,6 +8,7 @@ using ConnectDellBack.Models;
 using NUnit.Framework;
 using ConnectDellBack.Services;
 using ConnectDellBack.DTOs;
+using System.Linq;
 
 
 namespace ConnectDellBack.Tests
@@ -73,7 +74,7 @@ namespace ConnectDellBack.Tests
 
             EditionDTO result = EditionDTO.convertModel2DTO(
                          context.editions.Where(ed => ed.id == 2).FirstOrDefault());
-           
+
             Assert.That(result.name, Is.EqualTo(edition.name));
         }
 
@@ -84,7 +85,7 @@ namespace ConnectDellBack.Tests
             var editionUpdated = context.editions.Where(ed => ed.id == 2).FirstOrDefault();
 
             Mode workModeUpdated = (Mode)modelUpdate.mode;
-            
+
             Assert.That(editionUpdated.id, Is.EqualTo(modelUpdate.id));
             Assert.That(editionUpdated.name, Is.EqualTo(modelUpdate.name));
             Assert.That(editionUpdated.description, Is.EqualTo(modelUpdate.description));
@@ -93,6 +94,15 @@ namespace ConnectDellBack.Tests
             Assert.That(editionUpdated.curriculum, Is.EqualTo(modelUpdate.curriculum));
             Assert.That(editionUpdated.mode, Is.EqualTo(workModeUpdated));
         }
+
+        // [Test]
+        // public async void checkEditionNames_AssertEqual()
+        // {
+        //     Task<IEnumerable<EditionDTO>> names = editionService.allEditions(1);
+
+        //     Assert.That(names.ToString(), Is.EqualTo(""));
+        // }
+
 
         [OneTimeTearDown]
         public void CleanUp()
