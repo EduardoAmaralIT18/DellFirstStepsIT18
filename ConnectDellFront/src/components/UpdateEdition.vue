@@ -322,14 +322,18 @@ export default defineComponent({
                         if (response.status == 200) {
                             //alert("Edition updated!");
                             this.titleError = "Edition Updated";
-                            this.messageError = `The edition "${this.edition.name}" of ${this.$cookies.get("programName")} was successfully update.`;
+                            this.messageError = `The edition "${this.edition.name}" of ${this.$cookies.get("programName")} was successfully updated.`;
                             this.buttonColor = "blueButton";
                             return;
                         } else if (response.status == 404) {
                             this.buttonColor = "errorButton";
+                            this.titleError = "Error";
+                            this.messageError = "Error Message";
                             //alert("There was an error on our database! Please, try again later.");
                         } else {
                             this.buttonColor = "errorButton";
+                            this.titleError = "Error";
+                            this.messageError = "Error Message";
                         }
                     })
             } else if (this.checkName() == 1) {
