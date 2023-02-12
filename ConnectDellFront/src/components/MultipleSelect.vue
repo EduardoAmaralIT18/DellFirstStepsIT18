@@ -34,7 +34,7 @@ export default defineComponent ({
         };
     },
     created() {
-        if (this.tipo === "owner") {
+        if (this.tipo == "owner") {
             axios.get("/user/GetOwners")
             .then(function (response) {
                 return response;
