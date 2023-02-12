@@ -71,7 +71,7 @@
                   <small v-if="v$.program.owners.$error" class="help-block">Please select at least one owner.</small>
                 </div>
                 <div class="multiselec dds__select__wrapper">
-                  <MultiSelect v-model="v$.program.owners.$model" />
+                  <MultiSelect v-model="v$.program.owners.$model" tipo="owner"/>
                 </div>
               </div>
             </div>
