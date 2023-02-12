@@ -364,9 +364,14 @@ export default defineComponent({
                             //this.$router.push({ name: 'ProgramsPage' });
                             //alert("There was an error on our database! Please, try again later.");
                             this.buttonColor = "errorButton";
+                            this.titleError = "Error";
+                            this.messageError = "I am sorry, something went wrong. Try again later.;
 
                         } else {
                             this.buttonColor = "errorButton";
+                           
+                             this.titleError = "Error";
+                            this.messageError = "I am sorry, something went wrong. Try again later.;
 
                         }
                     })
@@ -374,6 +379,7 @@ export default defineComponent({
             } else if (this.checkName() == 1) {
                 this.titleError = "Error";
                 this.messageError = `The edition "${this.edition.name}" already exists.`;
+                this.buttonColor = "errorButton";
             } else {
                 this.v$.$validate();
             }
