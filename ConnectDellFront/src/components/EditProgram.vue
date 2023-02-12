@@ -202,6 +202,7 @@ export default defineComponent({
       .then((response) => {
         if (response.status == 200) {
           this.program = response.data;
+          this.originalName = response.data.name;
           this.program.startDate = new Date(response.data.startDate).toISOString().slice(0, 10);
           if (this.program.endDate != null) {
             this.program.endDate = new Date(response.data.endDate).toISOString().substring(0, 10);
@@ -220,8 +221,6 @@ export default defineComponent({
       .then(response => {
         if (response.status == 200) {
           this.programList = response.data;
-          this.originalName = response.data.name;
-          console.log(this.programList);
         } else if (response.status == 204) {
           alert("There was an error on our database! Please, try again later.");
         }
@@ -229,17 +228,18 @@ export default defineComponent({
 
   },
   methods: {
-    nameValidation() {
-      if (this.originalName === this.program.name) {
+    nameValidation(): number {
+      if (this.originalName.toLowerCase().replaceAll(" ", "") == this.program.name.toLowerCase().replaceAll(" ", "")) {
         return 0;
       } else {
+        let n: number = 0;
         this.programList.forEach(pL => {
-          if (pL.name.toLowerCase().trim().replaceAll(" ", "") === this.program.name.toLowerCase().trim().replaceAll(" ", "")) {
-            return 1;
+          if (pL.name.toLowerCase().replaceAll(" ", "") == this.program.name.toLowerCase().replaceAll(" ", "")) {
+            n = 1;
           }
-        })
+        });
+        return n;
       }
-      return 0;
     },
     createModal(): void {
       const element = this.$refs.uniqueid;
