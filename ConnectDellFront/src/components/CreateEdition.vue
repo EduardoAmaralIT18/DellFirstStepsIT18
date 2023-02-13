@@ -365,13 +365,13 @@ export default defineComponent({
                             //alert("There was an error on our database! Please, try again later.");
                             this.buttonColor = "errorButton";
                             this.titleError = "Error";
-                            this.messageError = "I am sorry, something went wrong. Try again later.;
+                            this.messageError = "I am sorry, something went wrong. Try again later.";
 
                         } else {
                             this.buttonColor = "errorButton";
                            
                              this.titleError = "Error";
-                            this.messageError = "I am sorry, something went wrong. Try again later.;
+                            this.messageError = "I am sorry, something went wrong. Try again later.";
 
                         }
                     })
