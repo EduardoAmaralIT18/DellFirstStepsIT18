@@ -1,9 +1,30 @@
 
-<!-- Comentário AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA -->
-
 <template>
 
     <div class="container">
+
+        <!-- Linha abaixo alterar (Tirar do botão)-->
+        <!-- <button class="dds__button" id="example" type="button">Launch modal button</button> -->
+        <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
+            <div class="dds__modal__content">
+                
+                    <div class="dds__modal__header">
+                        <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
+                    </div>
+                    <div id="modal-body-532887773" class="dds__modal__body">
+                        <p>
+                            {{ messageError }}
+                        </p>
+                    </div>
+                    <div class="dds__modal__footer">
+                        <button :class="buttonColor" type="button" name="modal-secondary-button"
+                            @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
+                    </div>
+            
+            </div>
+        </div>
+
+
         <RouterLink to="/programinfo" class="goBack"> &larr; Go back</RouterLink>
         <form data-dds="form" class="dds__form dds__container">
             <!-- <fieldset class="dds__form__section"> -->
@@ -40,19 +61,26 @@
                         </label>
                     </div>
                     <div id="intern_select">
-                        <input v-model="edition.numberOfInterns" type="number" min="1" max="22">
+                        <input style="width:100%;" v-model="edition.numberOfInterns" type="number" min="1" max="22">
                     </div>
 
                 </div>
 
-                <!-- <div class="dds__col--3 dds__col--sm-3">
-                        <div class="dds__input-text__container">
-                            <label id="text-input-label-396765024" for="text-input-control-name-396765024">Number of members </label>
-                         </div>
-                            <div id="member_select">
-                            <input v-model="edition.numberOfMembers" type="number" min="1" max="25">
+                <div class="dds__col--12 dds__col--sm-12">
+                    <div class="member__select" data-dds="select">
+                        <label id="select-label-141366292" for="select-control-141366292">Members</label>
+                        <small v-if="v$.edition.members.$error" class="help-block">Not possible to select more than 25
+                            members.</small>
+                        <small v-if="!validateInternsForm" class="help-block">Not possible to select more interns than
+                            the amount stated.</small>
+                        <div class="multiselec dds__select__wrapper">
+                            <MultiSelect style="box-shadow: none ;" v-model="v$.edition.members.$model"
+                                tipo="members" />
                         </div>
-                    </div> -->
+                    </div>
+                </div>
+
+
             </div>
 
 
@@ -138,8 +166,9 @@
                 </div>
             </div>
             <!-- </fieldset> -->
-            <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()"
-                :disabled="v$.$invalid">Submit</button>
+            <button class="submitbutton dds__button dds__button--lg" type="button" id="example"
+                @click.prevent="onSubmit()"
+                :disabled="v$.$invalid || !validateInterns || !validateInternsForm">Submit</button>
         </form>
     </div>
 
@@ -149,38 +178,90 @@
 import { defineComponent } from 'vue';
 import axios from 'axios';
 import { useVuelidate } from '@vuelidate/core';
-import { required } from '@vuelidate/validators';
+import { required, maxLength, maxValue } from '@vuelidate/validators';
+import MultiSelect from './MultipleSelect.vue';
+declare var DDS: any;
 
+
+type User = {
+    id: number,
+    name: string
+    role: number,
+}[];
+
+type EditionsNames = {
+    name: string
+}[];
 
 interface Data {
     edition: {
         name: string,
         numberOfInterns: Number,
         numberOfMembers: Number,
+        members: User | null,
         description: string,
         curriculum: string,
         mode: Number,
         startDate: string | Date,
         endDate: null | Date | string,
         program: Number
-    }
+    },
+    messageError: string,
+    titleError: string,
+    buttonColor: string,
+    editionsNames: EditionsNames | null
+
 
 }
 export default defineComponent({
     setup() {
         return { v$: useVuelidate() }
     },
+    mounted() {
+        this.createModal();
+    },
+    created() {
+        axios.get('/edition/getEditionsNames?idProgram=' + this.$cookies.get("programId"))
+            .then(function (response) {
+                return response;
+            })
+            .then(response => {
+                this.editionsNames = response.data;
+            })
+
+    },
+
     validations() {
         return {
-            edition: { name: { required }, startDate: { required }, endDate: { required } }
+            edition: {
+                name: {
+                    required
+                },
+                startDate: {
+                    required
+                },
+                endDate: {
+                    required
+                },
+                members: {
+                    maxLength: maxLength(25)
+                },
+                numberOfInterns: {
+                    maxValue: maxValue(21)
+                }
+            }
         }
+    },
+    components: {
+        MultiSelect
     },
     data(): Data {
         return {
             edition: {
                 name: '',
                 numberOfInterns: 0,
-                numberOfMembers: 1,
+                numberOfMembers: 0,
+                members: null,
                 description: '',
                 curriculum: '',
                 mode: 1,
@@ -188,29 +269,84 @@ export default defineComponent({
                 endDate: new Date().toISOString().slice(0, 10),
                 program: 0
             },
-
-
-
+            titleError: "",
+            messageError: "",
+            buttonColor: "nullButton",
+            editionsNames: []
         };
 
     },
+    computed: {
+        validateInterns(): boolean {
+            var nInterns = 0;
+            this.edition.members?.forEach(i => {
+                if (i.role == 1) {
+                    nInterns++;
+                }
+            })
+
+            if (nInterns < 22 && nInterns >= 0) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
+        validateInternsForm(): boolean {
+            var nInterns = 0;
+            this.edition.members?.forEach(i => {
+                if (i.role == 1) {
+                    nInterns++;
+                }
+            })
+
+            if (nInterns <= this.edition.numberOfInterns && nInterns >= 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    },
     methods: {
+        createModal(): void {
+            const element = this.$refs.uniqueid;
+            // console.log(element);
+            console.log(DDS);
+            console.log(element);
+            const modal = new DDS.Modal(element, { trigger: "#example" });
+            console.log(modal);
+        },
+
+        checkName(): number {
+            let n: number = 0;
+            this.editionsNames?.forEach(element => {
+                if (element.name.toLowerCase().replaceAll(" ", "") == this.edition.name.toLowerCase().replaceAll(" ", "")) {
+
+                    n = 1;
+                }
+            });
+
+
+            return n;
+
+        },
+
         onSubmit(): void {
             //this.$cookies.set("targetProgramId" , 1);
             this.edition.program = this.$cookies.get("programId");
 
 
-            if (!this.v$.$invalid) {
+            if (!this.v$.$invalid && this.validateInterns && this.validateInternsForm && this.checkName() == 0) {
                 axios.post('/edition/addEdition', { //nome do controle na rota de EditionController (linha 9)
-
                     name: this.edition.name,
                     startDate: this.edition.startDate = new Date(),
                     endDate: this.edition.endDate,
                     description: this.edition.description,
                     curriculum: this.edition.curriculum,
                     mode: this.edition.mode,
-                    numberOfMembers: this.edition.numberOfMembers,
                     numberOfInterns: this.edition.numberOfInterns,
+                    numberOfMembers: this.edition.members?.length,
+                    members: this.edition.members,
                     program: this.edition.program,
                 })
                     .then(function (response) {
@@ -218,15 +354,32 @@ export default defineComponent({
                     })
                     .then(response => {
                         if (response.status == 200) {
-                            alert("Edition Created!");
-                            this.$router.push({ name: 'ProgramsPage' });
+                            // alert("Edition Created!");
+                            // this.$router.push({ name: 'ProgramsPage' });
+                            this.titleError = "Edition Created";
+                            this.messageError = `The edition "${this.edition.name}" of ${this.$cookies.get("programName")} was successfully created.`;
+                            this.buttonColor = "blueButton";
                             return;
                         } else if (response.status == 404) {
-                            this.$router.push({ name: 'ProgramsPage' });
-                            alert("There was an error on our database! Please, try again later.");
+                            //this.$router.push({ name: 'ProgramsPage' });
+                            //alert("There was an error on our database! Please, try again later.");
+                            this.buttonColor = "errorButton";
+                            this.titleError = "Error";
+                            this.messageError = "I am sorry, something went wrong. Try again later.";
+
+                        } else {
+                            this.buttonColor = "errorButton";
+                           
+                             this.titleError = "Error";
+                            this.messageError = "I am sorry, something went wrong. Try again later.";
+
                         }
                     })
 
+            } else if (this.checkName() == 1) {
+                this.titleError = "Error";
+                this.messageError = `The edition "${this.edition.name}" already exists.`;
+                this.buttonColor = "errorButton";
             } else {
                 this.v$.$validate();
             }
@@ -266,8 +419,10 @@ small {
     background-clip: padding-box;
 }
 
+
 #intern_select {
     width: 100%;
+    margin-bottom: 2%;
 }
 
 .mode {
@@ -344,5 +499,86 @@ span {
     text-decoration: none;
     color: #0672CB;
     font-weight: 300;
+}
+
+.blueButton {
+    background-color: #0672cb;
+    border-color: #0672cb;
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgba(0, 0, 0, 0);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
+}
+
+.errorButton {
+    background-color: rgb(206, 17, 38);
+    border-color: rgb(206, 17, 38);
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgba(0, 0, 0, 0);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
+}
+
+.nullButton {
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(255, 255, 255);
+    color: #fff;
+    border-radius: 0.125rem;
+    font-size: .875rem;
+    line-height: 1.5rem;
+    padding: 0.4375rem 0.9375rem;
+    border-radius: 0.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding: 0.6875rem 1.1875rem;
+    border: 0.0625rem solid rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: normal;
+    fill: currentColor;
 }
 </style>

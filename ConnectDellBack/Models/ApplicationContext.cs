@@ -124,21 +124,21 @@ public class ApplicationContext : DbContext
             new UserModel(){
                 id = 8,
                 name = "Daniel Callegari",
-                email = "daniel.callegari@dell.com",
+                email = "daniel.callegari@edu.pucrs.br",
                 role = Role.PucrsStaff,
                 notes = "N/A"
             },
             new UserModel(){
                 id = 9,
                 name = "Edson Moreno",
-                email = "edson.moreno@dell.com",
+                email = "edson.moreno@edu.pucrs.br",
                 role = Role.PucrsStaff,
                 notes = "N/A"
             },
             new UserModel(){
                 id = 10,
                 name = "Tuani Alves",
-                email = "tuani.alves@edupucrs.com",
+                email = "tuani.alves@edu.pucrs.br",
                 role = Role.PucrsStaff,
                 notes = "N/A"
             },
@@ -154,7 +154,7 @@ public class ApplicationContext : DbContext
             new {
                 id = 12,
                 editionInternid = 1,
-                name = "Laura",
+                name = "Laura Teixeira",
                 email = "laura.teixeira@dellteam.com",
                 role = Role.Intern,
                 notes = "N/A"

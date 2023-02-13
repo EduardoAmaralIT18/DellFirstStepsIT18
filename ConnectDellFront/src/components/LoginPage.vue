@@ -1,4 +1,4 @@
-<!-- ALTERADO -->
+
 <template>
 
   <header class="navbar shadow-lg fixed-top">
@@ -12,6 +12,10 @@
   </header>
 
   <div class="container">
+    <p class="title">Sign in</p>
+
+
+
     <form>
       <div class="dds__select" data-dds="select">
         <div class="dds__select__wrapper">
@@ -31,6 +35,7 @@
 </template>
 
 <script lang="ts">
+
 import { defineComponent } from "vue";
 import axios from "axios";
 
@@ -85,7 +90,6 @@ export default defineComponent({
           this.user = response.data;
           return;
         });
-
     },
     setCookies(): void {
       var user = this.user?.find(u => u.id == this.us.id);

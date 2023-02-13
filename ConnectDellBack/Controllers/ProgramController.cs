@@ -66,4 +66,12 @@ public class ProgramController : ControllerBase
         var result = await _service.GetProgram(id);
         return result == null ? NoContent() : Ok(result);
     }
+
+    [HttpGet("GetProgramsName")]
+    public async Task<ActionResult<IEnumerable<ProgramInfoDTO>>> GetProgramsName()
+    {
+        var result = await _service.GetProgramsName();
+        return result == null ? NoContent() : Ok(result);
+    }
+
 }
