@@ -309,7 +309,7 @@ export default defineComponent({
                 axios.post('/edition/updateEdition', {
                     id: this.edition.id,
                     name: this.edition.name,
-                    startDate: this.edition.startDate = new Date(),
+                    startDate: this.edition.startDate,
                     endDate: this.edition.endDate,
                     description: this.edition.description,
                     curriculum: this.edition.curriculum,

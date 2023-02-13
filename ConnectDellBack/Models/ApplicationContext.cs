@@ -44,7 +44,7 @@ public class ApplicationContext : DbContext
                 id = 1,
                 name = "IT Academy",  
                 startDate = new DateTime(2022,10,08),
-                description = "Internship Program in partnership with PUCRS, focused in software development",
+                description = "The IT Academy is a capacitation program in partnership with PUCRS for students of different technology fields, focusing on improving their software developer skills to join Dell Teams. Furthermore, the interns will develop hard and soft skills that allow young professionals to complete their academic journey with a scientific and technical knowledge and to be oriented by the market needs.",
             }
         );
         modelBuilder.Entity<ProgramModel>().HasData(
