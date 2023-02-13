@@ -136,20 +136,20 @@ export default defineComponent({
       var endDate = new Date(finalDate)
       var today = new Date()
 
-      if (startDate > today) {
+      if (startDate >= today) {
         return 'Not Started'
       } else {
         if (endDate < today) {
           return 'Finished'
         } else {
-          if ((startDate < today) && (endDate > today)) {
+          if ((startDate <= today) && (endDate >= today)) {
             return 'Ongoing'
           } else {
             return 'Erro'
           }
         }
       }
-    },
+    }
   },
   computed: {
     isOwner() {
