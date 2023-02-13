@@ -63,6 +63,10 @@
                 <div class="dds__col--12 dds__col--sm-12">
                     <div class="member__select" data-dds="select">
                         <label id="select-label-141366292" for="select-control-141366292">Members</label>
+                        <small v-if="v$.edition.members.$error" class="help-block">Not possible to select more than 25
+                            members.</small>
+                        <small v-if="!validateInternsForm" class="help-block">Not possible to select more interns than
+                            the amount stated.</small>
                         <div class="multiselec dds__select__wrapper">
                             <!--Colocar os  v$.editon.members.$model-->
                             <MultiSelect style="box-shadow: none ;" v-model="v$.edition.members.$model"
