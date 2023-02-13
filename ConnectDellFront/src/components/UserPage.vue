@@ -33,9 +33,8 @@
           </td>
         </tr>
       </tbody>
-    </table>
-    <!--Pagination-->
-    <div class="dds__pagination" data-dds="pagination" id="516534716" role="navigation"
+       <!--Pagination-->
+    <div class="pagination dds__pagination" data-dds="pagination" id="516534716" role="navigation"
       aria-label="pagination-516534716">
       <div class="dds__pagination__nav">
         <button v-if="currentPage > 1" type="button" class="dds__button dds__button--tertiary dds__button--sm dds__pagination__prev-page"
@@ -62,6 +61,7 @@
         </button>
       </div>
     </div>
+    </table>
   </div>
 
 
@@ -314,6 +314,7 @@ export default defineComponent({
         }
         this.initUser = 15;
       }
+      window.scrollTo(0,0);
     },
   }
 });
@@ -349,7 +350,9 @@ button.red {
   width: 25%;
   height: 70%;
 }
-
+.pagination{
+  padding-left: 15px;
+}
 p {
   text-align: left;
 }
