@@ -136,7 +136,7 @@ export default defineComponent({
       var endDate = new Date(finalDate)
       var today = new Date()
 
-      if (startDate >= today) {
+      if (startDate > today) {
         return 'Not Started'
       } else {
         if (endDate < today) {
