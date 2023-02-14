@@ -95,13 +95,13 @@ namespace ConnectDellBack.Tests
             Assert.That(editionUpdated.mode, Is.EqualTo(workModeUpdated));
         }
 
-        // [Test]
-        // public async void checkEditionNames_AssertEqual()
-        // {
-        //     Task<IEnumerable<EditionDTO>> names = editionService.allEditions(1);
+        [Test]
+        public async void checkEditionNames_AssertEqual()
+        {
+            Task<IEnumerable<EditionDTO>> names = editionService.allEditions(1);
 
-        //     Assert.That(names.ToString(), Is.EqualTo(""));
-        // }
+            Assert.That(names.ToString(), Is.EqualTo(""));
+        }
 
 
         [OneTimeTearDown]

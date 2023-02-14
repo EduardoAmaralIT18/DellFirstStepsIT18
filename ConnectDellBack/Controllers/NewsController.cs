@@ -29,7 +29,7 @@ public class NewsController : ControllerBase
             newsDTO.Add(NewsDTO.convertModel2DTO(item));
         }
 
-        return news == null ? NotFound() : Ok(newsDTO);
+        return news == null ? NoContent() : Ok(newsDTO);
     }
 
     [HttpPost("addContent")]
@@ -43,11 +43,11 @@ public class NewsController : ControllerBase
 
         if (result)
         {
-            return Ok();
+            return Accepted();
         }
         else
         {
-            return NotFound();
+            return BadRequest();
         }
         // }
         // else
@@ -71,11 +71,11 @@ public class NewsController : ControllerBase
 
         if (result)
         {
-            return Ok();
+            return Accepted();
         }
         else
         {
-            return NotFound();
+            return BadRequest();
         }
     }
 }
