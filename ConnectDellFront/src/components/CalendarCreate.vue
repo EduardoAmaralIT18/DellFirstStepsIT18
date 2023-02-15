@@ -1,8 +1,8 @@
 
 
 <template>
-    <NavBar />
-    <SideBar />
+    <!-- <NavBar />
+    <SideBar /> -->
     <div class="container">
         <a @click="addEvent()">Add Event</a>
         <a @click="options = !options">Change Options</a>
@@ -25,8 +25,8 @@ TO DO:
 - id on front, to each event, to know which one is it on the date
 
 */
-import NavBar from '../components/NavBar.vue';
-import SideBar from '../components/SideBar.vue';
+// import NavBar from '../components/NavBar.vue';
+// import SideBar from '../components/SideBar.vue';
 import { defineComponent } from 'vue';
 
 import swal from 'sweetalert';
@@ -42,8 +42,8 @@ import listPlugin from "@fullcalendar/list";
 export default defineComponent({
     components: {
         FullCalendar,
-        NavBar,
-        SideBar
+        // NavBar,
+        // SideBar
     },
     props: {
         eventDates: {
