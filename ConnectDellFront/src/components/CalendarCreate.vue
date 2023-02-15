@@ -118,7 +118,7 @@ export default defineComponent({
     methods: {
         eventDescription() {
 
-            //Swal parace um metodo de add?
+            //Swal parace um metodo de add? Nome do evento?
 
             swal("teste");
         },
@@ -177,6 +177,10 @@ export default defineComponent({
 body {
     font-family: 'Roboto', sans-serif;
 }
+
+
+/* Adicionar Styles para os botões, seguindo o padrão da Dell */
+
 
 .container {
     padding-top: 5%;

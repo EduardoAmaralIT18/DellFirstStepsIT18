@@ -96,7 +96,7 @@ export default defineComponent({
     </div>
 
   </div>
-  
+
 
 
   <div v-else class="container">
@@ -106,9 +106,19 @@ export default defineComponent({
     </div>
   </div>
 
+
+  
+
+
+<!-- Importando o calendário -->
+<!-- Descobrir como enviar váriáveis para o componente do calendário -->
   <div>
-  <CalendarCreate></CalendarCreate>
+    <CalendarCreate></CalendarCreate>
   </div>
+
+
+
+
 
 </template>
 
