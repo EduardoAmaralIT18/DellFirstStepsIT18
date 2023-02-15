@@ -82,6 +82,11 @@ const router = createRouter({
       name: 'EditNews',
       component: () => import('../views/EditNewsView.vue')
     }
+    { 
+      path: '/calendar', 
+      name: 'calendar', 
+      component: () => import('../components/CalendarCreate.vue') 
+    },
   ]
 })
 export default router
