@@ -1,8 +1,8 @@
 <template>
-    <div v-if="role == 0" class="container">
+    <div class="container">
         <div class="top">
             <RouterLink to="/news" class="goBack"> &larr; Go back</RouterLink>
-            <h2>Add News</h2>
+            <h2>Manage News</h2>
         </div>
         <div class="container2">
             <form data-dds="form" class="dds__form" enctype="multipart/form-data">
@@ -11,15 +11,15 @@
                         <div class="dds__col--1 dds__col--sm-3">
                             <div class="dds__select" data-dds="select">
                                 <div class="dds__text-area__header">
-                                    <label id="text-input-label-332997731" for="program.id"
+                                    <label id="text-input-label-332997731" for="programId"
                                         class="dds__label dds__label--required">
                                         Program <span> *</span>
                                     </label>
-                                    <small v-if="v$.program.id.$error" class="help-block">The Program field is
+                                    <small v-if="v$.news.programId.$error" class="help-block">The Program field is
                                         required</small>
                                 </div>
                                 <div class="dds__select__wrapper">
-                                    <select :value="0" v-model="v$.program.id.$model" id="program.id"
+                                    <select :value="0" v-model="v$.news.programId.$model" id="programId"
                                         class="dds__select__field" aria-describedby="select-helper-374041805"
                                         required="true">
                                         <option :value="0" selected>Select</option>
@@ -37,10 +37,11 @@
                                         class="dds__label dds__label--required">
                                         Title <span> *</span>
                                     </label>
-                                    <small v-if="v$.title.$error" class="help-block">The Title field is required</small>
+                                    <small v-if="v$.news.title.$error" class="help-block">The Title field is
+                                        required</small>
                                 </div>
                                 <div class="dds__input-text__wrapper">
-                                    <input type="text" v-model="v$.title.$model" id="title" name="title"
+                                    <input type="text" v-model="v$.news.title.$model" id="title" name="title"
                                         class="dds__input-text" required="true" />
                                 </div>
                             </div>
@@ -52,10 +53,11 @@
                                         class="dds__label dds__label--required">
                                         Text <span> *</span>
                                     </label>
-                                    <small v-if="v$.text.$error" class="help-block">The Text field is required</small>
+                                    <small v-if="v$.news.text.$error" class="help-block">The Text field is
+                                        required</small>
                                 </div>
                                 <div class="dds__text-area__wrapper">
-                                    <textarea class="dds__text-area" name="text" v-model="v$.text.$model" id="text"
+                                    <textarea class="dds__text-area" name="text" v-model="v$.news.text.$model" id="text"
                                         rows="5" cols="33" required="true"></textarea>
                                 </div>
                             </div>
@@ -72,8 +74,8 @@
                         </div>
                     </div>
                 </fieldset>
-                <button class="submitbutton dds__button dds__button--lg" type="submit"
-                    @click.prevent="addContent" :disabled="v$.$invalid">Submit</button>
+                <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit"
+                    :disabled="v$.$invalid">Submit</button>
             </form>
         </div>
     </div>
@@ -108,22 +110,26 @@ type Image = {
 }[];
 
 type Program = {
-    id: Number; name: string;
+    id: Number;
+    name: string;
 }[];
 
 interface Data {
-    user: number | null,
-    role: number,
-    data: FormData | undefined,
-    title: string,
-    text: string,
-    image: Image | null,
-    programs: null | Program,
-    program: { id: Number; name: string; },
-    imageSize: number;
+    news: {
+        id: number | null;
+        programId: number;
+        title: string;
+        text: string;
+        image: Image | null;
+        imageSize: number;
+
+    };
+    user: number;
+    programs: null | Program;
     modalMessage: string;
     modalTitle: string;
     modalSuccess: boolean;
+    idNews: any;
 }
 
 export default defineComponent({
@@ -132,31 +138,35 @@ export default defineComponent({
     },
     data(): Data {
         return {
-            user: null,
-            role: 5,
-            data: new FormData(),
-            title: "",
-            text: "",
-            image: null,
+            news: {
+                id: null,
+                programId: 0,
+                title: "",
+                text: "",
+                image: null,
+                imageSize: 0
+            },
+            user: 0,
             programs: null,
-            program: { id: 0, name: "", },
-            imageSize: 0,
             modalMessage: "",
             modalTitle: "",
-            modalSuccess: false
+            modalSuccess: false,
+            idNews: this.$route.params.idNews
         };
     },
     validations() {
         return {
-            program: { id: { required, minValue: minValue(1) } },
-            title: { required },
-            text: { required },
-            imageSize: { maxValue: maxValue(2097152) },
+            news: {
+                programId: { required, minValue: minValue(1) },
+                title: { required },
+                text: { required },
+                imageSize: { maxValue: maxValue(2097152) }
+            }
         }
     },
-    created() {
-        // fetch the data when the view is created and the data is
-        // already being observed
+    mounted() {
+        this.user = this.$cookies.get("id");
+        this.getPrograms();
         this.fetchData();
     },
     watch: {
@@ -165,38 +175,54 @@ export default defineComponent({
     },
     methods: {
         fetchData(): void {
-            this.role = this.$cookies.get("role");
-            this.user = this.$cookies.get("id");
-
+            axios
+                .get(`/News/getSpecificNews?id=${this.idNews}`)
+                .then(function (response) {
+                    return response;
+                })
+                .then(response => {
+                    if (response.status == 200) {
+                        this.news = response.data;
+                    } else {
+                        const element = this.$refs.modalId;
+                        const modal = new DDS.Modal(element);
+                        this.modalTitle = "Error";
+                        this.modalMessage = "I'm sorry, something went wrong. Try again later."
+                        this.modalSuccess = false;
+                        modal.open();
+                    }
+                })
+        },
+        getPrograms(): void {
+            let role = this.$cookies.get("role");
             axios.get('/Program/GetPrograms', {
                 params: {
                     idUser: this.user,
-                    role: this.role,
+                    role: role,
                 }
+            }).then(function (response) {
+                return response;
+            }).then(response => {
+                if (response.status == 404) { this.programs = []; }
+                else if (response.status == 200) { this.programs = response.data?.myPrograms; }
+                else { console.log(response.status); }
             })
-                .then(function (response) {
-                    return response;
-                }).then(response => {
-                    if (response.status == 404) { this.programs = []; }
-                    else if (response.status == 200) { this.programs = response.data?.myPrograms; }
-                    else { console.log(response.status); }
-                })
         },
-        addContent(): void {
+        onSubmit(): void {
             if (!this.v$.$invalid) {
                 const element = this.$refs.modalId;
-                const modal = new DDS.Modal(element);                
+                const modal = new DDS.Modal(element);
 
-                var program = this.programs?.find(prog => prog.id == this.program.id);
+                let data = new FormData();
+                data.append('id', this.news.id);
+                data.append('author', this.user);
+                data.append('program', this.news.programId);
+                data.append('title', this.news.title);
+                data.append('text', this.news.text);
+                data.append('imageName', this.news.title);
+                data.append('image', this.news.image);
 
-                this.data?.append('author', this.user);
-                this.data?.append('program', program?.id);
-                this.data?.append('title', this.title);
-                this.data?.append('text', this.text);
-                this.data?.append('imageName', this.title);
-                this.data?.append('image', this.image);
-
-                axios.post('news/addContent', this.data, {
+                axios.post('/News/UpdateNews', data, {
                     headers: {
                         'accept': 'application/json',
                         'Content-Type': 'multipart/form-data'
@@ -205,8 +231,8 @@ export default defineComponent({
                     return response;
                 }).then(response => {
                     if (response.status == 200) {
-                        this.modalTitle = "News Published";
-                        this.modalMessage = "Your news was successfully published."
+                        this.modalTitle = "News Edited";
+                        this.modalMessage = "Your news was successfully edited."
                         this.modalSuccess = true;
                     } else {
                         this.modalTitle = "Error";
@@ -220,19 +246,18 @@ export default defineComponent({
             }
         },
         updateImage(e: any): void {
-            this.image = e.target.files[0];
-            this.imageSize = e.target.files[0].size;
+            this.news.image = e.target.files[0];
+            this.news.imageSize = e.target.files[0].size;
         },
         navigateToParent(): void {
             this.$router.push({ name: 'NewsPage' });
         }
-    },
+    }
 });
 </script>
 <style scoped>
 h2 {
     color: #0672CB;
-
 }
 
 .top {

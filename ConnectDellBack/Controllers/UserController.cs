@@ -29,8 +29,42 @@ public class UserController : ControllerBase
         return owners;
     }
 
+
+    [HttpGet("listUsers")]
+    public async Task<ActionResult<IEnumerable<UserDTO>>> ListUsers()
+    {
+        var list = await _service.listUsers();
+        var listUser = new List<UserDTO>();
+        foreach (var item in list)
+        {
+            listUser.Add(UserDTO.convertToDTO(item));
+        }
+        return listUser == null ? NotFound() : Ok(listUser);
+    }
+
+    [HttpGet("changeRole")]
+    public async Task<ActionResult> changeRole(int user, int role){
+       var entries = await _service.changeRole(user, role); 
+       if (entries >0){
+        return Ok();
+       } else {
+        return NotFound();
+       }
+    }
+
+    [HttpGet("removeUser")]
+    public async Task<ActionResult> removeUser(int user){
+       var entries = await _service.removeUser(user); 
+       if (entries >0){
+        return Ok();
+       } else {
+        return NotFound();
+       }
+    }
+
+}
+
     // [HttpPost("createProgram")]
     // public async Task<ActionResult<string>> createProgram(ProgramModel program) {
 
     // }
-}

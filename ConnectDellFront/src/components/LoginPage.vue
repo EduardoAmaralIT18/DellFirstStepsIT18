@@ -1,4 +1,4 @@
-<!-- ALTERADO -->
+
 <template>
 
   <header class="navbar shadow-lg fixed-top">
@@ -16,21 +16,22 @@
 
 
 
-  <form>
-
-    <div class="dds__select" data-dds="select">
-    <div class="dds__select__wrapper">
-    <select :value="0" v-model="us.id" id="select-control-374041805" class="dds__select__field" aria-describedby="select-helper-374041805">
-      <option :value="0" selected>Select</option>
-      <option v-for="item in user" v-bind:value="item.id" v-bind:key="item.id">
-        {{ item.email }}
-      </option>
-    </select>
+    <form>
+      <div class="dds__select" data-dds="select">
+        <div class="dds__select__wrapper">
+          <select :value="0" v-model="us.id" id="select-control-374041805" class="dds__select__field"
+            aria-describedby="select-helper-374041805">
+            <option :value="0" selected>Select</option>
+            <option v-for="item in user" v-bind:value="item.id" v-bind:key="item.id">
+              {{ item.email }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <button class="submitbutton dds__button dds__button--lg" type="submit"
+        @click.prevent="setCookies()">Login</button>
+    </form>
   </div>
-</div>
-    <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="setCookies()">Login</button>
-  </form>
-</div>
 </template>
 
 <script lang="ts">
@@ -114,10 +115,10 @@ body {
 }
 
 button {
-   display: flex;
+  display: flex;
   width: 50%;
   margin: 8% auto;
-  }
+}
 
 .container {
   padding-top: 3%;
@@ -160,8 +161,6 @@ div {
   top: 0;
   position: relative;
 }
-
-
 </style>
 
 <style>

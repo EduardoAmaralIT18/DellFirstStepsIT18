@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
+using System.Runtime.InteropServices;
 
 namespace ConnectDellBack.Tests
 {
@@ -63,7 +64,25 @@ namespace ConnectDellBack.Tests
             return actionResult.Result.ToString();
         }
 
-        [OneTimeTearDown] 
+        [Test]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
+        public async Task<String> HTTPGET_GetProgramsName_ReturnOk()
+        {
+            ActionResult<IEnumerable<ProgramInfoDTO>> actionResult = await programController.GetProgramsName();
+
+            return actionResult.Result.ToString();
+        }
+
+        [Test]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
+        public async Task<String> HTTPGET_GetProgramsName_ReturnOk()
+        {
+            ActionResult<IEnumerable<ProgramInfoDTO>> actionResult = await programController.GetProgramsName();
+
+            return actionResult.Result.ToString();
+        }
+
+        [OneTimeTearDown]
         public void CleanUp()
         {
             context.Database.EnsureDeleted();

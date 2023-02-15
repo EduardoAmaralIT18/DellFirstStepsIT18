@@ -23,13 +23,19 @@ export default defineComponent ({
     components: {
         Multiselect
     },
+    props: {
+        tipo: { 
+            type: String,
+        }
+    },
     data() : Data {
         return {
             options: null
         };
     },
     created() {
-        axios.get("/user/GetOwners")
+        if (this.tipo == "owner") {
+            axios.get("/user/GetOwners")
             .then(function (response) {
                 return response;
             })
@@ -37,15 +43,25 @@ export default defineComponent ({
                 this.options = response.data;
                 return;
             });
+        } else {
+            axios.get("/edition/getUsersNotAdmin")
+            .then(function (response) {
+                return response;
+            })
+            .then(response => {
+                this.options = response.data;
+                return;
+            });
+        }
+        
+        
     },
     methods: {
         transformOptions() {
-            var list = this.options?.map(option => ({
+                var list = this.options?.map(option => ({
                 value: option,
                 label: option.name
             }))
-
-            console.log(list);
             return list;
         }
     }

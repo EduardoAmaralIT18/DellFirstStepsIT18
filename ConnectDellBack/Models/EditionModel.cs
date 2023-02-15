@@ -8,13 +8,13 @@ public enum Mode {
     InOffice
 }
 
-public class EditionModel{
+public class EditionModel {
 
     public int id {get;set;}
 
     [Required]
     [StringLength(50, MinimumLength = 5, ErrorMessage = "The program's name must be at most 50 characters.")]
-     [RegularExpression(@"[A-Za-z0-9]*")]
+    //[RegularExpression(@"[A-Za-z0-9]*")]
     public string name {get;set;}
 
     [Required]
@@ -31,7 +31,7 @@ public class EditionModel{
     [RegularExpression(@"\b([1-9]|[1-9][0-9])\b")]
     public int numberOfMembers {get;set;}
 
-    [Range (1,25, ErrorMessage = "The program must have at least 1 intern!")] // ask PO about the maximum number of interns
+    [Range (1,21, ErrorMessage = "The program must have at least 1 intern!")] // ask PO about the maximum number of interns
     [RegularExpression(@"\b([1-9]|[1-9][0-9])\b")]
     public int numberOfInterns {get;set;}
 

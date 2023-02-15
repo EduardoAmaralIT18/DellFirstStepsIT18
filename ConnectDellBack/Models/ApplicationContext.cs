@@ -44,7 +44,7 @@ public class ApplicationContext : DbContext
                 id = 1,
                 name = "IT Academy",  
                 startDate = new DateTime(2022,10,08),
-                description = "Internship Program in partnership with PUCRS, focused in software development",
+                description = "The IT Academy is a capacitation program in partnership with PUCRS for students of different technology fields, focusing on improving their software developer skills to join Dell Teams. Furthermore, the interns will develop hard and soft skills that allow young professionals to complete their academic journey with a scientific and technical knowledge and to be oriented by the market needs.",
             }
         );
         modelBuilder.Entity<ProgramModel>().HasData(
@@ -124,21 +124,21 @@ public class ApplicationContext : DbContext
             new UserModel(){
                 id = 8,
                 name = "Daniel Callegari",
-                email = "daniel.callegari@dell.com",
+                email = "daniel.callegari@edu.pucrs.br",
                 role = Role.PucrsStaff,
                 notes = "N/A"
             },
             new UserModel(){
                 id = 9,
                 name = "Edson Moreno",
-                email = "edson.moreno@dell.com",
+                email = "edson.moreno@edu.pucrs.br",
                 role = Role.PucrsStaff,
                 notes = "N/A"
             },
             new UserModel(){
                 id = 10,
                 name = "Tuani Alves",
-                email = "tuani.alves@edupucrs.com",
+                email = "tuani.alves@edu.pucrs.br",
                 role = Role.PucrsStaff,
                 notes = "N/A"
             },
@@ -154,7 +154,7 @@ public class ApplicationContext : DbContext
             new {
                 id = 12,
                 editionInternid = 1,
-                name = "Laura",
+                name = "Laura Teixeira",
                 email = "laura.teixeira@dellteam.com",
                 role = Role.Intern,
                 notes = "N/A"
@@ -258,8 +258,8 @@ public class ApplicationContext : DbContext
             new {
                 id = 25,
                 editionInternid = 1,
-                name = "Yanni Partichelli",
-                email = "yanni.partichelli@dellteam.com",
+                name = "Yanny Partichelli",
+                email = "yanny.partichelli@dellteam.com",
                 role = Role.Intern,
                 notes = "N/A"
             },
@@ -328,7 +328,7 @@ public class ApplicationContext : DbContext
             new {
                 id = 1,
                 programid = 1,
-                name = "Edição 17",
+                name = "Edition 17",
                 startDate = new DateTime(2022,10,10),
                 endDate = new DateTime(2023,05,28),
                 description = "Seventeenth edition of the IT Academy program focused solely on the self-titled female audience.",
@@ -340,7 +340,7 @@ public class ApplicationContext : DbContext
             new {
                 id = 2,
                 programid = 1,
-                name = "Edição 16",
+                name = "Edition 16",
                 startDate = new DateTime(2021,10,10),
                 endDate = new DateTime(2022,09,10),
                 description = "Sixteenth edition of the IT Academy program aimed at undergraduate students in computer science courses.",
@@ -352,7 +352,7 @@ public class ApplicationContext : DbContext
             new {
                 id = 3,
                 programid = 1,
-                name = "Edição 18",
+                name = "Edition 18",
                 startDate = new DateTime(2023,10,10),
                 endDate = new DateTime(2024,02,28),
                 description = "Eighteenth edition of the IT Academy program aimed at undergraduate students in computer science courses.",
@@ -366,7 +366,7 @@ public class ApplicationContext : DbContext
             new {
                 id = 4,
                 programid = 2,
-                name = "Edição 17",
+                name = "Edition 17",
                 startDate = new DateTime(2022,10,10),
                 endDate = new DateTime(2023,05,28),
                 description = "Seventeenth edition of the Design Academy program",
@@ -378,7 +378,7 @@ public class ApplicationContext : DbContext
             new {
                 id = 5,
                 programid = 2,
-                name = "Edição 16",
+                name = "Edition 16",
                 startDate = new DateTime(2021,10,10),
                 endDate = new DateTime(2022,02,28),
                 description = "Sixteenth edition of the Design Academy program",
@@ -392,7 +392,7 @@ public class ApplicationContext : DbContext
             new {
                 id = 6,
                 programid = 3,
-                name = "Edição 17",
+                name = "Edition 17",
                 startDate = new DateTime(2022,10,10),
                 endDate = new DateTime(2023,05,28),
                 description = "Seventeenth edition of the Infrastructure Resindece program",
@@ -404,7 +404,7 @@ public class ApplicationContext : DbContext
             new {
                 id = 7,
                 programid = 3,
-                name = "Edição 16",
+                name = "Edition 16",
                 startDate = new DateTime(2021,10,10),
                 endDate = new DateTime(2022,02,28),
                 description = "Sixteenth edition of the Infrastructure Resindece program",

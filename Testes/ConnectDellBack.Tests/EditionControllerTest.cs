@@ -74,6 +74,14 @@ namespace ConnectDellBack.Tests
             return actionResult.Result.ToString();
         }
 
+        [Test]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult" )]
+        public async Task<String> HTTPGET_allEditionsNames_ReturnOk() {
+            ActionResult<IEnumerable<EditionDTO>> actionResult = WaitCallback editionController.getEditionsNames(1);
+
+            return actionResult.Result.ToString();
+        }
+
         [OneTimeTearDown]
         public void CleanUp()
         {
