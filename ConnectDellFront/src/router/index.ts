@@ -24,8 +24,8 @@ const router = createRouter({
     },
     {
       path: '/users',
-      name: 'users',
-      component: () => import('../components/TesteUser.vue') //teste, pode trocar, so troca so o componente, nao o path nem o name
+      name: 'UserPage',
+      component: () => import('../views/UserView.vue') //teste, pode trocar, so troca so o componente, nao o path nem o name
     },
     {
       path: '/createprogram',
@@ -70,13 +70,18 @@ const router = createRouter({
       name: 'EditProgram',
       component: () => import('../views/EditProgramView.vue')
     },
-    
+
     {
       path: '/usertable',
-      name: 'usertable', 
+      name: 'usertable',
       component: () => import('../views/UserTableView.vue')
+    },
+
+    {
+      path: '/editnews/:idNews',
+      name: 'EditNews',
+      component: () => import('../views/EditNewsView.vue')
     }
   ]
 })
-
 export default router

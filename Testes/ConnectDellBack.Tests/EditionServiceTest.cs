@@ -8,6 +8,7 @@ using ConnectDellBack.Models;
 using NUnit.Framework;
 using ConnectDellBack.Services;
 using ConnectDellBack.DTOs;
+using System.Linq;
 
 
 namespace ConnectDellBack.Tests
@@ -48,14 +49,15 @@ namespace ConnectDellBack.Tests
 
             model = new EditionModel()
             {
-                name = "Test",
-                startDate = DateTime.Now,
-                endDate = DateTime.Now,
-                description = "Testing the database",
-                numberOfMembers = 1,
-                numberOfInterns = 1,
-                mode = Mode.InOffice,
-                curriculum = "vue :c",
+                id = 2,
+                name = "Edição 16",
+                startDate = new DateTime(2021, 10, 10),
+                endDate = new DateTime(2022, 09, 10),
+                description = "Sixteenth edition of the IT Academy program aimed at undergraduate students in computer science courses.",
+                numberOfMembers = 25,
+                numberOfInterns = 20,
+                mode = Mode.Remote,
+                curriculum = "CSS, HTML, C#, JavaScript, SQL Server, Entity Framework, Asp.NET, Vue.js",
                 program = context.programs.Where(prog => prog.id == 1).FirstOrDefault()
             };
 
@@ -73,7 +75,7 @@ namespace ConnectDellBack.Tests
 
             EditionDTO result = EditionDTO.convertModel2DTO(
                          context.editions.Where(ed => ed.id == 2).FirstOrDefault());
-           
+
             Assert.That(result.name, Is.EqualTo(edition.name));
         }
 
@@ -84,7 +86,7 @@ namespace ConnectDellBack.Tests
             var editionUpdated = context.editions.Where(ed => ed.id == 2).FirstOrDefault();
 
             Mode workModeUpdated = (Mode)modelUpdate.mode;
-            
+
             Assert.That(editionUpdated.id, Is.EqualTo(modelUpdate.id));
             Assert.That(editionUpdated.name, Is.EqualTo(modelUpdate.name));
             Assert.That(editionUpdated.description, Is.EqualTo(modelUpdate.description));
@@ -93,6 +95,15 @@ namespace ConnectDellBack.Tests
             Assert.That(editionUpdated.curriculum, Is.EqualTo(modelUpdate.curriculum));
             Assert.That(editionUpdated.mode, Is.EqualTo(workModeUpdated));
         }
+
+        // [Test]
+        // public async void checkEditionNames_AssertEqual()
+        // {
+        //     Task<IEnumerable<EditionDTO>> names = editionService.allEditions(1);
+
+        //     Assert.That(names.ToString(), Is.EqualTo(""));
+        // }
+
 
         [OneTimeTearDown]
         public void CleanUp()

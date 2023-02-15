@@ -35,7 +35,7 @@ public class EditionController : ControllerBase
     }
 
     [HttpPost("updateEdition")] 
-    public async Task<ActionResult> updateEdition(EditionDTO editionForm) {
+    public async Task<ActionResult> updateEdition(EditionModel editionForm) {
         int entries = await _service.updateEdition(editionForm);
         if (entries > 0) {
             return Ok();
@@ -51,5 +51,20 @@ public class EditionController : ControllerBase
         var result = await _service.getEditionInfo(idProgram, idEdition);
         return result == null ? NoContent() : Ok(result);
     }
+
+    //GetUsers que não são admins. 
+    [HttpGet("getUsersNotAdmin")]
+    public async Task<ActionResult<UserDTO>> getUsersNotAdmin() {
+        var result = await _service.getUsersNotAdmin();
+        return result == null ? NoContent() : Ok(result);
+    }
+
+    [HttpGet("getEditionsNames")]
+    public async Task<ActionResult<EditionDTO>> getEditionsNames(int idProgram) {
+         var result = await _service.allEditions(idProgram);
+        return result == null ? NoContent() : Ok(result);
+    }
+
+    
 
 }

@@ -11,5 +11,6 @@ namespace ConnectDellBack.Services
         public Task<ProgramInfoDTO> getProgramInfoNoPermission(int id1);
         public Task<int> UpdateProgram(ProgramModel program);
         public Task<ProgramModel> GetProgram(int id);
+        public Task<IEnumerable<ProgramInfoDTO>> GetProgramsName();
     }
 }

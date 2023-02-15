@@ -172,4 +172,15 @@ public class ProgramService : IProgramService
                                                .FirstOrDefaultAsync();
         return program;
     }
+
+    public async Task<IEnumerable<ProgramInfoDTO>> GetProgramsName()
+    {
+        var programsList = await _dbContext.programs.ToListAsync();
+        var auxList = new List<ProgramInfoDTO>();
+        foreach (var aux in programsList) {
+            auxList.Add(ProgramInfoDTO.convertModel2DTOProgramsName(aux));
+        }
+        return auxList;
+    }
+
 }

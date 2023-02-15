@@ -28,7 +28,18 @@
                     </div>
                     <div class="dds__card__footer">
                         <p>{{ item.date }}</p>
+                        <div class="manageButton" v-if="isAuthor(item.authorId)">
+                            <RouterLink :to="{ name: 'EditNews', params: { idNews: item.id } }"
+                                class="insideButton dds__button dds__button--primary"
+                                style="color:white ; text-decoration : none" type="button">
+                                <div class="margin">
+                                    <img src="../assets/pencil.png" alt="pencil icon" width="19">
+                                </div>
+                                Manage News
+                            </RouterLink>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -55,6 +66,7 @@ type News = {
     title: string,
     text: string,
     author: string,
+    authorId: number,
     program: string,
     date: string,
     image: null | string,
@@ -127,8 +139,12 @@ export default defineComponent({
                     this.countNews = this.countNews + 1;
                 });
             } while ((this.countNews % 10 != 0) && (this.countNews != this.totalNews));
+        },
+        isAuthor(authorId: number): boolean {
+            let idUser = this.$cookies.get("id") ? Number(this.$cookies.get("id")) : 0;
+            return authorId === idUser;
         }
-    },
+    }
 });
 </script>
 <style scoped>
@@ -146,8 +162,9 @@ export default defineComponent({
 }
 
 i {
-    margin-right: 5px;
+    margin-right: 8px;
 }
+
 
 .dds__card__footer p {
     color: #7E7E7E;
@@ -180,5 +197,34 @@ a {
 
 button {
     white-space: nowrap;
+}
+
+.manageButton {
+    display: inline;
+    width: 180px;
+    font-size: 10px;
+    height: 8%;
+    margin-left: auto;
+    margin-right: 15px;
+    padding: 4px;
+    display: flex;
+    float: right;
+    margin-top: 9px;
+}
+
+.insideButton {
+    display: flex;
+    font-size: 13px;
+    float: right;
+    height: 8%;
+    margin-left: auto;
+    margin-right: 15px;
+    padding: 4px;
+    padding-right: 8px;
+    width: 140px;
+}
+
+.margin {
+    margin-right: 5px;
 }
 </style>
