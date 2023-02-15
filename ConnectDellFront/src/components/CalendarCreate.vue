@@ -25,8 +25,16 @@ TO DO:
 - id on front, to each event, to know which one is it on the date
 
 */
-// import NavBar from '../components/NavBar.vue';
-// import SideBar from '../components/SideBar.vue';
+
+
+
+
+//References: https://fullcalendar.io/docs
+
+
+
+
+
 import { defineComponent } from 'vue';
 
 import swal from 'sweetalert';
@@ -36,14 +44,13 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
+
 // 1. In month View- Day shoudl be like- Monday, Tuesday instead of Mon, Tue
 //2. Default load should be on Oct 2021, bcoz event starting from there.
 
 export default defineComponent({
     components: {
         FullCalendar,
-        // NavBar,
-        // SideBar
     },
     props: {
         eventDates: {
@@ -68,6 +75,9 @@ export default defineComponent({
                     right: "dayGridMonth,timeGridWeek,listWeek",
                 },
                 events: [
+
+                    //Colocar os itens da lista de eventos
+
                     {
                         start: "2023-02-10T04:30:00",
                         title: "Test",
@@ -107,6 +117,9 @@ export default defineComponent({
     },
     methods: {
         eventDescription() {
+
+            //Swal parace um metodo de add?
+
             swal("teste");
         },
         addEvent() {
@@ -119,6 +132,10 @@ export default defineComponent({
             optionsComputed() {
                 if (this.options) {
                     this.calendarOptions.events = [
+
+
+                        //Info dos eventos
+
                         {
                             start: "2023-02-10T04:30:00",
                             title: "Test",
@@ -166,6 +183,7 @@ body {
     padding-left: 15%;
     display: inline-flex;
     flex-direction: column;
+    padding-bottom: 5%;
 }
 
 .fc .fc-button .fc-icon {
