@@ -91,7 +91,7 @@
                     </p>
                 </div>
                 <div class="dds__modal__footer">
-                    <button class="dds__button dds__button--block"
+                    <button class="buttonModal dds__button dds__button--block"
                         v-bind:class="modalSuccess ? '' : 'dds__button--destructive'" type="button"
                         name="modal-secondary-button" @click.prevent="navigateToParent">OK</button>
                 </div>

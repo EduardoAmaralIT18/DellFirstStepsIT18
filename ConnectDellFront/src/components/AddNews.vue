@@ -264,9 +264,6 @@ span {
     font-weight: bold;
 }
 
-button {
-    margin-top: 5%;
-}
 
 .dds__file-input {
     margin-top: 3%;
@@ -292,9 +289,6 @@ label {
     margin-top: 8px;
 }
 
-button {
-    margin-top: 30px;
-}
 
 small {
     color: red;
@@ -317,6 +311,7 @@ small {
 .submitbutton {
     display: flex;
     float: left;
+    margin-top: 30px;
 }
 
 .message {
