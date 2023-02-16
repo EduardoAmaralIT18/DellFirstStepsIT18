@@ -184,11 +184,11 @@ body {
 
 .fc .fc-button {
     background-color: #0672cb;
-    border: 1px #0063b8;
+    /* border: 1px #0063b8; */
     border-radius: .25em;
     display: inline-block;
-    font-size: 1em;
-    font-weight: 400;
+    font-size: 0.9em;
+    font-weight: normal;
     line-height: 1.5;
     padding: .4em .65em;
     text-align: center;
