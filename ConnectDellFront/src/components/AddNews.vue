@@ -72,26 +72,27 @@
                         </div>
                     </div>
                 </fieldset>
-                <button class="submitbutton dds__button dds__button--lg" type="submit"
-                    @click.prevent="addContent" :disabled="v$.$invalid">Submit</button>
+                <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="addContent"
+                    :disabled="v$.$invalid">Submit</button>
             </form>
         </div>
     </div>
-    <div role="dialog" data-dds="modal" class="dds__modal" id="modalId" ref="modalId"
-        @ddsModalClosedEvent="navigateToParent">
-        <div class="dds__modal__content">
-            <div class="dds__modal__header">
-                <h3 class="dds__modal__title" id="modal-headline-369536123">{{ modalTitle }}</h3>
-            </div>
-            <div id="modal-body-532887773" class="dds__modal__body">
-                <p>
-                    {{ modalMessage }}
-                </p>
-            </div>
-            <div class="dds__modal__footer">
-                <button class="dds__button dds__button--lg"
-                    v-bind:class="modalSuccess ? '' : 'dds__button--destructive'" type="button"
-                    name="modal-secondary-button" @click.prevent="navigateToParent">OK</button>
+    <div role="dialog" data-dds="modal" class="dds__modal" id="modalId" ref="modalId">
+        <div class="dds__modal--md" @ddsModalClosedEvent="navigateToParent">
+            <div class="dds__modal__content">
+                <div class="dds__modal__header">
+                    <h3 class="dds__modal__title" id="modal-headline-369536123">{{ modalTitle }}</h3>
+                </div>
+                <div id="modal-body-532887773" class="dds__modal__body">
+                    <p class="message">
+                        {{ modalMessage }}
+                    </p>
+                </div>
+                <div class="dds__modal__footer">
+                    <button class="dds__button dds__button--block"
+                        v-bind:class="modalSuccess ? '' : 'dds__button--destructive'" type="button"
+                        name="modal-secondary-button" @click.prevent="navigateToParent">OK</button>
+                </div>
             </div>
         </div>
     </div>
@@ -185,7 +186,7 @@ export default defineComponent({
         addContent(): void {
             if (!this.v$.$invalid) {
                 const element = this.$refs.modalId;
-                const modal = new DDS.Modal(element);                
+                const modal = new DDS.Modal(element);
 
                 var program = this.programs?.find(prog => prog.id == this.program.id);
 
@@ -316,5 +317,13 @@ small {
 .submitbutton {
     display: flex;
     float: left;
+}
+
+.message {
+    text-align: left;
+}
+
+.dds__modal--md {
+    width: 400px;
 }
 </style>

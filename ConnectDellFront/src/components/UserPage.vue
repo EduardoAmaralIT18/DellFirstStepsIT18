@@ -76,7 +76,7 @@
         </div>
         <div id="modal-body-357113985" class="dds__modal__body">
           <p>
-            You are about to revoke the access of {{ nameSelected }}. <br> Are you sure that you want to proceed?
+            You are about to revoke the access of {{ nameSelected }}. <br><br>Are you sure that you want to proceed?
           </p>
         </div>
         <div class="dds__modal__footer">
