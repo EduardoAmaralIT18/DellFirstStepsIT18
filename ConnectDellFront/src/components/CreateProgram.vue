@@ -11,8 +11,8 @@
                 </p>
             </div>
             <div class="dds__modal__footer">
-                <button :class="buttonColor" type="button"
-                    name="modal-secondary-button" @click="$router.push({ name: 'HomePage' });">Ok</button>
+                <button :class="buttonColor" type="button" name="modal-secondary-button"
+                    @click="$router.push({ name: 'HomePage' });">Ok</button>
             </div>
         </div>
     </div>
@@ -69,16 +69,43 @@
 
                 <div class="dds__row">
                     <div class="dds__col--12 dds__col--sm-12">
-                        <div class="dds__select" data-dds="select">
+                        <!-- <div class="dds__select" data-dds="select"> -->
                             <label id="select-label-141366292" for="select-control-141366292">Owners <span>
                                     *</span></label>
 
-                            <div class="multiselec dds__select__wrapper">
-                                <MultiSelect style="box-shadow: none ;" v-model="v$.program.members.$model" tipo="owner"/>
-                                <small class="warning" v-if="v$.program.members.$error">The Members field is
-                                    required.</small>
+                            <!-- <div class="multiselec dds__select__wrapper"> -->
+                            <!-- <MultiSelect style="box-shadow: none ;" v-model="v$.program.members.$model" tipo="owner"/> -->
+                            <div class="dds__dropdown" data-dds="dropdown" ref="multiselect" id="multi-select-list-dropdown"
+                                data-selection="multiple" data-select-all-label="Select all">
+                                <div class="dds__dropdown__input-container">
+                                    <div class="dds__dropdown__input-wrapper" autocomplete="off" aria-haspopup="listbox"
+                                        aria-controls="multi-select-list-dropdown-popup">
+                                        <input v-model="v$.program.members.$model" id="multi-select-list-dropdown-input"
+                                            name="multi-select-list-dropdown-name" type="text" role="combobox"
+                                            class="dds__dropdown__input-field"
+                                            aria-labelledby="multi-select-list-dropdown-label multi-select-list-dropdown-helper"
+                                            autocomplete="off" aria-expanded="false"
+                                            aria-controls="multi-select-list-dropdown-list"/>
+                                    </div>
+                                </div>
+                                <div id="multi-select-list-dropdown-popup"
+                                    class="dds__dropdown__popup dds__dropdown__popup--hidden" role="presentation"
+                                    tabindex="-1">
+                                    <ul class="dds__dropdown__list" role="listbox" tabindex="-1"
+                                        id="multi-select-list-dropdown-list">
+                                        <li  v-for="owner in owners" :key="owner.id" class="dds__dropdown__item" role="none">
+                                            <button type="button" class="dds__dropdown__item-option" role="option"
+                                                data-selected="false" :data-value=owner tabindex="-1">
+                                                <span class="dds__dropdown__item-label">{{ owner.name }}</span>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
+                            <!-- <small class="warning" v-if="v$.program.members.$error">The Members field is
+                                required.</small> -->
+                            <!-- </div> -->
+                        <!-- </div> -->
                     </div>
                 </div>
 
@@ -109,12 +136,11 @@
         </form>
 
     </div>
-
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import MultiSelect from './MultipleSelect.vue';
+// import MultiSelect from './MultipleSelect.vue';
 import axios from 'axios';
 import { useVuelidate } from '@vuelidate/core';
 import { minLength, maxLength, required } from '@vuelidate/validators';
@@ -142,7 +168,8 @@ interface Data {
     programList: programList,
     messageError: string,
     titleError: string,
-    buttonColor: string
+    buttonColor: string,
+    owners: User | null
 }
 
 
@@ -152,6 +179,7 @@ export default defineComponent({
     },
     mounted() {
         this.createModal();
+        DDS.Dropdown(this.$refs.multiselect);
     },
     validations() {
         return {
@@ -161,7 +189,7 @@ export default defineComponent({
                     minLength: minLength(5),
                     maxLength: maxLength(50)
                 },
-                members: { required },
+                // members: { required },
                 description: {
                     required,
                     minLength: minLength(10),
@@ -175,7 +203,7 @@ export default defineComponent({
         }
     },
     components: {
-        MultiSelect
+        // MultiSelect
     },
     data(): Data {
         return {
@@ -191,7 +219,8 @@ export default defineComponent({
             programList: [],
             messageError: '',
             titleError: '',
-            buttonColor: "nullButton"
+            buttonColor: "nullButton",
+            owners: null
         };
     },
     created() {
@@ -206,7 +235,16 @@ export default defineComponent({
                 } else if (response.status == 204) {
                     alert("There was an error on our database! Please, try again later.");
                 }
+            });
+
+            axios.get("/user/GetOwners")
+            .then(function (response) {
+                return response;
             })
+            .then(response => {
+                this.owners = response.data;
+                return;
+            });
     },
     methods: {
         nameValidation() {
@@ -359,18 +397,18 @@ span {
 </style>
 
 <style>
-.multiselect {
+/* .multiselect {
     border: .0625rem solid #7e7e7e;
     border-radius: .125rem;
     background-clip: padding-box;
     margin-bottom: 5px;
     font-family: 'Roboto', sans-serif;
-}
+} */
 
-.multiselect-tag {
+/* .multiselect-tag {
     background-color: rgb(6, 114, 203);
     font-weight: lighter;
-}
+} */
 
 .dates {
     text-align: left;
@@ -396,9 +434,10 @@ span {
     font-weight: bold;
 }
 
+/* 
 .multiselect:hover {
     border: .0625rem solid rgb(6, 114, 203);
-}
+} */
 
 .goBack {
     position: relative;
