@@ -2,14 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace ConnectDellBack.Models;
-// //////// ALTERADO
+////////// ALTERADO
 public class ApplicationContext : DbContext
 {
 
     public DbSet<UserModel> users { get; set;} = null!; 
     public DbSet<ProgramModel> programs { get; set;} = null!;
     public DbSet<EditionModel> editions { get; set;} = null!;
-    public DbSet<PhasesModel> phases { get; set;} = null!;
+    public DbSet<EventsModel> events { get; set;} = null!;
     public DbSet<NewsModel> news { get; set;} = null!;
     public DbSet<ImageModel> images {get; set;} = null!;
     
@@ -416,18 +416,20 @@ public class ApplicationContext : DbContext
 
         );
 
-        modelBuilder.Entity<PhasesModel>().HasData(
+        modelBuilder.Entity<EventsModel>().HasData(
             new {
                 id = 1,
                 editionid = 1,
-                newsmodelid = 1,
-                name = "Enrollment",
+                //newsmodelid = 1,
+                name = "Enrollment on the Program",
                 startDate = new DateTime(2022,08,10),
                 endDate = new DateTime(2022,08,23),
-                peopleInvolved = "Puc and Dell Staff",
-                description = "Enrollment stage",
-                type = Type.Set_Up,
-        });
+                //peopleInvolved = "Puc and Dell Staff",
+                where = "Remote Enviroment",
+                phaseType = PhaseType.Set_Up,
+                eventType = EventType.Phase,   
+            }
+        );
 
         modelBuilder.Entity<NewsModel>().HasData(
              new {

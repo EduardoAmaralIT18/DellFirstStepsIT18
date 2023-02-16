@@ -81,6 +81,12 @@ const router = createRouter({
       path: '/editnews/:idNews',
       name: 'EditNews',
       component: () => import('../views/EditNewsView.vue')
+    },
+
+    {
+      path: '/calendar',
+      name: 'calendar',
+      component: () => import ('../components/CalendarCreate.vue')
     }
   ]
 })
