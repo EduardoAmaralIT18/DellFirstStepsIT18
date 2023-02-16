@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <p class="title">Edition's Calendar</p>
         <a @click="addEvent()">Add Event</a>
         <a @click="options = !options">Change Options</a>
         <full-calendar class="calendar" :event-limit="2" :options="calendarOptions" />
@@ -168,8 +169,23 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+.title {
+  color: #0672CB;
+  font-size: 190%;
+  text-align: left;
+  margin-top: 10px;
+}
+
+.title {
+  margin-left: 0px !important;
+  text-align: left;
+  color: #0672CB;
+  margin: 2.5%;
+  font-weight: bold;
+}
+
 .container {
-    padding-top: 1%;
+    padding-top: 0%;
     padding-left: 15%;
     display: inline-flex;
     flex-direction: column;
