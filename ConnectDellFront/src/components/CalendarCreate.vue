@@ -122,6 +122,8 @@ export default defineComponent({
 <style>
 body {
     font-family: 'Roboto', sans-serif;
+    font-weight: inherit;
+    line-height: inherit;
 }
 
 .addevent {
