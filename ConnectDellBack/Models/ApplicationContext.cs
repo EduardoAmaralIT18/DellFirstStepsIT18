@@ -427,7 +427,7 @@ public class ApplicationContext : DbContext
                 //peopleInvolved = "Puc and Dell Staff",
                 where = "Remote Enviroment",
                 phaseType = PhaseType.Set_Up,
-                EventType = EventType.Phase,
+                eventType = EventType.Phase,
             }
         );
 
