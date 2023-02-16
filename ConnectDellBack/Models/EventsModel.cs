@@ -34,7 +34,7 @@ public class EventsModel {
     //[IsValidEndDate ("startDate")]
     public DateTime endDate {get;set;}
 
-    public string where {get;set;} = null!;
+    public string? where { get;set; }
 
     //Lista de Usuários Envolvidos
     public List<UserModel> peopleInvolved {get;set;} = new List<UserModel>();

@@ -52,7 +52,12 @@ export default defineComponent({
     },
     data() {
         return {
+            
+            //Cookies com id da edição
             cookiesEdit: this.$cookies.get("editionId"),
+
+
+
             options: true,
             calendarOptions: {
                 // views: {
@@ -69,7 +74,14 @@ export default defineComponent({
                 },
                 events: [
 
-                    //Colocar os itens da lista de eventos
+                //Colocar os itens da lista de eventos
+                {
+                    title: 'Testing Events',
+                    start: '2023-02-10',
+                    color: 'green'
+                } 
+                
+                
                 ],
                 eventClick: function (event) {
                     swal('Event: ' + event.event.title);
@@ -85,6 +97,7 @@ export default defineComponent({
             },
         };
     },
+
     methods: {
         eventDescription() {
 
@@ -98,6 +111,7 @@ export default defineComponent({
                 { title: 'Another Event', date: '2023-02-13' }
             ];
         },
+
         computed: {
             optionsComputed() {
                 if (this.options) {
