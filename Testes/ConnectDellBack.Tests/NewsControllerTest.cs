@@ -59,7 +59,7 @@ namespace ConnectDellBack.Tests
 
         [Test]
         [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
-        public async Task<String> HTTPGET_GetSpecificNews_ReturnOk()
+        public async Task<String> HTTPPOST_UpdateNews_ReturnOk()
         {
             content.title = "New title";
             ActionResult<NewsDTO> actionResult = await newsController.UpdateNews(content);
@@ -69,7 +69,7 @@ namespace ConnectDellBack.Tests
 
         [Test]
         [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
-        public async Task<String> HTTPPOST_UpdateNews_ReturnOk()
+        public async Task<String> HTTPGET_GetSpecificNews_ReturnOk()
         {
             ActionResult<NewsDTO> actionResult = await newsController.GetSpecificNews(1);
             return actionResult.Result.ToString();

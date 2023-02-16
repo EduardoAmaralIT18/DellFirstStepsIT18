@@ -73,8 +73,7 @@ namespace ConnectDellBack.Tests
             return actionResult.Result.ToString();
         }
 
-
-        [OneTimeTearDown] 
+        [OneTimeTearDown]
         public void CleanUp()
         {
             context.Database.EnsureDeleted();

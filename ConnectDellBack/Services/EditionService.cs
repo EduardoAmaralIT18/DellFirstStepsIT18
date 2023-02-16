@@ -10,8 +10,6 @@ public class EditionService : IEditionService
         _dbContext = dbContext;
     }
 
-
-
     public async Task<int> addEdition(EditionDTO edition)
     {
         var aux = new List<UserModel>();
@@ -24,8 +22,6 @@ public class EditionService : IEditionService
             }
         }
 
-
-
         var targetInterns = aux;
         targetInterns.Where(usr => usr.role == Role.Intern).ToList();
 
@@ -37,7 +33,6 @@ public class EditionService : IEditionService
             description = edition.description,
             curriculum = edition.curriculum,
             numberOfInterns = edition.numberOfInterns,
-            numberOfMembers = edition.numberOfMembers,
             members = aux,
             interns = targetInterns,
 
@@ -59,8 +54,8 @@ public class EditionService : IEditionService
 
         var edition = _dbContext.editions.Where(ed => ed.id == editionForm.id)
                                          .Include(ed => ed.members)
-                                        //.Include(ed => ed.memberships)
-                                        .FirstOrDefault();
+                                       //.Include(ed => ed.memberships)
+                                         .FirstOrDefault();
 
         if (edition != null)
         {

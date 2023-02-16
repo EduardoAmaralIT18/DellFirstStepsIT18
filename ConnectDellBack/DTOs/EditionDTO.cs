@@ -5,7 +5,6 @@ public class EditionDTO
     public int id { get; set; }
     public string name { get; set; } = null!;
     public int numberOfInterns { get; set; }
-    public int numberOfMembers { get; set; }
     public string description { get; set; }
     public string curriculum { get; set; }
     public int mode { get; set; }
@@ -25,7 +24,6 @@ public class EditionDTO
         aux.id = edition.id;
         aux.name = edition.name;
         aux.numberOfInterns = edition.numberOfInterns;
-        aux.numberOfMembers = edition.numberOfMembers;
 
         foreach (var item in edition.members)
         {

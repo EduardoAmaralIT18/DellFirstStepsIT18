@@ -142,14 +142,14 @@ export default defineComponent({
         if (endDate < today) {
           return 'Finished'
         } else {
-          if ((startDate < today) && (endDate > today)) {
+          if ((startDate <= today) && (endDate >= today)) {
             return 'Ongoing'
           } else {
             return 'Erro'
           }
         }
       }
-    },
+    }
   },
   computed: {
     isOwner() {
