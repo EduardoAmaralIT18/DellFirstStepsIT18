@@ -183,7 +183,7 @@ body {
 
 
 .container {
-    padding-top: 5%;
+    padding-top: 1%;
     padding-left: 15%;
     display: inline-flex;
     flex-direction: column;
