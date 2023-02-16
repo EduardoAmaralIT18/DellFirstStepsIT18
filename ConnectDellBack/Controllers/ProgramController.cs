@@ -40,9 +40,9 @@ public class ProgramController : ControllerBase
     }
 
     [HttpGet("showInfoProgram")]
-    public async Task<ActionResult<ProgramInfoDTO>> showInfoProgram(int id, int idUser)
+    public async Task<ActionResult<ProgramInfoDTO>> showInfoProgram(int id1, int idUser)
     {
-        var result = await _service.getProgramInfo(id, idUser);
+        var result = await _service.getProgramInfo(id1, idUser);
         return result == null ? NotFound() : Ok(result);
     }
 
@@ -73,12 +73,4 @@ public class ProgramController : ControllerBase
         var result = await _service.GetProgramsName();
         return result == null ? NoContent() : Ok(result);
     }
-
-    [HttpPost("SetDateNull")]
-    public async Task<ActionResult> SetDateNull()
-    {
-        var result = await _service.UpdateProgram(_service.setDateToNull());
-        return Ok();
-    }
-
 }

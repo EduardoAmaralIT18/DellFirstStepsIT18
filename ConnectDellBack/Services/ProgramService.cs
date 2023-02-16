@@ -183,11 +183,4 @@ public class ProgramService : IProgramService
         return auxList;
     }
 
-    public ProgramModel setDateToNull(){
-        var prog = _dbContext.programs.Where(prog => prog.id == 1).FirstOrDefault();
-        prog.endDate = null;
-
-       return prog;
-    }
-
 }

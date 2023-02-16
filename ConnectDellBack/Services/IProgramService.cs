@@ -13,6 +13,5 @@ namespace ConnectDellBack.Services
         public Task<ProgramModel> GetProgram(int id);
         public Task<IEnumerable<ProgramInfoDTO>> GetProgramsName();
 
-        public ProgramModel setDateToNull();
     }
 }
