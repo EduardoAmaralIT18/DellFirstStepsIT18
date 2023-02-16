@@ -107,7 +107,10 @@ export default defineComponent({
 <!-- Importando o calendário -->
 <!-- Descobrir como enviar váriáveis para o componente do calendário -->
   
-<CalendarCreate></CalendarCreate>
+<div class="container2">
+  <CalendarCreate></CalendarCreate>
+</div>
+
 
   
 
@@ -159,7 +162,6 @@ body {
   font-size: 13px;
   height: 8%;
   margin-left: auto;
-  margin-right: 15px;
   padding: 4px;
   display: flex;
   float: right;
@@ -188,6 +190,10 @@ body {
   padding-bottom: 0%;
 }
 
+.container2 {
+  flex-direction: column;
+  padding-bottom: 5%;
+}
 
 .dds__card {
   box-shadow: rgba(0, 0, 0, 0.176) 0px 3px 8px;

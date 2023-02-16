@@ -1,10 +1,12 @@
 <template>
     <div class="container">
         <p class="title">Edition's Calendar</p>
-        <a @click="addEvent()">Add Event</a>
-        <a @click="options = !options">Change Options</a>
+        <button class="addevent dds__button dds__button--lg" type="submit" @click="addEvent()">
+            Add Event
+        </button>
+        <!-- <a @click="options = !options">Change Options</a> -->
         <full-calendar class="calendar" :event-limit="2" :options="calendarOptions" />
-    </div>
+</div>
 </template>
  
 <script>
@@ -68,35 +70,12 @@ export default defineComponent({
                 events: [
 
                     //Colocar os itens da lista de eventos
-
-                    {
-                        start: "2023-02-10T04:30:00",
-                        title: "Test",
-                        end: "2023-02-11T14:30:00",
-                    },
-                    {
-                        start: "2023-02-08T04:30:00",
-                        title: "Test",
-                        end: "2023-02-10T14:30:00",
-                    },
-                    {
-                        start: "2023-02-08T04:30:00",
-                        title: "Test",
-                        end: "2023-02-10T14:30:00",
-                    },
-                    {
-                        start: "2023-02-15T04:30:00",
-                        title: "It should be default load",
-                        end: "2023-02-18T14:30:00",
-                    },
                 ],
                 eventClick: function (event) {
                     swal('Event: ' + event.event.title);
 
                 },
-                eventDisplay: "block",
-                displayEventTime: false,
-                allDaySlot: false,
+            
                 buttonText: {
                     today: "Today",
                     month: "Month",
@@ -124,36 +103,12 @@ export default defineComponent({
                 if (this.options) {
                     this.calendarOptions.events = [
 
-
-                        //Info dos eventos
-
-                        {
-                            start: "2023-02-10T04:30:00",
-                            title: "Test",
-                            end: "2023-02-11T14:30:00",
-                        },
-                        {
-                            start: "2023-02-08T04:30:00",
-                            title: "Test",
-                            end: "2023-02-10T14:30:00",
-                        },
-                        {
-                            start: "2023-02-08T04:30:00",
-                            title: "Test",
-                            end: "2023-02-10T14:30:00",
-                        },
-                        {
-                            start: "2023-02-15T04:30:00",
-                            title: "It should be default load",
-                            end: "2023-02-18T14:30:00",
-                        },
+                        
                     ]
                 } else {
                     this.calendarOptions.events = [
                         {
-                            start: "2023-02-15T04:30:00",
-                            title: "It should be default load",
-                            end: "2023-02-18T14:30:00",
+                        
                         }
                     ]
                 }
@@ -169,19 +124,31 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
-.title {
-  color: #0672CB;
-  font-size: 190%;
-  text-align: left;
-  margin-top: 10px;
+.addevent {
+  width: 140px;
+  font-size: 13px;
+  height: 8%;
+  margin-left: auto;
+  padding: 4px;
+  margin-bottom: 1.5%;
+  display: flex;
+  float: right;
+  margin-top: 9px;
 }
 
 .title {
-  margin-left: 0px !important;
-  text-align: left;
-  color: #0672CB;
-  margin: 2.5%;
-  font-weight: bold;
+    color: #0672CB;
+    font-size: 190%;
+    text-align: left;
+    margin-top: 10px;
+}
+
+.title {
+    margin-left: 0px !important;
+    text-align: left;
+    color: #0672CB;
+    margin: 2.5%;
+    font-weight: bold;
 }
 
 .container {
@@ -231,8 +198,9 @@ body {
     vertical-align: middle;
 }
 
-.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
-    background-color:#0063b8;
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+    background-color: #0063b8;
     border-color: #0063b8;
     color: var(--fc-button-text-color);
 }
@@ -242,6 +210,8 @@ body {
     --fc-button-hover-border-color: #0063b8;
     --fc-button-active-bg-color: #0063b8;
     --fc-button-active-border-color: #0063b8;
-}
 
+    /* Cor do dia atual */
+    --fc-today-bg-color: transparent;
+}
 </style>
