@@ -6,14 +6,14 @@ namespace ConnectDellBack.DTOs
     {
        public int id;
        public int editionId;
-       public string PhaseType;
+       public int PhaseType;
        public int EventType;
        public string name;
        public DateTime startDate;
 
         public DateTime? endDate;
         public string? where;
-        public int peopleInvolved;
+        public List<int> peopleInvolved;
 
         public static EventsDTO ConvertModel2DTO(EventsModel model){
             
@@ -21,14 +21,13 @@ namespace ConnectDellBack.DTOs
 
             aux.id = model.id;
             aux.editionId = model.edition.id;
-            switch (model.phaseType){
-                case 0:
-
-                    aux.PhaseType = "Set Up";
-                    break;
-                case 1:
-                    aux.PhaseType = "Training";
-                    break;
+            aux.PhaseType = (int)model.phaseType;
+            aux.EventType = (int)model.eventType;
+            aux.name = model.name;
+            aux.startDate = model.startDate;
+            aux.where = model.where;
+            foreach (UserModel member in model.peopleInvolved){
+                aux.peopleInvolved.Add(member.id); 
             }
         }
     }
