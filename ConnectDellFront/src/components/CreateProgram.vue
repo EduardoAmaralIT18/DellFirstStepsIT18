@@ -1,18 +1,19 @@
 <template>
-
     <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
-        <div class="dds__modal__content">
-            <div class="dds__modal__header">
-                <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
-            </div>
-            <div id="modal-body-532887773" class="dds__modal__body">
-                <p>
-                    {{ messageError }}
-                </p>
-            </div>
-            <div class="dds__modal__footer">
-                <button :class="buttonColor" type="button" name="modal-secondary-button"
-                    @click="$router.push({ name: 'HomePage' });">Ok</button>
+        <div class="dds__modal--md">
+            <div class="dds__modal__content">
+                <div class="dds__modal__header">
+                    <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
+                </div>
+                <div id="modal-body-532887773" class="dds__modal__body">
+                    <p>
+                        {{ messageError }}
+                    </p>
+                </div>
+                <div class="dds__modal__footer">
+                    <button :class="buttonColor" class="buttonModal"  type="button" name="modal-secondary-button"
+                        @click="$router.push({ name: 'HomePage' });">Ok</button>
+                </div>
             </div>
         </div>
     </div>
@@ -129,8 +130,8 @@
                     </div>
                 </div>
             </fieldset>
-            <button class="submitbutton dds__button dds__button--lg" id="example" type="submit"
-                @click.prevent="onSubmit()" :disabled="v$.$invalid">
+            <button class="submitbutton dds__button dds__button--lg" id="example" type="submit" @click.prevent="onSubmit()"
+                :disabled="v$.$invalid">
                 Submit
             </button>
         </form>

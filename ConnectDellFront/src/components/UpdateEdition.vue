@@ -4,6 +4,7 @@
 
         <!-- Modal Personalizado -->
         <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
+            <div class="dds__modal--md">
             <div class="dds__modal__content">
                 <div class="dds__modal__header">
                     <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
@@ -14,9 +15,10 @@
                     </p>
                 </div>
                 <div class="dds__modal__footer">
-                    <button  :class="buttonColor" type="button"
+                    <button class="buttonModal"  :class="buttonColor" type="button"
                         name="modal-secondary-button" @click="$router.push({ name: 'EditionsPage' });">Ok</button>
                 </div>
+            </div>
             </div>
         </div>
 

@@ -1,13 +1,15 @@
 
 <template>
-
     <div class="container">
 
         <!-- Linha abaixo alterar (Tirar do botão)-->
         <!-- <button class="dds__button" id="example" type="button">Launch modal button</button> -->
         <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
-            <div class="dds__modal__content">
-                
+            <div class="dds__modal--md">
+
+                <div class="dds__modal__content">
+                    
+
                     <div class="dds__modal__header">
                         <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
                     </div>
@@ -17,10 +19,10 @@
                         </p>
                     </div>
                     <div class="dds__modal__footer">
-                        <button :class="buttonColor" type="button" name="modal-secondary-button"
+                        <button :class="buttonColor" class="buttonModal" type="button" name="modal-secondary-button"
                             @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
                     </div>
-            
+                </div>
             </div>
         </div>
 
@@ -40,8 +42,7 @@
                         <div class="dds__input-text__wrapper">
                             <input v-model="v$.edition.name.$model" type="text" class="dds__input-text"
                                 name="text-input-control-name-396765024" id="text-input-control-396765024"
-                                aria-labelledby="text-input-label-396765024 text-input-helper-396765024"
-                                required="true" />
+                                aria-labelledby="text-input-label-396765024 text-input-helper-396765024" required="true" />
 
                             <small id="text-input-helper-396765024" class="dds__input-text__helper"></small>
                             <div id="text-input-error-396765024" class="dds__invalid-feedback">Enter a edition number
@@ -74,8 +75,7 @@
                         <small v-if="!validateInternsForm" class="help-block">Not possible to select more interns than
                             the amount stated.</small>
                         <div class="multiselec dds__select__wrapper">
-                            <MultiSelect style="box-shadow: none ;" v-model="v$.edition.members.$model"
-                                tipo="members" />
+                            <MultiSelect style="box-shadow: none ;" v-model="v$.edition.members.$model" tipo="members" />
                         </div>
                     </div>
                 </div>
@@ -166,12 +166,10 @@
                 </div>
             </div>
             <!-- </fieldset> -->
-            <button class="submitbutton dds__button dds__button--lg" type="button" id="example"
-                @click.prevent="onSubmit()"
+            <button class="submitbutton dds__button dds__button--lg" type="button" id="example" @click.prevent="onSubmit()"
                 :disabled="v$.$invalid || !validateInterns || !validateInternsForm">Submit</button>
         </form>
-    </div>
-
+</div>
 </template>
 
 <script lang ='ts'>
@@ -369,8 +367,8 @@ export default defineComponent({
 
                         } else {
                             this.buttonColor = "errorButton";
-                           
-                             this.titleError = "Error";
+
+                            this.titleError = "Error";
                             this.messageError = "I am sorry, something went wrong. Try again later.";
 
                         }
