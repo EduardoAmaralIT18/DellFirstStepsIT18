@@ -18,9 +18,9 @@ public class LoginController : Controller
     }
 
     [HttpGet("getUserList")]
-    public IEnumerable<UserModel> GetAllUsers()
+    public async Task<IEnumerable<UserModel>> GetAllUsers()
     {
-        var list = user.listUsers();
+        var list = await user.listUsers();
         return list;
     }
 

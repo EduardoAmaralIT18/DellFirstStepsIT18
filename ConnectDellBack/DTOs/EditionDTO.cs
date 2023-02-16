@@ -17,7 +17,7 @@ public class EditionDTO
     public List<UserModel> members {get;set;}  = new List<UserModel>();
     public List<MembershipModel> memberships {get;set;} = new List<MembershipModel>();
     public List<UserModel> interns {get;set;} = new List<UserModel>();
-    public List<PhasesModel> phases {get;set;} = new List<PhasesModel>();
+    public List<EventsModel> events {get;set;} = new List<EventsModel>();
     
     public static EditionDTO convertModel2DTO(EditionModel edition)
     {

@@ -29,11 +29,38 @@ namespace ConnectDellBack.Tests
             userController = new UserController(new NullLogger<UserController>(), userService);
         }
 
-        [Test]
+        [Test, Order(1)]
         public void Get_OwnersFromDB_ReturnOwnerCountOnController()
         {
             var result = userController.GetOwners();
-            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result.Count, Is.EqualTo(4));
+        }
+
+        [Test]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
+        public async Task<String> Get_ListUsers_ReturnOkObject()
+        {
+            ActionResult<IEnumerable<UserDTO>> actionResult = await userController.ListUsers();
+
+            return actionResult.Result.ToString();
+        }
+
+        [Test]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult")]
+        public async Task<String> Get_ChangeRole_ReturnOkResult()
+        {
+            ActionResult actionResult = await userController.changeRole(1,1);
+
+            return actionResult.ToString();
+        }
+
+        [Test]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult")]
+        public async Task<String> Get_RemoveResult_ReturnOkResult()
+        {
+            ActionResult actionResult = await userController.removeUser(1);
+
+            return actionResult.ToString();
         }
 
         [OneTimeTearDown]

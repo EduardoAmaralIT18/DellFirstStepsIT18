@@ -2,14 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace ConnectDellBack.Models;
-// //////// ALTERADO
+////////// ALTERADO
 public class ApplicationContext : DbContext
 {
 
     public DbSet<UserModel> users { get; set;} = null!; 
     public DbSet<ProgramModel> programs { get; set;} = null!;
     public DbSet<EditionModel> editions { get; set;} = null!;
-    public DbSet<PhasesModel> phases { get; set;} = null!;
+    public DbSet<EventsModel> events { get; set;} = null!;
     public DbSet<NewsModel> news { get; set;} = null!;
     public DbSet<ImageModel> images {get; set;} = null!;
     
@@ -44,7 +44,7 @@ public class ApplicationContext : DbContext
                 id = 1,
                 name = "IT Academy",  
                 startDate = new DateTime(2022,10,08),
-                description = "Internship Program in partnership with PUCRS, focused in software development",
+                description = "The IT Academy is a capacitation program in partnership with PUCRS for students of different technology fields, focusing on improving their software developer skills to join Dell Teams. Furthermore, the interns will develop hard and soft skills that allow young professionals to complete their academic journey with a scientific and technical knowledge and to be oriented by the market needs.",
             }
         );
         modelBuilder.Entity<ProgramModel>().HasData(
@@ -258,8 +258,8 @@ public class ApplicationContext : DbContext
             new {
                 id = 25,
                 editionInternid = 1,
-                name = "Yanni Partichelli",
-                email = "yanni.partichelli@dellteam.com",
+                name = "Yanny Partichelli",
+                email = "yanny.partichelli@dellteam.com",
                 role = Role.Intern,
                 notes = "N/A"
             },
@@ -328,7 +328,7 @@ public class ApplicationContext : DbContext
             new {
                 id = 1,
                 programid = 1,
-                name = "Edição 17",
+                name = "Edition 17",
                 startDate = new DateTime(2022,10,10),
                 endDate = new DateTime(2023,05,28),
                 description = "Seventeenth edition of the IT Academy program focused solely on the self-titled female audience.",
@@ -340,7 +340,7 @@ public class ApplicationContext : DbContext
             new {
                 id = 2,
                 programid = 1,
-                name = "Edição 16",
+                name = "Edition 16",
                 startDate = new DateTime(2021,10,10),
                 endDate = new DateTime(2022,09,10),
                 description = "Sixteenth edition of the IT Academy program aimed at undergraduate students in computer science courses.",
@@ -352,7 +352,7 @@ public class ApplicationContext : DbContext
             new {
                 id = 3,
                 programid = 1,
-                name = "Edição 18",
+                name = "Edition 18",
                 startDate = new DateTime(2023,10,10),
                 endDate = new DateTime(2024,02,28),
                 description = "Eighteenth edition of the IT Academy program aimed at undergraduate students in computer science courses.",
@@ -366,7 +366,7 @@ public class ApplicationContext : DbContext
             new {
                 id = 4,
                 programid = 2,
-                name = "Edição 17",
+                name = "Edition 17",
                 startDate = new DateTime(2022,10,10),
                 endDate = new DateTime(2023,05,28),
                 description = "Seventeenth edition of the Design Academy program",
@@ -378,7 +378,7 @@ public class ApplicationContext : DbContext
             new {
                 id = 5,
                 programid = 2,
-                name = "Edição 16",
+                name = "Edition 16",
                 startDate = new DateTime(2021,10,10),
                 endDate = new DateTime(2022,02,28),
                 description = "Sixteenth edition of the Design Academy program",
@@ -392,7 +392,7 @@ public class ApplicationContext : DbContext
             new {
                 id = 6,
                 programid = 3,
-                name = "Edição 17",
+                name = "Edition 17",
                 startDate = new DateTime(2022,10,10),
                 endDate = new DateTime(2023,05,28),
                 description = "Seventeenth edition of the Infrastructure Resindece program",
@@ -404,7 +404,7 @@ public class ApplicationContext : DbContext
             new {
                 id = 7,
                 programid = 3,
-                name = "Edição 16",
+                name = "Edition 16",
                 startDate = new DateTime(2021,10,10),
                 endDate = new DateTime(2022,02,28),
                 description = "Sixteenth edition of the Infrastructure Resindece program",
@@ -416,18 +416,20 @@ public class ApplicationContext : DbContext
 
         );
 
-        modelBuilder.Entity<PhasesModel>().HasData(
+        modelBuilder.Entity<EventsModel>().HasData(
             new {
                 id = 1,
                 editionid = 1,
-                newsmodelid = 1,
-                name = "Enrollment",
+                //newsmodelid = 1,
+                name = "Enrollment on the Program",
                 startDate = new DateTime(2022,08,10),
                 endDate = new DateTime(2022,08,23),
-                peopleInvolved = "Puc and Dell Staff",
-                description = "Enrollment stage",
-                type = Type.Set_Up,
-        });
+                //peopleInvolved = "Puc and Dell Staff",
+                where = "Remote Enviroment",
+                phaseType = PhaseType.Set_Up,
+                eventType = EventType.Phase,
+            }
+        );
 
         modelBuilder.Entity<NewsModel>().HasData(
              new {
