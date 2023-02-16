@@ -1,21 +1,15 @@
 <script setup lang="ts">
+import UserPage from '../components/UserPage.vue';
 import NavBar from '../components/NavBar.vue';
 import SideBar from '../components/SideBar.vue';
 import { RouterView } from 'vue-router';
 </script>
-
 <template>
   <main>
     <NavBar></NavBar>
     <SideBar></SideBar>
-    <h2 class="h2">User</h2>
-    <h2>PRÓXIMA SPRINT</h2>
+    <UserPage />
     <RouterView />
   </main>
-</template>
 
-<style>
-    .h2 {
-        margin-top: 200px;
-    }
-</style>
+</template>

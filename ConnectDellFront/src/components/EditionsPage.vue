@@ -4,12 +4,14 @@ import SideBar from '../components/SideBar.vue';
 import { defineComponent } from 'vue';
 import axios from 'axios';
 import moment from 'moment';
+import CalendarCreate from '../components/CalendarCreate.vue';
 
 
 export default defineComponent({
   components: {
     NavBar,
     SideBar,
+    CalendarCreate
   },
   data() {
     return {
@@ -94,12 +96,30 @@ export default defineComponent({
     </div>
 
   </div>
+
+
+
   <div v-else class="container">
     <div class="dds__loading-indicator">
       <div class="dds__loading-indicator__label">Loading...</div>
       <div class="dds__loading-indicator__spinner"></div>
     </div>
   </div>
+
+
+  
+
+
+<!-- Importando o calendário -->
+<!-- Descobrir como enviar váriáveis para o componente do calendário -->
+  <div>
+    <CalendarCreate></CalendarCreate>
+  </div>
+
+
+
+
+
 </template>
 
 <style scoped>
