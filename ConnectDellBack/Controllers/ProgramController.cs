@@ -74,4 +74,11 @@ public class ProgramController : ControllerBase
         return result == null ? NoContent() : Ok(result);
     }
 
+    [HttpPost("SetDateNull")]
+    public async Task<ActionResult> SetDateNull()
+    {
+        var result = await _service.UpdateProgram(_service.setDateToNull());
+        return Ok();
+    }
+
 }

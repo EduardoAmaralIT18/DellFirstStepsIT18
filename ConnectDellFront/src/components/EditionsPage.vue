@@ -97,8 +97,6 @@ export default defineComponent({
 
   </div>
 
-
-
   <div v-else class="container">
     <div class="dds__loading-indicator">
       <div class="dds__loading-indicator__label">Loading...</div>
@@ -106,19 +104,11 @@ export default defineComponent({
     </div>
   </div>
 
-
-  
-
-
 <!-- Importando o calendário -->
 <!-- Descobrir como enviar váriáveis para o componente do calendário -->
   <div>
     <CalendarCreate></CalendarCreate>
   </div>
-
-
-
-
 
 </template>
 

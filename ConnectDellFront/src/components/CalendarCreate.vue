@@ -1,8 +1,4 @@
-
-
 <template>
-    <!-- <NavBar />
-    <SideBar /> -->
     <div class="container">
         <a @click="addEvent()">Add Event</a>
         <a @click="options = !options">Change Options</a>
@@ -26,14 +22,7 @@ TO DO:
 
 */
 
-
-
-
 //References: https://fullcalendar.io/docs
-
-
-
-
 
 import { defineComponent } from 'vue';
 
@@ -45,7 +34,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 
-// 1. In month View- Day shoudl be like- Monday, Tuesday instead of Mon, Tue
+//1. In month View- Day shoudl be like- Monday, Tuesday instead of Mon, Tue
 //2. Default load should be on Oct 2021, bcoz event starting from there.
 
 export default defineComponent({
@@ -60,6 +49,7 @@ export default defineComponent({
     },
     data() {
         return {
+            cookiesEdit: this.$cookies.get("editionId"),
             options: true,
             calendarOptions: {
                 // views: {
@@ -173,14 +163,10 @@ export default defineComponent({
     },
 });
 </script>
-<style scoped>
+<style>
 body {
     font-family: 'Roboto', sans-serif;
 }
-
-
-/* Adicionar Styles para os botões, seguindo o padrão da Dell */
-
 
 .container {
     padding-top: 1%;
@@ -206,4 +192,40 @@ body {
 .fc-event-title-container {
     padding: 2px 6px;
 }
+
+.fc .fc-button-primary {
+    background-color: #0672cb;
+    border-color: #0063b8;
+    color: var(--fc-button-text-color);
+}
+
+.fc .fc-button {
+    background-color: #0672cb;
+    border: 1px #0063b8;
+    border-radius: .25em;
+    display: inline-block;
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: .4em .65em;
+    text-align: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
+    background-color:#0063b8;
+    border-color: #0063b8;
+    color: var(--fc-button-text-color);
+}
+
+:root {
+    --fc-button-hover-bg-color: #0063b8;
+    --fc-button-hover-border-color: #0063b8;
+    --fc-button-active-bg-color: #0063b8;
+    --fc-button-active-border-color: #0063b8;
+}
+
 </style>
