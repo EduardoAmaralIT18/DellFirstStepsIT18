@@ -55,6 +55,7 @@
 
         <div class="dates dds__row">
           <div class="dds__col--3 dds__col--sm-3">
+            <div class="dds__text-area__header">
             <div>
               <label id="text-input-label-396765024" for="startDate">Start date <span> *</span></label>
               <input
@@ -67,12 +68,15 @@
                 >The Start Date is required.</small
               > -->
             </div>
+            </div><!--aqui parece que começa-->
           </div>
-          <div v-if="event.eventType == 1">
+          
+          <div v-if="event.eventType == 1">Start hour
             <input type="time" id="startTime" name="appt" required />
           </div>
           <div class="enddate dds__col--3 dds__col--sm-3">
             <div>
+              
               <label id="text-input-label-396765024" for="endDate">End date</label>
               <input
                 v-model="event.endDate"
@@ -85,11 +89,12 @@
                 >The End Date must be after the Start Date.</small
               > -->
             </div>
+            
           </div>
-          <div v-if="event.eventType == 1">
+            <div v-if="event.eventType == 1">End time
             <input type="time" id="endTime" name="appt" required>
           </div>
-        </div>
+        </div><!--aqui parece que termina-->
 
         <div class="dds__row">
           <div class="dds__col--12 dds__col--sm-12">
@@ -318,23 +323,6 @@ label {
   margin-bottom: 12%;
 }
 
-.dates {
-  text-align: left;
-  display: flex;
-  margin-bottom: 1%;
-}
-
-.dates input {
-  width: 100%;
-  height: 45px;
-  font-size: 18px;
-  color: #525151;
-  padding-left: 4%;
-  border: 0.0625rem solid #7e7e7e;
-  border-radius: 0.125rem;
-  background-clip: padding-box;
-}
-
 .enddate input {
   background-color: rgba(181, 181, 181, 0.233);
 }
@@ -367,20 +355,21 @@ span {
 }
 
 .dates {
-  text-align: left;
-  display: flex;
-  margin-bottom: 1%;
+    text-align: left;
+    display: flex;
+    margin-top: 2%;
+    margin-bottom: 1%;
 }
 
 .dates input {
-  width: 100%;
-  height: 45px;
-  font-size: 18px;
-  color: #525151;
-  padding-left: 4%;
-  border: 0.0625rem solid #7e7e7e;
-  border-radius: 0.125rem;
-  background-clip: padding-box;
+    width: 100%;
+    height: 45px;
+    font-size: 18px;
+    color: #525151;
+    padding-left: 4%;
+    border: .0625rem solid #7e7e7e;
+    border-radius: .125rem;
+    background-clip: padding-box;
 }
 
 .enddate input {
