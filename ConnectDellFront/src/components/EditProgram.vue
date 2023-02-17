@@ -113,7 +113,6 @@
 import { useVuelidate } from '@vuelidate/core';
 import { required, maxLength, minLength } from '@vuelidate/validators';
 import { defineComponent } from "vue";
-import MultiSelect from "./MultipleSelect.vue";
 import axios from "axios";
 declare var DDS: any;
 
@@ -142,13 +141,13 @@ interface Data {
   originalName: string,
   messageError: string,
   titleError: string,
-  buttonColor: string
+  buttonColor: string,
+  multiSelect: unknown | null,
 }
 
 export default defineComponent({
 
   components: {
-    MultiSelect,
   },
   props: {
     name: String,
@@ -181,7 +180,8 @@ export default defineComponent({
       originalName: '',
       messageError: '',
       titleError: '',
-      buttonColor: "nullButton"
+      buttonColor: "nullButton",
+      multiSelect: null,
     };
   },
   validations() {
