@@ -10,15 +10,28 @@ namespace ConnectDellBack.Controllers;
 public class EventController : ControllerBase
 {
 
-    private readonly ILogger<EditionController> _logger;
-    private readonly IEditionService _service;
+    private readonly ILogger<EventController> _logger;
+    private readonly IEventService _service;
 
-    public EventController(ILogger<EditionController> logger, IEditionService service)
+    public EventController(ILogger<EventController> logger, IEventService service)
     {
         _logger = logger;
         _service = service;
     }
 
+    [HttpPost("addEvent")]
+    public async Task<ActionResult> addEvent(EventsModel events)
+    {
+        int entries = await _service.addEvent(events);
+        if (entries > 0)
+        {
+            return Ok();
+        }
+        else
+        {
+            return NotFound();
+        }
+    }
 
    
     

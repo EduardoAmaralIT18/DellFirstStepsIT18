@@ -55,7 +55,7 @@
 
         <div class="dates dds__row">
           <div class="dds__col--3 dds__col--sm-3">
-            <div>
+            <div  v-if="event.eventType == 0">
               <label id="text-input-label-396765024" for="startDate">Start date <span> *</span></label>
               <input
                 v-model="event.startDate"
@@ -69,12 +69,12 @@
             </div>
           </div>
           <div v-if="event.eventType == 1">
-            <input type="time" id="startTime" name="appt" required />
+            <input v-model="event.startDate" type="datetime-local" id="startTime" name="appt" required />
           </div>
           <div class="enddate dds__col--3 dds__col--sm-3">
-            <div>
-              <label id="text-input-label-396765024" for="endDate">End date</label>
-              <input
+            <div v-if="event.eventType == 0">
+              <label id="text-input-label-396765024" for="endDate">End date <span> *</span></label>
+              <input 
                 v-model="event.endDate"
                 type="date"
                 id="endDate"
@@ -87,7 +87,7 @@
             </div>
           </div>
           <div v-if="event.eventType == 1">
-            <input type="time" id="endTime" name="appt" required>
+            <input v-model="event.endDate" type="datetime-local" id="endTime" name="endTime" required />
           </div>
         </div>
 
@@ -145,6 +145,13 @@
           </div>
         </div>
       </fieldset>
+      <button
+        class="submitbutton dds__button dds__button--lg"
+        type="submit"
+        @click.prevent="onSubmit()"
+      >
+        Submit
+      </button>
       <!-- <button
         class="submitbutton dds__button dds__button--lg"
         type="submit"
@@ -160,7 +167,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import MultiSelect from "./MultipleSelect.vue";
-//import axios from 'axios';
+import axios from 'axios';
 // import { useVuelidate } from '@vuelidate/core';
 // import { minLength, maxLength, required } from '@vuelidate/validators';
 
@@ -174,7 +181,7 @@ interface Data {
     name: string;
     peopleInvolved: User;
     startDate: string | Date;
-    endDate: null | Date | string;
+    endDate: Date | string;
     where: string;
     phaseType: Number;
     eventType: Number;
@@ -213,8 +220,8 @@ export default defineComponent({
       event: {
         name: "",
         peopleInvolved: [],
-        startDate: new Date().toISOString().slice(0, 10),
-        endDate: null,
+        startDate: new Date().toISOString(),
+        endDate: new Date().toISOString(),
         where: "",
         phaseType: 1,
         eventType: 1,
@@ -223,65 +230,37 @@ export default defineComponent({
       options: null,
     };
   },
+
+  // Confirmar com gurias do display se elas vão pegar os eventos do banco para mostrar no calendário
+
+    methods: {
+        onSubmit(): void {
+            console.log(this.event.startDate);
+            axios.post('/event/addEvent', {
+                name: this.event.name,
+                peopleInvolved: this.event.peopleInvolved,
+                startDate: this.event.startDate,
+                endDate: this.event.endDate,
+                where: this.event.where,
+                phaseType: this.event.phaseType,
+                eventType: this.event.eventType
+            })
+                .then(function (response) {
+                    return response;
+                })
+                .then(response => {
+                    if (response.status == 200) {
+                        this.$router.push({ name: 'HomePage' });
+                        return;
+                    } else if (response.status == 404) {
+                        this.$router.push({ name: 'HomePage' });
+                        alert("There was an error on our database! Please, try again later.");
+                    }
+                });
+        },
+    }
 });
-// methods: {
-//     onSubmit(): void {
-//         if(this.event.endDate == null){
-//         axios.post('/event/addevent', {
-//             name: this.event.name,
-//             startDate: this.event.startDate = new Date(),
-//             description: this.event.description,
-//             owners: this.event.members,
-//             editions: null,
-//             ownerships: null,
-//             memberships: null
-//         })
-//             .then(function (response) {
-//                 return response;
-//             })
-//             .then(response => {
-//                 if (response.status == 200) {
-//                     this.$router.push({ name: 'HomePage' });
-//                     return;
-//                 } else if (response.status == 404) {
-//                     this.$router.push({ name: 'HomePage' });
-//                     alert("There was an error on our database! Please, try again later.");
-//                 }
-//             })
-//     } else {
-//         axios.post('/event/addevent', {
-//             name: this.event.name,
-//             startDate: this.event.startDate = new Date(),
-//             endDate: this.event.endDate = new Date(),
-//             description: this.event.description,
-//             owners: this.event.members,
-//             editions: null,
-//             ownerships: null,
-//             memberships: null
-//         })
-//             .then(function (response) {
-//                 return response;
-//             })
-//             .then(response => {
-//                 if (response.status == 200) {
-//                     this.$router.push({ name: 'HomePage' });
-//                     return;
-//                 } else if (response.status == 404) {
-//                     this.$router.push({ name: 'HomePage' });
-//                     alert("There was an error on our database! Please, try again later.");
-//                 }
-//             })
-//     }
-// }
-//     IsPhase(selected: ) {
 
-//     }
-
-//     IsActivity() {
-
-//     }
-//     }
-// });
 </script>
 
 <style scoped>
