@@ -34,7 +34,7 @@ export default defineComponent ({
         };
     },
     created() {
-        if (this.tipo == "owner") {
+        if (this.tipo == "owner" ) {
             axios.get("/user/GetOwners")
             .then(function (response) {
                 return response;
@@ -43,13 +43,31 @@ export default defineComponent ({
                 this.options = response.data;
                 return;
             });
-        } else {
+        } else if (this.tipo == "members") {
             axios.get("/edition/getUsersNotAdmin")
             .then(function (response) {
                 return response;
             })
             .then(response => {
                 this.options = response.data;
+                return;
+            });
+        } else {
+            axios.get("/user/GetOwners")
+            .then(function (response) {
+                return response;
+            })
+            .then(response => {
+                this.options = response.data;
+                return;
+            });
+
+            axios.get("/edition/getUsersNotAdmin")
+            .then(function (response) {
+                return response;
+            })
+            .then(response => {
+                this.options?.push(response.data);
                 return;
             });
         }

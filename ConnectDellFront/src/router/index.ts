@@ -86,6 +86,11 @@ const router = createRouter({
       name: 'calendar', 
       component: () => import('../components/CalendarCreate.vue') 
     },
+    {
+      path: '/addevent',
+      name: 'addEvent',
+      component: () => import('../views/AddEventView.vue')
+    }, 
   ]
 })
 export default router

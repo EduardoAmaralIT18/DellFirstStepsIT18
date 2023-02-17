@@ -123,6 +123,7 @@ export default defineComponent({
             swal("teste");
         },
         addEvent() {
+            this.$router.push({ name: 'addEvent' });
             this.calendarOptions.events = [
                 ...this.calendarOptions.events,
                 { title: 'Another Event', date: '2023-02-13' }

@@ -1,6 +1,6 @@
 <template>
-
-    <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
+    <div>
+        <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
         <div class="dds__modal__content">
             <div class="dds__modal__header">
                 <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
@@ -109,387 +109,389 @@
         </form>
 
     </div>
-
+</div>
+    
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import MultiSelect from './MultipleSelect.vue';
-import axios from 'axios';
-import { useVuelidate } from '@vuelidate/core';
-import { minLength, maxLength, required } from '@vuelidate/validators';
+import { defineComponent } from "vue";
+import MultiSelect from "./MultipleSelect.vue";
+import axios from "axios";
+import { useVuelidate } from "@vuelidate/core";
+import { minLength, maxLength, required } from "@vuelidate/validators";
 declare var DDS: any;
 
 type User = {
-    id: number,
-    name: string
+  id: number;
+  name: string;
 }[];
 
 type programList = {
-    name: string
+  name: string;
 }[];
 
 interface Data {
-    program: {
-        name: string,
-        members: null | User,
-        description: string,
-        startDate: string | Date,
-        endDate: null | Date | string
-    },
-    total: null | User,
-    options: null | User,
-    programList: programList,
-    messageError: string,
-    titleError: string,
-    buttonColor: string
+  program: {
+    name: string;
+    members: null | User;
+    description: string;
+    startDate: string | Date;
+    endDate: null | Date | string;
+  };
+  total: null | User;
+  options: null | User;
+  programList: programList;
+  messageError: string;
+  titleError: string;
+  buttonColor: string;
 }
 
-
 export default defineComponent({
-    setup() {
-        return { v$: useVuelidate() }
-    },
-    mounted() {
-        this.createModal();
-    },
-    validations() {
-        return {
-            program: {
-                name: {
-                    required,
-                    minLength: minLength(5),
-                    maxLength: maxLength(50)
-                },
-                members: { required },
-                description: {
-                    required,
-                    minLength: minLength(10),
-                    maxLength: maxLength(1500)
-                },
-                startDate: { required },
-                endDate: {
-
-                }
-            }
+  setup() {
+    return { v$: useVuelidate() };
+  },
+  mounted() {
+    this.createModal();
+  },
+  validations() {
+    return {
+      program: {
+        name: {
+          required,
+          minLength: minLength(5),
+          maxLength: maxLength(50),
+        },
+        members: { required },
+        description: {
+          required,
+          minLength: minLength(10),
+          maxLength: maxLength(1500),
+        },
+        startDate: { required },
+        endDate: {},
+      },
+    };
+  },
+  components: {
+    MultiSelect,
+  },
+  data(): Data {
+    return {
+      program: {
+        name: "",
+        members: null,
+        description: "",
+        startDate: new Date().toISOString().slice(0, 10),
+        endDate: null,
+      },
+      total: null,
+      options: null,
+      programList: [],
+      messageError: "",
+      titleError: "",
+      buttonColor: "nullButton",
+    };
+  },
+  created() {
+    axios
+      .get(`/Program/GetProgramsName`)
+      .then(function (response) {
+        return response;
+      })
+      .then((response) => {
+        if (response.status == 200) {
+          this.programList = response.data;
+          console.log(this.programList);
+        } else if (response.status == 204) {
+          alert("There was an error on our database! Please, try again later.");
         }
+      });
+  },
+  methods: {
+    nameValidation() {
+      var retorno = 0;
+      this.programList.forEach((pL) => {
+        if (
+          pL.name.toLowerCase().trim().replaceAll(" ", "") ===
+          this.program.name.toLowerCase().trim().replaceAll(" ", "")
+        ) {
+          retorno = 1;
+        }
+      });
+      return retorno;
     },
-    components: {
-        MultiSelect
+    createModal(): void {
+      const element = this.$refs.uniqueid;
+      //console.log(element);
+      console.log(DDS);
+      console.log(element);
+      const modal = new DDS.Modal(element, { trigger: "#example" });
+      console.log(modal);
     },
-    data(): Data {
-        return {
-            program: {
-                name: '',
-                members: null,
-                description: '',
-                startDate: new Date().toISOString().slice(0, 10),
-                endDate: null
-            },
-            total: null,
-            options: null,
-            programList: [],
-            messageError: '',
-            titleError: '',
-            buttonColor: "nullButton"
-        };
-    },
-    created() {
-        axios.get(`/Program/GetProgramsName`)
+    onSubmit(): void {
+      if (this.nameValidation() != 0) {
+        this.titleError = "Error";
+        this.messageError = `The program "${this.program.name}" already exists.`;
+        this.buttonColor = "errorButton";
+        return;
+      } else {
+        if (this.program.endDate == null) {
+          axios
+            .post("/program/addProgram", {
+              name: this.program.name,
+              startDate: (this.program.startDate = new Date()),
+              description: this.program.description,
+              owners: this.program.members,
+              editions: null,
+              ownerships: null,
+              memberships: null,
+            })
             .then(function (response) {
-                return response;
+              return response;
             })
-            .then(response => {
-                if (response.status == 200) {
-                    this.programList = response.data;
-                    console.log(this.programList);
-                } else if (response.status == 204) {
-                    alert("There was an error on our database! Please, try again later.");
-                }
-            })
-    },
-    methods: {
-        nameValidation() {
-            var retorno = 0;
-            this.programList.forEach(pL => {
-                if (pL.name.toLowerCase().trim().replaceAll(" ", "") === this.program.name.toLowerCase().trim().replaceAll(" ", "")) {
-                    retorno = 1;
-                }
-            })
-            return retorno;
-        },
-        createModal(): void {
-            const element = this.$refs.uniqueid;
-            //console.log(element);
-            console.log(DDS);
-            console.log(element);
-            const modal = new DDS.Modal(element, { trigger: "#example" });
-            console.log(modal);
-        },
-        onSubmit(): void {
-            if (this.nameValidation() != 0) {
+            .then((response) => {
+              if (response.status == 200) {
+                this.titleError = "Program Created";
+                this.messageError = `The program "${this.program.name}" was successfully created.`;
+                this.buttonColor = "blueButton";
+                return;
+              } else if (response.status == 404) {
                 this.titleError = "Error";
-                this.messageError = `The program "${this.program.name}" already exists.`;
+                this.messageError = `I'm sorry, something went wrong. Try again later.`;
                 this.buttonColor = "errorButton";
                 return;
-            } else {
-                if (this.program.endDate == null) {
-                    axios.post('/program/addProgram', {
-                        name: this.program.name,
-                        startDate: this.program.startDate = new Date(),
-                        description: this.program.description,
-                        owners: this.program.members,
-                        editions: null,
-                        ownerships: null,
-                        memberships: null
-                    })
-                        .then(function (response) {
-                            return response;
-                        })
-                        .then(response => {
-                            if (response.status == 200) {
-                                this.titleError = "Program Created";
-                                this.messageError = `The program "${this.program.name}" was successfully created.`;
-                                this.buttonColor = "blueButton";
-                                return;
-                            } else if (response.status == 404) {
-                                this.titleError = "Error";
-                                this.messageError = `I'm sorry, something went wrong. Try again later.`;
-                                this.buttonColor = "errorButton";
-                                return;
-                            }
-                        })
-                } else {
-                    axios.post('/program/addProgram', {
-                        name: this.program.name,
-                        startDate: this.program.startDate = new Date(),
-                        endDate: this.program.endDate = new Date(),
-                        description: this.program.description,
-                        owners: this.program.members,
-                        editions: null,
-                        ownerships: null,
-                        memberships: null
-                    })
-                        .then(function (response) {
-                            return response;
-                        })
-                        .then(response => {
-                            if (response.status == 200) {
-                                this.titleError = "Program Created";
-                                this.messageError = `The program "${this.program.name}" was successfully created.`;
-                                this.buttonColor = "blueButton";
-                                return;
-                            } else if (response.status == 404) {
-                                this.titleError = "Error";
-                                this.messageError = `I'm sorry, something went wrong. Try again later.`;
-                                this.buttonColor = "errorButton";
-                                return;
-                            }
-                        })
-                }
-            }
+              }
+            });
+        } else {
+          axios
+            .post("/program/addProgram", {
+              name: this.program.name,
+              startDate: (this.program.startDate = new Date()),
+              endDate: (this.program.endDate = new Date()),
+              description: this.program.description,
+              owners: this.program.members,
+              editions: null,
+              ownerships: null,
+              memberships: null,
+            })
+            .then(function (response) {
+              return response;
+            })
+            .then((response) => {
+              if (response.status == 200) {
+                this.titleError = "Program Created";
+                this.messageError = `The program "${this.program.name}" was successfully created.`;
+                this.buttonColor = "blueButton";
+                return;
+              } else if (response.status == 404) {
+                this.titleError = "Error";
+                this.messageError = `I'm sorry, something went wrong. Try again later.`;
+                this.buttonColor = "errorButton";
+                return;
+              }
+            });
         }
-    }
+      }
+    },
+  },
 });
 </script>
 
 <style scoped>
 body {
-    font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .container {
-    padding-top: 3%;
-    padding-left: 20%;
-    display: flex;
-    flex-direction: column;
+  padding-top: 3%;
+  padding-left: 20%;
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
-    color: #0063B8;
-    margin-bottom: 5%;
-    margin-top: 2%;
-    font-size: 200%;
+  color: #0063b8;
+  margin-bottom: 5%;
+  margin-top: 2%;
+  font-size: 200%;
 }
 
 label {
-    display: flex;
-    text-align: left;
-    margin-bottom: 10px
+  display: flex;
+  text-align: left;
+  margin-bottom: 10px;
 }
 
 .submitbutton {
-    margin-top: 30px;
-    display: flex;
-    float: left;
-    width: 20%;
-    font-size: 20px;
-    margin-bottom: 12%;
+  margin-top: 30px;
+  display: flex;
+  float: left;
+  width: 20%;
+  font-size: 20px;
+  margin-bottom: 12%;
 }
 
 .dates {
-    text-align: left;
-    display: flex;
-    margin-bottom: 1%;
+  text-align: left;
+  display: flex;
+  margin-bottom: 1%;
 }
 
 .dates input {
-    width: 100%;
-    height: 45px;
-    font-size: 18px;
-    color: #525151;
-    padding-left: 4%;
-    border: .0625rem solid #7e7e7e;
-    border-radius: .125rem;
-    background-clip: padding-box;
+  width: 100%;
+  height: 45px;
+  font-size: 18px;
+  color: #525151;
+  padding-left: 4%;
+  border: 0.0625rem solid #7e7e7e;
+  border-radius: 0.125rem;
+  background-clip: padding-box;
 }
 
-
 span {
-    margin-left: 4px;
-    color: #0063B8;
-    font-weight: bold;
+  margin-left: 4px;
+  color: #0063b8;
+  font-weight: bold;
 }
 
 .warning {
-    display: flex;
-    color: rgb(150 29 29);
-    margin-top: 2px;
+  display: flex;
+  color: rgb(150 29 29);
+  margin-top: 2px;
 }
 </style>
 
 <style>
 .multiselect {
-    border: .0625rem solid #7e7e7e;
-    border-radius: .125rem;
-    background-clip: padding-box;
-    margin-bottom: 5px;
-    font-family: 'Roboto', sans-serif;
+  border: 0.0625rem solid #7e7e7e;
+  border-radius: 0.125rem;
+  background-clip: padding-box;
+  margin-bottom: 5px;
+  font-family: "Roboto", sans-serif;
 }
 
 .multiselect-tag {
-    background-color: rgb(6, 114, 203);
-    font-weight: lighter;
+  background-color: rgb(6, 114, 203);
+  font-weight: lighter;
 }
 
 .dates {
-    text-align: left;
-    display: flex;
-    margin-bottom: 1%;
+  text-align: left;
+  display: flex;
+  margin-bottom: 1%;
 }
 
 .dates input {
-    width: 100%;
-    height: 45px;
-    font-size: 18px;
-    color: #525151;
-    padding-left: 4%;
-    border: .0625rem solid #7e7e7e;
-    border-radius: .125rem;
-    background-clip: padding-box;
+  width: 100%;
+  height: 45px;
+  font-size: 18px;
+  color: #525151;
+  padding-left: 4%;
+  border: 0.0625rem solid #7e7e7e;
+  border-radius: 0.125rem;
+  background-clip: padding-box;
 }
 
-
 span {
-    margin-left: 4px;
-    color: #0063B8;
-    font-weight: bold;
+  margin-left: 4px;
+  color: #0063b8;
+  font-weight: bold;
 }
 
 .multiselect:hover {
-    border: .0625rem solid rgb(6, 114, 203);
+  border: 0.0625rem solid rgb(6, 114, 203);
 }
 
 .goBack {
-    position: relative;
-    right: 40%;
-    text-decoration: none;
-    color: #0672CB;
-    font-weight: 300;
+  position: relative;
+  right: 40%;
+  text-decoration: none;
+  color: #0672cb;
+  font-weight: 300;
 }
 
 .dates input:hover {
-    border: .0625rem solid rgb(6, 114, 203);
+  border: 0.0625rem solid rgb(6, 114, 203);
 }
 
 .blueButton {
-    background-color: #0672cb;
-    border-color: #0672cb;
-    color: #fff;
-    border-radius: 0.125rem;
-    font-size: .875rem;
-    line-height: 1.5rem;
-    padding: 0.4375rem 0.9375rem;
-    border-radius: 0.125rem;
-    font-size: 1rem;
-    line-height: 1.5rem;
-    padding: 0.6875rem 1.1875rem;
-    border: 0.0625rem solid rgba(0, 0, 0, 0);
-    cursor: pointer;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 500;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    vertical-align: middle;
-    white-space: normal;
-    fill: currentColor;
+  background-color: #0672cb;
+  border-color: #0672cb;
+  color: #fff;
+  border-radius: 0.125rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  padding: 0.4375rem 0.9375rem;
+  border-radius: 0.125rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 0.6875rem 1.1875rem;
+  border: 0.0625rem solid rgba(0, 0, 0, 0);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  vertical-align: middle;
+  white-space: normal;
+  fill: currentColor;
 }
 
 .errorButton {
-    background-color: rgb(206, 17, 38);
-    border-color: rgb(206, 17, 38);
-    color: #fff;
-    border-radius: 0.125rem;
-    font-size: .875rem;
-    line-height: 1.5rem;
-    padding: 0.4375rem 0.9375rem;
-    border-radius: 0.125rem;
-    font-size: 1rem;
-    line-height: 1.5rem;
-    padding: 0.6875rem 1.1875rem;
-    border: 0.0625rem solid rgba(0, 0, 0, 0);
-    cursor: pointer;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 500;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    vertical-align: middle;
-    white-space: normal;
-    fill: currentColor;
+  background-color: rgb(206, 17, 38);
+  border-color: rgb(206, 17, 38);
+  color: #fff;
+  border-radius: 0.125rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  padding: 0.4375rem 0.9375rem;
+  border-radius: 0.125rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 0.6875rem 1.1875rem;
+  border: 0.0625rem solid rgba(0, 0, 0, 0);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  vertical-align: middle;
+  white-space: normal;
+  fill: currentColor;
 }
 
 .nullButton {
-    background-color: rgb(255, 255, 255);
-    border-color: rgb(255, 255, 255);
-    color: #fff;
-    border-radius: 0.125rem;
-    font-size: .875rem;
-    line-height: 1.5rem;
-    padding: 0.4375rem 0.9375rem;
-    border-radius: 0.125rem;
-    font-size: 1rem;
-    line-height: 1.5rem;
-    padding: 0.6875rem 1.1875rem;
-    border: 0.0625rem solid rgb(255, 255, 255);
-    cursor: pointer;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 500;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    vertical-align: middle;
-    white-space: normal;
-    fill: currentColor;
+  background-color: rgb(255, 255, 255);
+  border-color: rgb(255, 255, 255);
+  color: #fff;
+  border-radius: 0.125rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  padding: 0.4375rem 0.9375rem;
+  border-radius: 0.125rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 0.6875rem 1.1875rem;
+  border: 0.0625rem solid rgb(255, 255, 255);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  vertical-align: middle;
+  white-space: normal;
+  fill: currentColor;
 }
 </style>
