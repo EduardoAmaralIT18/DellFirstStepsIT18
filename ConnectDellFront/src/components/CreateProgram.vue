@@ -30,6 +30,10 @@
 
                             <label id="text-input-label-396765024" for="text-input-control-name-396765024">Program Name
                                 <span> * </span></label>
+                            <small class="warning" v-if="v$.program.name.$error">The Name field is required with at
+                                least
+                                5 and at most 50 characters.
+                            </small>
 
                             <div class="dds__input-text__wrapper">
 
@@ -38,12 +42,6 @@
                                     aria-labelledby="text-input-label-396765024 text-input-helper-396765024"
                                     required="true" />
 
-                                <small id="text-input-helper-396765024" class="dds__input-text__helper">
-                                </small>
-                                <small class="warning" v-if="v$.program.name.$error">The Name field is required with at
-                                    least
-                                    5 and at most 50 characters.
-                                </small>
                             </div>
                         </div>
                     </div>
@@ -52,22 +50,29 @@
                 <div class="dates dds__row">
                     <div class="dds__col--3 dds__col--sm-3">
                         <div>
-                            <label for="startDate">Start date <span> *</span></label>
+                            <div class="dds__text-area__header">
+                                <label for="startDate">Start date <span> *</span></label>
+                                <small class="warning" v-if="v$.program.startDate.$error">The Start Date is
+                                    required.
+                                </small>
+                            </div>
                             <input v-model="v$.program.startDate.$model" type="date" id="startDate" name="startDate">
 
-                            <small class="warning" v-if="v$.program.startDate.$error">The Start Date is
-                                required.
-                            </small>
+
                         </div>
                     </div>
+
                     <div class="enddate dds__col--3 dds__col--sm-3">
                         <div>
-                            <label for="endDate">End date</label>
+                            <div class="dds__text-area__header">
+                                <label for="endDate">End date</label>
+                                <small class="warning" v-if="v$.program.endDate.$error">The End Date must be after the Start
+                                    Date.
+                                </small>
+                            </div>
                             <input v-model="v$.program.endDate.$model" type="date" id="endDate" name="endDate"
                                 :min="program.startDate">
-                            <small class="warning" v-if="v$.program.endDate.$error">The End Date must be after the Start
-                                Date.
-                            </small>
+
                         </div>
                     </div>
                 </div>
@@ -75,8 +80,13 @@
                 <div class="dds__row">
                     <div class="dds__col--12 dds__col--sm-12">
                         <!-- <div class="dds__select" data-dds="select"> -->
-                        <label id="select-label-141366292" for="select-control-141366292">Owners <span>
-                                *</span></label>
+                        <div class="dds__text-area__header">
+                            <label id="select-label-141366292" for="select-control-141366292">Owners <span>
+                                    *</span></label>
+                                <small class="warning" v-if="v$.program.members.$invalid">The Owners field is
+                                    required.
+                                </small>
+                        </div>
 
                         <!-- <div class="multiselec dds__select__wrapper"> -->
                         <!-- <MultiSelect style="box-shadow: none ;" v-model="v$.program.members.$model" tipo="owner"/> -->
@@ -106,9 +116,6 @@
                                 </ul>
                             </div>
                         </div>
-                        <small class="warning" v-if="v$.program.members.$invalid">The Members field is
-                            required.
-                        </small>
                     </div>
                 </div>
 
@@ -118,15 +125,16 @@
                             <div class="dds__text-area__header">
                                 <label id="text-area-label-980579425" for="text-area-control-980579425">Description
                                     <span> *</span></label>
+                                <small class="warning" v-if="v$.program.description.$error">The Description field is
+                                    required with at least 10 and at most 1500 characters.</small>
                             </div>
                             <div class="dds__text-area__wrapper">
                                 <textarea class="dds__text-area" name="text-area-control-name-980579425"
                                     id="text-area-control-980579425" data-maxlength="null" required="true"
                                     aria-labelledby="text-area-label-980579425 text-area-helper-980579425"
                                     v-model="v$.program.description.$model"></textarea>
-                                <small id="text-area-helper-980579425" class="dds__input-text__helper"></small>
-                                <small class="help-block" v-if="v$.program.description.$error">The Description field is
-                                    required with at least 10 and at most 1500 characters.</small>
+
+
                             </div>
                         </div>
                     </div>
@@ -137,7 +145,7 @@
                 Submit
             </button>
         </form>
-</div>
+    </div>
 </template>
 
 <script lang="ts">
@@ -371,9 +379,9 @@ body {
 }
 
 label {
+    margin-top: 7px;
     display: flex;
     text-align: left;
-    margin-bottom: 10px
 }
 
 .submitbutton {
@@ -411,7 +419,7 @@ span {
 
 .warning {
     display: flex;
-    color: rgb(150 29 29);
+    color: red;
     margin-top: 2px;
 }
 </style>
