@@ -50,4 +50,19 @@ public class EventService : IEventService
             return 0;
         }
     }
+
+    public async Task<IEnumerable<EventDTO>> getAllEvents(int editionId) {
+        var eventFromDb = await _dbContext.editions.Where(ed => ed.id == editionId)
+                                                    .Include(ed => ed.events)
+                                                    .FirstOrDefaultAsync();
+
+        List<EventDTO> allEvents = new List<EventDTO>();
+
+        foreach(var item in eventFromDb.events){
+            allEvents.Add(EventDTO.convertModel2DTO(item));
+        }
+
+        return allEvents;
+
+    }
 }

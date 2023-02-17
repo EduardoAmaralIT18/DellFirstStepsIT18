@@ -36,4 +36,10 @@ public class EventController : ControllerBase
         }
     }
 
+    [HttpGet("getAllEvents")]
+    public async Task<ActionResult<IEnumerable<EventDTO>>> getAllEvents(int editionId) {
+        var result = await _service.getAllEvents(editionId);
+        return result == null ? NoContent() : Ok(result);
+    }
+
 }

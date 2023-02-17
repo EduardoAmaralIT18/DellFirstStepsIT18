@@ -145,6 +145,4 @@ public class EditionService : IEditionService
         }
         return aux;
     }
-
-
 }
