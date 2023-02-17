@@ -74,6 +74,7 @@ export default defineComponent({
                     center: "title",
                     right: "dayGridMonth,timeGridWeek,listWeek",
                 },
+
                 events: [
                     //Colocar os itens da lista de eventos
                     // {
@@ -100,8 +101,10 @@ export default defineComponent({
 
                                 this.extendedProps: {
                                     where: element.where,
-                                    phaseType: element.phaseType
-                                }
+                                    phaseType: element.phaseType,
+                                },
+
+                                this.color: 'green',
 
                             } else if(element.eventType == 1) {
 
@@ -110,7 +113,9 @@ export default defineComponent({
 
                                 this.extendedProps: {
                                     where: element.where,
-                                }
+                                },
+
+                                this.color: 'purple',
                             }
 
                     } ] )
