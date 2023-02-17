@@ -11,7 +11,7 @@
                     </p>
                 </div>
                 <div class="dds__modal__footer">
-                    <button :class="buttonColor" class="buttonModal"  type="button" name="modal-secondary-button"
+                    <button :class="buttonColor" class="buttonModal" type="button" name="modal-secondary-button"
                         @click="$router.push({ name: 'HomePage' });">Ok</button>
                 </div>
             </div>
@@ -69,43 +69,44 @@
                 </div>
 
                 <div class="dds__row">
+
                     <div class="dds__col--12 dds__col--sm-12">
                         <!-- <div class="dds__select" data-dds="select"> -->
-                            <label id="select-label-141366292" for="select-control-141366292">Owners <span>
-                                    *</span></label>
+                        <label id="select-label-141366292" for="select-control-141366292">Owners <span>
+                                *</span></label>
 
-                            <!-- <div class="multiselec dds__select__wrapper"> -->
-                            <!-- <MultiSelect style="box-shadow: none ;" v-model="v$.program.members.$model" tipo="owner"/> -->
-                            <div class="dds__dropdown" data-dds="dropdown" ref="multiselect" id="multi-select-list-dropdown"
-                                data-selection="multiple" data-select-all-label="Select all">
-                                <div class="dds__dropdown__input-container">
-                                    <div class="dds__dropdown__input-wrapper" autocomplete="off" aria-haspopup="listbox"
-                                        aria-controls="multi-select-list-dropdown-popup">
-                                        <input v-model="v$.program.members.$model" id="multi-select-list-dropdown-input"
-                                            name="multi-select-list-dropdown-name" type="text" role="combobox"
-                                            class="dds__dropdown__input-field"
-                                            aria-labelledby="multi-select-list-dropdown-label multi-select-list-dropdown-helper"
-                                            autocomplete="off" aria-expanded="false"
-                                            aria-controls="multi-select-list-dropdown-list"/>
-                                    </div>
-                                </div>
-                                <div id="multi-select-list-dropdown-popup"
-                                    class="dds__dropdown__popup dds__dropdown__popup--hidden" role="presentation"
-                                    tabindex="-1">
-                                    <ul class="dds__dropdown__list" role="listbox" tabindex="-1"
-                                        id="multi-select-list-dropdown-list">
-                                        <li  v-for="owner in owners" :key="owner.id" class="dds__dropdown__item" role="none">
-                                            <button type="button" class="dds__dropdown__item-option" role="option"
-                                                data-selected="false" :data-value=owner tabindex="-1">
-                                                <span class="dds__dropdown__item-label">{{ owner.name }}</span>
-                                            </button>
-                                        </li>
-                                    </ul>
+                        <!-- <div class="multiselec dds__select__wrapper"> -->
+                        <!-- <MultiSelect style="box-shadow: none ;" v-model="v$.program.members.$model" tipo="owner"/> -->
+
+                        <div class="dds__dropdown" data-dds="dropdown" ref="multiselect" id="multi-select-list-dropdown"
+                            data-selection="multiple" data-select-all-label="Select all">
+                            <div class="dds__dropdown__input-container">
+                                <div class="dds__dropdown__input-wrapper" autocomplete="off" aria-haspopup="listbox"
+                                    aria-controls="multi-select-list-dropdown-popup">
+                                    <input id="multi-select-list-dropdown-input" name="multi-select-list-dropdown-name"
+                                        type="text" role="combobox" class="dds__dropdown__input-field"
+                                        aria-labelledby="multi-select-list-dropdown-label multi-select-list-dropdown-helper"
+                                        autocomplete="off" aria-expanded="false"
+                                        aria-controls="multi-select-list-dropdown-list" />
                                 </div>
                             </div>
-                            <!-- <small class="warning" v-if="v$.program.members.$error">The Members field is
-                                required.</small> -->
-                            <!-- </div> -->
+                            <div id="multi-select-list-dropdown-popup"
+                                class="dds__dropdown__popup dds__dropdown__popup--hidden" role="presentation" tabindex="-1">
+                                <ul class="dds__dropdown__list" role="listbox" tabindex="-1"
+                                    id="multi-select-list-dropdown-list">
+                                    <li v-for="owner in owners" :key="owner.id" class="dds__dropdown__item" role="none">
+                                        <button type="button" class="dds__dropdown__item-option" role="option"
+                                            data-selected="false" :data-value=owner.id tabindex="-1">
+                                            <span class="dds__dropdown__item-label">{{ owner.name }}</span>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- <small class="warning" v-if="v$.program.members.$error">The Members field is
+                                                                        required.</small> -->
+                        <!-- </div> -->
                         <!-- </div> -->
                     </div>
                 </div>
@@ -135,8 +136,7 @@
                 Submit
             </button>
         </form>
-
-    </div>
+</div>
 </template>
 
 <script lang="ts">
@@ -170,7 +170,8 @@ interface Data {
     messageError: string,
     titleError: string,
     buttonColor: string,
-    owners: User | null
+    owners: User | null,
+    multiSelect: unknown | null,
 }
 
 
@@ -180,7 +181,7 @@ export default defineComponent({
     },
     mounted() {
         this.createModal();
-        DDS.Dropdown(this.$refs.multiselect);
+        this.multiSelect = DDS.Dropdown(this.$refs.multiselect);
     },
     validations() {
         return {
@@ -210,7 +211,7 @@ export default defineComponent({
         return {
             program: {
                 name: '',
-                members: null,
+                members: [],
                 description: '',
                 startDate: new Date().toISOString().slice(0, 10),
                 endDate: null
@@ -221,7 +222,8 @@ export default defineComponent({
             messageError: '',
             titleError: '',
             buttonColor: "nullButton",
-            owners: null
+            owners: null,
+            multiSelect: null,
         };
     },
     created() {
@@ -238,7 +240,7 @@ export default defineComponent({
                 }
             });
 
-            axios.get("/user/GetOwners")
+        axios.get(`/user/GetOwners`)
             .then(function (response) {
                 return response;
             })
@@ -248,6 +250,15 @@ export default defineComponent({
             });
     },
     methods: {
+        searchOwner() : void{
+            var ownerMultiselect = this.multiSelect.getSelection();
+            console.log(ownerMultiselect);
+
+            ownerMultiselect.forEach((oMulti: number) => {
+                this.program.members.push(this.owners?.find(o => o.id == oMulti as number))
+            });
+
+        },
         nameValidation() {
             var retorno = 0;
             this.programList.forEach(pL => {
@@ -266,6 +277,9 @@ export default defineComponent({
             console.log(modal);
         },
         onSubmit(): void {
+
+            this.searchOwner();
+
             if (this.nameValidation() != 0) {
                 this.titleError = "Error";
                 this.messageError = `The program "${this.program.name}" already exists.`;
