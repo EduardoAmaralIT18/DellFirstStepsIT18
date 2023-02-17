@@ -32,7 +32,6 @@ const router = createRouter({
       name: 'CreateProgram',
       component: () => import('../views/CreateProgramView.vue')
     },
-
     {
       path: '/edition',
       name: 'CreateEdition',
@@ -82,12 +81,11 @@ const router = createRouter({
       name: 'EditNews',
       component: () => import('../views/EditNewsView.vue')
     },
-
-    {
-      path: '/calendar',
-      name: 'calendar',
-      component: () => import ('../components/CalendarCreate.vue')
-    }
+    { 
+      path: '/calendar', 
+      name: 'calendar', 
+      component: () => import('../components/CalendarCreate.vue') 
+    },
   ]
 })
 export default router
