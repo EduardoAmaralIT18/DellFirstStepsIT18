@@ -7,7 +7,7 @@ public enum PhaseType {
     Training,
     Sprints,
     HandsOn,
-    ManagerMeetings
+    None
 }
 
 public enum EventType {

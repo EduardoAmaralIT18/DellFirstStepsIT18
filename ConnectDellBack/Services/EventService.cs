@@ -52,17 +52,37 @@ public class EventService : IEventService
     }
 
     public async Task<IEnumerable<EventDTO>> getAllEvents(int editionId) {
-        var eventFromDb = await _dbContext.editions.Where(ed => ed.id == editionId)
-                                                    .Include(ed => ed.events)
-                                                    .FirstOrDefaultAsync();
+        // VERSÃO ANTIGA
+        // var eventFromDb = await _dbContext.editions.Where(ed => ed.id == editionId)
+        //                                             .Include(ed => ed.events)
+        //                                             .FirstOrDefaultAsync();
 
-        List<EventDTO> allEvents = new List<EventDTO>();
+        // List<EventDTO> allEvents = new List<EventDTO>();
 
-        foreach(var item in eventFromDb.events){
-            allEvents.Add(EventDTO.convertModel2DTO(item));
+        // foreach(var item in eventFromDb.events){
+        //     allEvents.Add(EventDTO.convertModel2DTO(item));
+        // }
+
+        // return allEvents;
+
+
+
+
+        //Busca todos os eventos associados ao id da edição passada por parametro.
+        var eventFromDb = await _dbContext.events.Where(ev => ev.edition.id == editionId)
+                                                 //.FirstOrDefaultAsync();
+                                                 .ToArrayAsync<EventsModel>();
+
+
+        List<EventDTO> aux = new List<EventDTO>();
+        
+        foreach (var item in eventFromDb)
+        {
+            aux.Add(EventDTO.convertModel2DTO(item));
         }
+        
+        return aux;
 
-        return allEvents;
 
     }
 }
