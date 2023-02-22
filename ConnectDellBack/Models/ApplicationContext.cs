@@ -440,7 +440,7 @@ public class ApplicationContext : DbContext
                 text = "The all-girls team starts development of the Dell FirstSteps Project, that will help organize all contents about Dell's Internship Programs.",
                 date = new DateTime(2022,01,04),
             }
-         );
+        );
 
         modelBuilder.Entity<OwnershipModel>().HasData(
             
