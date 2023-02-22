@@ -1,31 +1,17 @@
 using System.ComponentModel.DataAnnotations;
+using ConnectDellBack.Models;
 
-namespace ConnectDellBack.Models;
+namespace ConnectDellBack.DTOs;
 
-public enum PhaseType {
-    Set_Up,
-    Training,
-    Sprints,
-    HandsOn,
-    ManagerMeetings
-}
-
-public enum EventType {
-    Phase,
-    Activity
-}
-
-public class EventsModel {
-
-    public int id {get;set;}
+public class EventsDTO {
     [Required]
     [StringLength(50, MinimumLength = 5, ErrorMessage = "The event's name must be at most 25 characters.")]
     public string name {get;set;} = null!;
 
     [Required]
-    public EventType eventType {get;set;}
+    public int eventType {get;set;}
 
-    public PhaseType phaseType {get;set;}
+    public int phaseType {get;set;}
 
     [Required]
     public DateTime startDate {get;set;}
@@ -39,6 +25,5 @@ public class EventsModel {
     //Lista de Usuários Envolvidos
     public List<UserModel> peopleInvolved {get;set;} = new List<UserModel>();
 
-    public EditionModel edition {get;set;} = null!;
-
+    public int editionID {get;set;} 
 }

@@ -12,15 +12,29 @@ public class EventService : IEventService
         _dbContext = dbContext;
     }
 
-    public async Task<int> addEvent(EventsModel events)
+    public async Task<int> addEvent(EventsDTO events)
     {
         for (int i = 0; i < events.peopleInvolved.Count; i++)
         {
             var user = _dbContext.users.Where(usr => usr.id == events.peopleInvolved[i].id).FirstOrDefault();
             events.peopleInvolved[i] = user;
         }
-        await _dbContext.events.AddAsync(events);
+
+        var dbEvent = new EventsModel()
+        {
+            name = events.name,
+            eventType = (EventType)(int)events.eventType,
+            phaseType = (PhaseType)(int)events.phaseType,
+            startDate = events.startDate,
+            endDate = events.endDate,
+            where = events.where,
+            peopleInvolved = events.peopleInvolved,
+            edition = _dbContext.editions.Where(edition => edition.id == events.editionID).FirstOrDefault(),
+        };
+
+        await _dbContext.events.AddAsync(dbEvent);
         int entries = await _dbContext.SaveChangesAsync();
+
         return entries;
     }
 

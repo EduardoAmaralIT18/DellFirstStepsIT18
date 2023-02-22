@@ -47,21 +47,21 @@
           </div>
         </div>
 
-        <div class="dates dds__row">
-          <div class="activitydate dds__col--3 dds__col--sm-3">
-            <div v-if="event.eventType == 0">
-              <label id="text-input-label-396765024" for="startDate"
-                >Start date <span> *</span></label
-              >
+        <div class="dates dds__row" v-if="event.eventType == 0">
+          <div class="dds__col--3 dds__col--sm-3">
+            <div>
+              <label for="startDate">Start date <span> *</span></label>
               <input
                 v-model="event.startDate"
                 type="date"
                 id="startDate"
                 name="startDate"
               />
-              <label id="text-input-label-396765024" for="endDate"
-                >End date <span> *</span></label
-              >
+            </div>
+          </div>
+          <div class="enddate dds__col--3 dds__col--sm-3">
+            <div>
+              <label for="endDate">End date</label>
               <input
                 v-model="event.endDate"
                 type="date"
@@ -69,32 +69,44 @@
                 name="endDate"
                 :min="event.startDate"
               />
-              <!-- <small class="warning" v-if="event.endDate"
-                >The End Date must be after the Start Date.</small
-              > -->
             </div>
           </div>
-          <div v-if="event.eventType == 1">
-            <input
-              v-model="event.startDate"
-              type="datetime-local"
-              id="startTime"
-              name="appt"
-              required
+        </div>
+
+        <div class="dates dds__row" v-if="event.eventType == 1">
+          <div class="dds__col--3 dds__col--sm-3">
+            <div>
+              <label for="startDate">Start time<span> *</span></label>
+              <input
+                v-model="event.startDate"
+                type="datetime-local"
+                id="startTime"
+                name="appt"
+                required
             />
-            <input
-              v-model="event.endDate"
-              type="datetime-local"
-              id="endTime"
-              name="endTime"
-              required
+            </div>
+          </div>
+          <div class="enddate dds__col--3 dds__col--sm-3">
+            <div>
+              <label for="endDate">End time<span> *</span></label>
+              <input
+                v-model="event.endDate"
+                type="datetime-local"
+                id="endTime"
+                name="endTime"
+                required
             />
+            </div>
           </div>
         </div>
 
         <div class="phasetype dds__row">
           <div class="dds__col--12 dds__col--sm-12">
-            <div v-if="event.eventType == 0" class="dds__select" data-dds="select">
+            <div
+              v-if="event.eventType == 0"
+              class="dds__select"
+              data-dds="select"
+            >
               <div>Phase:</div>
               <select v-model="event.phaseType">
                 <option disabled value="">Please select one</option>
@@ -200,9 +212,8 @@ interface Data {
     where: string;
     phaseType: Number;
     eventType: Number;
+    editionId: Number;
   };
-  total: null | User;
-  options: null | User;
 }
 
 export default defineComponent({
@@ -240,9 +251,8 @@ export default defineComponent({
         where: "",
         phaseType: 1,
         eventType: 1,
+        editionId: 0,
       },
-      total: null,
-      options: null,
     };
   },
 
@@ -251,30 +261,30 @@ export default defineComponent({
   methods: {
     onSubmit(): void {
       console.log(this.event.startDate);
-      axios
-        .post("/event/addEvent", {
-          name: this.event.name,
-          peopleInvolved: this.event.peopleInvolved,
-          startDate: this.event.startDate,
-          endDate: this.event.endDate,
-          where: this.event.where,
-          phaseType: this.event.phaseType,
-          eventType: this.event.eventType,
-        })
-        // .then(function (response) {
-        //   return response;
-        // })
-        // .then((response) => {
-        //   if (response.status == 200) {
-        //     this.$router.push({ name: "HomePage" });
-        //     return;
-        //   } else if (response.status == 404) {
-        //     this.$router.push({ name: "HomePage" });
-        //     alert(
-        //       "There was an error on our database! Please, try again later."
-        //     );
-        //   }
-        // });
+      axios.post("/event/addEvent", {
+        name: this.event.name,
+        peopleInvolved: this.event.peopleInvolved,
+        startDate: this.event.startDate,
+        endDate: this.event.endDate,
+        where: this.event.where,
+        phaseType: this.event.phaseType,
+        eventType: this.event.eventType,
+        editionId: this.$cookies.get("editionId"),
+      });
+      // .then(function (response) {
+      //   return response;
+      // })
+      // .then((response) => {
+      //   if (response.status == 200) {
+      //     this.$router.push({ name: "HomePage" });
+      //     return;
+      //   } else if (response.status == 404) {
+      //     this.$router.push({ name: "HomePage" });
+      //     alert(
+      //       "There was an error on our database! Please, try again later."
+      //     );
+      //   }
+      // });
     },
   },
 });
@@ -306,8 +316,8 @@ label {
   display: flex;
   margin-bottom: 1%;
 }
-.dates label{
-  color:#636363;
+.dates label {
+  color: #636363;
 }
 .dates input {
   width: 100%;
@@ -329,9 +339,6 @@ label {
   width: 20%;
   font-size: 20px;
   margin-bottom: 12%;
-}
-.enddate input {
-  background-color: rgba(181, 181, 181, 0.233);
 }
 span {
   margin-left: 4px;
@@ -380,20 +387,20 @@ span {
   margin-top: 1%;
   margin-bottom: 3%;
 }
-.mode select:hover{
+.mode select:hover {
   border: 0.0625rem solid rgb(6, 114, 203);
 }
-.colorText{
-  color:#636363;
+.colorText {
+  color: #636363;
 }
 .mode select {
   width: 100%;
   height: 45px;
   font-size: 18px;
   color: #636363;
-  padding: .6875rem 4.5rem .6875rem 1rem;
-  border: .0625rem solid #7e7e7e;
-  border-radius: .125rem;
+  padding: 0.6875rem 4.5rem 0.6875rem 1rem;
+  border: 0.0625rem solid #7e7e7e;
+  border-radius: 0.125rem;
   background-clip: padding-box;
   margin-top: 1%;
   margin-bottom: 1%;
@@ -408,9 +415,9 @@ span {
   height: 45px;
   font-size: 18px;
   color: #636363;
-  padding: .6875rem 4.5rem .6875rem 1rem;
-  border: .0625rem solid #7e7e7e;
-  border-radius: .125rem;
+  padding: 0.6875rem 4.5rem 0.6875rem 1rem;
+  border: 0.0625rem solid #7e7e7e;
+  border-radius: 0.125rem;
   background-clip: padding-box;
   margin-top: 1%;
   margin-bottom: 1%;

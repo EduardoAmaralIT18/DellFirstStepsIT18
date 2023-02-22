@@ -20,7 +20,7 @@ public class EventController : ControllerBase
     }
 
     [HttpPost("addEvent")]
-    public async Task<ActionResult> addEvent(EventsModel events)
+    public async Task<ActionResult> addEvent(EventsDTO events)
     {
         int entries = await _service.addEvent(events);
         if (entries > 0)
