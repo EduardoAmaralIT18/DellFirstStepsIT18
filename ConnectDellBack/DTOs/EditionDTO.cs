@@ -10,6 +10,8 @@ public class EditionDTO
     public int mode { get; set; }
     public DateTime startDate { get; set; }
     public DateTime? endDate { get; set; }
+    // Necessary for the calendar component, since its end date is exclusive and I couldn't add one day through Vue
+    public DateTime? calendarEndDate { get; set; }
     public int program { get; set; }
     public string programName { get; set; }
 
@@ -36,6 +38,7 @@ public class EditionDTO
         aux.mode = (int)edition.mode;
         aux.startDate = edition.startDate;
         aux.endDate = edition.endDate;
+        aux.calendarEndDate = edition.calendarEndDate;
         aux.program = edition.program.id;
         aux.programName = edition.program.name;
         return aux;
