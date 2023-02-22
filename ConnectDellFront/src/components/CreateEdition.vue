@@ -73,11 +73,7 @@
                 <div class="dds__col--12 dds__col--sm-12">
                     <!-- <div class="dds__select" data-dds="select"> -->
                     <div class="dds__text-area__header">
-                        <label id="select-label-141366292" for="select-control-141366292">Owners <span>
-                                *</span></label>
-                        <small class="warning" v-if="v$.edition.members.$error">The Members field is
-                            required.
-                        </small>
+                        <label id="select-label-141366292" for="select-control-141366292">Members </label>
                         <small v-if="!validateInternsForm" class="help-block">Not possible to select more interns than
                             the amount stated.</small>
                     </div>
@@ -207,8 +203,7 @@
 import { defineComponent } from 'vue';
 import axios from 'axios';
 import { useVuelidate } from '@vuelidate/core';
-import { required, maxLength, maxValue } from '@vuelidate/validators';
-import MultiSelect from './MultipleSelect.vue';
+import { required } from '@vuelidate/validators';
 declare var DDS: any;
 
 
@@ -252,6 +247,11 @@ export default defineComponent({
         this.createModal();
 
         this.multiSelect = DDS.Dropdown(this.$refs.multiselect);
+
+         // eslint-disable-next-line
+         this.$refs.multiselect.addEventListener("ddsDropdownSelectionChangeEvent", (e) => {
+            this.searchMembers();
+        });
     },
     created() {
         axios.get('/edition/getEditionsNames?idProgram=' + this.$cookies.get("programId"))
@@ -285,17 +285,10 @@ export default defineComponent({
                 endDate: {
                     required
                 },
-                members: {
-                    maxLength: maxLength(25)
-                },
-                numberOfInterns: {
-                    maxValue: maxValue(21)
-                }
             }
         }
     },
     components: {
-        MultiSelect
     },
     data(): Data {
         return {
@@ -329,7 +322,7 @@ export default defineComponent({
                 }
             })
 
-            if (nInterns < 22 && nInterns >= 0) {
+            if (nInterns <= this.edition.numberOfInterns && nInterns >= 0) {
                 return true;
             } else {
                 return false;
@@ -352,6 +345,15 @@ export default defineComponent({
         }
     },
     methods: {
+        searchMembers(): void{
+            this.edition.members = [];
+            var ownerMultiselect = this.multiSelect.getSelection();
+    
+            ownerMultiselect.forEach((mMulti: number) => {
+                this.edition.members?.push(this.members?.find(m => m.id == mMulti as number))
+            });
+
+        },
         createModal(): void {
             const element = this.$refs.uniqueid;
             // console.log(element);

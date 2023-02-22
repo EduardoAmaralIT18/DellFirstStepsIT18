@@ -195,7 +195,7 @@ export default defineComponent({
         this.$refs.multiselect.addEventListener("ddsDropdownSelectionChangeEvent", (e) => {
             this.searchOwner();
         });
-    },
+   },
     validations() {
         return {
             program: {
@@ -266,8 +266,6 @@ export default defineComponent({
         searchOwner(): void {
             this.program.members = [];
             var ownerMultiselect = this.multiSelect.getSelection();
-            console.log(ownerMultiselect);
-            console.log('blahblahshahisa');
 
             ownerMultiselect.forEach((oMulti: number) => {
                 this.program.members.push(this.owners?.find(o => o.id == oMulti as number))
