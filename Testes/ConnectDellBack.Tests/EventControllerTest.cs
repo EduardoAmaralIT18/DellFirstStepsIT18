@@ -1,8 +1,8 @@
 using ConnectDellBack.Controllers;
 using ConnectDellBack.Services;
 using ConnectDellBack.Models;
-using Microsoft.AspNetCore.Mvc;
 using ConnectDellBack.DTOs;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -10,14 +10,16 @@ using Microsoft.Extensions.Logging.Abstractions;
 namespace ConnectDellBack.Tests
 {
     [TestFixture]
-    public class NewsControllerTest
+    public class EventControllerTest
     {
         private static DbContextOptions<ApplicationContext> dbContextOptions = new DbContextOptionsBuilder<ApplicationContext>()
                                                                                 .UseInMemoryDatabase(databaseName: "DbControllerTest")
                                                                                 .Options;
         ApplicationContext context;
-        NewsService newsService;
-        NewsController newsController;
+        EventService eventService;
+        EventController eventController;
+        EventDTO evnt;
+        EventsModel model;
 
         [OneTimeSetUp]
         public void SetUp()
@@ -25,44 +27,30 @@ namespace ConnectDellBack.Tests
             context = new ApplicationContext(dbContextOptions);
             context.Database.EnsureCreated();
 
-            newsService = new NewsService(context);
-            newsController = new NewsController(new NullLogger<NewsController>(), newsService);
+            eventService = new EventService(context);
+            eventController = new EventController(new NullLogger<EventController>(), eventService);
 
         }
 
         [Test]
         [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
-        public async Task<String> HTTPGET_GetNews_ReturnOk()
+        public async Task<String> HTTPGET_GetEventToUpdate_ReturnOk()
         {
-            ActionResult<IEnumerable<NewsDTO>> actionResult = await newsController.GetNews();
-
+            ActionResult<EventDTO> actionResult = await eventController.getEventToUpdate(1);
             return actionResult.Result.ToString();
         }
 
         [Test]
         [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult")]
-        public async Task<String> HTTPPOST_AddContent_ReturnOK()
+        public async Task<String> HTTPPOST_updateEvent_ReturnTrue()
         {
-            var content = new ContentDTO()
-            {
-                title = "Title Test",
-                text = "Text Test",
-                author = 1,
-                program = 1,
-            };
+            var eventOriginal = context.events.Where(ev => ev.id == 1).FirstOrDefault();
+            eventOriginal.name = "event";
+            ActionResult result = await eventController.updateEvent(eventOriginal);
 
-            ActionResult actionResult = await newsController.AddContent(content);
-
-            return actionResult.ToString();
+            return result.ToString();
         }
 
-        [Test]
-        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
-        public async Task<String> HTTPGET_GetSpecificNews_ReturnOk()
-        {
-            ActionResult<NewsDTO> actionResult = await newsController.GetSpecificNews(1);
-            return actionResult.Result.ToString();
-        }
 
         [OneTimeTearDown]
         public void CleanUp()
