@@ -6,7 +6,7 @@
         </button>
         <!-- <a @click="options = !options">Change Options</a> -->
         <full-calendar class="calendar" :event-limit="2" :options="calendarOptions" />
-</div>
+    </div>
 </template>
  
 <script>
@@ -52,10 +52,12 @@ export default defineComponent({
     },
     data() {
         return {
-            
+
             //Cookies com id da edição
             cookiesEdit: this.$cookies.get("editionId"),
 
+            //Lista com os eventos da edição passado por param
+            eventsList: [],
 
 
             options: true,
@@ -72,66 +74,118 @@ export default defineComponent({
                     center: "title",
                     right: "dayGridMonth,timeGridWeek,listWeek",
                 },
+
                 events: [
+                    //Colocar os itens da lista de eventos
+                    // {
+                    //     title: 'Testing Events',
+                    //     start: '2023-02-10',
+                    //     color: 'green'
+                    // }
 
-                //Colocar os itens da lista de eventos
-                {
-                    title: 'Testing Events',
-                    start: '2023-02-10',
-                    color: 'green'
-                } 
-                
-                
+                    eventsList.forEach(element => {
+
+                        //Validations pro tipo de evento vem aqui?
+                        // this.title = element.title;
+                        // this.start = element.startDate.toISOString().substring(0,10);
+                        // this.end
+
+                        calendar.addEvent(event[{
+
+                            title: element.title,
+                            
+                            if(element.eventType == 0) {
+
+                                this.start: element.startDate.toISOString().substring(0, 10),
+                                this.end: element.endDate.toISOString().substring(0, 10),
+
+                                this.extendedProps: {
+                                    where: element.where,
+                                    phaseType: element.phaseType,
+                                },
+
+                                this.color: 'green',
+
+                            } else if(element.eventType == 1) {
+
+                                this.startStr: element.startDate,
+                                this.endStr: element.endDate,
+
+                                this.extendedProps: {
+                                    where: element.where,
+                                },
+
+                                this.color: 'purple',
+                            }
+
+                    } ] )
+                        
+
+                        
+                    })
+
+
                 ],
-                eventClick: function (event) {
-                    swal('Event: ' + event.event.title);
 
-                },
-            
-                buttonText: {
-                    today: "Today",
-                    month: "Month",
-                    week: "Week",
+    buttonText: {
+        today: "Today",
+            month: "Month",
+                week: "Week",
                     list: "Agenda",
-                },
-            },
-        };
-    },
+                    },
 
+                },
+            };
+        },
+
+    created() {
+
+        axios.get(`/Event/getAllEvents?editionId=${this.cookiesEdit}`)
+            .then(function (response) {
+                return response;
+            })
+            .then(response => {
+                if (response.status == 200) {
+                    this.eventsList = response.data;
+                } else if (response.status == 204) {
+                    alert("There was an error on our database! Please, try again later.");
+                }
+            })
+
+    },
     methods: {
         eventDescription() {
-
             //Swal parace um metodo de add? Nome do evento?
-
             swal("teste");
         },
+
         addEvent() {
             this.calendarOptions.events = [
                 ...this.calendarOptions.events,
                 { title: 'Another Event', date: '2023-02-13' }
             ];
         },
-
-        computed: {
-            optionsComputed() {
-                if (this.options) {
-                    this.calendarOptions.events = [
-
-                        
-                    ]
-                } else {
-                    this.calendarOptions.events = [
-                        {
-                        
-                        }
-                    ]
-                }
-
-            }
-        }
-
     },
+    computed: {
+        // optionsComputed() {
+        //     if (this.options) {
+        //         this.calendarOptions.events = [
+
+
+        //         ]
+        //     } else {
+        //         this.calendarOptions.events = [
+        //             {
+
+        //             }
+        //         ]
+        //     }
+
+        // }
+    }
+
 });
+
 </script>
 <style>
 body {
@@ -141,15 +195,15 @@ body {
 }
 
 .addevent {
-  width: 140px;
-  font-size: 13px;
-  height: 8%;
-  margin-left: auto;
-  padding: 4px;
-  margin-bottom: 1.5%;
-  display: flex;
-  float: right;
-  margin-top: 9px;
+    width: 140px;
+    font-size: 13px;
+    height: 8%;
+    margin-left: auto;
+    padding: 4px;
+    margin-bottom: 1.5%;
+    display: flex;
+    float: right;
+    margin-top: 9px;
 }
 
 .title {
