@@ -55,8 +55,10 @@ export default defineComponent({
         return {
 
 
-            //Cookies com id da edição
+            //Cookies com id, startDate e endDate da edition
             cookiesEdit: this.$cookies.get("editionId"),
+            // startDateEdit: this.$cookies.get("startDateEdition"),
+            // endDateEdit: this.$cookies.get("endDateEdition"),
 
             //Lista com os eventos da edição passado por param
             eventsList: [],
@@ -78,6 +80,11 @@ export default defineComponent({
                 },
 
                 events: [],
+
+                // validRange: {
+                //     start: startDateEdit,
+                //     end: endDateEdit,
+                // },
 
                 buttonText: {
                     today: "Today",
