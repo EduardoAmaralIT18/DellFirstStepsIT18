@@ -77,18 +77,7 @@ export default defineComponent({
                     right: "dayGridMonth,timeGridWeek,listWeek",
                 },
 
-                events: [
-
-                    {
-                        title: "Testing events",
-                        start: '2023-02-02', 
-                        extendedProps : {
-                            where: "Zoom",
-                        },
-                        color: 'pink',
-                    }
-
-                ],
+                events: [],
 
                 buttonText: {
                     today: "Today",
@@ -156,7 +145,7 @@ export default defineComponent({
 
                                 allDay: true,
                                 display: 'background',
-                                color: '#94dcf7',
+                                color: '#94DCF7',
                             }
                         ];
                     }
@@ -176,7 +165,9 @@ export default defineComponent({
                                     where: element.where,
                                 },
 
-                                color: 'purple',
+                                display: 'block',
+                                backgroundColor: '#31A2E3',
+                                borderColor: '#7E7E7E',
                             }
                         ];
                     }
@@ -184,10 +175,6 @@ export default defineComponent({
 
          // Fim do load events
         }
-    },
-
-    computed: {
-        
     }
 
 });
