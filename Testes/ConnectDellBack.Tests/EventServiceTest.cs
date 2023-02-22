@@ -20,6 +20,7 @@ namespace ConnectDellBack.Tests
                                                                                 .Options;
         ApplicationContext context;
         EventService eventService;
+        
         EventsModel evnt;
         EventDTO eventDTO;
         EditionModel modelToEvent;
@@ -32,11 +33,11 @@ namespace ConnectDellBack.Tests
 
             eventService = new EventService(context);
 
-        
+
             modelToEvent = new EditionModel()
             {
-                id = 2,
-                name = "Edi��o 16",
+                id = 8,
+                name = "Edition 99",
                 startDate = new DateTime(2021, 10, 10),
                 endDate = new DateTime(2022, 09, 10),
                 description = "Sixteenth edition of the IT Academy program aimed at undergraduate students in computer science courses.",
@@ -49,14 +50,14 @@ namespace ConnectDellBack.Tests
 
             evnt = new EventsModel()
             {
-                id = 1,
+                id = 2,
                 name = "Event test",
                 phaseType = PhaseType.HandsOn,
                 eventType = EventType.Activity,
                 startDate = DateTime.Now,
                 endDate = DateTime.Now,
                 where = "remote",
-                //peopleinvolved = ???
+                peopleInvolved = null,
                 edition = modelToEvent
 
             };
@@ -64,22 +65,41 @@ namespace ConnectDellBack.Tests
             eventDTO = EventDTO.convertModel2DTO(evnt);
         }
 
+
         [Test]
-        public void update_FirstEvent_AssertEqual()
+        [TestCase(ExpectedResult = true)]
+        public async Task<bool> GetEventUpdated_ReturnTrue()
         {
-            eventService.updateEvent(modelUpdate);
+            var eventExpected = context.events.Where(ev => ev.id == 2).FirstOrDefault();
+
+            var eventServices = await eventService.getEvent(2);
+
+            Console.WriteLine(eventExpected + "-----------------------EVENT EXPECTED----------------------");
+            Console.WriteLine(eventServices + "-----------------------EVENT SERVICE-------------------------");
+            return eventServices.Equals(eventExpected);
+
+
+        }
+
+
+        [Test]
+        [TestCase(ExpectedResult = true)]
+        public async Task<bool> update_FirstEvent_AssertEqual()
+        {
+            evnt.name = "updatedName";
+            await eventService.updateEvent(evnt);
             var eventUpdated = context.events.Where(ev => ev.id == 2).FirstOrDefault();
 
-            Mode workModeUpdated = (Mode)modelUpdate.mode;
+            return eventUpdated.Equals(eventDTO);
 
-            Assert.That(eventUpdated.id, Is.EqualTo(modelUpdate.id));
-            Assert.That(eventUpdated.name, Is.EqualTo(modelUpdate.name));
-            Assert.That(eventUpdated.phaseType, Is.EqualTo(modelUpdate.phaseType));
-            Assert.That(eventUpdated.eventType, Is.EqualTo(modelUpdate.eventType));
-            Assert.That(eventUpdated.startDate, Is.EqualTo(modelUpdate.startDate));
-            Assert.That(eventUpdated.endDate, Is.EqualTo(modelUpdate.endDate));
-            Assert.That(eventUpdated.where, Is.EqualTo(modelUpdate.where));
-            //Assert.That(eventUpdated.peopleInvolved Is.EqualTo(modelUpdate.curriculum));
+            // Assert.That(eventUpdated.id, Is.EqualTo(eventDTO.id));
+            // Assert.That(eventUpdated.name, Is.EqualTo(eventDTO.name));
+            // Assert.That(eventUpdated.phaseType, Is.EqualTo(eventDTO.phaseType));
+            // Assert.That(eventUpdated.eventType, Is.EqualTo(eventDTO.eventType));
+            // Assert.That(eventUpdated.startDate, Is.EqualTo(eventDTO.startDate));
+            // Assert.That(eventUpdated.endDate, Is.EqualTo(eventDTO.endDate));
+            // Assert.That(eventUpdated.where, Is.EqualTo(eventDTO.where));
+
         }
 
 

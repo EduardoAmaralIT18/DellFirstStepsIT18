@@ -23,7 +23,6 @@ namespace ConnectDellBack.Tests
         EditionService editionService;
         EditionDTO edition;
         EditionModel model;
-        EditionDTO modelUpdate;
 
         [OneTimeSetUp]
         public void SetUp()
@@ -33,24 +32,10 @@ namespace ConnectDellBack.Tests
 
             editionService = new EditionService(context);
 
-            modelUpdate = new EditionDTO()
-            {
-                id = 2,
-                name = "Test",
-                startDate = DateTime.Now,
-                endDate = DateTime.Now,
-                description = "Testing the database",
-                numberOfMembers = 3,
-                numberOfInterns = 3,
-                mode = 2,
-                curriculum = "Test",
-                program = 1
-            };
-
             model = new EditionModel()
             {
-                id = 2,
-                name = "Edição 16",
+                id = 8,
+                name = "Edition 99",
                 startDate = new DateTime(2021, 10, 10),
                 endDate = new DateTime(2022, 09, 10),
                 description = "Sixteenth edition of the IT Academy program aimed at undergraduate students in computer science courses.",
@@ -65,34 +50,31 @@ namespace ConnectDellBack.Tests
         }
 
         [Test]
-        public void add_NewEdition_ReturnNewEdition()
-        {
-
-            editionService.addEdition(edition);
-
-
-            //Assert.AreEqual(expectedStudent, st2);
-
-            EditionDTO result = EditionDTO.convertModel2DTO(
-                         context.editions.Where(ed => ed.id == 2).FirstOrDefault());
-
-            Assert.That(result.name, Is.EqualTo(edition.name));
+        [TestCase(ExpectedResult = "Edition 99")] 
+        public async Task<string> add_NewEdition_ReturnNewEdition() 
+        { 
+            await editionService.addEdition(edition); 
+            var result = await context.editions.Where(ed => ed.id == 8).FirstOrDefaultAsync(); 
+            return result.name;
         }
+
+
 
         [Test]
         public void update_FirstEdition_AssertEqual()
         {
-            editionService.updateEdition(modelUpdate);
-            var editionUpdated = context.editions.Where(ed => ed.id == 2).FirstOrDefault();
+            model.name = "updatedName";
+            editionService.updateEdition(model);
+            var editionUpdated = context.editions.Where(ed => ed.id == 8).FirstOrDefault();
 
-            Mode workModeUpdated = (Mode)modelUpdate.mode;
+            Mode workModeUpdated = (Mode)model.mode;
 
-            Assert.That(editionUpdated.id, Is.EqualTo(modelUpdate.id));
-            Assert.That(editionUpdated.name, Is.EqualTo(modelUpdate.name));
-            Assert.That(editionUpdated.description, Is.EqualTo(modelUpdate.description));
-            Assert.That(editionUpdated.numberOfMembers, Is.EqualTo(modelUpdate.numberOfMembers));
-            Assert.That(editionUpdated.numberOfInterns, Is.EqualTo(modelUpdate.numberOfInterns));
-            Assert.That(editionUpdated.curriculum, Is.EqualTo(modelUpdate.curriculum));
+            Assert.That(editionUpdated.id, Is.EqualTo(model.id));
+            Assert.That(editionUpdated.name, Is.EqualTo(model.name));
+            Assert.That(editionUpdated.description, Is.EqualTo(model.description));
+            Assert.That(editionUpdated.numberOfMembers, Is.EqualTo(model.numberOfMembers));
+            Assert.That(editionUpdated.numberOfInterns, Is.EqualTo(model.numberOfInterns));
+            Assert.That(editionUpdated.curriculum, Is.EqualTo(model.curriculum));
             Assert.That(editionUpdated.mode, Is.EqualTo(workModeUpdated));
         }
 
