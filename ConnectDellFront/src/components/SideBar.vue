@@ -41,6 +41,8 @@ export default defineComponent({
 
     <RouterLink to="/news" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="news icon"
         src="../assets/news.png">News</RouterLink>
+    <RouterLink to="/editEvent" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="news icon"
+        src="../assets/news.png">Edit</RouterLink>
 
   </div>
 
@@ -56,7 +58,7 @@ export default defineComponent({
     <RouterLink to="/news" class="hoverEffect hovicon effect-1 sub-a"><img class="smallIcons" alt="news icon"
         src="../assets/news.png">
       <br>
-    </RouterLink>
+    </RouterLink> 
 
   </div>
 
