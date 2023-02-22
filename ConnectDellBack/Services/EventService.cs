@@ -75,6 +75,7 @@ public class EventService : IEventService
 
 
         List<EventDTO> aux = new List<EventDTO>();
+        
         foreach (var item in eventFromDb)
         {
             aux.Add(EventDTO.convertModel2DTO(item));
