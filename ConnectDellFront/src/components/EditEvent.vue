@@ -5,9 +5,9 @@
   <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
     <div class="dds__modal__content">
       <div class="dds__modal__header">
-        <h3 class="dds__modal__title" id="modal-headline-369536123">
+        <h3 class="dds__modal__title title" id="modal-headline-369536123">
 
-          Edit Event
+          Manage Event
           <!-- <h2 class="title">Add Event</h2> -->
         </h3>
       </div>
@@ -38,8 +38,8 @@
             <div class="mode dds__row">
               <div class="dds__col--12 dds__col--sm-12">
                 <div class="dds__select" data-dds="select">
-                  <div>Type of Event:</div>
-                  <select v-model="event.eventType">
+                  <div>Event Type<span>*</span></div>
+                  <select v-model="v$.event.eventType.$model">
                     <option disabled value="">Please select one</option>
                     <option value="0">Phase</option>
                     <option value="1">Activity</option>
@@ -52,24 +52,25 @@
               <div class="activitydate dds__col--3 dds__col--sm-3">
                 <div v-if="event.eventType == 0">
                   <label id="text-input-label-396765024" for="startDate">Start date <span> *</span></label>
-                  <input v-model="event.startDate" type="date" id="startDate" name="startDate" />
+                  <input v-model="v$.event.startDate.$model" type="date" id="startDate" name="startDate" />
                   <label id="text-input-label-396765024" for="endDate">End date <span> *</span></label>
-                  <input v-model="event.endDate" type="date" id="endDate" name="endDate" :min="event.startDate" />
+                  <input v-model="v$.event.endDate.$model" type="date" id="endDate" name="endDate"
+                    :min="event.startDate" />
                   <!-- <small class="warning" v-if="event.endDate"
                 >The End Date must be after the Start Date.</small
               > -->
                 </div>
               </div>
               <div v-if="event.eventType == 1">
-                <input v-model="event.startDate" type="datetime-local" id="startTime" name="appt" required />
-                <input v-model="event.endDate" type="datetime-local" id="endTime" name="endTime" required />
+                <input v-model="v$.event.startDate.$model" type="datetime-local" id="startTime" name="appt" required />
+                <input v-model="v$.event.endDate.$model" type="datetime-local" id="endTime" name="endTime" required />
               </div>
             </div>
 
             <div class="phasetype dds__row">
               <div class="dds__col--12 dds__col--sm-12">
                 <div v-if="event.eventType == 0" class="dds__select" data-dds="select">
-                  <div>Phase:</div>
+                  <div>Phase</div>
                   <select v-model="event.phaseType">
                     <option disabled value="">Please select one</option>
                     <option value="0">Set Up</option>
@@ -85,7 +86,7 @@
             <div class="dds__row">
               <div class="dds__col--12 dds__col--sm-12">
                 <div class="dds__select" data-dds="select">
-                  <label id="select-label-141366292" for="select-control-141366292">People Involved<span> *</span></label>
+                  <label id="select-label-141366292" for="select-control-141366292">People Involved</label>
                   <div class="multiselec dds__select__wrapper">
                     <MultiSelect style="box-shadow: none" v-model="event.peopleInvolved" tipo="all" />
                     <!-- <small class="warning" v-if="event.peopleInvolved"
@@ -99,8 +100,7 @@
               <div class="dds__col--12 dds__col--sm-12">
                 <div class="dds__text-area__container" data-dds="text-area">
                   <div class="dds__text-area__header">
-                    <label id="text-area-label-980579425" for="text-area-control-980579425">Location <span>
-                        *</span></label>
+                    <label id="text-area-label-980579425" for="text-area-control-980579425">Location</label>
                   </div>
                   <div class="dds__text-area__wrapper">
                     <textarea class="dds__text-area" name="text-area-control-name-980579425"
@@ -117,12 +117,17 @@
               </div>
             </div>
           </fieldset>
-          <button class="submitbutton dds__button dds__button--lg" type="submit" @click.prevent="onSubmit()">
-            Save
-          </button>
-          <button class="submitbutton dds__button dds__button--lg" type="button" @click.prevent="$router.push('EditionsPage')">
+
+          <button class="submitbutton cancelButton" type="button"
+            @click.prevent="$router.push('EditionsPage')">
             Cancel
           </button>
+
+          <button :disabled="v$.$invalid" class="submitbutton dds__button dds__button--lg" type="submit"
+            @click.prevent="onSubmit()">
+            Save
+          </button>
+
           <!-- <button
         class="submitbutton dds__button dds__button--lg"
         type="submit"
@@ -226,10 +231,19 @@ export default defineComponent({
       .then((response) => {
         if (response.status == 200) {
           this.event = response.data;
-          this.event.startDate = new Date(response.data.startDate).toISOString().slice(0, 10);
-          if (this.event.endDate != null) {
-            this.event.endDate = new Date(response.data.endDate).toISOString().slice(0, 10);
+
+          if (this.event.eventType == 0) {
+            this.event.startDate = new Date(response.data.startDate).toISOString().slice(0, 10);
+            if (this.event.endDate != null) {
+              this.event.endDate = new Date(response.data.endDate).toISOString().slice(0, 10);
+            }
+          } else {
+            this.event.startDate = new Date(response.data.startDate).toISOString().slice(0, 16);
+            if (this.event.endDate != null) {
+              this.event.endDate = new Date(response.data.endDate).toISOString().slice(0, 16);
+            }
           }
+
         } else {
           //erro
         }
@@ -237,18 +251,47 @@ export default defineComponent({
   },
   methods: {
     onSubmit() {
-      axios.post('event/updateEvent', this.event)
-        .then(function (response) {
-          return response;
-        })
-        .then(response => {
-          if (response.status == 200) {
-            this.$router.push("EditionsPage");
-            //deu certo
-          } else {
-            //erro
-          }
-        })
+      if (!this.v$.$invalid) {
+        if (this.event.eventType == "0") {
+          this.event.eventType = 0;
+        } else {
+          this.event.eventType = 1;
+        }
+
+        switch (this.event.phaseType) {
+          case "0":
+            this.event.phaseType = 0;
+            break;
+          case "1":
+            this.event.phaseType = 1;
+            break;
+          case "2":
+            this.event.phaseType = 2;
+            break;
+          case "3":
+            this.event.phaseType = 3;
+            break;
+          case "4":
+            this.event.phaseType = 4;
+            break;
+          default:
+            console.log("Erro no switch");
+        }
+
+        axios.post('event/updateEvent', this.event)
+          .then(function (response) {
+            return response;
+          })
+          .then(response => {
+            if (response.status == 200) {
+              this.$router.push("EditionsPage");
+              //deu certo
+            } else {
+              //erro
+            }
+          })
+      }
+
     },
     createModal(): void {
       const element = this.$refs.uniqueid;
@@ -277,9 +320,10 @@ body {
 
 .title {
   color: #0063b8;
-  margin-bottom: 5%;
-  margin-top: 2%;
-  font-size: 200%;
+  font-weight: 500;
+  max-width: 1024px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
 label {
@@ -418,5 +462,35 @@ span {
   background-clip: padding-box;
   margin-top: 1%;
   margin-bottom: 1%;
+}
+
+.dds__modal__content {
+  width: 800px;
+}
+
+.cancelButton {
+  background-color: #d9f5fd;
+  color: #0672cb;
+  border-radius: 0.125rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 0.6875rem 1.1875rem;
+  border: 0.0625rem solid rgba(0, 0, 0, 0);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  vertical-align: middle;
+  white-space: normal;
+  fill: currentColor;
+}
+
+.cancelButton:hover {
+  background-color: #caf0fb;
 }
 </style>
