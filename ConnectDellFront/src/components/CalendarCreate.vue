@@ -54,6 +54,7 @@ export default defineComponent({
     data() {
         return {
 
+
             //Cookies com id da edição
             cookiesEdit: this.$cookies.get("editionId"),
 
@@ -76,7 +77,18 @@ export default defineComponent({
                     right: "dayGridMonth,timeGridWeek,listWeek",
                 },
 
-                events: [],
+                events: [
+
+                    {
+                        title: "Testing events",
+                        start: '2023-02-02', 
+                        extendedProps : {
+                            where: "Zoom",
+                        },
+                        color: 'pink',
+                    }
+
+                ],
 
                 buttonText: {
                     today: "Today",
@@ -97,88 +109,85 @@ export default defineComponent({
             })
             .then(response => {
                 if (response.status == 200) {
+                    // this.calendarOptions.events = response.data;
                     this.eventsList = response.data;
+                    this.loadEvents();
                 } else if (response.status == 204) {
                     alert("There was an error on our database! Please, try again later.");
                 }
             })
+
         
-            //loadEvents();
 
     },
+
     methods: {
         eventDescription() {
             //Swal parace um metodo de add? Nome do evento?
             swal("teste");
         },
 
-        // addEvent() {
+        
+        //addEvent() {
         //     this.calendarOptions.events = [
         //         ...this.calendarOptions.events,
         //         { title: 'Another Event', date: '2023-02-13' }
         //     ];
-        // },
-    },
-    computed: {
+        //},
 
-        loadEvents() {
-            //     if (this.options) {
-            //         this.calendarOptions.events = [
-
-
-            //         ]
-            //     } else {
-            //         this.calendarOptions.events = [
-            //             {
-
-            //             }
-            //         ]
-            //     }
-
-            
-            
+        loadEvents() { 
                 this.eventsList.forEach(element => {
-
+                    
                     if(element.eventType == 0) {
-                        console.log(element.toISOString);
-                        this.events.add(Event[{
-                            title: element.title,
-                            start: element.startDate, //.toISOString().substring(0, 10),
-                            end: element.endDate, //.toISOString().substring(0, 10),
+                        
+                        this.calendarOptions.events = [
+                            ...this.calendarOptions.events,
+                            { 
+                                title: element.name, 
+                                //formato do start: '2023-02-02',
+                                //date do BD: 2022-08-10 00:00:00.0000000
+                                start: element.startDate,
+                                end: element.endDate,
 
                                 extendedProps: {
                                     where: element.where,
                                     phaseType: element.phaseType,
                                 },
 
-                            color: 'green',
-                        }]);
+                                allDay: true,
+                                display: 'background',
+                                color: '#94dcf7',
+                            }
+                        ];
                     }
 
                     else if(element.eventType == 1) {
+                        console.log("entrou no 1")
 
-                        this.events.add(Event[{
-                            title: element.title,
-                            startStr: element.startDate,
-                            endStr: element.endDate,
+
+                        this.calendarOptions.events = [
+                            ...this.calendarOptions.events,
+                            { 
+                                title: element.name, 
+                                start: element.startDate,
+                                end: element.endDate,
 
                                 extendedProps: {
                                     where: element.where,
                                 },
 
                                 color: 'purple',
-                            }])
-                        }
+                            }
+                        ];
+                    }
                 })
 
-                return true;
-                
-            
-
-         // Fim do Options is computed
+         // Fim do load events
         }
+    },
 
-     //Fim computed
+    computed: {
+        
     }
 
 });
@@ -277,6 +286,7 @@ body {
     --fc-button-hover-border-color: #0063b8;
     --fc-button-active-bg-color: #0063b8;
     --fc-button-active-border-color: #0063b8;
+    
 
     /* Cor do dia atual */
     --fc-today-bg-color: transparent;
