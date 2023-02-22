@@ -8,7 +8,7 @@
             <div class="dds__modal--md">
 
                 <div class="dds__modal__content">
-                    
+
 
                     <div class="dds__modal__header">
                         <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
@@ -67,20 +67,51 @@
 
                 </div>
 
+            </div>
+
+            <div class="dds__row">
                 <div class="dds__col--12 dds__col--sm-12">
-                    <div class="member__select" data-dds="select">
-                        <label id="select-label-141366292" for="select-control-141366292">Members</label>
-                        <small v-if="v$.edition.members.$error" class="help-block">Not possible to select more than 25
-                            members.</small>
+                    <!-- <div class="dds__select" data-dds="select"> -->
+                    <div class="dds__text-area__header">
+                        <label id="select-label-141366292" for="select-control-141366292">Owners <span>
+                                *</span></label>
+                        <small class="warning" v-if="v$.edition.members.$error">The Members field is
+                            required.
+                        </small>
                         <small v-if="!validateInternsForm" class="help-block">Not possible to select more interns than
                             the amount stated.</small>
-                        <div class="multiselec dds__select__wrapper">
-                            <MultiSelect style="box-shadow: none ;" v-model="v$.edition.members.$model" tipo="members" />
+                    </div>
+
+                    <!-- <div class="multiselec dds__select__wrapper"> -->
+                    <!-- <MultiSelect style="box-shadow: none ;" v-model="v$.program.members.$model" tipo="owner"/> -->
+
+                    <div class="dds__dropdown" data-dds="dropdown" ref="multiselect" id="multi-select-list-dropdown"
+                        data-selection="multiple" data-select-all-label="Select all">
+                        <div class="dds__dropdown__input-container">
+                            <div class="dds__dropdown__input-wrapper" autocomplete="off" aria-haspopup="listbox"
+                                aria-controls="multi-select-list-dropdown-popup">
+                                <input @blur="v$.edition.members.$touch" id="multi-select-list-dropdown-input"
+                                    name="multi-select-list-dropdown-name" type="text" role="combobox"
+                                    class="dds__dropdown__input-field"
+                                    aria-labelledby="multi-select-list-dropdown-label multi-select-list-dropdown-helper"
+                                    autocomplete="off" aria-expanded="false"
+                                    aria-controls="multi-select-list-dropdown-list" />
+                            </div>
+                        </div>
+                        <div id="multi-select-list-dropdown-popup" class="dds__dropdown__popup dds__dropdown__popup--hidden"
+                            role="presentation" tabindex="-1">
+                            <ul class="dds__dropdown__list" role="listbox" tabindex="-1"
+                                id="multi-select-list-dropdown-list">
+                                <li v-for="member in members" :key="member.id" class="dds__dropdown__item" role="none">
+                                    <button type="button" class="dds__dropdown__item-option" role="option"
+                                        data-selected="false" :data-value=member.id tabindex="-1">
+                                        <span class="dds__dropdown__item-label">{{ member.name }}</span>
+                                    </button>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-
-
             </div>
 
 
@@ -169,7 +200,7 @@
             <button class="submitbutton dds__button dds__button--lg" type="button" id="example" @click.prevent="onSubmit()"
                 :disabled="v$.$invalid || !validateInterns || !validateInternsForm">Submit</button>
         </form>
-</div>
+    </div>
 </template>
 
 <script lang ='ts'>
@@ -204,10 +235,12 @@ interface Data {
         endDate: null | Date | string,
         program: Number
     },
+    members: User | null,
     messageError: string,
     titleError: string,
     buttonColor: string,
-    editionsNames: EditionsNames | null
+    editionsNames: EditionsNames | null,
+    multiSelect: unknown | null,
 
 
 }
@@ -217,6 +250,8 @@ export default defineComponent({
     },
     mounted() {
         this.createModal();
+
+        this.multiSelect = DDS.Dropdown(this.$refs.multiselect);
     },
     created() {
         axios.get('/edition/getEditionsNames?idProgram=' + this.$cookies.get("programId"))
@@ -225,7 +260,16 @@ export default defineComponent({
             })
             .then(response => {
                 this.editionsNames = response.data;
+            });
+
+        axios.get("/edition/getUsersNotAdmin")
+            .then(function (response) {
+                return response;
             })
+            .then(response => {
+                this.members = response.data;
+                return;
+            });
 
     },
 
@@ -267,10 +311,12 @@ export default defineComponent({
                 endDate: new Date().toISOString().slice(0, 10),
                 program: 0
             },
+            members: null,
             titleError: "",
             messageError: "",
             buttonColor: "nullButton",
-            editionsNames: []
+            editionsNames: [],
+            multiSelect: null,
         };
 
     },

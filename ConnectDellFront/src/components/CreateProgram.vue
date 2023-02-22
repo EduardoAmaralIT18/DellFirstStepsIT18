@@ -83,7 +83,7 @@
                         <div class="dds__text-area__header">
                             <label id="select-label-141366292" for="select-control-141366292">Owners <span>
                                     *</span></label>
-                                <small class="warning" v-if="v$.program.members.$invalid">The Owners field is
+                                <small class="warning" v-if="v$.program.members.$error">The Owners field is
                                     required.
                                 </small>
                         </div>
@@ -96,7 +96,7 @@
                             <div class="dds__dropdown__input-container">
                                 <div class="dds__dropdown__input-wrapper" autocomplete="off" aria-haspopup="listbox"
                                     aria-controls="multi-select-list-dropdown-popup">
-                                    <input id="multi-select-list-dropdown-input" name="multi-select-list-dropdown-name"
+                                    <input @blur="v$.program.members.$touch" id="multi-select-list-dropdown-input" name="multi-select-list-dropdown-name"
                                         type="text" role="combobox" class="dds__dropdown__input-field"
                                         aria-labelledby="multi-select-list-dropdown-label multi-select-list-dropdown-helper"
                                         autocomplete="off" aria-expanded="false"
@@ -264,8 +264,7 @@ export default defineComponent({
     },
     methods: {
         searchOwner(): void {
-
-            this.program.members?.length = 0;
+            this.program.members = [];
             var ownerMultiselect = this.multiSelect.getSelection();
             console.log(ownerMultiselect);
             console.log('blahblahshahisa');
