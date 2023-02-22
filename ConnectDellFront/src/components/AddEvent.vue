@@ -12,7 +12,6 @@
                 for="text-input-control-name-396765024"
                 >Event Title<span> * </span></label
               >
-
               <div class="dds__input-text__wrapper">
                 <input
                   v-model="event.name"
@@ -23,7 +22,6 @@
                   aria-labelledby="text-input-label-396765024 text-input-helper-396765024"
                   required="true"
                 />
-
                 <small
                   id="text-input-helper-396765024"
                   class="dds__input-text__helper"
@@ -36,46 +34,35 @@
             </div>
           </div>
         </div>
-
         <div class="mode dds__row">
-
-            <div class="dds__col--12 dds__col--sm-12">
-                <div class="dds__select" data-dds="select">
-                    <div>Type of Event:</div>
-
-                    <select v-model="event.eventType">
-                        <option disabled value="">Please select one</option>
-                        <option value="0">Phase</option>
-                        <option value="1">Activity</option>
-                    </select>
-
-                </div>
+          <div class="dds__col--12 dds__col--sm-12">
+            <div class="dds__select" data-dds="select">
+              <div>Type of Event:</div>
+              <select v-model="event.eventType">
+                <option disabled value="">Please select one</option>
+                <option value="0">Phase</option>
+                <option value="1">Activity</option>
+              </select>
             </div>
+          </div>
         </div>
 
         <div class="dates dds__row">
-          <div class="dds__col--3 dds__col--sm-3">
-            <div  v-if="event.eventType == 0">
-              <label id="text-input-label-396765024" for="startDate">Start date <span> *</span></label>
+          <div class="activitydate dds__col--3 dds__col--sm-3">
+            <div v-if="event.eventType == 0">
+              <label id="text-input-label-396765024" for="startDate"
+                >Start date <span> *</span></label
+              >
               <input
                 v-model="event.startDate"
                 type="date"
                 id="startDate"
                 name="startDate"
               />
-              <!-- <small class="warning" v-if="event.startDate"
-                >The Start Date is required.</small
-              > -->
-            </div>
-            </div><!--aqui parece que começa-->
-          </div>
-          <div v-if="event.eventType == 1">
-            <input v-model="event.startDate" type="datetime-local" id="startTime" name="appt" required />
-          </div>
-          <div class="enddate dds__col--3 dds__col--sm-3">
-            <div v-if="event.eventType == 0">
-              <label id="text-input-label-396765024" for="endDate">End date <span> *</span></label>
-              <input 
+              <label id="text-input-label-396765024" for="endDate"
+                >End date <span> *</span></label
+              >
+              <input
                 v-model="event.endDate"
                 type="date"
                 id="endDate"
@@ -86,12 +73,40 @@
                 >The End Date must be after the Start Date.</small
               > -->
             </div>
-            
           </div>
           <div v-if="event.eventType == 1">
-            <input v-model="event.endDate" type="datetime-local" id="endTime" name="endTime" required />
+            <input
+              v-model="event.startDate"
+              type="datetime-local"
+              id="startTime"
+              name="appt"
+              required
+            />
+            <input
+              v-model="event.endDate"
+              type="datetime-local"
+              id="endTime"
+              name="endTime"
+              required
+            />
           </div>
-        </div><!--aqui parece que termina-->
+        </div>
+
+        <div class="phasetype dds__row">
+          <div class="dds__col--12 dds__col--sm-12">
+            <div v-if="event.eventType == 0" class="dds__select" data-dds="select">
+              <div>Phase:</div>
+              <select v-model="event.phaseType">
+                <option disabled value="">Please select one</option>
+                <option value="0">Set Up</option>
+                <option value="1">Training</option>
+                <option value="2">Sprints</option>
+                <option value="3">Hands On</option>
+                <option value="4">Manager Meetings</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
         <div class="dds__row">
           <div class="dds__col--12 dds__col--sm-12">
@@ -99,7 +114,6 @@
               <label id="select-label-141366292" for="select-control-141366292"
                 >People Involved<span> *</span></label
               >
-
               <div class="multiselec dds__select__wrapper">
                 <MultiSelect
                   style="box-shadow: none"
@@ -113,7 +127,6 @@
             </div>
           </div>
         </div>
-
         <div class="dds__row">
           <div class="dds__col--12 dds__col--sm-12">
             <div class="dds__text-area__container" data-dds="text-area">
@@ -169,7 +182,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import MultiSelect from "./MultipleSelect.vue";
-import axios from 'axios';
+import axios from "axios";
 // import { useVuelidate } from '@vuelidate/core';
 // import { minLength, maxLength, required } from '@vuelidate/validators';
 
@@ -235,61 +248,80 @@ export default defineComponent({
 
   // Confirmar com gurias do display se elas vão pegar os eventos do banco para mostrar no calendário
 
-    methods: {
-        onSubmit(): void {
-            console.log(this.event.startDate);
-            axios.post('/event/addEvent', {
-                name: this.event.name,
-                peopleInvolved: this.event.peopleInvolved,
-                startDate: this.event.startDate,
-                endDate: this.event.endDate,
-                where: this.event.where,
-                phaseType: this.event.phaseType,
-                eventType: this.event.eventType
-            })
-                .then(function (response) {
-                    return response;
-                })
-                .then(response => {
-                    if (response.status == 200) {
-                        this.$router.push({ name: 'HomePage' });
-                        return;
-                    } else if (response.status == 404) {
-                        this.$router.push({ name: 'HomePage' });
-                        alert("There was an error on our database! Please, try again later.");
-                    }
-                });
-        },
-    }
+  methods: {
+    onSubmit(): void {
+      console.log(this.event.startDate);
+      axios
+        .post("/event/addEvent", {
+          name: this.event.name,
+          peopleInvolved: this.event.peopleInvolved,
+          startDate: this.event.startDate,
+          endDate: this.event.endDate,
+          where: this.event.where,
+          phaseType: this.event.phaseType,
+          eventType: this.event.eventType,
+        })
+        // .then(function (response) {
+        //   return response;
+        // })
+        // .then((response) => {
+        //   if (response.status == 200) {
+        //     this.$router.push({ name: "HomePage" });
+        //     return;
+        //   } else if (response.status == 404) {
+        //     this.$router.push({ name: "HomePage" });
+        //     alert(
+        //       "There was an error on our database! Please, try again later."
+        //     );
+        //   }
+        // });
+    },
+  },
 });
-
 </script>
 
 <style scoped>
 body {
   font-family: "Roboto", sans-serif;
 }
-
 .container {
   padding-top: 3%;
   padding-left: 20%;
   display: flex;
   flex-direction: column;
 }
-
 .title {
   color: #0063b8;
   margin-bottom: 5%;
   margin-top: 2%;
   font-size: 200%;
 }
-
 label {
   display: flex;
   text-align: left;
   margin-bottom: 10px;
 }
-
+.dates {
+  text-align: left;
+  display: flex;
+  margin-bottom: 1%;
+}
+.dates label{
+  color:#636363;
+}
+.dates input {
+  width: 100%;
+  height: 45px;
+  font-size: 18px;
+  color: #525151;
+  padding-left: 4%;
+  border: 0.0625rem solid #7e7e7e;
+  border-radius: 0.125rem;
+  background-clip: padding-box;
+}
+.dates input:hover {
+  border: 0.0625rem solid rgb(6, 114, 203);
+}
 .submitbutton {
   margin-top: 30px;
   display: flex;
@@ -298,17 +330,14 @@ label {
   font-size: 20px;
   margin-bottom: 12%;
 }
-
 .enddate input {
   background-color: rgba(181, 181, 181, 0.233);
 }
-
 span {
   margin-left: 4px;
   color: #0063b8;
   font-weight: bold;
 }
-
 .warning {
   display: flex;
   color: rgb(150 29 29);
@@ -324,40 +353,15 @@ span {
   margin-bottom: 5px;
   font-family: "Roboto", sans-serif;
 }
-
 .multiselect-tag {
   background-color: rgb(6, 114, 203);
   font-weight: lighter;
 }
-
-.dates {
-    text-align: left;
-    display: flex;
-    margin-top: 2%;
-    margin-bottom: 1%;
-}
-
-.dates input {
-    width: 100%;
-    height: 45px;
-    font-size: 18px;
-    color: #525151;
-    padding-left: 4%;
-    border: .0625rem solid #7e7e7e;
-    border-radius: .125rem;
-    background-clip: padding-box;
-}
-
-.enddate input {
-  background-color: rgba(181, 181, 181, 0.233);
-}
-
 span {
   margin-left: 4px;
   color: #0063b8;
   font-weight: bold;
 }
-
 .multiselect:hover {
   border: 0.0625rem solid rgb(6, 114, 203);
 }
@@ -371,23 +375,44 @@ span {
 .dates input:hover {
   border: 0.0625rem solid rgb(6, 114, 203);
 }
-
 .mode {
-    text-align: left;
-    margin-top: 3%;
-    margin-bottom: 3%;
+  text-align: left;
+  margin-top: 1%;
+  margin-bottom: 3%;
 }
-
+.mode select:hover{
+  border: 0.0625rem solid rgb(6, 114, 203);
+}
+.colorText{
+  color:#636363;
+}
 .mode select {
-    width: 100%;
-    height: 45px;
-    font-size: 18px;
-    color: #525151;
-    padding: .6875rem 4.5rem .6875rem 1rem;
-    border: .0625rem solid #7e7e7e;
-    border-radius: .125rem;
-    background-clip: padding-box;
-    margin-top: 1%;
-    margin-bottom: 1%;
+  width: 100%;
+  height: 45px;
+  font-size: 18px;
+  color: #636363;
+  padding: .6875rem 4.5rem .6875rem 1rem;
+  border: .0625rem solid #7e7e7e;
+  border-radius: .125rem;
+  background-clip: padding-box;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+.phasetype {
+  text-align: left;
+  margin-top: 1%;
+  margin-bottom: 3%;
+}
+.phasetype select {
+  width: 100%;
+  height: 45px;
+  font-size: 18px;
+  color: #636363;
+  padding: .6875rem 4.5rem .6875rem 1rem;
+  border: .0625rem solid #7e7e7e;
+  border-radius: .125rem;
+  background-clip: padding-box;
+  margin-top: 1%;
+  margin-bottom: 1%;
 }
 </style>
