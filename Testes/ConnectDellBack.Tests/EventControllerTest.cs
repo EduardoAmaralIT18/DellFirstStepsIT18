@@ -28,16 +28,27 @@ namespace ConnectDellBack.Tests
             context.Database.EnsureCreated();
 
             eventService = new EventService(context);
-            eventController = new EventController(new NullLogger<EventController[]>(), eventService);
+            eventController = new EventController(new NullLogger<EventController>(), eventService);
 
         }
 
+        [Test]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
+        public async Task<String> HTTPGET_GetEventToUpdate_ReturnOk()
+        {
+            ActionResult<EventDTO> actionResult = await eventController.getEventToUpdate(1);
+            return actionResult.Result.ToString();
+        }
 
         [Test]
-        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult" )]
-        public async Task<String> HTTTPGET_updateEvent_ReturnOK()
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult")]
+        public async Task<String> HTTPPOST_updateEvent_ReturnTrue()
         {
-           
+            var eventOriginal = context.events.Where(ev => ev.id == 1).FirstOrDefault();
+            eventOriginal.name = "event";
+            ActionResult result = await eventController.updateEvent(eventOriginal);
+
+            return result.ToString();
         }
 
 
