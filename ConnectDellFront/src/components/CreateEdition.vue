@@ -1,4 +1,3 @@
-
 <template>
     <div class="container">
 
@@ -352,8 +351,8 @@ export default defineComponent({
             ownerMultiselect.forEach((mMulti: number) => {
                 this.edition.members?.push(this.members?.find(m => m.id == mMulti as number))
             });
-
         },
+
         createModal(): void {
             const element = this.$refs.uniqueid;
             // console.log(element);

@@ -71,8 +71,7 @@
                             the amount stated.</small>
                         <div class="multiselec dds__select__wrapper">
                             <!--Colocar os  v$.editon.members.$model-->
-                            <MultiSelect style="box-shadow: none ;" v-model="v$.edition.members.$model"
-                                tipo="members" />
+                           
                             <!-- <small class="warning" v-if="v$.edition.members.$error">The Members field is
                                     required.</small> -->
                         </div>
@@ -175,7 +174,6 @@ import { defineComponent } from 'vue';
 import axios from 'axios';
 import { useVuelidate } from '@vuelidate/core';
 import { required, maxLength, maxValue } from '@vuelidate/validators';
-import MultiSelect from './MultipleSelect.vue';
 declare var DDS: any;
 
 //import moment from 'moment';
@@ -269,7 +267,6 @@ export default defineComponent({
         }
     },
     components: {
-        MultiSelect
     },
     created() {
         axios.get(`/edition/showInfoEdition?idProgram=${this.cookiesId}&idEdition=${this.cookiesEdit}`)

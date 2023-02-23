@@ -1,21 +1,20 @@
 <template>
-
   <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
     <div class="dds__modal--md">
-    <div class="dds__modal__content">
-      <div class="dds__modal__header">
-        <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
+      <div class="dds__modal__content">
+        <div class="dds__modal__header">
+          <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
+        </div>
+        <div id="modal-body-532887773" class="dds__modal__body">
+          <p>
+            {{ messageError }}
+          </p>
+        </div>
+        <div class="dds__modal__footer">
+          <button :class="buttonColor" class="buttonModal" type="button" name="modal-secondary-button"
+            @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
+        </div>
       </div>
-      <div id="modal-body-532887773" class="dds__modal__body">
-        <p>
-          {{ messageError }}
-        </p>
-      </div>
-      <div class="dds__modal__footer">
-        <button :class="buttonColor" class="buttonModal"  type="button" name="modal-secondary-button"
-          @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
-      </div>
-    </div>
     </div>
   </div>
 
@@ -30,7 +29,7 @@
             <div class="dds__loading-indicator__spinner"></div>
           </div>
         </div>
-        <div v-else>
+        <div v-else >
           <div class="dds__row">
             <div class="dds__col--12 dds__col--sm-12">
               <div class="dds__input-text__container">
@@ -65,19 +64,48 @@
               </div>
             </div>
           </div>
+
           <div class="dds__row">
             <div class="dds__col--12 dds__col--sm-12">
-              <div class="dds__select" data-dds="select">
-                <div class="dds__text-area__header">
-                  <label id="select-label-141366292" for="select-control-141366292">Owners <span> *</span></label>
-                  <small v-if="v$.program.owners.$error" class="help-block">Please select at least one owner.</small>
+              <!-- <div class="dds__select" data-dds="select"> -->
+              <div class="dds__text-area__header">
+                <label id="select-label-141366292" for="select-control-141366292">Owners <span>
+                    *</span></label>
+                <small class="warning" v-if="v$.program.owners.$error">The Owners field is
+                  required.
+                </small>
+              </div>
+
+              <!-- <div class="multiselec dds__select__wrapper"> -->
+              <!-- <MultiSelect style="box-shadow: none ;" v-model="v$.program.members.$model" tipo="owner"/> -->
+
+              <div class="dds__dropdown" data-dds="dropdown" ref="multiselect" id="multi-select-list-dropdown"
+                data-selection="multiple" data-select-all-label="Select all">
+                <div class="dds__dropdown__input-container">
+                  <div class="dds__dropdown__input-wrapper" autocomplete="off" aria-haspopup="listbox"
+                    aria-controls="multi-select-list-dropdown-popup">
+                    <input @focusin="showOwners" @blur="v$.program.owners.$touch" id="multi-select-list-dropdown-input"
+                      name="multi-select-list-dropdown-name" type="text" role="combobox"
+                      class="dds__dropdown__input-field"
+                      aria-labelledby="multi-select-list-dropdown-label multi-select-list-dropdown-helper"
+                      autocomplete="off" aria-expanded="false" aria-controls="multi-select-list-dropdown-list" />
+                  </div>
                 </div>
-                <div class="multiselec dds__select__wrapper">
-                  <MultiSelect v-model="v$.program.owners.$model" tipo="owner"/>
+                <div id="multi-select-list-dropdown-popup" class="dds__dropdown__popup dds__dropdown__popup--hidden"
+                  role="presentation" tabindex="-1">
+                  <ul class="dds__dropdown__list" role="listbox" tabindex="-1" id="multi-select-list-dropdown-list">
+                    <li v-for="owner in owners" :key="owner.id" class="dds__dropdown__item" role="none">
+                      <button type="button" class="dds__dropdown__item-option" role="option" data-selected="false"
+                        :data-value=owner.id tabindex="-1">
+                        <span class="dds__dropdown__item-label">{{ owner.name }}</span>
+                      </button>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
+
           <div class="dds__row">
             <div class="dds__col--12 dds__col--sm-12">
               <div class="dds__text-area__container" data-dds="text-area">
@@ -127,22 +155,23 @@ type programList = {
 
 interface Data {
   program: {
-    id: number | null;
-    name: string;
-    owners: null | User;
-    description: string;
-    startDate: string | Date | null;
-    endDate: null | Date | string;
-  };
-  total: null | User;
-  options: null | User;
-  idProgram: any;
+    id: number | null,
+    name: string,
+    owners: null | User,
+    description: string,
+    startDate: string | Date | null,
+    endDate: null | Date | string,
+  },
+  total: null | User,
+  options: null | User,
+  idProgram: any,
   programList: programList,
   originalName: string,
   messageError: string,
   titleError: string,
   buttonColor: string,
   multiSelect: unknown | null,
+  owners: User | null
 }
 
 export default defineComponent({
@@ -182,6 +211,7 @@ export default defineComponent({
       titleError: '',
       buttonColor: "nullButton",
       multiSelect: null,
+      owners: null
     };
   },
   validations() {
@@ -196,40 +226,79 @@ export default defineComponent({
 
   },
   created() {
-    axios
-      .get(`/Program/GetProgram?id=${this.idProgram}`)
-      .then(function (response) {
-        return response;
-      })
-      .then((response) => {
-        if (response.status == 200) {
-          this.program = response.data;
-          this.originalName = response.data.name;
-          this.program.startDate = new Date(response.data.startDate).toISOString().slice(0, 10);
-          if (this.program.endDate != null) {
-            this.program.endDate = new Date(response.data.endDate).toISOString().substring(0, 10);
-          }
-          return;
-        } else if (response.status == 404) {
-          this.$router.push({ name: "ProgramsPage" });
-          alert("There was an error on our database! Please, try again later.");
-        }
-      });
-
-    axios.get(`/Program/GetProgramsName`)
-      .then(function (response) {
-        return response;
-      })
-      .then(response => {
-        if (response.status == 200) {
-          this.programList = response.data;
-        } else if (response.status == 204) {
-          alert("There was an error on our database! Please, try again later.");
-        }
-      })
-
+    this.fetchData();
   },
   methods: {
+    fetchData(): void {
+      axios.get(`/Program/GetProgram?id=${this.idProgram}`)
+        .then(function (response) {
+          return response;
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            this.program = response.data;
+            this.originalName = response.data.name;
+            this.program.startDate = new Date(response.data.startDate).toISOString().slice(0, 10);
+            if (this.program.endDate != null) {
+              this.program.endDate = new Date(response.data.endDate).toISOString().substring(0, 10);
+            }
+            return;
+          } else if (response.status == 404) {
+            this.$router.push({ name: "ProgramsPage" });
+            alert("There was an error on our database! Please, try again later.");
+          }
+        });
+
+      axios.get(`/Program/GetProgramsName`)
+        .then(function (response) {
+          return response;
+        })
+        .then(response => {
+          if (response.status == 200) {
+            this.programList = response.data;
+          } else if (response.status == 204) {
+            alert("There was an error on our database! Please, try again later.");
+          }
+        });
+
+      axios.get(`/user/GetOwners`)
+        .then(function (response) {
+          return response;
+        })
+        .then(response => {
+          this.owners = response.data;
+          this.createMultiselect();
+          return;
+        });
+
+      // setTimeout(() => {
+      //     this.showOwners();
+      //   }, 800);
+    },
+    createMultiselect(): void {
+      this.multiSelect = DDS.Dropdown(this.$refs.multiselect);
+
+      // eslint-disable-next-line
+      this.$refs.multiselect.addEventListener("ddsDropdownSelectionChangeEvent", (e) => {
+        this.searchOwner();
+      });
+
+    },
+    showOwners(): void {
+      this.program.owners?.forEach(element => {
+        this.multiSelect.selectOption(element.id.toString());
+      });
+      this.searchOwner();
+    },
+    searchOwner(): void {
+      this.program.owners = [];
+      var ownerMultiselect = this.multiSelect.getSelection();
+
+      ownerMultiselect.forEach((oMulti: number) => {
+        this.program.owners?.push(this.owners?.find(o => o.id == oMulti as number))
+      });
+    },
+
     nameValidation(): number {
       if (this.originalName.toLowerCase().replaceAll(" ", "") == this.program.name.toLowerCase().replaceAll(" ", "")) {
         return 0;
@@ -245,9 +314,6 @@ export default defineComponent({
     },
     createModal(): void {
       const element = this.$refs.uniqueid;
-      //console.log(element);
-      console.log(DDS);
-      console.log(element);
       const modal = new DDS.Modal(element, { trigger: "#example" });
       console.log(modal);
     },
