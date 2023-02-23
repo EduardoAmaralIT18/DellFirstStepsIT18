@@ -18,6 +18,16 @@
     </div>
   </div>
 
+  <div ref="loading" id="loadingIndicator-overlay" class="dds__loading-indicator__container" data-dds="loading-indicator">
+    <div class="dds__loading-indicator__overlay" aria-hidden="true"></div>
+    <div class="dds__loading-indicator__wrapper">
+      <div class="dds__loading-indicator">
+        <div class="dds__loading-indicator__label" aria-live="polite">Loading...</div>
+        <div class="dds__loading-indicator__spinner"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="container">
     <RouterLink to="/programinfo" class="goBack"> &larr; Go back</RouterLink>
     <form data-dds="form" class="dds__form dds__container">
@@ -29,7 +39,7 @@
             <div class="dds__loading-indicator__spinner"></div>
           </div>
         </div>
-        <div v-else >
+        <div v-else>
           <div class="dds__row">
             <div class="dds__col--12 dds__col--sm-12">
               <div class="dds__input-text__container">
@@ -171,6 +181,7 @@ interface Data {
   titleError: string,
   buttonColor: string,
   multiSelect: unknown | null,
+  loading: unknown |null,
   owners: User | null
 }
 
@@ -191,6 +202,7 @@ export default defineComponent({
   },
   mounted() {
     this.createModal();
+    this.loading = DDS.LoadingIndicator(this.$refs.loading);
   },
   data(): Data {
     return {
@@ -211,6 +223,7 @@ export default defineComponent({
       titleError: '',
       buttonColor: "nullButton",
       multiSelect: null,
+      loading: null,
       owners: null
     };
   },
@@ -268,12 +281,14 @@ export default defineComponent({
         .then(response => {
           this.owners = response.data;
           this.createMultiselect();
+          this.loading.show();
           return;
         });
 
-      // setTimeout(() => {
-      //     this.showOwners();
-      //   }, 800);
+      setTimeout(() => {
+          this.showOwners();
+          this.loading.hide();
+        }, 1000);
     },
     createMultiselect(): void {
       this.multiSelect = DDS.Dropdown(this.$refs.multiselect);
