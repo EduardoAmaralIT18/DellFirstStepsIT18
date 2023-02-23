@@ -5,10 +5,13 @@
       v-if="isOwner"
       class="addevent dds__button dds__button--lg"
       type="submit"
-      @click="addEvent()"
-    >
+      @click="addEvent()">
       Add Event
     </button>
+    <div>
+      <input type="checkbox" id="phases" checked><label for="phases">Phases</label>
+      <input type="checkbox" id="activities" checked><label for="activities">Activities</label>
+    </div>
     <!-- <a @click="options = !options">Change Options</a> -->
     <full-calendar
       class="calendar"
