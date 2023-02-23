@@ -33,7 +33,14 @@ public class EventController : ControllerBase
         }
     }
 
-   
-    
+    [HttpGet("removeEvent")]
+    public async Task<ActionResult> removeEvent(int evnt){
+       var entries = await _service.removeEvent(evnt); 
+       if (entries > 0){
+        return Ok();
+       } else {
+        return NotFound();
+       }
+    }
 
 }
