@@ -9,6 +9,7 @@ public class EventDTO
     public PhaseType phaseType {get;set;}
     public DateTime startDate {get;set;}
     public DateTime endDate {get;set;}
+    public DateTime calendarEndDate {get; set;}
     public string where {get;set;} = null!;
     public List<UserModel> peopleInvolved {get;set;} = new List<UserModel>();
 
@@ -20,6 +21,7 @@ public class EventDTO
         aux.eventType = evnt.eventType;
         aux.startDate = evnt.startDate;
         aux.endDate = evnt.endDate;
+        aux.calendarEndDate = evnt.endDate.AddDays(1);
         aux.where = evnt.where;
 
         List<UserModel> aux2 = new List<UserModel>();

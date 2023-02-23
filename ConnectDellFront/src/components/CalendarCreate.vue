@@ -2,6 +2,7 @@
   <div class="container">
     <p class="title">Edition's Calendar</p>
     <button
+      v-if="isOwner"
       class="addevent dds__button dds__button--lg"
       type="submit"
       @click="addEvent()"
@@ -23,13 +24,6 @@ TO DO:
 - find out how to filter by type of event (phases and different events)
         idea: groupId to group the events, but still need to find out how to appear only a specific groupId or every single one of them
 - checkbox to decide how to filter it (related to the to do above)
-- style it according to DDS
-- form to add events (how to add, there is already a method as example, just do v-model on form inputs to insert it according to the user input)
-- do get to show description on the alert (sweetalert)
-- get with axios of events on database
-- change model to be adpted to events attributes?
-- id on front, to each event, to know which one is it on the date
-
 */
 
 //References: https://fullcalendar.io/docs
@@ -62,17 +56,14 @@ export default defineComponent({
     return {
       //Cookies com id, startDate e endDate da edition
       cookiesEdit: this.$cookies.get("editionId"),
+      cookiesProgram: this.$cookies.get("programId"),
 
       //Lista com os eventos da edição passado por param
       eventsList: [],
 
       options: true,
+
       calendarOptions: {
-        // views: {
-        //    dayGrid: {
-        //       weekday: 'long'
-        //    }
-        // },
         plugins: [dayGridPlugin, interactionPlugin, listPlugin, timeGridPlugin],
         initialView: "dayGridMonth",
         headerToolbar: {
@@ -82,10 +73,9 @@ export default defineComponent({
         },
 
         events: [],
-
         validRange: {
-            start: this.$cookies.get("startDateEdition"),
-            end: this.$cookies.get("endDateCalendarEdition"),
+          start: this.$cookies.get("startDateEdition"),
+          end: this.$cookies.get("endDateCalendarEdition"),
         },
 
         buttonText: {
@@ -109,12 +99,20 @@ export default defineComponent({
           // this.calendarOptions.events = response.data;
           this.eventsList = response.data;
           this.loadEvents();
+          console.log("Entrou aqui");
         } else if (response.status == 204) {
           alert("There was an error on our database! Please, try again later.");
         }
       });
   },
-
+  computed: {
+    isOwner() {
+      if (this.$cookies.get("isOwner") == 1) 
+        return true;
+      else 
+        return false;
+    },
+  },
   methods: {
     eventDescription() {
       //Swal parace um metodo de add? Nome do evento?
@@ -131,27 +129,40 @@ export default defineComponent({
     loadEvents() {
       this.eventsList.forEach((element) => {
         if (element.eventType == 0) {
-          this.calendarOptions.events = [
-            ...this.calendarOptions.events,
-            {
-              title: element.name,
-              //formato do start: '2023-02-02',
-              //date do BD: 2022-08-10 00:00:00.0000000
-              start: element.startDate,
-              end: element.endDate,
+          console.log(element.calendarEndDate),
+            (this.calendarOptions.events = [
+              ...this.calendarOptions.events,
+              {
+                title: element.name,
+                start: element.startDate,
+                end: element.calendarEndDate,
 
-              extendedProps: {
-                where: element.where,
-                phaseType: element.phaseType,
+                extendedProps: {
+                  where: element.where,
+                  phaseType: element.phaseType,
+                },
+
+                //Tentativas de Mudar de cor
+                // if(phaseType == 0) {
+                //   color: "#FFEED2",
+                // } //Set_up
+                // if(phaseType == 1) {
+                //   color: "#E9F5CE",
+                // }, //Training
+                // if(phaseType == 2) {
+                //   color: "#DAF5FD",
+                // }, //Sprints
+                // if(phaseType == 3) {
+                //   color: "#FFECEE",
+                // }, //Hands-on
+
+                allDay: true,
+                display: "multi-day",
+                color: "#DAF5FD",
+                textColor: "#0E0E0E",
               },
-
-              allDay: true,
-              display: "background",
-              color: "#94DCF7",
-            },
-          ];
+            ]);
         } else if (element.eventType == 1) {
-
           this.calendarOptions.events = [
             ...this.calendarOptions.events,
             {

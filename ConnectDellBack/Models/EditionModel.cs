@@ -19,12 +19,9 @@ public class EditionModel {
 
     [Required]
     public DateTime startDate {get;set;}
-    // Necessary for the calendar component, since its end date is exclusive and I couldn't add one day through Vue
-    public DateTime? calendarEndDate { get; set; }
-
     //[IsValidEndDate ("startDate")]
     [Required]
-    public DateTime? endDate {get;set;}
+    public DateTime endDate {get;set;}
 
     [StringLength(500, MinimumLength = 10, ErrorMessage = "The program's description must be at most 500 characters.")]
     public string description {get;set;}
