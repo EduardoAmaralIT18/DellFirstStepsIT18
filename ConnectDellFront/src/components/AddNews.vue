@@ -1,4 +1,4 @@
-<template>
+ <template>
     <div v-if="role == 0" class="container">
         <div class="top">
             <RouterLink to="/news" class="goBack"> &larr; Go back</RouterLink>

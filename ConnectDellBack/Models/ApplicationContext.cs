@@ -2,14 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace ConnectDellBack.Models;
-// //////// ALTERADO
 public class ApplicationContext : DbContext
 {
 
     public DbSet<UserModel> users { get; set;} = null!; 
     public DbSet<ProgramModel> programs { get; set;} = null!;
     public DbSet<EditionModel> editions { get; set;} = null!;
-    public DbSet<PhasesModel> phases { get; set;} = null!;
+    public DbSet<EventsModel> events { get; set;} = null!;
     public DbSet<NewsModel> news { get; set;} = null!;
     public DbSet<ImageModel> images {get; set;} = null!;
     
@@ -416,18 +415,133 @@ public class ApplicationContext : DbContext
 
         );
 
-        modelBuilder.Entity<PhasesModel>().HasData(
+        modelBuilder.Entity<EventsModel>().HasData(
+            //Criacao de phases
             new {
                 id = 1,
                 editionid = 1,
-                newsmodelid = 1,
-                name = "Enrollment",
+                //newsmodelid = 1,
+                name = "Enrollment on the Program",
                 startDate = new DateTime(2022,08,10),
                 endDate = new DateTime(2022,08,23),
-                peopleInvolved = "Puc and Dell Staff",
-                description = "Enrollment stage",
-                type = Type.Set_Up,
-        });
+                //peopleInvolved = "Puc and Dell Staff",
+                where = "Remote Enviroment",
+                phaseType = PhaseType.Set_Up,
+                eventType = EventType.Phase,   
+            },
+            new {
+                id = 3,
+                editionid = 1,
+                name = "Training",
+                startDate = new DateTime(2022,10,19),
+                endDate = new DateTime(2022,12,09),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.Training,
+                eventType = EventType.Phase,   
+            },
+            new {
+                id = 2,
+                editionid = 1,
+                name = "Inception",
+                startDate = new DateTime(2022,12,12),
+                endDate = new DateTime(2022,12,16),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.HandsOn,
+                eventType = EventType.Phase,   
+            },
+            new {
+                id = 4,
+                editionid = 1,
+                name = "Sprint 1",
+                startDate = new DateTime(2023,01,03),
+                endDate = new DateTime(2023,01,16),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.Sprints,
+                eventType = EventType.Phase,   
+            },
+            new {
+                id = 5,
+                editionid = 1,
+                name = "Sprint 2",
+                startDate = new DateTime(2023,01,17),
+                endDate = new DateTime(2023,01,30),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.Sprints,
+                eventType = EventType.Phase,   
+            },
+            new {
+                id = 6,
+                editionid = 1,
+                name = "Sprint 3",
+                startDate = new DateTime(2023,01,31),
+                endDate = new DateTime(2023,02,13),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.Sprints,
+                eventType = EventType.Phase,   
+            },
+            new {
+                id = 7,
+                editionid = 1,
+                name = "Sprint 4",
+                startDate = new DateTime(2023,02,14),
+                endDate = new DateTime(2023,02,28),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.Sprints,
+                eventType = EventType.Phase,   
+            },
+            //criação de activities
+            new {
+                id = 8,
+                editionid = 1,
+                name = "Meeting with Rafael",
+                //date do BD: 2022-08-10 00:00:00.0000000
+                startDate = new DateTime(2023,02,06, 14,00,00),
+                endDate = new DateTime(2023,02,06, 14,30,00),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.None,
+                eventType = EventType.Activity,   
+            },
+            new {
+                id = 9,
+                editionid = 1,
+                name = "Meeting with Valdomiro",
+                startDate = new DateTime(2023,02,08, 14,00,00),
+                endDate = new DateTime(2023,02,08, 14,30,00),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.None,
+                eventType = EventType.Activity,   
+            },
+            new {
+                id = 10,
+                editionid = 1,
+                name = "Meeting with Andre",
+                startDate = new DateTime(2023,02,07, 16,30,00),
+                endDate = new DateTime(2023,02,07, 17,00,00),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.None,
+                eventType = EventType.Activity,   
+            },
+            new {
+                id = 11,
+                editionid = 1,
+                name = "Meeting with Cristina",
+                startDate = new DateTime(2023,02,14, 14,00,00),
+                endDate = new DateTime(2023,02,14, 14,30,00),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.None,
+                eventType = EventType.Activity,   
+            },
+            new {
+                id = 12,
+                editionid = 1,
+                name = "Meeting with Rogerio",
+                startDate = new DateTime(2023,05,28, 14,00,00),
+                endDate = new DateTime(2023,05,28, 14,30,00),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.None,
+                eventType = EventType.Activity,   
+            }
+        );
 
         modelBuilder.Entity<NewsModel>().HasData(
              new {

@@ -19,10 +19,9 @@ public class EditionModel {
 
     [Required]
     public DateTime startDate {get;set;}
-
     //[IsValidEndDate ("startDate")]
     [Required]
-    public DateTime? endDate {get;set;}
+    public DateTime endDate {get;set;}
 
     [StringLength(500, MinimumLength = 10, ErrorMessage = "The program's description must be at most 500 characters.")]
     public string description {get;set;}
@@ -44,7 +43,7 @@ public class EditionModel {
     public List<UserModel> members {get;set;}  = new List<UserModel>();
     public List<MembershipModel> memberships {get;set;} = new List<MembershipModel>();
     public List<UserModel> interns {get;set;} = new List<UserModel>();
-    public List<PhasesModel> phases {get;set;} = new List<PhasesModel>();
+    public List<EventsModel> events {get;set;} = new List<EventsModel>();
 
     // public static implicit operator EditionModel(EditionModel v)
     // {
