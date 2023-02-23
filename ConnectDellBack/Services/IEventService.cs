@@ -11,6 +11,8 @@ namespace ConnectDellBack.Services
         //get pro formulario
         public Task<EventsModel> getEvent(int eventId);
 
+        public Task<int> addEvent(EventDTO events);
+
     }
 
 }

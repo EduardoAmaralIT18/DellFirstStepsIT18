@@ -50,7 +50,6 @@ namespace ConnectDellBack.Tests
 
             evnt = new EventsModel()
             {
-                id = 2,
                 name = "Event test",
                 phaseType = PhaseType.HandsOn,
                 eventType = EventType.Activity,
@@ -88,6 +87,15 @@ namespace ConnectDellBack.Tests
 
             return entries > 0;
 
+        }
+
+        [Test]
+        [TestCase(ExpectedResult = "Event test")]
+        public async Task<string> add_NewEvent_ReturnNewEvent()
+        {
+            await eventService.addEvent(eventDTO);
+            var result = await context.events.Where(ev => ev.id == 2).FirstOrDefaultAsync();
+            return result.name;
         }
 
 

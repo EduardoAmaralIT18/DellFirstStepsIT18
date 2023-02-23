@@ -27,14 +27,33 @@ public class EventController : ControllerBase
         return result == null ? NotFound() : Ok(eventDTO);
     }
 
-    [HttpPost("updateEvent")] 
-    public async Task<ActionResult> updateEvent(EventsModel eventForm) {
+    [HttpPost("updateEvent")]
+    public async Task<ActionResult> updateEvent(EventsModel eventForm)
+    {
         int entries = await _service.updateEvent(eventForm);
-        if (entries > 0) {
+        if (entries > 0)
+        {
             return Ok();
-        } else {
+        }
+        else
+        {
             return NotFound();
         }
     }
 
+
+    [HttpPost("addEvent")]
+    public async Task<ActionResult> addEvent(EventDTO events)
+    {
+        int entries = await _service.addEvent(events);
+        if (entries > 0)
+        {
+            return Ok();
+        }
+        else
+        {
+            return NotFound();
+        }
+
+    }
 }
