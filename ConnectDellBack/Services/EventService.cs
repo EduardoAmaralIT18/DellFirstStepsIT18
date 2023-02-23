@@ -15,7 +15,7 @@ public class EventService : IEventService
     {
         var calendarEvent = await _dbContext.events.Where(e => e.id == eventId)
                                                     .Include(e => e.peopleInvolved)
-                                            .FirstOrDefaultAsync();
+                                                    .FirstOrDefaultAsync();
         return EventDTO.convertModel2DTO(calendarEvent);
     }
 

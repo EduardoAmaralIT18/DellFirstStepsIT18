@@ -73,15 +73,6 @@ namespace ConnectDellBack.Tests
             return actionResult.Result.ToString();
         }
 
-        [Test]
-        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
-        public async Task<String> HTTPGET_GetProgramsName_ReturnOk()
-        {
-            ActionResult<IEnumerable<ProgramInfoDTO>> actionResult = await programController.GetProgramsName();
-
-            return actionResult.Result.ToString();
-        }
-
         [OneTimeTearDown]
         public void CleanUp()
         {

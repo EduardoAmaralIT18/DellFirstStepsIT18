@@ -68,7 +68,8 @@ namespace ConnectDellBack.Tests
         [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult" )]
         public async Task<String> HTTTPGET_updateEdition_ReturnOK()
         {
-            ActionResult<IEnumerable<EditionDTO>> actionResult = await editionController.updateEdition(edition);
+            model.name = "updatedName";
+            ActionResult<IEnumerable<EditionDTO>> actionResult = await editionController.updateEdition(model);
 
             Console.WriteLine(actionResult);
             return actionResult.Result.ToString();
@@ -77,7 +78,7 @@ namespace ConnectDellBack.Tests
         [Test]
         [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult" )]
         public async Task<String> HTTPGET_allEditionsNames_ReturnOk() {
-            ActionResult<IEnumerable<EditionDTO>> actionResult = WaitCallback editionController.getEditionsNames(1);
+            ActionResult<EditionDTO> actionResult = await editionController.getEditionsNames(1);
 
             return actionResult.Result.ToString();
         }
