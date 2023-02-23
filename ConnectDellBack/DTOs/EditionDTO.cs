@@ -9,14 +9,16 @@ public class EditionDTO
     public string curriculum { get; set; }
     public int mode { get; set; }
     public DateTime startDate { get; set; }
-    public DateTime? endDate { get; set; }
+    public DateTime endDate { get; set; }
+    // Necessary for the calendar component, since its end date is exclusive and I couldn't add one day through Vue
+    public DateTime calendarEndDate { get; set; }
     public int program { get; set; }
     public string programName { get; set; }
 
     public List<UserModel> members {get;set;}  = new List<UserModel>();
     public List<MembershipModel> memberships {get;set;} = new List<MembershipModel>();
     public List<UserModel> interns {get;set;} = new List<UserModel>();
-    public List<PhasesModel> phases {get;set;} = new List<PhasesModel>();
+    public List<EventsModel> events {get;set;} = new List<EventsModel>();
     
     public static EditionDTO convertModel2DTO(EditionModel edition)
     {
@@ -36,6 +38,7 @@ public class EditionDTO
         aux.mode = (int)edition.mode;
         aux.startDate = edition.startDate;
         aux.endDate = edition.endDate;
+        aux.calendarEndDate = edition.endDate.AddDays(1);
         aux.program = edition.program.id;
         aux.programName = edition.program.name;
         return aux;

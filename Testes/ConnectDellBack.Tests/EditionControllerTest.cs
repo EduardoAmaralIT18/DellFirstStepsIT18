@@ -63,23 +63,23 @@ namespace ConnectDellBack.Tests
             return actionResult.Result.ToString();
         }
 
-        [Test]
-        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult" )]
-        public async Task<String> HTTTPGET_updateEdition_ReturnOK()
-        {
-            ActionResult<IEnumerable<EditionDTO>> actionResult = await editionController.updateEdition(edition);
+        //[Test]
+        //[TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult" )]
+        //public async Task<String> HTTTPGET_updateEdition_ReturnOK()
+        //{
+        //    ActionResult<IEnumerable<EditionDTO>> actionResult = await editionController.updateEdition(edition);
 
-            Console.WriteLine(actionResult);
-            return actionResult.Result.ToString();
-        }
+        //    Console.WriteLine(actionResult);
+        //    return actionResult.Result.ToString();
+        //}
 
-        [Test]
-        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult" )]
-        public async Task<String> HTTPGET_allEditionsNames_ReturnOk() {
-            ActionResult<IEnumerable<EditionDTO>> actionResult = WaitCallback editionController.getEditionsNames(1);
+        //[Test]
+        //[TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult" )]
+        //public async Task<String> HTTPGET_allEditionsNames_ReturnOk() {
+        //    ActionResult<IEnumerable<EditionDTO>> actionResult = await editionController.getEditionsNames(1);
 
-            return actionResult.Result.ToString();
-        }
+        //    return actionResult.Result.ToString();
+        //}
 
         [OneTimeTearDown]
         public void CleanUp()

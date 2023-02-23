@@ -22,34 +22,34 @@ public class EditionController : ControllerBase
 
     [HttpPost("addEdition")]
     public async Task<ActionResult> addEdition(EditionDTO edition)
-    {
+    {   
         int entries = await _service.addEdition(edition);
         if (entries > 0)
         {
-            return Ok();
+            return Accepted();
         }
         else
         {
-            return NotFound();
+            return BadRequest();
         }
     }
 
     [HttpPost("updateEdition")] 
     public async Task<ActionResult> updateEdition(EditionModel editionForm) {
         int entries = await _service.updateEdition(editionForm);
-        if (entries > 0) {
-            return Ok();
+        if (entries > 0)
+        {
+            return Accepted();
         } else {
-            return NotFound();
+            return BadRequest();
         }
     }
-
 
     [HttpGet("showInfoEdition")]
     public async Task<ActionResult<EditionDTO>> showInfoEdition(int idProgram, int idEdition)
     {
         var result = await _service.getEditionInfo(idProgram, idEdition);
-        return result == null ? NoContent() : Ok(result);
+        return result == null ? NotFound() : Ok(result);
     }
 
     //GetUsers que não são admins. 
