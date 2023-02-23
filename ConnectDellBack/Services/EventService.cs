@@ -12,7 +12,7 @@ public class EventService : IEventService
         _dbContext = dbContext;
     }
 
-    public async Task<int> addEvent(EventsDTO events)
+    public async Task<int> addEvent(EventDTO events)
     {
         for (int i = 0; i < events.peopleInvolved.Count; i++)
         {

@@ -5,7 +5,7 @@ namespace ConnectDellBack.Services
 {
     public interface IEventService
     {
-       public Task<int> addEvent(EventsDTO events);
+       public Task<int> addEvent(EventDTO events);
     }
 
 

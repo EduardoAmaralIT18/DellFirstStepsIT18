@@ -1,17 +1,48 @@
-
-
 <template>
-    <!-- <NavBar />
+  <!-- <NavBar />
     <SideBar /> -->
-    <div class="container">
-        <a @click="addEvent()">Add Event</a>
-        <a @click="options = !options">Change Options</a>
-        <full-calendar class="calendar" :event-limit="2" :options="calendarOptions" />
-    </div>
-</template>
- 
-<script>
+  <div class="container">
+    <a id="example">Add Event</a>
+    <a @click="options = !options">Change Options</a>
+    <full-calendar
+      class="calendar"
+      :event-limit="2"
+      :options="calendarOptions"
+    />
+  </div>
 
+ 
+  <div
+    role="dialog"
+    data-dds="modal"
+    class="dds__modal"
+    id="uniqueid"
+    ref="uniqueid" 
+  >
+    <div class="dds__modal__content">
+      <div class="dds__modal__header">
+        <h3 class="dds__modal__title title" id="modal-headline-369536123">
+          Add Event
+          <!-- <h2 class="title">Add Event</h2> -->
+        </h3>
+      </div>
+      <div id="modal-body-532887773" class="dds__modal__body">
+        <!-- estrutura do modal -->
+        <AddEvent @close-modal.="modal.close()"/>
+      </div>
+      <div class="dds__modal__footer">
+        <!-- <button :class="buttonColor" type="button" name="modal-secondary-button"
+    @click="$router.push({ name: 'HomePage' });">Ok</button> -->
+      </div>
+    </div>
+  </div>
+
+
+
+
+</template>
+
+<script>
 /*
 TO DO:
 - find out how to filter by type of event (phases and different events)
@@ -26,185 +57,160 @@ TO DO:
 
 */
 
-
-
-
 //References: https://fullcalendar.io/docs
 
+import { defineComponent } from "vue";
 
-
-
-
-import { defineComponent } from 'vue';
-
-import swal from 'sweetalert';
+import swal from "sweetalert";
 
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
+import AddEvent from "../components/AddEvent.vue";
+var DDS = window.DDS;
 
 // 1. In month View- Day shoudl be like- Monday, Tuesday instead of Mon, Tue
 //2. Default load should be on Oct 2021, bcoz event starting from there.
 
 export default defineComponent({
-    components: {
-        FullCalendar,
+  components: {
+    FullCalendar,
+    AddEvent
+  },
+  props: {
+    eventDates: {
+      type: Array,
+      default: null,
     },
-    props: {
-        eventDates: {
-            type: Array,
-            default: null,
+  },
+  data() {
+    return {
+      options: true,
+      calendarOptions: {
+        // views: {
+        //    dayGrid: {
+        //       weekday: 'long'
+        //    }
+        // },
+        plugins: [dayGridPlugin, interactionPlugin, listPlugin, timeGridPlugin],
+        initialView: "dayGridMonth",
+        headerToolbar: {
+          left: "today prev,next",
+          center: "title",
+          right: "dayGridMonth,timeGridWeek,listWeek",
         },
-    },
-    data() {
-        return {
-            options: true,
-            calendarOptions: {
-                // views: {
-                //    dayGrid: {
-                //       weekday: 'long'
-                //    }
-                // },
-                plugins: [dayGridPlugin, interactionPlugin, listPlugin, timeGridPlugin],
-                initialView: "dayGridMonth",
-                headerToolbar: {
-                    left: "today prev,next",
-                    center: "title",
-                    right: "dayGridMonth,timeGridWeek,listWeek",
-                },
-                events: [
+        events: [
+          //Colocar os itens da lista de eventos
 
-                    //Colocar os itens da lista de eventos
-
-                    {
-                        start: "2023-02-10T04:30:00",
-                        title: "Test",
-                        end: "2023-02-11T14:30:00",
-                    },
-                    {
-                        start: "2023-02-08T04:30:00",
-                        title: "Test",
-                        end: "2023-02-10T14:30:00",
-                    },
-                    {
-                        start: "2023-02-08T04:30:00",
-                        title: "Test",
-                        end: "2023-02-10T14:30:00",
-                    },
-                    {
-                        start: "2023-02-15T04:30:00",
-                        title: "It should be default load",
-                        end: "2023-02-18T14:30:00",
-                    },
-                ],
-                eventClick: function (event) {
-                    swal('Event: ' + event.event.title);
-
-                },
-                eventDisplay: "block",
-                displayEventTime: false,
-                allDaySlot: false,
-                buttonText: {
-                    today: "Today",
-                    month: "Month",
-                    week: "Week",
-                    list: "Agenda",
-                },
-            },
-        };
-    },
-    methods: {
-        eventDescription() {
-
-            //Swal parace um metodo de add? Nome do evento?
-
-            swal("teste");
+          {
+            start: "2023-02-10T04:30:00",
+            title: "Test",
+            end: "2023-02-11T14:30:00",
+          },
+          {
+            start: "2023-02-08T04:30:00",
+            title: "Test",
+            end: "2023-02-10T14:30:00",
+          },
+          {
+            start: "2023-02-08T04:30:00",
+            title: "Test",
+            end: "2023-02-10T14:30:00",
+          },
+          {
+            start: "2023-02-15T04:30:00",
+            title: "It should be default load",
+            end: "2023-02-18T14:30:00",
+          },
+        ],
+        eventClick: function (event) {
+          swal("Event: " + event.event.title);
         },
-        addEvent() {
-            this.$router.push({ name: 'addEvent' });
-            this.calendarOptions.events = [
-                ...this.calendarOptions.events,
-                { title: 'Another Event', date: '2023-02-13' }
-            ];
+        eventDisplay: "block",
+        displayEventTime: false,
+        allDaySlot: false,
+        buttonText: {
+          today: "Today",
+          month: "Month",
+          week: "Week",
+          list: "Agenda",
         },
-        computed: {
-            optionsComputed() {
-                if (this.options) {
-                    this.calendarOptions.events = [
+      },
+      modal: null
+    };
+  },
+  mounted() {
+    this.createModal();
+  },
+  methods: {
+    eventDescription() {
+      //Swal parace um metodo de add? Nome do evento?
 
-
-                        //Info dos eventos
-
-                        {
-                            start: "2023-02-10T04:30:00",
-                            title: "Test",
-                            end: "2023-02-11T14:30:00",
-                        },
-                        {
-                            start: "2023-02-08T04:30:00",
-                            title: "Test",
-                            end: "2023-02-10T14:30:00",
-                        },
-                        {
-                            start: "2023-02-08T04:30:00",
-                            title: "Test",
-                            end: "2023-02-10T14:30:00",
-                        },
-                        {
-                            start: "2023-02-15T04:30:00",
-                            title: "It should be default load",
-                            end: "2023-02-18T14:30:00",
-                        },
-                    ]
-                } else {
-                    this.calendarOptions.events = [
-                        {
-                            start: "2023-02-15T04:30:00",
-                            title: "It should be default load",
-                            end: "2023-02-18T14:30:00",
-                        }
-                    ]
-                }
-
-            }
-        }
-
+      swal("teste");
     },
+    addEvent() {
+      this.$router.push({ name: "addEvent" });
+      this.calendarOptions.events = [
+        ...this.calendarOptions.events,
+        { title: "Another Event", date: "2023-02-13" },
+      ];
+    },
+    createModal() {
+      const element = this.$refs.uniqueid;
+      //console.log(element);
+      console.log(DDS);
+      console.log(element);
+      this.modal = new DDS.Modal(element, { trigger: "#example" });
+      console.log(this.modal);
+    }
+    
+    
+  },
 });
 </script>
 <style scoped>
 body {
-    font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
-
 
 /* Adicionar Styles para os botões, seguindo o padrão da Dell */
 
-
 .container {
-    padding-top: 1%;
-    padding-left: 15%;
-    display: inline-flex;
-    flex-direction: column;
-    padding-bottom: 5%;
+  padding-top: 1%;
+  padding-left: 15%;
+  display: inline-flex;
+  flex-direction: column;
+  padding-bottom: 5%;
 }
 
 .fc .fc-button .fc-icon {
-    vertical-align: bottom !important;
+  vertical-align: bottom !important;
 }
 
 .fc-event {
-    min-height: 45px;
+  min-height: 45px;
 }
 
 .fc-event-main,
 .fc-event-title {
-    white-space: pre-wrap;
+  white-space: pre-wrap;
 }
 
 .fc-event-title-container {
-    padding: 2px 6px;
+  padding: 2px 6px;
+}
+
+.dds__modal__content {
+  width: 800px;
+}
+
+.title {
+  color: #0063b8;
+  font-weight: 500;
+  max-width: 1024px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 </style>

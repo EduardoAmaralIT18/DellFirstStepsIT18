@@ -89,7 +89,7 @@ const router = createRouter({
     {
       path: '/addevent',
       name: 'addEvent',
-      component: () => import('../views/AddEventView.vue')
+      component: () => import('../components/AddEvent.vue')
     }, 
   ]
 })
