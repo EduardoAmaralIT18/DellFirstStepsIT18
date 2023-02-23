@@ -11,12 +11,12 @@ public class EventService : IEventService
         _dbContext = dbContext;
     }
 
-    public async Task<EventDTO> getEvent(int eventId)
+    public async Task<EventsModel> getEvent(int eventId)
     {
         var calendarEvent = await _dbContext.events.Where(e => e.id == eventId)
                                                     .Include(e => e.peopleInvolved)
                                                     .FirstOrDefaultAsync();
-        return EventDTO.convertModel2DTO(calendarEvent);
+        return calendarEvent;
     }
 
     public async Task<int> updateEvent(EventsModel eventsForm)
@@ -50,4 +50,31 @@ public class EventService : IEventService
             return 0;
         }
     }
-}
+
+    public async Task<int> addEvent(EventDTO events)
+    {
+            for (int i = 0; i < events.peopleInvolved.Count; i++)
+            {
+                var user = _dbContext.users.Where(usr => usr.id == events.peopleInvolved[i].id).FirstOrDefault();
+                events.peopleInvolved[i] = user;
+            }
+
+            var dbEvent = new EventsModel()
+            {
+                name = events.name,
+                eventType = (EventType)(int)events.eventType,
+                phaseType = (PhaseType)(int)events.phaseType,
+                startDate = events.startDate,
+                endDate = events.endDate,
+                where = events.where,
+                peopleInvolved = events.peopleInvolved,
+                edition = _dbContext.editions.Where(edition => edition.id == events.id).FirstOrDefault(),
+            };
+
+            await _dbContext.events.AddAsync(dbEvent);
+            int entries = await _dbContext.SaveChangesAsync();
+
+            return entries;
+        }
+    }
+

@@ -51,6 +51,23 @@ namespace ConnectDellBack.Tests
             return result.ToString();
         }
 
+        [Test]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult")]
+        public async Task<String> HTTPGET_addEvent_ReturnOk()
+        {
+            evnt = new EventDTO() {name = "name",
+                                    phaseType = PhaseType.Set_Up,
+                                    eventType = EventType.Activity,
+                                    startDate = DateTime.Now,
+                                    endDate = DateTime.Now,
+                                    where = "casa nelson",
+        };
+            ActionResult<IEnumerable<EventDTO>> actionResult = await eventController.addEvent(evnt);
+
+            Console.WriteLine(actionResult);
+            return actionResult.Result.ToString();
+        }
+
 
         [OneTimeTearDown]
         public void CleanUp()

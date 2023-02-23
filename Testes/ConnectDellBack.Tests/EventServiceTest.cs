@@ -50,7 +50,6 @@ namespace ConnectDellBack.Tests
 
             evnt = new EventsModel()
             {
-                id = 2,
                 name = "Event test",
                 phaseType = PhaseType.HandsOn,
                 eventType = EventType.Activity,
@@ -70,36 +69,33 @@ namespace ConnectDellBack.Tests
         [TestCase(ExpectedResult = true)]
         public async Task<bool> GetEventUpdated_ReturnTrue()
         {
-            var eventExpected = context.events.Where(ev => ev.id == 2).FirstOrDefault();
+            var eventExpected = context.events.Where(ev => ev.id == 1).FirstOrDefault();
 
-            var eventServices = await eventService.getEvent(2);
-
-            Console.WriteLine(eventExpected + "-----------------------EVENT EXPECTED----------------------");
-            Console.WriteLine(eventServices + "-----------------------EVENT SERVICE-------------------------");
+            var eventServices = await eventService.getEvent(1);
             return eventServices.Equals(eventExpected);
 
 
         }
 
-
         [Test]
         [TestCase(ExpectedResult = true)]
-        public async Task<bool> update_FirstEvent_AssertEqual()
+        public async Task<bool> update_SpecificEvent_ReturnTrue()
         {
-            evnt.name = "updatedName";
-            await eventService.updateEvent(evnt);
-            var eventUpdated = context.events.Where(ev => ev.id == 2).FirstOrDefault();
+            var eventOriginal = context.events.Where(ev => ev.id == 1).FirstOrDefault();
+            eventOriginal.name = "name";
+            var entries = await eventService.updateEvent(eventOriginal);
 
-            return eventUpdated.Equals(eventDTO);
+            return entries > 0;
 
-            // Assert.That(eventUpdated.id, Is.EqualTo(eventDTO.id));
-            // Assert.That(eventUpdated.name, Is.EqualTo(eventDTO.name));
-            // Assert.That(eventUpdated.phaseType, Is.EqualTo(eventDTO.phaseType));
-            // Assert.That(eventUpdated.eventType, Is.EqualTo(eventDTO.eventType));
-            // Assert.That(eventUpdated.startDate, Is.EqualTo(eventDTO.startDate));
-            // Assert.That(eventUpdated.endDate, Is.EqualTo(eventDTO.endDate));
-            // Assert.That(eventUpdated.where, Is.EqualTo(eventDTO.where));
+        }
 
+        [Test]
+        [TestCase(ExpectedResult = "Event test")]
+        public async Task<string> add_NewEvent_ReturnNewEvent()
+        {
+            await eventService.addEvent(eventDTO);
+            var result = await context.events.Where(ev => ev.id == 2).FirstOrDefaultAsync();
+            return result.name;
         }
 
 
