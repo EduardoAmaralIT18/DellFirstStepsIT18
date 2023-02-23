@@ -1,12 +1,31 @@
-
-
 <template>
     <!-- <NavBar />
-    <SideBar /> -->
+                <SideBar /> -->
     <div class="container">
         <a @click="addEvent()">Add Event</a>
         <a @click="options = !options">Change Options</a>
+        <a id="example">EDIT</a>
         <full-calendar class="calendar" :event-limit="2" :options="calendarOptions" />
+    </div>
+
+<!-- mudar a ref e o id do bota pra distinguir entre as modais -->
+    <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
+        <div class="dds__modal__content">
+            <div class="dds__modal__header">
+                <h3 class="dds__modal__title title" id="modal-headline-369536123">
+
+                    Manage Event
+                    <!-- <h2 class="title">Add Event</h2> -->
+                </h3>
+            </div>
+            <div id="modal-body-532887773" class="dds__modal__body">
+                <EditEvent @close-modal.="modal.close()" />
+            </div>
+        <div class="dds__modal__footer">
+                <!-- <button :class="buttonColor" type="button" name="modal-secondary-button"
+                        @click="$router.push({ name: 'HomePage' });">Ok</button> -->
+            </div>
+        </div>
     </div>
 </template>
  
@@ -44,6 +63,9 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
+import EditEvent from '../components/EditEvent.vue'
+var DDS = window.DDS;
+
 
 // 1. In month View- Day shoudl be like- Monday, Tuesday instead of Mon, Tue
 //2. Default load should be on Oct 2021, bcoz event starting from there.
@@ -51,12 +73,16 @@ import listPlugin from "@fullcalendar/list";
 export default defineComponent({
     components: {
         FullCalendar,
+        EditEvent
     },
     props: {
         eventDates: {
             type: Array,
             default: null,
         },
+    },
+    mounted() {
+        this.createModal();
     },
     data() {
         return {
@@ -113,6 +139,7 @@ export default defineComponent({
                     list: "Agenda",
                 },
             },
+            modal: null
         };
     },
     methods: {
@@ -127,6 +154,14 @@ export default defineComponent({
                 ...this.calendarOptions.events,
                 { title: 'Another Event', date: '2023-02-13' }
             ];
+        },
+        createModal() {
+            const element = this.$refs.uniqueid;
+            //console.log(element);
+            console.log(DDS);
+            console.log(element);
+            this.modal = new DDS.Modal(element, { trigger: "#example" });
+            console.log(this.modal);
         },
         computed: {
             optionsComputed() {
@@ -205,5 +240,17 @@ body {
 
 .fc-event-title-container {
     padding: 2px 6px;
+}
+
+.dds__modal__content {
+  width: 800px;
+}
+
+.title {
+  color: #0063b8;
+  font-weight: 500;
+  max-width: 1024px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 </style>
