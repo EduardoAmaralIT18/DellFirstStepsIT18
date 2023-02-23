@@ -1,27 +1,36 @@
 <template>
-
     <div class="container">
 
         <!-- Modal Personalizado -->
         <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
             <div class="dds__modal--md">
-            <div class="dds__modal__content">
-                <div class="dds__modal__header">
-                    <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
+                <div class="dds__modal__content">
+                    <div class="dds__modal__header">
+                        <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
+                    </div>
+                    <div id="modal-body-532887773" class="dds__modal__body">
+                        <p>
+                            {{ messageError }}
+                        </p>
+                    </div>
+                    <div class="dds__modal__footer">
+                        <button class="buttonModal" :class="buttonColor" type="button" name="modal-secondary-button"
+                            @click="$router.push({ name: 'EditionsPage' });">Ok</button>
+                    </div>
                 </div>
-                <div id="modal-body-532887773" class="dds__modal__body">
-                    <p>
-                        {{ messageError }}
-                    </p>
-                </div>
-                <div class="dds__modal__footer">
-                    <button class="buttonModal"  :class="buttonColor" type="button"
-                        name="modal-secondary-button" @click="$router.push({ name: 'EditionsPage' });">Ok</button>
-                </div>
-            </div>
             </div>
         </div>
 
+        <div ref="loading" id="loadingIndicator-overlay" class="dds__loading-indicator__container"
+            data-dds="loading-indicator">
+            <div class="dds__loading-indicator__overlay" aria-hidden="true"></div>
+            <div class="dds__loading-indicator__wrapper">
+                <div class="dds__loading-indicator">
+                    <div class="dds__loading-indicator__label" aria-live="polite">Loading...</div>
+                    <div class="dds__loading-indicator__spinner"></div>
+                </div>
+            </div>
+        </div>
 
         <RouterLink to="/editioninfo" class="goBack"> &larr; Go back</RouterLink>
         <form data-dds="form" class="dds__form dds__container">
@@ -38,8 +47,7 @@
                         <div class="dds__input-text__wrapper">
                             <input v-model="v$.edition.name.$model" type="text" class="dds__input-text"
                                 name="text-input-control-name-396765024" id="text-input-control-396765024"
-                                aria-labelledby="text-input-label-396765024 text-input-helper-396765024"
-                                required="true" />
+                                aria-labelledby="text-input-label-396765024 text-input-helper-396765024" required="true" />
 
                             <small id="text-input-helper-396765024" class="dds__input-text__helper"></small>
                             <div id="text-input-error-396765024" class="dds__invalid-feedback">Enter a edition number
@@ -57,29 +65,51 @@
                         </label>
                     </div>
                     <div id="intern_select">
-                        <input style="width:100%;" v-model="v$.edition.numberOfInterns.$model" type="number" min="1"
-                            max="22">
+                        <input style="width:100%;" v-model="edition.numberOfInterns" type="number" min="1" max="22">
                     </div>
                 </div>
+            </div>
 
+            <div class="dds__row">
                 <div class="dds__col--12 dds__col--sm-12">
-                    <div class="member__select" data-dds="select">
-                        <label id="select-label-141366292" for="select-control-141366292">Members</label>
-                        <small v-if="v$.edition.members.$error" class="help-block">Not possible to select more than 25
-                            members.</small>
+                    <!-- <div class="dds__select" data-dds="select"> -->
+                    <div class="dds__text-area__header">
+                        <label id="select-label-141366292" for="select-control-141366292">Members </label>
                         <small v-if="!validateInternsForm" class="help-block">Not possible to select more interns than
                             the amount stated.</small>
-                        <div class="multiselec dds__select__wrapper">
-                            <!--Colocar os  v$.editon.members.$model-->
-                           
-                            <!-- <small class="warning" v-if="v$.edition.members.$error">The Members field is
-                                    required.</small> -->
+                    </div>
+
+                    <!-- <div class="multiselec dds__select__wrapper"> -->
+                    <!-- <MultiSelect style="box-shadow: none ;" v-model="v$.program.members.$model" tipo="owner"/> -->
+
+                    <div class="dds__dropdown" data-dds="dropdown" ref="multiselect" id="multi-select-list-dropdown"
+                        data-selection="multiple" data-select-all-label="Select all">
+                        <div class="dds__dropdown__input-container">
+                            <div class="dds__dropdown__input-wrapper" autocomplete="off" aria-haspopup="listbox"
+                                aria-controls="multi-select-list-dropdown-popup">
+                                <input @blur="v$.edition.members.$touch"
+                                    id="multi-select-list-dropdown-input" name="multi-select-list-dropdown-name" type="text"
+                                    role="combobox" class="dds__dropdown__input-field"
+                                    aria-labelledby="multi-select-list-dropdown-label multi-select-list-dropdown-helper"
+                                    autocomplete="off" aria-expanded="false"
+                                    aria-controls="multi-select-list-dropdown-list" />
+                            </div>
+                        </div>
+                        <div id="multi-select-list-dropdown-popup" class="dds__dropdown__popup dds__dropdown__popup--hidden"
+                            role="presentation" tabindex="-1">
+                            <ul class="dds__dropdown__list" role="listbox" tabindex="-1"
+                                id="multi-select-list-dropdown-list">
+                                <li v-for="member in members" :key="member.id" class="dds__dropdown__item" role="none">
+                                    <button type="button" class="dds__dropdown__item-option" role="option"
+                                        data-selected="false" :data-value=member.id tabindex="-1">
+                                        <span class="dds__dropdown__item-label">{{ member.name }}</span>
+                                    </button>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-
             </div>
-
 
             <div class="dates dds__row">
                 <div class="dds__col--3 dds__col--sm-3">
@@ -166,16 +196,14 @@
                 :disabled="v$.$invalid || !validateInterns || !validateInternsForm" id="example">Submit</button>
         </form>
     </div>
-
 </template>
 
 <script lang ='ts'>
 import { defineComponent } from 'vue';
 import axios from 'axios';
 import { useVuelidate } from '@vuelidate/core';
-import { required, maxLength, maxValue } from '@vuelidate/validators';
+import { required } from '@vuelidate/validators';
 declare var DDS: any;
-
 //import moment from 'moment';
 
 type User = {
@@ -193,7 +221,6 @@ interface Data {
         id: number,
         name: string,
         numberOfInterns: Number,
-        numberOfMembers: Number,
         members: User | null,
         description: string,
         curriculum: string,
@@ -208,7 +235,10 @@ interface Data {
     titleError: string,
     buttonColor: string,
     editionsNames: EditionsNames | null,
-    originalName: string
+    originalName: string,
+    members: User | null,
+    multiSelect: unknown | null,
+    loading: unknown | null,
 
 }
 export default defineComponent({
@@ -218,6 +248,7 @@ export default defineComponent({
 
     mounted() {
         this.createModal();
+        this.loading = DDS.LoadingIndicator(this.$refs.loading);
     },
 
     data(): Data {
@@ -226,7 +257,6 @@ export default defineComponent({
                 id: 0,
                 name: '',
                 numberOfInterns: 0,
-                numberOfMembers: 0,
                 members: null,
                 description: '',
                 curriculum: '',
@@ -241,8 +271,10 @@ export default defineComponent({
             messageError: "",
             buttonColor: "nullButton",
             editionsNames: [],
-            originalName: ''
-
+            originalName: '',
+            members: null,
+            multiSelect: null,
+            loading: null,
         };
     },
     validations() {
@@ -256,12 +288,6 @@ export default defineComponent({
                 },
                 endDate: {
                     required
-                },
-                members: {
-                    maxLength: maxLength(25)
-                },
-                numberOfInterns: {
-                    maxValue: maxValue(21)
                 }
             }
         }
@@ -280,7 +306,6 @@ export default defineComponent({
                     this.edition.name = response.data.name;
                     this.originalName = response.data.name;
                     this.edition.numberOfInterns = response.data.numberOfInterns;
-                    this.edition.numberOfMembers = response.data.numberOfMembers;
                     this.edition.members = response.data.members;
                     this.edition.description = response.data.description;
                     this.edition.curriculum = response.data.curriculum;
@@ -293,13 +318,29 @@ export default defineComponent({
                 }
             })
 
-            axios.get('/edition/getEditionsNames?idProgram=' + this.$cookies.get("programId"))
+        axios.get('/edition/getEditionsNames?idProgram=' + this.$cookies.get("programId"))
             .then(function (response) {
                 return response;
             })
             .then(response => {
                 this.editionsNames = response.data;
             })
+
+        axios.get("/edition/getUsersNotAdmin")
+            .then(function (response) {
+                return response;
+            })
+            .then(response => {
+                this.members = response.data;
+                this.createMultiselect();
+                this.loading.show();
+                return;
+            });
+
+        setTimeout(() => {
+            this.showMembers();
+            this.loading.hide();
+        }, 1000);
     },
     methods: {
         onSubmit(): void {
@@ -314,9 +355,7 @@ export default defineComponent({
                     curriculum: this.edition.curriculum,
                     mode: this.edition.mode,
                     numberOfInterns: this.edition.numberOfInterns,
-                    numberOfMembers: this.edition.members?.length,
                     members: this.edition.members,
-                    //program: this.edition.program,
                 })
                     .then(function (response) {
                         return response;
@@ -349,6 +388,15 @@ export default defineComponent({
 
         },
 
+        createMultiselect(): void {
+            this.multiSelect = DDS.Dropdown(this.$refs.multiselect);
+
+            // eslint-disable-next-line
+            this.$refs.multiselect.addEventListener("ddsDropdownSelectionChangeEvent", (e) => {
+                this.searchMembers();
+            });
+        },
+
         createModal(): void {
             const element = this.$refs.uniqueid;
             // console.log(element);
@@ -374,6 +422,22 @@ export default defineComponent({
 
         },
 
+        searchMembers(): void {
+            this.edition.members = [];
+            var ownerMultiselect = this.multiSelect.getSelection();
+
+            ownerMultiselect.forEach((mMulti: number) => {
+                this.edition.members?.push(this.members?.find(m => m.id == mMulti as number))
+            });
+        },
+
+        showMembers(): void {
+            this.edition.members?.forEach(element => {
+                this.multiSelect.selectOption(element.id.toString());
+            });
+            this.searchMembers();
+        },
+
     },
     computed: {
         validateInterns(): boolean {
@@ -384,7 +448,7 @@ export default defineComponent({
                 }
             })
 
-            if (nInterns < 22 && nInterns >= 0) {
+            if (nInterns <= this.edition.numberOfInterns && nInterns >= 0) {
                 return true;
             } else {
                 return false;
@@ -529,7 +593,7 @@ span {
     font-size: 1rem;
     line-height: 1.5rem;
     padding: 0.6875rem 1.1875rem;
-    border: 0.0625rem solid rgba(0,0,0,0);
+    border: 0.0625rem solid rgba(0, 0, 0, 0);
     cursor: pointer;
     display: inline-flex;
     justify-content: center;
@@ -556,7 +620,7 @@ span {
     font-size: 1rem;
     line-height: 1.5rem;
     padding: 0.6875rem 1.1875rem;
-    border: 0.0625rem solid rgba(0,0,0,0);
+    border: 0.0625rem solid rgba(0, 0, 0, 0);
     cursor: pointer;
     display: inline-flex;
     justify-content: center;

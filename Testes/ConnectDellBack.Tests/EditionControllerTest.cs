@@ -45,7 +45,6 @@ namespace ConnectDellBack.Tests
                 startDate = DateTime.Now,
                 endDate = DateTime.Now,
                 description = "Testing the database",
-                numberOfMembers = 1,
                 numberOfInterns = 1,
                 mode = Mode.InOffice,
                 curriculum = "vue :c",

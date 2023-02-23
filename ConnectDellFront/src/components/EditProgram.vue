@@ -94,7 +94,7 @@
                 <div class="dds__dropdown__input-container">
                   <div class="dds__dropdown__input-wrapper" autocomplete="off" aria-haspopup="listbox"
                     aria-controls="multi-select-list-dropdown-popup">
-                    <input @focusin="showOwners" @blur="v$.program.owners.$touch" id="multi-select-list-dropdown-input"
+                    <input @blur="v$.program.owners.$touch" id="multi-select-list-dropdown-input"
                       name="multi-select-list-dropdown-name" type="text" role="combobox"
                       class="dds__dropdown__input-field"
                       aria-labelledby="multi-select-list-dropdown-label multi-select-list-dropdown-helper"
@@ -181,7 +181,7 @@ interface Data {
   titleError: string,
   buttonColor: string,
   multiSelect: unknown | null,
-  loading: unknown |null,
+  loading: unknown | null,
   owners: User | null
 }
 
@@ -241,6 +241,7 @@ export default defineComponent({
   created() {
     this.fetchData();
   },
+
   methods: {
     fetchData(): void {
       axios.get(`/Program/GetProgram?id=${this.idProgram}`)
@@ -286,10 +287,11 @@ export default defineComponent({
         });
 
       setTimeout(() => {
-          this.showOwners();
-          this.loading.hide();
-        }, 1000);
+        this.showOwners();
+        this.loading.hide();
+      }, 1000);
     },
+
     createMultiselect(): void {
       this.multiSelect = DDS.Dropdown(this.$refs.multiselect);
 
@@ -299,12 +301,14 @@ export default defineComponent({
       });
 
     },
+
     showOwners(): void {
       this.program.owners?.forEach(element => {
         this.multiSelect.selectOption(element.id.toString());
       });
       this.searchOwner();
     },
+
     searchOwner(): void {
       this.program.owners = [];
       var ownerMultiselect = this.multiSelect.getSelection();
@@ -327,11 +331,13 @@ export default defineComponent({
         return n;
       }
     },
+
     createModal(): void {
       const element = this.$refs.uniqueid;
       const modal = new DDS.Modal(element, { trigger: "#example" });
       console.log(modal);
     },
+
     onSubmit(): void {
       if (this.nameValidation() != 0) {
         this.titleError = "Error";

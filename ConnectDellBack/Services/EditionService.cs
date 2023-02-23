@@ -37,7 +37,6 @@ public class EditionService : IEditionService
             description = edition.description,
             curriculum = edition.curriculum,
             numberOfInterns = edition.numberOfInterns,
-            numberOfMembers = edition.numberOfMembers,
             members = aux,
             interns = targetInterns,
 
@@ -69,7 +68,6 @@ public class EditionService : IEditionService
             edition.endDate = editionForm.endDate;
             edition.description = editionForm.description;
             edition.curriculum = editionForm.curriculum;
-            edition.numberOfMembers = editionForm.numberOfMembers;
             edition.numberOfInterns = editionForm.numberOfInterns;
             // edition.members = editionForm.members;
 

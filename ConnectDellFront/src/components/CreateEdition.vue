@@ -220,7 +220,6 @@ interface Data {
     edition: {
         name: string,
         numberOfInterns: Number,
-        numberOfMembers: Number,
         members: User | null,
         description: string,
         curriculum: string,
@@ -294,7 +293,6 @@ export default defineComponent({
             edition: {
                 name: '',
                 numberOfInterns: 0,
-                numberOfMembers: 0,
                 members: null,
                 description: '',
                 curriculum: '',
@@ -390,7 +388,6 @@ export default defineComponent({
                     curriculum: this.edition.curriculum,
                     mode: this.edition.mode,
                     numberOfInterns: this.edition.numberOfInterns,
-                    numberOfMembers: this.edition.members?.length,
                     members: this.edition.members,
                     program: this.edition.program,
                 })
