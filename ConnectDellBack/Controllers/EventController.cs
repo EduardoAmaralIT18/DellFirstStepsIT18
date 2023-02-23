@@ -23,7 +23,8 @@ public class EventController : ControllerBase
     public async Task<ActionResult<EventDTO>> getEventToUpdate(int eventId)
     {
         var result = await _service.getEvent(eventId);
-        return result == null ? NoContent() : Ok(result);
+        EventDTO eventDTO = EventDTO.convertModel2DTO(result);
+        return result == null ? NotFound() : Ok(eventDTO);
     }
 
     [HttpPost("updateEvent")] 

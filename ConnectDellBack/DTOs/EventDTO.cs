@@ -33,12 +33,15 @@ public class EventDTO
                     aux2.Add(p);
                 }
                 aux.peopleInvolved = aux2;
+                
             }
 
+            return aux;
         }
 
+        return null;
 
-        return aux;
+        
     }
 
 }

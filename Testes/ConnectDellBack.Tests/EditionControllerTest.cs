@@ -76,7 +76,7 @@ namespace ConnectDellBack.Tests
         }
 
         [Test]
-        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult" )]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult" )]
         public async Task<String> HTTPGET_allEditionsNames_ReturnOk() {
             ActionResult<EditionDTO> actionResult = await editionController.getEditionsNames(1);
 

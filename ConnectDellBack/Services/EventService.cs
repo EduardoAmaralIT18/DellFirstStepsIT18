@@ -11,12 +11,12 @@ public class EventService : IEventService
         _dbContext = dbContext;
     }
 
-    public async Task<EventDTO> getEvent(int eventId)
+    public async Task<EventsModel> getEvent(int eventId)
     {
         var calendarEvent = await _dbContext.events.Where(e => e.id == eventId)
                                                     .Include(e => e.peopleInvolved)
                                                     .FirstOrDefaultAsync();
-        return EventDTO.convertModel2DTO(calendarEvent);
+        return calendarEvent;
     }
 
     public async Task<int> updateEvent(EventsModel eventsForm)

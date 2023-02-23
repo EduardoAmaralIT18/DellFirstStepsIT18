@@ -9,7 +9,7 @@ namespace ConnectDellBack.Services
         public Task<int> updateEvent(EventsModel eventsForm);
 
         //get pro formulario
-        public Task<EventDTO> getEvent(int eventId);
+        public Task<EventsModel> getEvent(int eventId);
 
     }
 
