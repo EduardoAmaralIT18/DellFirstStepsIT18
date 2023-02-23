@@ -37,5 +37,15 @@ public class EventService : IEventService
 
         return entries;
     }
+    public async Task<int> removeEvent(int idEvent)
+    {
+        var evnt = await _dbContext.events.Where(evnt => evnt.id == idEvent).FirstOrDefaultAsync();
+        _dbContext.events.Remove(evnt);
+        var entries = await _dbContext.SaveChangesAsync();
+
+        return entries;
+
+    }
+
 
 }
