@@ -73,7 +73,6 @@ namespace ConnectDellBack.Tests
             Assert.That(editionUpdated.id, Is.EqualTo(model.id));
             Assert.That(editionUpdated.name, Is.EqualTo(model.name));
             Assert.That(editionUpdated.description, Is.EqualTo(model.description));
-            Assert.That(editionUpdated.numberOfMembers, Is.EqualTo(model.numberOfMembers));
             Assert.That(editionUpdated.numberOfInterns, Is.EqualTo(model.numberOfInterns));
             Assert.That(editionUpdated.curriculum, Is.EqualTo(model.curriculum));
             Assert.That(editionUpdated.mode, Is.EqualTo(workModeUpdated));

@@ -64,7 +64,6 @@ public class EditionService : IEditionService
             edition.endDate = editionForm.endDate.AddDays(1);
             edition.description = editionForm.description;
             edition.curriculum = editionForm.curriculum;
-            edition.numberOfMembers = editionForm.numberOfMembers;
             edition.numberOfInterns = editionForm.numberOfInterns;
             // edition.members = editionForm.members;
 
