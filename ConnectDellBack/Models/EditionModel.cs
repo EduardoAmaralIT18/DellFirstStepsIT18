@@ -27,10 +27,6 @@ public class EditionModel {
     [StringLength(500, ErrorMessage = "The edition's description must be at most 500 characters.")]
     public string description {get;set;}
 
-    // // [Range (1,25, ErrorMessage = "The edition must have at least 1 member!")]    
-    // // [RegularExpression(@"\b([1-9]|[1-9][0-9])\b")]
-    // // public int numberOfMembers {get;set;}
-
     [Range (1,21, ErrorMessage = "The edition must have at least 1 intern!")] // ask PO about the maximum number of interns
     [RegularExpression(@"\b([1-9]|[1-9][0-9])\b")]
     public int numberOfInterns {get;set;}
