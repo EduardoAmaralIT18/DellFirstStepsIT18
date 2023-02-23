@@ -54,7 +54,6 @@ public class EditionService : IEditionService
 
         var edition = _dbContext.editions.Where(ed => ed.id == editionForm.id)
                                          .Include(ed => ed.members)
-                                       //.Include(ed => ed.memberships)
                                          .FirstOrDefault();
 
         if (edition != null)
