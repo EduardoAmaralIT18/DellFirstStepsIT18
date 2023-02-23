@@ -118,7 +118,7 @@
             </div>
           </fieldset>
 
-          <button class="submitbutton cancelButton" type="button"
+          <button class="submitbutton dds__button dds__button--secondary" type="button"
             @click.prevent="$router.push('EditionsPage')">
             Cancel
           </button>
@@ -468,29 +468,4 @@ span {
   width: 800px;
 }
 
-.cancelButton {
-  background-color: #d9f5fd;
-  color: #0672cb;
-  border-radius: 0.125rem;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  padding: 0.6875rem 1.1875rem;
-  border: 0.0625rem solid rgba(0, 0, 0, 0);
-  cursor: pointer;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 500;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  vertical-align: middle;
-  white-space: normal;
-  fill: currentColor;
-}
-
-.cancelButton:hover {
-  background-color: #caf0fb;
-}
 </style>
