@@ -38,7 +38,7 @@ Para realizar as instalações necessárias para que o programa possa rodar com 
 - Instalar o SKD.NET utilizando o aplicativo Workspace One da sua máquina.
 - Instalar o Dotnet. Para fazer isso, execute o seguinte comando via command prompt: `dotnet tool install --global dotnet-ef` Assim que a instalação for concluída, siga para o próximo passo.
 - Instalar o NPM/NODE utilizando o aplicativo Workspace One da sua máquina.
-- Istalar o NUnit. Um tutorial para realizar isso pode ser visto aqui: [Tutorial de Instalação Nunit](https://docs.nunit.org/articles/nunit/getting-started/installation.html)
+- Instalar o NUnit. Um tutorial para realizar isso pode ser visto aqui: [Tutorial de Instalação Nunit](https://docs.nunit.org/articles/nunit/getting-started/installation.html)
 - Instalar o Selenium. Existe um plug-in no Microsoft Edge que pode ser instalado no seu Browser.
 - Instalar o Git for Windows utilizando o aplicativo Workspace One da sua máquina.
 - Existe tambem a opção de instalar o Github for Desktop, caso tenha conhecimento da ferramenta.
