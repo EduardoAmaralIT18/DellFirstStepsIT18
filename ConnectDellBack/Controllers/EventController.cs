@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using ConnectDellBack.Services;
 using ConnectDellBack.DTOs;
 using ConnectDellBack.Models;
+using System.Collections.Generic;
 
 namespace ConnectDellBack.Controllers;
 
@@ -41,6 +42,37 @@ public class EventController : ControllerBase
        } else {
         return NotFound();
        }
+    [HttpGet("getEventToUpdate")]
+    public async Task<ActionResult<EventDTO>> getEventToUpdate(int eventId)
+    {
+        var result = await _service.getEvent(eventId);
+        return result == null ? NoContent() : Ok(result);
+    }
+
+    [HttpPost("updateEvent")] 
+    public async Task<ActionResult> updateEvent(EventsModel eventForm) {
+        int entries = await _service.updateEvent(eventForm);
+        if (entries > 0) {
+            return Ok();
+        } else {
+            return NotFound();
+        }
+    }
+
+    [HttpGet("getAllEvents")]
+    public async Task<ActionResult<IEnumerable<EventDTO>>> getAllEvents(int editionId) {
+        var result = await _service.getAllEvents(editionId);
+        
+        if (result.Count() > 0)
+        {
+            return Ok(result);
+        } else if (result.Count() == 0){
+            return NoContent();
+        } else
+        {
+            return BadRequest();
+
+        }
     }
 
 }

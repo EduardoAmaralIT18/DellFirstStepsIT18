@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace ConnectDellBack.Models;
-////////// ALTERADO
 public class ApplicationContext : DbContext
 {
 
@@ -332,7 +331,6 @@ public class ApplicationContext : DbContext
                 startDate = new DateTime(2022,10,10),
                 endDate = new DateTime(2023,05,28),
                 description = "Seventeenth edition of the IT Academy program focused solely on the self-titled female audience.",
-                numberOfMembers = 20,
                 numberOfInterns = 21, 
                 mode = Mode.Hybrid,
                 curriculum = "CSS, HTML, C#, JavaScript, SQL Server, Entity Framework, Asp.NET, Vue.js entre outros.",
@@ -344,7 +342,6 @@ public class ApplicationContext : DbContext
                 startDate = new DateTime(2021,10,10),
                 endDate = new DateTime(2022,09,10),
                 description = "Sixteenth edition of the IT Academy program aimed at undergraduate students in computer science courses.",
-                numberOfMembers = 25,
                 numberOfInterns = 20, 
                 mode = Mode.Remote,
                 curriculum = "CSS, HTML, C#, JavaScript, SQL Server, Entity Framework, Asp.NET, Vue.js",
@@ -356,7 +353,6 @@ public class ApplicationContext : DbContext
                 startDate = new DateTime(2023,10,10),
                 endDate = new DateTime(2024,02,28),
                 description = "Eighteenth edition of the IT Academy program aimed at undergraduate students in computer science courses.",
-                numberOfMembers = 25,
                 numberOfInterns = 21, 
                 mode = Mode.InOffice,
                 curriculum = "CSS, HTML, C#, JavaScript, SQL Server, Entity Framework, Asp.NET, Vue.js",
@@ -370,7 +366,6 @@ public class ApplicationContext : DbContext
                 startDate = new DateTime(2022,10,10),
                 endDate = new DateTime(2023,05,28),
                 description = "Seventeenth edition of the Design Academy program",
-                numberOfMembers = 25,
                 numberOfInterns = 21, 
                 mode = Mode.Hybrid,
                 curriculum = "User Experience and User Interface",
@@ -382,7 +377,6 @@ public class ApplicationContext : DbContext
                 startDate = new DateTime(2021,10,10),
                 endDate = new DateTime(2022,02,28),
                 description = "Sixteenth edition of the Design Academy program",
-                numberOfMembers = 25,
                 numberOfInterns = 21, 
                 mode = Mode.Hybrid,
                 curriculum = "User Experience and User Interface",
@@ -396,7 +390,6 @@ public class ApplicationContext : DbContext
                 startDate = new DateTime(2022,10,10),
                 endDate = new DateTime(2023,05,28),
                 description = "Seventeenth edition of the Infrastructure Resindece program",
-                numberOfMembers = 25,
                 numberOfInterns = 21, 
                 mode = Mode.Hybrid,
                 curriculum = "Computer Architecture, Cloud Computing, Database, and Security and IT environments",
@@ -408,7 +401,6 @@ public class ApplicationContext : DbContext
                 startDate = new DateTime(2021,10,10),
                 endDate = new DateTime(2022,02,28),
                 description = "Sixteenth edition of the Infrastructure Resindece program",
-                numberOfMembers = 25,
                 numberOfInterns = 21, 
                 mode = Mode.Hybrid,
                 curriculum = "Computer Architecture, Cloud Computing, Database, and Security and IT environments",
@@ -417,6 +409,7 @@ public class ApplicationContext : DbContext
         );
 
         modelBuilder.Entity<EventsModel>().HasData(
+            //Criacao de phases
             new {
                 id = 1,
                 editionid = 1,
@@ -427,7 +420,119 @@ public class ApplicationContext : DbContext
                 //peopleInvolved = "Puc and Dell Staff",
                 where = "Remote Enviroment",
                 phaseType = PhaseType.Set_Up,
-                eventType = EventType.Phase,
+                eventType = EventType.Phase,   
+            },
+            new {
+                id = 3,
+                editionid = 1,
+                name = "Training",
+                startDate = new DateTime(2022,10,19),
+                endDate = new DateTime(2022,12,09),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.Training,
+                eventType = EventType.Phase,   
+            },
+            new {
+                id = 2,
+                editionid = 1,
+                name = "Inception",
+                startDate = new DateTime(2022,12,12),
+                endDate = new DateTime(2022,12,16),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.HandsOn,
+                eventType = EventType.Phase,   
+            },
+            new {
+                id = 4,
+                editionid = 1,
+                name = "Sprint 1",
+                startDate = new DateTime(2023,01,03),
+                endDate = new DateTime(2023,01,16),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.Sprints,
+                eventType = EventType.Phase,   
+            },
+            new {
+                id = 5,
+                editionid = 1,
+                name = "Sprint 2",
+                startDate = new DateTime(2023,01,17),
+                endDate = new DateTime(2023,01,30),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.Sprints,
+                eventType = EventType.Phase,   
+            },
+            new {
+                id = 6,
+                editionid = 1,
+                name = "Sprint 3",
+                startDate = new DateTime(2023,01,31),
+                endDate = new DateTime(2023,02,13),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.Sprints,
+                eventType = EventType.Phase,   
+            },
+            new {
+                id = 7,
+                editionid = 1,
+                name = "Sprint 4",
+                startDate = new DateTime(2023,02,14),
+                endDate = new DateTime(2023,02,28),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.Sprints,
+                eventType = EventType.Phase,   
+            },
+            //criação de activities
+            new {
+                id = 8,
+                editionid = 1,
+                name = "Meeting with Rafael",
+                //date do BD: 2022-08-10 00:00:00.0000000
+                startDate = new DateTime(2023,02,06, 14,00,00),
+                endDate = new DateTime(2023,02,06, 14,30,00),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.None,
+                eventType = EventType.Activity,   
+            },
+            new {
+                id = 9,
+                editionid = 1,
+                name = "Meeting with Valdomiro",
+                startDate = new DateTime(2023,02,08, 14,00,00),
+                endDate = new DateTime(2023,02,08, 14,30,00),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.None,
+                eventType = EventType.Activity,   
+            },
+            new {
+                id = 10,
+                editionid = 1,
+                name = "Meeting with Andre",
+                startDate = new DateTime(2023,02,07, 16,30,00),
+                endDate = new DateTime(2023,02,07, 17,00,00),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.None,
+                eventType = EventType.Activity,   
+            },
+            new {
+                id = 11,
+                editionid = 1,
+                name = "Meeting with Cristina",
+                startDate = new DateTime(2023,02,14, 14,00,00),
+                endDate = new DateTime(2023,02,14, 14,30,00),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.None,
+                eventType = EventType.Activity,   
+            },
+            new {
+                id = 12,
+                editionid = 1,
+                name = "Meeting with Rogerio",
+                startDate = new DateTime(2023,05,28, 14,00,00),
+                endDate = new DateTime(2023,05,28, 14,30,00),
+                where = "Remote Enviroment",
+                phaseType = PhaseType.None,
+                eventType = EventType.Activity,   
             }
         );
 

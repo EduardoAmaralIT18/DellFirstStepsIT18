@@ -11,6 +11,20 @@
                 My Programs
             </h4>
             <div class="row">
+                <div class="initialCard col-3 dds__ml-3 dds__mr-4 dds__mb-3" v-if="IsAdmin()">
+                    <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
+                        <div class="dds__card">
+                            <div class="dds__card__content">
+                                <div class="addProgramIcon dds__card__body">
+                                    <RouterLink style="text-decoration: none" to="/createprogram">
+                                        +
+                                    </RouterLink>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="initialCard col-3 dds__ml-3 dds__mr-4 dds__mb-3" v-for="(item, i) in myPrograms" :key="i">
                     <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
                         <div class="dds__card">
@@ -60,20 +74,6 @@
                                         Learn more ➔
                                     </RouterLink>
                                     <!-- adicionar metodo que seta os cookies com o id referente a div clicada -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="initialCard col-3 dds__ml-3 dds__mr-4 dds__mb-3" v-if="IsAdmin()">
-                    <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
-                        <div class="dds__card">
-                            <div class="dds__card__content">
-                                <div class="addProgramIcon dds__card__body">
-                                    <RouterLink style="text-decoration: none" to="/createprogram">
-                                        +
-                                    </RouterLink>
                                 </div>
                             </div>
                         </div>

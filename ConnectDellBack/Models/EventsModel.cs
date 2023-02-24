@@ -7,7 +7,7 @@ public enum PhaseType {
     Training,
     Sprints,
     HandsOn,
-    ManagerMeetings
+    None
 }
 
 public enum EventType {
@@ -19,7 +19,7 @@ public class EventsModel {
 
     public int id {get;set;}
     [Required]
-    [StringLength(50, MinimumLength = 5, ErrorMessage = "The event's name must be at most 25 characters.")]
+    [StringLength(50, MinimumLength = 5, ErrorMessage = "The event's name must be at most 30 characters.")]
     public string name {get;set;} = null!;
 
     [Required]
@@ -34,7 +34,7 @@ public class EventsModel {
     //[IsValidEndDate ("startDate")]
     public DateTime endDate {get;set;}
 
-    public string where {get;set;} = null!;
+    public string? where { get;set; }
 
     //Lista de Usuários Envolvidos
     public List<UserModel> peopleInvolved {get;set;} = new List<UserModel>();
