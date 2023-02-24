@@ -31,11 +31,11 @@ public class ProgramController : ControllerBase
         int entries = await _service.addProgram(program);
         if (entries > 0)
         {
-            return Ok();
+            return Accepted();
         }
         else
         {
-            return NotFound();
+            return BadRequest();
         }
     }
 
@@ -43,13 +43,13 @@ public class ProgramController : ControllerBase
     public async Task<ActionResult<ProgramInfoDTO>> showInfoProgram(int id1, int idUser)
     {
         var result = await _service.getProgramInfo(id1, idUser);
-        return result == null ? NoContent() : Ok(result);
+        return result == null ? NotFound() : Ok(result);
     }
 
     [HttpGet("showBasicInfo")]
-    public async Task<ActionResult<ProgramInfoDTO>> showBasicInfo(int id1)
+    public async Task<ActionResult<ProgramInfoDTO>> showBasicInfo(int id)
     {
-        var result = await _service.getProgramInfoNoPermission(id1);
+        var result = await _service.getProgramInfoNoPermission(id);
         return result == null ? NoContent() : Ok(result);
     }
 
@@ -57,14 +57,14 @@ public class ProgramController : ControllerBase
     public async Task<ActionResult> UpdateProgram(ProgramModel program)
     {
         int entries = await _service.UpdateProgram(program);
-        return entries > 0 ? Ok() : NotFound();
+        return entries > 0 ? Ok() : BadRequest();
     }
 
     [HttpGet("GetProgram")]
     public async Task<ActionResult<ProgramModel>> GetProgram(int id)
     {
         var result = await _service.GetProgram(id);
-        return result == null ? NoContent() : Ok(result);
+        return result == null ? NotFound() : Ok(result);
     }
 
     [HttpGet("GetProgramsName")]
@@ -73,5 +73,4 @@ public class ProgramController : ControllerBase
         var result = await _service.GetProgramsName();
         return result == null ? NoContent() : Ok(result);
     }
-
 }

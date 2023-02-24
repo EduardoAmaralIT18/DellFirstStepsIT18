@@ -18,6 +18,7 @@ namespace ConnectDellBack.Tests
         ApplicationContext context;
         NewsService newsService;
         NewsController newsController;
+        ContentDTO content;       
 
         [OneTimeSetUp]
         public void SetUp()
@@ -28,6 +29,13 @@ namespace ConnectDellBack.Tests
             newsService = new NewsService(context);
             newsController = new NewsController(new NullLogger<NewsController>(), newsService);
 
+            content = new ContentDTO()
+            {
+                title = "Title Test",
+                text = "Text Test",
+                author = 1,
+                program = 1,
+            };
         }
 
         [Test]
@@ -43,17 +51,20 @@ namespace ConnectDellBack.Tests
         [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult")]
         public async Task<String> HTTPPOST_AddContent_ReturnOK()
         {
-            var content = new ContentDTO()
-            {
-                title = "Title Test",
-                text = "Text Test",
-                author = 1,
-                program = 1,
-            };
 
             ActionResult actionResult = await newsController.AddContent(content);
 
             return actionResult.ToString();
+        }
+
+        [Test]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
+        public async Task<String> HTTPPOST_UpdateNews_ReturnOk()
+        {
+            content.title = "New title";
+            ActionResult<NewsDTO> actionResult = await newsController.UpdateNews(content);
+
+            return actionResult.Result.ToString();
         }
 
         [Test]

@@ -80,5 +80,42 @@ public class EventService : IEventService
 
             return entries;
         }
-    }
 
+    public async Task<IEnumerable<EventDTO>> getAllEvents(int editionId) {
+        // VERSÃO ANTIGA
+        // var eventFromDb = await _dbContext.editions.Where(ed => ed.id == editionId)
+        //                                             .Include(ed => ed.events)
+        //                                             .FirstOrDefaultAsync();
+
+        // List<EventDTO> allEvents = new List<EventDTO>();
+
+        // foreach(var item in eventFromDb.events){
+        //     allEvents.Add(EventDTO.convertModel2DTO(item));
+        // }
+
+        // return allEvents;
+
+        //Busca todos os eventos associados ao id da edição passada por parametro.
+
+        EventsModel[]? eventFromDb = null;
+
+        eventFromDb = await _dbContext.events.Where(ev => ev.edition.id == editionId)
+                                                 //.FirstOrDefaultAsync();
+                                                 .ToArrayAsync<EventsModel>();
+        List<EventDTO> aux = new List<EventDTO>();
+
+        if (eventFromDb == null) {
+            aux = null;
+            return aux;
+        } else {
+        
+            foreach (var item in eventFromDb)
+            {
+                aux.Add(EventDTO.convertModel2DTO(item));
+            }
+        
+            return aux;
+        }
+
+    }
+}

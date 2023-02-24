@@ -1,13 +1,14 @@
-
 <template>
-
     <div class="container">
 
         <!-- Linha abaixo alterar (Tirar do botão)-->
         <!-- <button class="dds__button" id="example" type="button">Launch modal button</button> -->
         <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
-            <div class="dds__modal__content">
-                
+            <div class="dds__modal--md">
+
+                <div class="dds__modal__content">
+
+
                     <div class="dds__modal__header">
                         <h3 class="dds__modal__title" id="modal-headline-369536123">{{ titleError }}</h3>
                     </div>
@@ -17,10 +18,10 @@
                         </p>
                     </div>
                     <div class="dds__modal__footer">
-                        <button :class="buttonColor" type="button" name="modal-secondary-button"
+                        <button :class="buttonColor" class="buttonModal" type="button" name="modal-secondary-button"
                             @click="$router.push({ name: 'ProgramsPage' });">Ok</button>
                     </div>
-            
+                </div>
             </div>
         </div>
 
@@ -40,8 +41,7 @@
                         <div class="dds__input-text__wrapper">
                             <input v-model="v$.edition.name.$model" type="text" class="dds__input-text"
                                 name="text-input-control-name-396765024" id="text-input-control-396765024"
-                                aria-labelledby="text-input-label-396765024 text-input-helper-396765024"
-                                required="true" />
+                                aria-labelledby="text-input-label-396765024 text-input-helper-396765024" required="true" />
 
                             <small id="text-input-helper-396765024" class="dds__input-text__helper"></small>
                             <div id="text-input-error-396765024" class="dds__invalid-feedback">Enter a edition number
@@ -66,21 +66,47 @@
 
                 </div>
 
+            </div>
+
+            <div class="dds__row">
                 <div class="dds__col--12 dds__col--sm-12">
-                    <div class="member__select" data-dds="select">
-                        <label id="select-label-141366292" for="select-control-141366292">Members</label>
-                        <small v-if="v$.edition.members.$error" class="help-block">Not possible to select more than 25
-                            members.</small>
+                    <!-- <div class="dds__select" data-dds="select"> -->
+                    <div class="dds__text-area__header">
+                        <label id="select-label-141366292" for="select-control-141366292">Members </label>
                         <small v-if="!validateInternsForm" class="help-block">Not possible to select more interns than
                             the amount stated.</small>
-                        <div class="multiselec dds__select__wrapper">
-                            <MultiSelect style="box-shadow: none ;" v-model="v$.edition.members.$model"
-                                tipo="members" />
+                    </div>
+
+                    <!-- <div class="multiselec dds__select__wrapper"> -->
+                    <!-- <MultiSelect style="box-shadow: none ;" v-model="v$.program.members.$model" tipo="owner"/> -->
+
+                    <div class="dds__dropdown" data-dds="dropdown" ref="multiselect" id="multi-select-list-dropdown"
+                        data-selection="multiple" data-select-all-label="Select all">
+                        <div class="dds__dropdown__input-container">
+                            <div class="dds__dropdown__input-wrapper" autocomplete="off" aria-haspopup="listbox"
+                                aria-controls="multi-select-list-dropdown-popup">
+                                <input @blur="v$.edition.members.$touch" id="multi-select-list-dropdown-input"
+                                    name="multi-select-list-dropdown-name" type="text" role="combobox"
+                                    class="dds__dropdown__input-field"
+                                    aria-labelledby="multi-select-list-dropdown-label multi-select-list-dropdown-helper"
+                                    autocomplete="off" aria-expanded="false"
+                                    aria-controls="multi-select-list-dropdown-list" />
+                            </div>
+                        </div>
+                        <div id="multi-select-list-dropdown-popup" class="dds__dropdown__popup dds__dropdown__popup--hidden"
+                            role="presentation" tabindex="-1">
+                            <ul class="dds__dropdown__list" role="listbox" tabindex="-1"
+                                id="multi-select-list-dropdown-list">
+                                <li v-for="member in members" :key="member.id" class="dds__dropdown__item" role="none">
+                                    <button type="button" class="dds__dropdown__item-option" role="option"
+                                        data-selected="false" :data-value=member.id tabindex="-1">
+                                        <span class="dds__dropdown__item-label">{{ member.name }}</span>
+                                    </button>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-
-
             </div>
 
 
@@ -166,20 +192,17 @@
                 </div>
             </div>
             <!-- </fieldset> -->
-            <button class="submitbutton dds__button dds__button--lg" type="button" id="example"
-                @click.prevent="onSubmit()"
+            <button class="submitbutton dds__button dds__button--lg" type="button" id="example" @click.prevent="onSubmit()"
                 :disabled="v$.$invalid || !validateInterns || !validateInternsForm">Submit</button>
         </form>
     </div>
-
 </template>
 
 <script lang ='ts'>
 import { defineComponent } from 'vue';
 import axios from 'axios';
 import { useVuelidate } from '@vuelidate/core';
-import { required, maxLength, maxValue } from '@vuelidate/validators';
-import MultiSelect from './MultipleSelect.vue';
+import { required } from '@vuelidate/validators';
 declare var DDS: any;
 
 
@@ -197,7 +220,6 @@ interface Data {
     edition: {
         name: string,
         numberOfInterns: Number,
-        numberOfMembers: Number,
         members: User | null,
         description: string,
         curriculum: string,
@@ -206,10 +228,12 @@ interface Data {
         endDate: null | Date | string,
         program: Number
     },
+    members: User | null,
     messageError: string,
     titleError: string,
     buttonColor: string,
-    editionsNames: EditionsNames | null
+    editionsNames: EditionsNames | null,
+    multiSelect: unknown | null,
 
 
 }
@@ -219,6 +243,13 @@ export default defineComponent({
     },
     mounted() {
         this.createModal();
+
+        this.multiSelect = DDS.Dropdown(this.$refs.multiselect);
+
+         // eslint-disable-next-line
+         this.$refs.multiselect.addEventListener("ddsDropdownSelectionChangeEvent", (e) => {
+            this.searchMembers();
+        });
     },
     created() {
         axios.get('/edition/getEditionsNames?idProgram=' + this.$cookies.get("programId"))
@@ -227,7 +258,16 @@ export default defineComponent({
             })
             .then(response => {
                 this.editionsNames = response.data;
+            });
+
+        axios.get("/edition/getUsersNotAdmin")
+            .then(function (response) {
+                return response;
             })
+            .then(response => {
+                this.members = response.data;
+                return;
+            });
 
     },
 
@@ -243,24 +283,16 @@ export default defineComponent({
                 endDate: {
                     required
                 },
-                members: {
-                    maxLength: maxLength(25)
-                },
-                numberOfInterns: {
-                    maxValue: maxValue(21)
-                }
             }
         }
     },
     components: {
-        MultiSelect
     },
     data(): Data {
         return {
             edition: {
                 name: '',
                 numberOfInterns: 0,
-                numberOfMembers: 0,
                 members: null,
                 description: '',
                 curriculum: '',
@@ -269,10 +301,12 @@ export default defineComponent({
                 endDate: new Date().toISOString().slice(0, 10),
                 program: 0
             },
+            members: null,
             titleError: "",
             messageError: "",
             buttonColor: "nullButton",
-            editionsNames: []
+            editionsNames: [],
+            multiSelect: null,
         };
 
     },
@@ -285,7 +319,7 @@ export default defineComponent({
                 }
             })
 
-            if (nInterns < 22 && nInterns >= 0) {
+            if (nInterns <= this.edition.numberOfInterns && nInterns >= 0) {
                 return true;
             } else {
                 return false;
@@ -308,6 +342,15 @@ export default defineComponent({
         }
     },
     methods: {
+        searchMembers(): void{
+            this.edition.members = [];
+            var ownerMultiselect = this.multiSelect.getSelection();
+    
+            ownerMultiselect.forEach((mMulti: number) => {
+                this.edition.members?.push(this.members?.find(m => m.id == mMulti as number))
+            });
+        },
+
         createModal(): void {
             const element = this.$refs.uniqueid;
             // console.log(element);
@@ -345,7 +388,6 @@ export default defineComponent({
                     curriculum: this.edition.curriculum,
                     mode: this.edition.mode,
                     numberOfInterns: this.edition.numberOfInterns,
-                    numberOfMembers: this.edition.members?.length,
                     members: this.edition.members,
                     program: this.edition.program,
                 })
@@ -369,8 +411,8 @@ export default defineComponent({
 
                         } else {
                             this.buttonColor = "errorButton";
-                           
-                             this.titleError = "Error";
+
+                            this.titleError = "Error";
                             this.messageError = "I am sorry, something went wrong. Try again later.";
 
                         }

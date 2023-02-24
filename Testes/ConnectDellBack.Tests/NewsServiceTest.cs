@@ -20,6 +20,7 @@ namespace ConnectDellBack.Tests
                                                                                 .Options;
         ApplicationContext context;
         NewsService newsService;
+        ContentDTO content;
 
         [OneTimeSetUp]
         public void SetUp()
@@ -28,6 +29,14 @@ namespace ConnectDellBack.Tests
             context.Database.EnsureCreated();
 
             newsService = new NewsService(context);
+            
+            content = new ContentDTO()
+            {
+                title = "Title Test",
+                text = "Text Test",
+                author = 1,
+                program = 1,
+            };
         }
 
         [Test, Order(1)]
@@ -43,14 +52,6 @@ namespace ConnectDellBack.Tests
         [TestCase(ExpectedResult = true)]
         public async Task<bool> AddContent_WithoutImage_ReturnTrue()
         {
-            var content = new ContentDTO()
-            {
-                title = "Title Test",
-                text = "Text Test",
-                author = 1,
-                program = 1,
-            };
-            
             var result = await newsService.addContent(content);
 
             return result;
@@ -67,18 +68,24 @@ namespace ConnectDellBack.Tests
             writer.Flush();
             IFormFile file = new FormFile(stream, 0, stream.Length, "image", "TitleTestImage");
 
-            var content = new ContentDTO()
-            {
-                title = "Title Test",
-                text = "Text Test",
-                author = 1,
-                program = 1,
-                image = file,
-                imageName = "TitleTestImge"
-            };
+            content.image = file;
+            content.imageName = "TitleTestImge";
             
             var result = await newsService.addContent(content);
 
+            return result;
+        }
+
+        [TestCase(ExpectedResult = "TestingTitle123")]
+        public async Task<string> AddContent_WithoutImage_UpdatesTitle()
+        {
+            var aux = await context.news.Where(news => news.id == 1).FirstOrDefaultAsync();
+            aux.title = "TestingTitle123";
+
+            var resultNewsModel = await context.news.Where(news => news.id == 1).FirstOrDefaultAsync();
+
+            var result = resultNewsModel.title;
+            
             return result;
         }
 

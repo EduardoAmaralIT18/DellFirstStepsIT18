@@ -97,8 +97,6 @@ export default defineComponent({
 
   </div>
 
-
-
   <div v-else class="container">
     <div class="dds__loading-indicator">
       <div class="dds__loading-indicator__label">Loading...</div>
@@ -106,19 +104,15 @@ export default defineComponent({
     </div>
   </div>
 
-
-  
-
-
 <!-- Importando o calendário -->
 <!-- Descobrir como enviar váriáveis para o componente do calendário -->
-  <div>
-    <CalendarCreate></CalendarCreate>
-  </div>
+  
+<div class="container2">
+  <CalendarCreate></CalendarCreate>
+</div>
 
 
-
-
+  
 
 </template>
 
@@ -127,12 +121,6 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-.container {
-  padding-top: 3%;
-  padding-left: 17%;
-  display: flex;
-  flex-direction: column;
-}
 
 .title {
   color: #0672CB;
@@ -174,7 +162,6 @@ body {
   font-size: 13px;
   height: 8%;
   margin-left: auto;
-  margin-right: 15px;
   padding: 4px;
   display: flex;
   float: right;
@@ -200,6 +187,12 @@ body {
   padding-left: 15%;
   display: inline-flex;
   flex-direction: column;
+  padding-bottom: 0%;
+}
+
+.container2 {
+  flex-direction: column;
+  padding-bottom: 5%;
 }
 
 .dds__card {
@@ -293,5 +286,9 @@ body {
   text-decoration: none;
   color: #0672CB;
   font-weight: 300;
+}
+
+.div {
+  padding-bottom: 0%;
 }
 </style>

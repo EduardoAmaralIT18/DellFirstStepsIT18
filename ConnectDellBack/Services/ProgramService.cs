@@ -109,16 +109,16 @@ public class ProgramService : IProgramService
         else if (user.role.Equals(Role.Intern) && user.editionIntern.program.id == id1)
         {
             var prog = user.editionIntern.program;
-            var edition = user.editionIntern;
+            var edition = EditionDTO.convertModel2DTO(user.editionIntern);
             program = ProgramInfoDTO.convertModel2DTOIntern(prog, edition);
         }
         else
         {
             var membership = user.memberships.Where(m => m.edition.program.id == id1).ToList();
-            List<EditionModel> editions = new List<EditionModel>();
+            List<EditionDTO> editions = new List<EditionDTO>();
             foreach (var i in membership)
             {
-                editions.Add(i.edition);
+                editions.Add(EditionDTO.convertModel2DTO(i.edition));
             }
             program = ProgramInfoDTO.convertModel2DTOOthers(membership[0].edition.program, editions);
         }

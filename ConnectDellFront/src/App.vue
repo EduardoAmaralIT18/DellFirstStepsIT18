@@ -1,6 +1,6 @@
 
 <template>
-  <RouterView/>
+  <RouterView />
 </template>
 
 <script lang="ts">
@@ -10,7 +10,7 @@ export default defineComponent({
   components: {
   }
 });
-  
+
 </script>
 
 <style>
@@ -20,5 +20,17 @@ export default defineComponent({
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.dds__modal--md {
+  width: 400px;
+}
+
+.dds__modal__body p {
+  text-align: left;
+}
+
+.buttonModal {
+  width: 100%
 }
 </style>

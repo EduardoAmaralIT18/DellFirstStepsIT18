@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +9,8 @@ using NUnit.Framework;
 using ConnectDellBack.Services;
 using ConnectDellBack.DTOs;
 using System.Runtime.CompilerServices;
+using System.Linq;
+using Microsoft.OpenApi.Any;
 
 namespace ConnectDellBack.Tests
 {
@@ -20,7 +22,6 @@ namespace ConnectDellBack.Tests
                                                                                 .Options;
         ApplicationContext context;
         EventService eventService;
-        
         EventsModel evnt;
         EventDTO eventDTO;
         EditionModel modelToEvent;
@@ -32,7 +33,6 @@ namespace ConnectDellBack.Tests
             context.Database.EnsureCreated();
 
             eventService = new EventService(context);
-
 
             modelToEvent = new EditionModel()
             {
@@ -98,14 +98,43 @@ namespace ConnectDellBack.Tests
             return result.name;
         }
 
+        [Test]
+        [TestCase(ExpectedResult = 12)]
+        public async Task<int> getAllEvents_Return12()
+        {
+            // Right now there are 12 events being seeded in the ApplicationContext on the first edition
+            var list = await  eventService.getAllEvents(1);
+            var result = list.Count();
+
+            return result;
+        }
+
+        [Test]
+        [TestCase(ExpectedResult = 0)]
+        public async Task<int> getAllEvents_EmptyEdition_Returns0()
+        {
+            // Right now there are no events being seeded in the ApplicationContext on the second edition
+            var list = await eventService.getAllEvents(2);
+            var result = list.Count();
+            return result;
+            
+        }
+        [Test]
+        [TestCase(ExpectedResult = 0)]
+        public async Task<int> getAllEvents_InvalidId_Returns0()
+        {
+            // This id doesnt exist in the ApplicationContext
+            var list = await eventService.getAllEvents(9921659);
+            var result = list.Count();
+            return result;
+        }
+
 
         [OneTimeTearDown]
         public void CleanUp()
         {
             context.Database.EnsureDeleted();
         }
-
-
 
     }
 }

@@ -13,6 +13,9 @@ namespace ConnectDellBack.Services
 
         public Task<int> addEvent(EventDTO events);
 
+        //Pega todos os eventos de uma edição especifica.
+        public Task<IEnumerable<EventDTO>> getAllEvents(int editionId);
+
     }
 
 }

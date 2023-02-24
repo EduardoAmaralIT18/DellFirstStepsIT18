@@ -12,5 +12,6 @@ namespace ConnectDellBack.Services
         public Task<int> UpdateProgram(ProgramModel program);
         public Task<ProgramModel> GetProgram(int id);
         public Task<IEnumerable<ProgramInfoDTO>> GetProgramsName();
+
     }
 }

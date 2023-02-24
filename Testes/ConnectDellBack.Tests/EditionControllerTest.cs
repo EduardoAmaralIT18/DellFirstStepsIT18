@@ -45,7 +45,6 @@ namespace ConnectDellBack.Tests
                 startDate = DateTime.Now,
                 endDate = DateTime.Now,
                 description = "Testing the database",
-                numberOfMembers = 1,
                 numberOfInterns = 1,
                 mode = Mode.InOffice,
                 curriculum = "vue :c",
@@ -70,18 +69,29 @@ namespace ConnectDellBack.Tests
         {
             model.name = "updatedName";
             ActionResult<IEnumerable<EditionDTO>> actionResult = await editionController.updateEdition(model);
-
-            Console.WriteLine(actionResult);
-            return actionResult.Result.ToString();
         }
+        //[Test]
+        //[TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult" )]
+        //public async Task<String> HTTTPGET_updateEdition_ReturnOK()
+        //{
+        //    ActionResult<IEnumerable<EditionDTO>> actionResult = await editionController.updateEdition(edition);
+
+        //    Console.WriteLine(actionResult);
+        //    return actionResult.Result.ToString();
+        //}
 
         [Test]
         [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult" )]
         public async Task<String> HTTPGET_allEditionsNames_ReturnOk() {
             ActionResult<EditionDTO> actionResult = await editionController.getEditionsNames(1);
-
-            return actionResult.Result.ToString();
         }
+        //[Test]
+        //[TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult" )]
+        //public async Task<String> HTTPGET_allEditionsNames_ReturnOk() {
+        //    ActionResult<IEnumerable<EditionDTO>> actionResult = await editionController.getEditionsNames(1);
+
+        //    return actionResult.Result.ToString();
+        //}
 
         [OneTimeTearDown]
         public void CleanUp()
