@@ -76,7 +76,31 @@
           <div class="dds__select" data-dds="select">
             <label id="select-label-141366292" for="select-control-141366292">People Involved</label>
             <div class="multiselec dds__select__wrapper">
-              <MultiSelect style="box-shadow: none" v-model="event.peopleInvolved" tipo="all" />
+
+              <div class="dds__dropdown" data-dds="dropdown" ref="multiselect" id="multi-select-list-dropdown"
+                data-selection="multiple" data-select-all-label="Select all">
+                <div class="dds__dropdown__input-container">
+                  <div class="dds__dropdown__input-wrapper" autocomplete="off" aria-haspopup="listbox"
+                    aria-controls="multi-select-list-dropdown-popup"> <input id="multi-select-list-dropdown-input"
+                      name="multi-select-list-dropdown-name" type="text" role="combobox"
+                      class="dds__dropdown__input-field"
+                      aria-labelledby="multi-select-list-dropdown-label multi-select-list-dropdown-helper"
+                      autocomplete="off" aria-expanded="false" aria-controls="multi-select-list-dropdown-list" /> </div>
+                </div>
+                <div id="multi-select-list-dropdown-popup" class="dds__dropdown__popup dds__dropdown__popup--hidden"
+                  role="presentation" tabindex="-1">
+                  <ul class="dds__dropdown__list" role="listbox" tabindex="-1" id="multi-select-list-dropdown-list">
+                    <li v-for="member in options" :key="member.id" class="dds__dropdown__item" role="none"> <button
+                        type="button" class="dds__dropdown__item-option" role="option" data-selected="false"
+                        :data-value=member.id tabindex="-1"> <span class="dds__dropdown__item-label">{{ member.name
+                        }}</span> </button> </li>
+                  </ul>
+                </div>
+              </div>
+
+
+
+              <!-- <MultiSelect style="box-shadow: none" v-model="event.peopleInvolved" tipo="all" /> -->
               <!-- <small class="warning" v-if="event.peopleInvolved"
                   >The Members field is required.</small
                 > -->
@@ -124,6 +148,17 @@
       </button> -->
   </form>
   <!-- </div> -->
+
+
+  <div ref="loading" id="loadingIndicator-overlay" class="dds__loading-indicator__container" data-dds="loading-indicator">
+    <div class="dds__loading-indicator__overlay" aria-hidden="true"></div>
+    <div class="dds__loading-indicator__wrapper">
+      <div class="dds__loading-indicator">
+        <div class="dds__loading-indicator__label" aria-live="polite">Loading...</div>
+        <div class="dds__loading-indicator__spinner"></div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -131,11 +166,16 @@ import { defineComponent } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import { required, maxLength, minLength } from '@vuelidate/validators';
 import axios from "axios";
+declare var DDS: any;
 
 
 interface Data {
   event: Event,
-  eventId: number
+  eventId: number,
+  owners: User,
+  options: User,
+  multiselect: any,
+  loading: any
 }
 
 type Event = {
@@ -173,7 +213,11 @@ export default defineComponent({
         peopleInvolved: [],
         edition: this.$cookies.get("editionId")
       },
-      eventId: this.$cookies.get("eventId")
+      eventId: this.$cookies.get("eventId"),
+      owners: [],
+      options: [],
+      multiselect: null,
+      loading: null
     }
   },
   setup() {
@@ -217,6 +261,40 @@ export default defineComponent({
           //erro
         }
       })
+
+    axios.get("/edition/getUsersNotAdmin")
+      .then(function (response) {
+        return response;
+      })
+      .then(response => {
+        this.options = response.data;
+        return;
+      });
+
+    axios.get("/user/GetOwners")
+      .then(function (response) {
+        return response;
+      })
+      .then(response => {
+        this.owners = response.data;
+        if (this.owners != null) {
+          this.owners.forEach(u => {
+            this.options.push(u);
+          })
+          this.createMultiselect();
+          this.loading.show();
+        }
+        return;
+      })
+
+
+
+    setTimeout(() => {
+      this.showMembers();
+      this.loading.hide();
+    }, 1000);
+
+
   },
   methods: {
     onSubmit() {
@@ -227,25 +305,25 @@ export default defineComponent({
           this.event.eventType = 1;
         }
 
-        switch (this.event.phaseType) {
-          case "0":
-            this.event.phaseType = 0;
-            break;
-          case "1":
-            this.event.phaseType = 1;
-            break;
-          case "2":
-            this.event.phaseType = 2;
-            break;
-          case "3":
-            this.event.phaseType = 3;
-            break;
-          case "4":
-            this.event.phaseType = 4;
-            break;
-          default:
-            console.log("Erro no switch");
-        }
+        // switch (this.event.phaseType) {
+        //   case "0":
+        //     this.event.phaseType = 0;
+        //     break;
+        //   case "1":
+        //     this.event.phaseType = 1;
+        //     break;
+        //   case "2":
+        //     this.event.phaseType = 2;
+        //     break;
+        //   case "3":
+        //     this.event.phaseType = 3;
+        //     break;
+        //   case "4":
+        //     this.event.phaseType = 4;
+        //     break;
+        //   default:
+        //     console.log("Erro no switch");
+        // }
 
         axios.post('event/updateEvent', this.event)
           .then(function (response) {
@@ -265,8 +343,32 @@ export default defineComponent({
       }
 
     },
+    searchMembers(): void {
+      this.event.peopleInvolved = [];
+      var memberMultiselect = this.multiselect.getSelection();
+      memberMultiselect.forEach((n: number) => {
+        this.event.peopleInvolved?.push(this.options.find(p => p.id == n as number));
+      })
+    },
+    showMembers(): void {
+      this.event.peopleInvolved?.forEach(element => {
+        this.multiselect.selectOption(element.id.toString());
+      });
+      this.searchMembers();
+    },
+    createMultiselect(): void {
+      this.multiselect = DDS.Dropdown(this.$refs.multiselect);
+      this.loading = DDS.LoadingIndicator(this.$refs.loading);
 
-  }
+
+      // eslint-disable-next-line            
+      this.$refs.multiselect.addEventListener("ddsDropdownSelectionChangeEvent", (e) => {
+        this.searchMembers();
+      });
+    },
+
+  },
+
 
 })
 </script>
@@ -431,5 +533,4 @@ span {
 
 .dds__modal__content {
   width: 800px;
-}
-</style>
+}</style>
