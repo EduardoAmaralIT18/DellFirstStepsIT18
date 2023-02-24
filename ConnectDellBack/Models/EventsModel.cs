@@ -22,7 +22,7 @@ public class EventsModel
 
     public int id { get; set; }
     [Required]
-    [StringLength(50, MinimumLength = 5, ErrorMessage = "The event's name must be at most 30 characters.")]
+    [StringLength(50, MinimumLength = 5, ErrorMessage = "The event's name must be at most 50 characters.")]
     public string name {get;set;} = null!;
 
     [Required]
