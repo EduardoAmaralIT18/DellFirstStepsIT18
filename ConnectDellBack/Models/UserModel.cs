@@ -35,7 +35,8 @@ public class UserModel{
     public List<ProgramModel>? ProgramsAdmins {get;set;} = new List<ProgramModel>();
     public List<MembershipModel>? memberships {get;set;} = new List<MembershipModel>();
     public List<NewsModel>? listNews {get; set;} = new List<NewsModel>();
-
-
+    public List<EventsModel>? listEvents {get; set;} = new List<EventsModel>();
+    
+    public List<ParticipationModel> participations { get; set; } = new List<ParticipationModel>();
 
 }

@@ -14,7 +14,9 @@ public class EventService : IEventService
     public async Task<EventsModel> getEvent(int eventId)
     {
         var calendarEvent = await _dbContext.events.Where(e => e.id == eventId)
-                                                    .Include(e => e.peopleInvolved)
+                                                    .Include(e => e.peopleInvolved)   
+                                                    .Include(e => e.participations)
+                                                    .ThenInclude(u => u.participant)
                                                     .FirstOrDefaultAsync();
         return calendarEvent;
     }
@@ -23,6 +25,7 @@ public class EventService : IEventService
     {
         var eventFromDb = await _dbContext.events.Where(e => e.id == eventsForm.id)
                                             .Include(e => e.peopleInvolved)
+                                            .Include(e => e.participations)
                                             .FirstOrDefaultAsync();
 
         if (eventFromDb != null)
@@ -32,15 +35,16 @@ public class EventService : IEventService
             eventFromDb.eventType = eventsForm.eventType;
             eventFromDb.startDate = eventsForm.startDate;
             eventFromDb.endDate = eventsForm.endDate;
-            eventFromDb.where = eventsForm.where;
+            eventFromDb.where = eventsForm.where; 
+            eventFromDb.peopleInvolved.Clear();
 
             List<UserModel> peopleInvolvedAux = new List<UserModel>();
 
-            foreach (var item in eventFromDb.peopleInvolved)
+            foreach (var item in eventsForm.peopleInvolved)
             {
                 peopleInvolvedAux.Add(await _dbContext.users.Where(user => user.id == item.id).FirstOrDefaultAsync());
             }
-            eventFromDb.peopleInvolved.Clear();
+           
             eventFromDb.peopleInvolved.AddRange(peopleInvolvedAux);
 
             int entries = await _dbContext.SaveChangesAsync();

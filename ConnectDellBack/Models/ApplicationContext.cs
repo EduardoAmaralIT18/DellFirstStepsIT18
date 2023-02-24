@@ -29,6 +29,11 @@ public class ApplicationContext : DbContext
                     .WithMany(user => user.listEditions)
                     .UsingEntity<MembershipModel>();
 
+        modelBuilder.Entity<EventsModel>()
+                    .HasMany(evnt => evnt.peopleInvolved)
+                    .WithMany(user => user.listEvents)
+                    .UsingEntity<ParticipationModel>();
+
         modelBuilder.Entity<UserModel>()
                     .HasOne(user => user.editionIntern)
                     .WithMany(edition => edition.interns);

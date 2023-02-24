@@ -287,8 +287,6 @@ export default defineComponent({
         return;
       })
 
-
-
     setTimeout(() => {
       this.showMembers();
       this.loading.hide();
