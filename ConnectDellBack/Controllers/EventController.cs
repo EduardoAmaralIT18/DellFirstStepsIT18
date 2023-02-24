@@ -35,13 +35,18 @@ public class EventController : ControllerBase
     }
 
     [HttpGet("removeEvent")]
-    public async Task<ActionResult> removeEvent(int evnt){
-       var entries = await _service.removeEvent(evnt); 
-       if (entries > 0){
-        return Ok();
-       } else {
-        return NotFound();
-       }
+    public async Task<ActionResult> removeEvent(int evnt)
+    {
+        var entries = await _service.removeEvent(evnt);
+        if (entries > 0)
+        {
+            return Ok();
+        }
+        else
+        {
+            return NotFound();
+        }
+    }
     [HttpGet("getEventToUpdate")]
     public async Task<ActionResult<EventDTO>> getEventToUpdate(int eventId)
     {
@@ -49,26 +54,34 @@ public class EventController : ControllerBase
         return result == null ? NoContent() : Ok(result);
     }
 
-    [HttpPost("updateEvent")] 
-    public async Task<ActionResult> updateEvent(EventsModel eventForm) {
+    [HttpPost("updateEvent")]
+    public async Task<ActionResult> updateEvent(EventsModel eventForm)
+    {
         int entries = await _service.updateEvent(eventForm);
-        if (entries > 0) {
+        if (entries > 0)
+        {
             return Ok();
-        } else {
+        }
+        else
+        {
             return NotFound();
         }
     }
 
     [HttpGet("getAllEvents")]
-    public async Task<ActionResult<IEnumerable<EventDTO>>> getAllEvents(int editionId) {
+    public async Task<ActionResult<IEnumerable<EventDTO>>> getAllEvents(int editionId)
+    {
         var result = await _service.getAllEvents(editionId);
-        
+
         if (result.Count() > 0)
         {
             return Ok(result);
-        } else if (result.Count() == 0){
+        }
+        else if (result.Count() == 0)
+        {
             return NoContent();
-        } else
+        }
+        else
         {
             return BadRequest();
 

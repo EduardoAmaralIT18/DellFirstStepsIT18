@@ -203,7 +203,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import MultiSelect from "./MultipleSelect.vue";
+//import MultiSelect from "./MultipleSelect.vue";
 import axios from "axios";
 import { useVuelidate } from "@vuelidate/core";
 import { minLength, maxLength, required } from "@vuelidate/validators";
@@ -252,7 +252,7 @@ export default defineComponent({
     };
   },
   components: {
-    MultiSelect,
+    //MultiSelect,
   },
   data(): Data {
     return {

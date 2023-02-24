@@ -1,17 +1,19 @@
 <template>
   <div class="container">
     <p class="title">Edition's Calendar</p>
-    <button
+    <a
       v-if="isOwner"
       class="addevent dds__button dds__button--lg"
       type="submit"
-      @click="addEvent()">
+      id="example"
+      style="color: white"
+    >
       Add Event
-    </button>
-    <div>
+    </a>
+    <!-- <div>
       <input type="checkbox" id="phases" checked><label for="phases">Phases</label>
       <input type="checkbox" id="activities" checked><label for="activities">Activities</label>
-    </div>
+    </div> -->
     <!-- <a @click="options = !options">Change Options</a> -->
     <full-calendar
       class="calendar"
@@ -20,13 +22,12 @@
     />
   </div>
 
- 
   <div
     role="dialog"
     data-dds="modal"
     class="dds__modal"
     id="uniqueid"
-    ref="uniqueid" 
+    ref="uniqueid"
   >
     <div class="dds__modal__content">
       <div class="dds__modal__header">
@@ -37,7 +38,7 @@
       </div>
       <div id="modal-body-532887773" class="dds__modal__body">
         <!-- estrutura do modal -->
-        <AddEvent @close-modal.="modal.close()"/>
+        <AddEvent @close-modal.="modal.close()" />
       </div>
       <div class="dds__modal__footer">
         <!-- <button :class="buttonColor" type="button" name="modal-secondary-button"
@@ -45,10 +46,6 @@
       </div>
     </div>
   </div>
-
-
-
-
 </template>
 
 <script>
@@ -80,7 +77,7 @@ var DDS = window.DDS;
 export default defineComponent({
   components: {
     FullCalendar,
-    AddEvent
+    AddEvent,
   },
   props: {
     eventDates: {
@@ -121,7 +118,7 @@ export default defineComponent({
           list: "Agenda",
         },
       },
-      modal: null
+      modal: null,
     };
   },
   mounted() {
@@ -147,10 +144,8 @@ export default defineComponent({
   },
   computed: {
     isOwner() {
-      if (this.$cookies.get("isOwner") == 1) 
-        return true;
-      else 
-        return false;
+      if (this.$cookies.get("isOwner") == 1) return true;
+      else return false;
     },
   },
   methods: {
@@ -254,6 +249,11 @@ body {
   margin-top: 9px;
 }
 
+a {
+  text-decoration: none;
+  color: white;
+}
+
 .title {
   color: #0672cb;
   font-size: 190%;
@@ -267,6 +267,26 @@ body {
   color: #0672cb;
   margin: 2.5%;
   font-weight: bold;
+}
+
+.fc-icon {
+  speak: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
+  font-family: fcicons !important;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  height: 1em;
+  line-height: 1;
+  text-align: center;
+  text-transform: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  width: 1em;
+  color: white;
 }
 
 .container {
