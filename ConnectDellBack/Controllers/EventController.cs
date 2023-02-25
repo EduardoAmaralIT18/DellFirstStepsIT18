@@ -20,10 +20,37 @@ public class EventController : ControllerBase
         _service = service;
     }
 
+    [HttpPost("addEvent")]
+    public async Task<ActionResult> addEvent(EventDTO events)
+    {
+        int entries = await _service.addEvent(events);
+        if (entries > 0)
+        {
+            return Ok();
+        }
+        else
+        {
+            return NotFound();
+        }
+    }
+
+    [HttpGet("removeEvent")]
+    public async Task<ActionResult> removeEvent(int evnt)
+    {
+        var entries = await _service.removeEvent(evnt);
+        if (entries > 0)
+        {
+            return Ok();
+        }
+        else
+        {
+            return NotFound();
+        }
+    }
     [HttpGet("getEventToUpdate")]
     public async Task<ActionResult<EventDTO>> getEventToUpdate(int eventId)
     {
-        var result = await _service.getEvent(eventId);
+        var result = await _service.getEventToUpdate(eventId);
         EventDTO eventDTO = EventDTO.convertModel2DTO(result);
         return result == null ? NotFound() : Ok(eventDTO);
     }
@@ -42,31 +69,20 @@ public class EventController : ControllerBase
         }
     }
 
-
-    [HttpPost("addEvent")]
-    public async Task<ActionResult> addEvent(EventDTO events)
-    {
-        int entries = await _service.addEvent(events);
-        if (entries > 0)
-        {
-            return Ok();
-        }
-        else
-        {
-            return NotFound();
-        }
-
-    }
     [HttpGet("getAllEvents")]
-    public async Task<ActionResult<IEnumerable<EventDTO>>> getAllEvents(int editionId) {
+    public async Task<ActionResult<IEnumerable<EventDTO>>> getAllEvents(int editionId)
+    {
         var result = await _service.getAllEvents(editionId);
-        
+
         if (result.Count() > 0)
         {
             return Ok(result);
-        } else if (result.Count() == 0){
+        }
+        else if (result.Count() == 0)
+        {
             return NoContent();
-        } else
+        }
+        else
         {
             return BadRequest();
 

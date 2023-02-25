@@ -3,6 +3,7 @@ using ConnectDellBack.Models;
 using ConnectDellBack.DTOs;
 
 namespace ConnectDellBack.Services;
+
 public class EventService : IEventService
 {
     private readonly ApplicationContext _dbContext;
@@ -11,7 +12,42 @@ public class EventService : IEventService
         _dbContext = dbContext;
     }
 
-    public async Task<EventsModel> getEvent(int eventId)
+    public async Task<int> addEvent(EventDTO events)
+    {
+        for (int i = 0; i < events.peopleInvolved.Count; i++)
+        {
+            var user = _dbContext.users.Where(usr => usr.id == events.peopleInvolved[i].id).FirstOrDefault();
+            events.peopleInvolved[i] = user;
+        }
+
+        var dbEvent = new EventsModel()
+        {
+            name = events.name,
+            eventType = (EventType)(int)events.eventType,
+            phaseType = (PhaseType)(int)events.phaseType,
+            startDate = events.startDate,
+            endDate = events.endDate,
+            where = events.where,
+            peopleInvolved = events.peopleInvolved,
+            edition = _dbContext.editions.Where(edition => edition.id == events.editionID).FirstOrDefault(),
+        };
+
+        await _dbContext.events.AddAsync(dbEvent);
+        int entries = await _dbContext.SaveChangesAsync();
+
+        return entries;
+    }
+
+    public async Task<int> removeEvent(int idEvent)
+    {
+        var evnt = await _dbContext.events.Where(evnt => evnt.id == idEvent).FirstOrDefaultAsync();
+        _dbContext.events.Remove(evnt);
+        var entries = await _dbContext.SaveChangesAsync();
+
+        return entries;
+    }
+
+    public async Task<EventsModel> getEventToUpdate(int eventId)
     {
         var calendarEvent = await _dbContext.events.Where(e => e.id == eventId)
                                                     .Include(e => e.peopleInvolved)   
@@ -55,31 +91,7 @@ public class EventService : IEventService
         }
     }
 
-    public async Task<int> addEvent(EventDTO events)
-    {
-            for (int i = 0; i < events.peopleInvolved.Count; i++)
-            {
-                var user = _dbContext.users.Where(usr => usr.id == events.peopleInvolved[i].id).FirstOrDefault();
-                events.peopleInvolved[i] = user;
-            }
-
-            var dbEvent = new EventsModel()
-            {
-                name = events.name,
-                eventType = (EventType)(int)events.eventType,
-                phaseType = (PhaseType)(int)events.phaseType,
-                startDate = events.startDate,
-                endDate = events.endDate,
-                where = events.where,
-                peopleInvolved = events.peopleInvolved,
-                edition = _dbContext.editions.Where(edition => edition.id == events.id).FirstOrDefault(),
-            };
-
-            await _dbContext.events.AddAsync(dbEvent);
-            int entries = await _dbContext.SaveChangesAsync();
-
-            return entries;
-        }
+    
 
     public async Task<IEnumerable<EventDTO>> getAllEvents(int editionId) {
         // VERSÃO ANTIGA

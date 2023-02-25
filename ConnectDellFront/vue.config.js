@@ -25,7 +25,7 @@ module.exports = {
         },
         proxy: {
             '^/': {
-                target: 'https://localhost:7134'
+                target: 'https://localhost:5001'
             }
         },
         port: 5002

@@ -1,6 +1,6 @@
 <template>
   <!-- mudar a ref e o id do bota pra distinguir entre as modais -->
-  <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
+  <div role="dialog" data-dds="modal" class="dds__modal" id="editevent" ref="editevent">
     <div class="dds__modal__content">
       <div class="dds__modal__header">
         <h3 class="dds__modal__title title" id="modal-headline-369536123">
@@ -10,7 +10,7 @@
         </h3>
       </div>
       <div id="modal-body-532887773" class="dds__modal__body">
-        <EditEvent @close-modal.="modal.close()" />
+        <EditEvent @close-modal.="modalEdit.close()" />
       </div>
       <div class="dds__modal__footer">
         <!-- <button :class="buttonColor" type="button" name="modal-secondary-button"
@@ -21,16 +21,48 @@
 
   <div class="container">
     <p class="title">Edition's Calendar</p>
-    <button v-if="isOwner" class="addevent dds__button dds__button--lg" type="submit" @click="addEvent()">
+    <a
+      v-if="isOwner"
+      class="addevent dds__button dds__button--lg"
+      type="submit"
+      id="exampleAdd"
+      style="color: white"
+    >
       Add Event
-    </button>
-    <a id="example">EDIT</a>
-    <div>
+    </a>
+
+    <a id="exampleEdit">EDIT</a>
+    <!-- <div>
       <input type="checkbox" id="phases" checked><label for="phases">Phases</label>
       <input type="checkbox" id="activities" checked><label for="activities">Activities</label>
-    </div>
+    </div> -->
     <!-- <a @click="options = !options">Change Options</a> -->
     <full-calendar class="calendar" :event-limit="2" :options="calendarOptions" />
+  </div>
+
+  <div
+    role="dialog"
+    data-dds="modal"
+    class="dds__modal"
+    id="addevent"
+    ref="addevent"
+  >
+    <div class="dds__modal__content">
+      <div class="dds__modal__header">
+        <h3 class="dds__modal__title title" id="modal-headline-369536123">
+          Add Event
+          <!-- <h2 class="title">Add Event</h2> -->
+        </h3>
+      </div>
+      <div id="modal-body-532887773" class="dds__modal__body">
+        <!-- estrutura do modal -->
+        <AddEvent @close-modal.="modalAdd.close()" />
+      </div>
+      <div class="dds__modal__footer">
+        <!-- <button :class="buttonColor" type="button" name="modal-secondary-button"
+    @click="$router.push({ name: 'HomePage' });">Ok</button> -->
+      </div>
+    </div>
   </div>
 </template>
 
@@ -55,8 +87,8 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 import EditEvent from '../components/EditEvent.vue'
+import AddEvent from "../components/AddEvent.vue";
 var DDS = window.DDS;
-
 
 //1. In month View- Day shoudl be like- Monday, Tuesday instead of Mon, Tue
 //2. Default load should be on Oct 2021, bcoz event starting from there.
@@ -65,6 +97,7 @@ export default defineComponent({
   components: {
     FullCalendar,
     EditEvent
+    AddEvent,
   },
   props: {
     eventDates: {
@@ -107,9 +140,16 @@ export default defineComponent({
           week: "Week",
           list: "Agenda",
         },
-      }
-    }
+      },
+      modalEdit: null,
+      modalAdd: null
+    };
   },
+  mounted() {
+    this.createModalEdit();
+    this.createModalAdd();
+  },
+
   created() {
     axios
       .get(`/Event/getAllEvents?editionId=${this.cookiesEdit}`)
@@ -137,17 +177,25 @@ export default defineComponent({
   },
   methods: {
 
-    createModal() {
-      const element = this.$refs.uniqueid;
+    createModalEdit() {//edit
+      const element = this.$refs.editevent;
       //console.log(element);
       console.log(DDS);
       console.log(element);
-      this.modal = new DDS.Modal(element, { trigger: "#example" });
+      this.modalEdit = new DDS.Modal(element, { trigger: "#exampleEdit" });
       console.log(this.modal);
     },
     eventDescription() {
       //Swal parace um metodo de add? Nome do evento?
       swal("teste");
+    },
+    createModalAdd() {//add
+      const element = this.$refs.addevent;
+      //console.log(element);
+      console.log(DDS);
+      console.log(element);
+      this.modalAdd = new DDS.Modal(element, { trigger: "#exampleAdd" });
+      console.log(this.modal);
     },
 
     //addEvent() {
@@ -237,6 +285,11 @@ body {
   margin-top: 9px;
 }
 
+a {
+  text-decoration: none;
+  color: white;
+}
+
 .title {
   color: #0672cb;
   font-size: 190%;
@@ -250,6 +303,26 @@ body {
   color: #0672cb;
   margin: 2.5%;
   font-weight: bold;
+}
+
+.fc-icon {
+  speak: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
+  font-family: fcicons !important;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  height: 1em;
+  line-height: 1;
+  text-align: center;
+  text-transform: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  width: 1em;
+  color: white;
 }
 
 .container {
@@ -281,6 +354,9 @@ body {
   background-color: #0672cb;
   border-color: #0063b8;
   color: var(--fc-button-text-color);
+}
+.dds__modal__content {
+  width: 800px;
 }
 
 .fc .fc-button {
