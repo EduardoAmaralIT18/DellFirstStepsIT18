@@ -531,4 +531,7 @@ span {
 
 .dds__modal__content {
   width: 800px;
-}</style>
+}
+
+
+</style>
