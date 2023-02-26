@@ -1,4 +1,36 @@
 <template>
+  <!--modal to show event details-->
+  <!--Modal Ok para changeRole or removeUser-->
+  <div role="dialog" data-dds="modal" class="dds__modal" ref="modalEventShow" aria-labelledby="modal-headline-153968555">
+    <div class="dds__modal--md">
+      <div class="dds__modal__content">
+        <div class="dds__modal__header">
+          <h3 class="dds__modal__title">{{ event.name }}</h3>
+        </div>
+        <div id="modal-body-357113985" class="dds__modal__body">
+          <p>
+            <strong>Event Type:</strong> {{ eventInfo }}
+            <br>
+            <strong>Start Date:</strong> {{ event.startDate }}
+            <br>
+            <strong>End Date:</strong> {{ event.endDate }}
+            <br>
+            <strong>Where:</strong> {{ event.where }}
+          </p>
+        </div>
+        <p v-if="isOwner" class="editDelete" @click="$cookies.set('eventId', event.id)">
+          <a id="example" href="#">Edit</a> &emsp; &emsp; <a href="#">Delete</a>
+        </p>
+        <div class="dds__modal__footer">
+          <button class="dds__button dds__button--md buttonModal" type="button" name="modal-secondary-button"
+            @click="modalEventShow.close()">
+            Ok
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- mudar a ref e o id do bota pra distinguir entre as modais -->
   <div role="dialog" data-dds="modal" class="dds__modal" id="uniqueid" ref="uniqueid">
     <div class="dds__modal__content">
@@ -25,10 +57,10 @@
       Add Event
     </button>
     <a id="example">EDIT</a>
-    <div>
+    <!-- <div>
       <input type="checkbox" id="phases" checked><label for="phases">Phases</label>
       <input type="checkbox" id="activities" checked><label for="activities">Activities</label>
-    </div>
+    </div> -->
     <!-- <a @click="options = !options">Change Options</a> -->
     <full-calendar class="calendar" :event-limit="2" :options="calendarOptions" />
   </div>
@@ -74,33 +106,50 @@ export default defineComponent({
   },
   mounted() {
     this.createModal();
+    this.modalEventShow = DDS.Modal(this.$refs.modalEventShow);
+
   },
   data() {
     return {
       //Cookies com id, startDate e endDate da edition
       cookiesEdit: this.$cookies.get("editionId"),
       cookiesProgram: this.$cookies.get("programId"),
-
+      event: [],
       //Lista com os eventos da edição passado por param
       eventsList: [],
-
       options: true,
+      modalEventShow: null,
+      modal: null,
+
+      eventInfo: '',
 
       calendarOptions: {
         plugins: [dayGridPlugin, interactionPlugin, listPlugin, timeGridPlugin],
-        initialView: "dayGridMonth",
+        initialView: "timeGridWeek",
         headerToolbar: {
           left: "today prev,next",
           center: "title",
           right: "dayGridMonth,timeGridWeek,listWeek",
         },
-
+        editable: true,
+        selectable: true,
+        selectMirror: true,
+        views: {
+          month: {
+            dayMaxEventRows: 3
+          }
+        },
+        moreLinkClick: "day",
+        weekends: true,
+        //COLOCAR ADD EVENT AQUI PARA APARECER SE CLICLAR NO DIA !!!!!!!!!!!!!!!!!!!!!
+        //select: this.handleDateSelect,
+        eventClick: this.handleEventClick,
+        eventsSet: this.handleEvents,
         events: [],
         validRange: {
           start: this.$cookies.get("startDateEdition"),
           end: this.$cookies.get("endDateCalendarEdition"),
         },
-
         buttonText: {
           today: "Today",
           month: "Month",
@@ -123,7 +172,7 @@ export default defineComponent({
           this.loadEvents();
           console.log("Entrou aqui");
         } else if (response.status == 204) {
-          alert("There was an error on our database! Please, try again later.");
+          console.log("no content - no events on this edition");
         }
       });
   },
@@ -136,6 +185,69 @@ export default defineComponent({
     },
   },
   methods: {
+
+    handleEventClick(clickInfo) {
+      this.showEvent(clickInfo.event.id);
+    },
+
+    handleEvents(events) {
+      this.currentEvents = events
+    },
+
+    showEvent(id) {
+      axios.get('event/getEventToUpdate?eventId=' + id)
+        .then(function (response) {
+          return response;
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            this.event = response.data;
+            this.eventInfo = this.eventAndPhaseType(this.event.eventType, this.event.phaseType);
+            this.modalEventShow.open();
+            if (this.event.eventType == 0) {
+              this.event.startDate = new Date(response.data.startDate).toISOString().slice(0, 10);
+              if (this.event.endDate != null) {
+                this.event.endDate = new Date(response.data.endDate).toISOString().slice(0, 10);
+              }
+            } else {
+              this.event.startDate = new Date(response.data.startDate).toISOString().slice(0, 16);
+              if (this.event.endDate != null) {
+                this.event.endDate = new Date(response.data.endDate).toISOString().slice(0, 16);
+              }
+            }
+
+          } else {
+            //erro
+          }
+        });
+    },
+
+    eventAndPhaseType(EventType, PhaseType) {
+      //eventType: ["Phase", "Activity"],
+      //phaseType: ["Set_Up", "Training", "Sprints", "HandsOn", "None"],
+      let eventandphase;
+      if (EventType == 1) {
+        console.log("entrei no if de activity");
+        return "Activity";
+      } else {
+        console.log("entrei no if de phase");
+        switch (PhaseType) {
+          case 0:
+            eventandphase = "Phase - Set_Up";
+            break;
+          case 1:
+            eventandphase = "Phase - Training";
+            break;
+          case 2:
+            eventandphase = "Phase - Sprints";
+            break;
+          case 3:
+            eventandphase = "Phase - HandsOn";
+            break;
+        }
+        return eventandphase;
+      }
+    },
 
     createModal() {
       const element = this.$refs.uniqueid;
@@ -164,6 +276,7 @@ export default defineComponent({
             (this.calendarOptions.events = [
               ...this.calendarOptions.events,
               {
+                id: element.id,
                 title: element.name,
                 start: element.startDate,
                 end: element.calendarEndDate,
@@ -189,7 +302,7 @@ export default defineComponent({
 
                 allDay: true,
                 display: "multi-day",
-                color: "#DAF5FD",
+                color: "#97DCF4",
                 textColor: "#0E0E0E",
               },
             ]);
@@ -197,6 +310,7 @@ export default defineComponent({
           this.calendarOptions.events = [
             ...this.calendarOptions.events,
             {
+              id: element.id,
               title: element.name,
               start: element.startDate,
               end: element.endDate,
@@ -206,7 +320,7 @@ export default defineComponent({
               },
 
               display: "block",
-              backgroundColor: "#31A2E3",
+              backgroundColor: "#0672CB",
               borderColor: "#7E7E7E",
             },
           ];
@@ -225,6 +339,18 @@ body {
   line-height: inherit;
 }
 
+.dds__modal--md {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  margin: 0px;
+}
+
+
+.dds__modal {
+  background: none;
+}
+
 .addevent {
   width: 140px;
   font-size: 13px;
@@ -235,6 +361,14 @@ body {
   display: flex;
   float: right;
   margin-top: 9px;
+}
+
+a {
+  text-decoration: none;
+}
+
+a :hover {
+  text-decoration: none;
 }
 
 .title {
@@ -314,5 +448,13 @@ body {
 
   /* Cor do dia atual */
   --fc-today-bg-color: transparent;
+}
+
+.editDelete {
+  position: relative;
+  text-decoration: none;
+  color: #0672CB;
+  font-weight: 300;
+  text-decoration: none;
 }
 </style>
