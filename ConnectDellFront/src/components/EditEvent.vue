@@ -237,7 +237,7 @@ export default defineComponent({
     }
   },
   created() {
-    axios.get('event/getEventToUpdate?eventId=' + 1) //CORRIGIR PRA PEGAR DOS COOKIES AQUI!!
+    axios.get('event/getEventToUpdate?eventId=' + 13) //CORRIGIR PRA PEGAR DOS COOKIES AQUI!!
       .then(function (response) {
         return response;
       })
@@ -330,9 +330,11 @@ export default defineComponent({
           .then(response => {
             if (response.status == 200) {
               this.$emit('close-modal');
+              this.$emit('load-events');
               //deu certo
             } else {
               this.$emit('close-modal');
+              this.$emit('load-events');
               //erro
             }
           })

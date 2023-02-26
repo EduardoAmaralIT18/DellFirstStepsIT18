@@ -333,7 +333,7 @@ public class ApplicationContext : DbContext
                 id = 1,
                 programid = 1,
                 name = "Edition 17",
-                startDate = new DateTime(2022,10,10),
+                startDate = new DateTime(2022,08,10),
                 endDate = new DateTime(2023,05,28),
                 description = "Seventeenth edition of the IT Academy program focused solely on the self-titled female audience.",
                 numberOfInterns = 21, 

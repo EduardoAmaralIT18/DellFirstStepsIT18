@@ -10,7 +10,7 @@
         </h3>
       </div>
       <div id="modal-body-532887773" class="dds__modal__body">
-        <EditEvent @close-modal.="modalEdit.close()" />
+        <EditEvent @close-modal.="modalEdit.close()" @load-events.="eventsGet()"/>
       </div>
       <div class="dds__modal__footer">
         <!-- <button :class="buttonColor" type="button" name="modal-secondary-button"
@@ -21,13 +21,7 @@
 
   <div class="container">
     <p class="title">Edition's Calendar</p>
-    <a
-      v-if="isOwner"
-      class="addevent dds__button dds__button--lg"
-      type="submit"
-      id="exampleAdd"
-      style="color: white"
-    >
+    <a v-if="isOwner" class="addevent dds__button dds__button--lg" type="submit" id="exampleAdd" style="color: white">
       Add Event
     </a>
 
@@ -40,13 +34,7 @@
     <full-calendar class="calendar" :event-limit="2" :options="calendarOptions" />
   </div>
 
-  <div
-    role="dialog"
-    data-dds="modal"
-    class="dds__modal"
-    id="addevent"
-    ref="addevent"
-  >
+  <div role="dialog" data-dds="modal" class="dds__modal" id="addevent" ref="addevent">
     <div class="dds__modal__content">
       <div class="dds__modal__header">
         <h3 class="dds__modal__title title" id="modal-headline-369536123">
@@ -56,7 +44,7 @@
       </div>
       <div id="modal-body-532887773" class="dds__modal__body">
         <!-- estrutura do modal -->
-        <AddEvent @close-modal.="modalAdd.close()" />
+        <AddEvent @close-modal.="modalAdd.close()" @load-events.="eventsGet()" />
       </div>
       <div class="dds__modal__footer">
         <!-- <button :class="buttonColor" type="button" name="modal-secondary-button"
@@ -96,7 +84,7 @@ var DDS = window.DDS;
 export default defineComponent({
   components: {
     FullCalendar,
-    EditEvent
+    EditEvent,
     AddEvent,
   },
   props: {
@@ -104,9 +92,6 @@ export default defineComponent({
       type: Array,
       default: null,
     },
-  },
-  mounted() {
-    this.createModal();
   },
   data() {
     return {
@@ -151,7 +136,19 @@ export default defineComponent({
   },
 
   created() {
-    axios
+    this.eventsGet();
+  },
+  computed: {
+    isOwner() {
+      if (this.$cookies.get("isOwner") == 1)
+        return true;
+      else
+        return false;
+    },
+  },
+  methods: {
+    eventsGet() {
+      axios
       .get(`/Event/getAllEvents?editionId=${this.cookiesEdit}`)
       .then(function (response) {
         return response;
@@ -163,20 +160,10 @@ export default defineComponent({
           this.loadEvents();
           console.log("Entrou aqui");
         } else if (response.status == 204) {
-          
+          console.log("no content - no events in this edition");
         }
       });
-  },
-  computed: {
-    isOwner() {
-      if (this.$cookies.get("isOwner") == 1)
-        return true;
-      else
-        return false;
     },
-  },
-  methods: {
-
     createModalEdit() {//edit
       const element = this.$refs.editevent;
       //console.log(element);
@@ -206,6 +193,7 @@ export default defineComponent({
     //},
 
     loadEvents() {
+      this.calendarOptions.events = [];
       this.eventsList.forEach((element) => {
         if (element.eventType == 0) {
           console.log(element.calendarEndDate),
@@ -263,6 +251,9 @@ export default defineComponent({
 
       // Fim do load events
     },
+    
+
+      
   },
 });
 </script>
@@ -355,6 +346,7 @@ a {
   border-color: #0063b8;
   color: var(--fc-button-text-color);
 }
+
 .dds__modal__content {
   width: 800px;
 }
