@@ -172,7 +172,7 @@ export default defineComponent({
           this.loadEvents();
           console.log("Entrou aqui");
         } else if (response.status == 204) {
-          console.log("no content - no events on this edition");
+          
         }
       });
   },
