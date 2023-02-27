@@ -234,8 +234,8 @@ interface Data {
     buttonColor: string,
     editionsNames: EditionsNames | null,
     multiSelect: unknown | null,
-
-
+    programStartDate: Date,
+    programEndDate: Date
 }
 export default defineComponent({
     setup() {
@@ -278,10 +278,13 @@ export default defineComponent({
                     required
                 },
                 startDate: {
-                    required
+                    required,
+                    minValue: value => value >= this.programStartDate,
                 },
                 endDate: {
-                    required
+                    required,
+                    minValue: value => (value >= this.programStartDate) && (value >= this.edition.startDate),
+                    maxValue: value => value <= this.programEndDate
                 },
             }
         }
@@ -307,6 +310,8 @@ export default defineComponent({
             buttonColor: "nullButton",
             editionsNames: [],
             multiSelect: null,
+            programStartDate: this.$cookies.get("programStartDate"),
+            programEndDate: this.$cookies.get("programEndDate"),
         };
 
     },

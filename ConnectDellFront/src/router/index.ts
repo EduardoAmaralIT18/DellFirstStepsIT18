@@ -91,6 +91,11 @@ const router = createRouter({
       name: 'editEvent',
       component: () => import('../components/EditEvent.vue')
     },
+    {
+      path: '/addevent',
+      name: 'addEvent',
+      component: () => import('../components/AddEvent.vue')
+    }, 
   ]
 })
 export default router
