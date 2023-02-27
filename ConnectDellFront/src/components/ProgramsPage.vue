@@ -68,7 +68,7 @@ export default defineComponent({
         })
     } else if (this.cookiesId == -1) {
 
-      axios.get(`/Program/showBasicInfo?id1=${this.cookiesPermission}`)
+      axios.get(`/Program/showBasicInfo?id=${this.cookiesPermission}`)
         .then(function (response) {
           return response
         })
