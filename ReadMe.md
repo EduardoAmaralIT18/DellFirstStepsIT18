@@ -1,14 +1,14 @@
 # Documentação Dell First Steps
-Essa documentação é pertinente ao projeto Dell First Steps, um programa colaborativo entre os times de estagiários da Dell. O projeto teve seu início no dia 02 de Janeiro do ano de 2023 e continua em desenvolvimento ativo.
+Essa documentação é pertinente ao projeto Dell First Steps, uma aplicação desenvolvida por estágiários do IT Academy. O projeto teve seu início no dia 02 de Janeiro do ano de 2023 e continua em desenvolvimento ativo.
 
 # Sobre a aplicação Dell First Steps
 Trata-se de um sistema de gerenciamento dos programas de Estágio da Dell em parceria com universidades. Até o presente momento, a aplicação gerencia as seguintes informações: 
 
 - **Programs:** São os programas de estágio da Dell. Exemplo: IT Academy (Dell e PUCRS),  Dell Product Design Program (DPDP, Dell e Unisinos) e Infrastructure Residency.
 - **Editions:** São as edições de determinado programa de estágio. Por exemplo, o IT Academy encontra-se na edição 17, enquanto o DPDP está na edição 5.
+- **Events**: São os eventos relativos a determinada edição, que são registrados num calendário.
 - **News:** São as notícias sobre os programas de estágio.
 - **Roles:** São os tipos de usuários do sistema: Admin (Admnistrador), Intern (Estagiário), DellManager (Gerente Dell), DellMember (outros funcionários Dell) e PucrsStaff (Funcionários PUCRS). Nesta aplicação, _somente o Admin tem acesso à página da lista de usuários_, podendo adicioná-los, editá-los e removê-los. É também, _o único usuário_ que pode adicionar e editar programas/edições/notícias.
-
 
 
 Até o presente momento, a aplicação contém as seguintes funcionalidades:
@@ -19,6 +19,9 @@ Até o presente momento, a aplicação contém as seguintes funcionalidades:
 4. Editar informações de uma edição.
 5. Adicionar notícias sobre os programas de estágio.
 6. Editar notícias dos programas de estágio.
+7. Adicionar eventos a uma determinada edição, através do calendário.
+8. Editar eventos que já foram adicionados a determinada edição, através do calendário.
+9. Adicionar, remover ou editar usuários, ao acessar a aplicação com um usuário que seja Admin.
 
 ### Tecnologias Utilizadas
 | **Tecnologia**          | **Instalação**        |
@@ -32,8 +35,8 @@ Até o presente momento, a aplicação contém as seguintes funcionalidades:
 | **Git 2.36.0**          |   Workspace One       |
 
 
-### Instalações
-Para realizar as instalações necessárias para que o programa possa rodar com sucesso em seu ambiente, é necessário seguir os seguintes passos:
+### Instalações e configuração de ambiente
+Para possibilitar que a aplicação seja executada corretamente na sua máquina, deve-se realizar as seguintes instalações a fim de configurar o ambiente de desenvolvimento:
 
 - Instalar o SKD.NET utilizando o aplicativo Workspace One da sua máquina.
 - Instalar o Dotnet. Para fazer isso, execute o seguinte comando via command prompt: `dotnet tool install --global dotnet-ef` Assim que a instalação for concluída, siga para o próximo passo.
@@ -43,7 +46,7 @@ Para realizar as instalações necessárias para que o programa possa rodar com 
 - Instalar o Git for Windows utilizando o aplicativo Workspace One da sua máquina.
 - Existe tambem a opção de instalar o Github for Desktop, caso tenha conhecimento da ferramenta.
 
-Após as instalações. Podemos seguir para utilizar o git para ter uma cópia do código. 
+Após finalizar estes passos, pode-se criar uma cópia local do projeto na sua máquina, usando do versionamento do Git para tal.
 
 --- 
 
@@ -66,17 +69,17 @@ Após isso, já é possível criar uma cópia do projeto na sua máquina. Dentro
 
 #### Comentário sobre padronização
 
-Existe um passo a passo que deve ser realizado antes de sair codando. O principal é abrir uma Issue no git. O nome da issue deve ser simples e de facil compreensão sobre o que será feito, exemplo: _Criação de Usuários no Banco_.
+Existe um passo a passo que deve ser realizado antes de sair codando. O principal é abrir uma _issue_ no git. O nome da issue deve ser simples e de fácil compreensão sobre o que será feito, exemplo: _Criação de Usuários no Banco_.
 
-Informações mais pertinentes sobre essa tarefa devem ser adicionados na descrição. Caso exista uma documentação pertinente, é possivel adicona-la tambem na descrição da issue.
+Informações mais pertinentes sobre essa tarefa devem ser adicionados na descrição. Caso exista uma documentação pertinente, é possível adiconá-la também na descrição da issue.
 
-Após ela ter sido criada, ela tera um numero associado a mesma, como no caso dessa issue, é #3.
+Após ela ter sido criada, ela terá um número associado a mesma, como no caso dessa issue, é #3.
 
 ---
 
 #### Finalizações
 
-Agora na pasta do projeto, chamada Dell_FirstSteps, rodar o comando para instalar o Vue e os Cookies, no frontend.
+Agora na pasta do projeto, chamada Dell_FirstSteps, vamos executar o comando para instalar o Vue e os Cookies, no frontend.
 
 - Vue: `npm install vue-router@4`
 - Cookies: `npm install vue-cookies --save`
@@ -95,9 +98,10 @@ Para rodar o projeto, utilize os seguintes comandos nas pastas de backend ou fro
 - Frontend: 
   - `npm install`
   
-  [10:59 AM] Mauzolf Santos, Juliana - Dell Team
 ### DDS- Dell Design System
-O [Dell Design System (DDS)](https://www.delldesignsystem.com/) é uma biblioteca que visa padronizar os elementos visuais das aplicações Dell. **Instalação geral do DDS:**<br>
+O [Dell Design System (DDS)](https://www.delldesignsystem.com/) é uma biblioteca que visa padronizar os elementos visuais das aplicações Dell. 
+
+**Instalação geral do DDS:**<br>
 Para que seja possível utilizar DDS sem complicações,  siga os passos abaixo: 
 - Acesse https://dcsartifacts.dell.com/ui/login/  e logue com seu usuário Dell (nome_sobrenome) e senha do notebook Dell.
 - Clique no canto direito superior em Welcome e depois em Set me Up - > NPM.
@@ -112,7 +116,8 @@ Para que seja possível utilizar DDS sem complicações,  siga os passos abaixo
 Para utilizar um atributo do dds nas páginas, é necessário: 
 -    Ter o dds instalado conforme o tutorial anterior. 
 - Declarar o DDS no script da página que está sendo estilizada: Quando usar Typescript: *declare var DDS: any;* <br>
-Quando usar Javascript: *var DDS = window.DDS;* -    Inicializar o atributo na interface, por exemplo, puxando um dropdown do dds:<br> 
+Quando usar Javascript: *var DDS = window.DDS;* 
+  -    Inicializar o atributo na interface, por exemplo, puxando um dropdown do dds:<br> 
 `interface Data { randomVar: unknown | null }`
 -    Declarar o atributo no data do export default defineComponent:<br>
 `export default defineComponent({ data() : Data { return { randomVar: null, }};)` 
@@ -120,8 +125,7 @@ Quando usar Javascript: *var DDS = window.DDS;* -    Inicializar o atributo 
 `export default defineComponent({ mounted() { this.randomVar = DDS.dropdown(this.$refs.randomVar)}})`<br><br>  
 OBS.: Dentro do parâmetro deste exemplo com dropdown, o código em parênteses , *this.$refs*, é o "get" do Vue.
 Para aproveitar melhor tudo o que o DDS oferece, sempre analisar os "Events" no fim da página, em que constam vários métodos que podem satisfazer as necessidades da página que está sendo estilizada. No exemplo de dropdown: ![image](https://user-images.githubusercontent.com/122370584/221579964-f9eb32b8-9530-4786-834e-64e91ff15b2f.png) - Clicar em "copy" no código que é apresentado no site e colar  na página que precisa da estilização. **OBS.:** Para eventuais dúvidas em relação a Javascript e DDS, entre em contato com Norton Zambone ou Aaron Carneiro via chat no Teams ou [acesse o Teams do DDS](https://teams.microsoft.com/l/team/19%3a9354a17c845d4069af19fccdd15fdecb%40thread.skype/conversations?groupId=e7dbbb3b-12b5-444b-982f-3deb03d25261&tenantId=945c199a-83a2-4e80-9f8c-5a91be5752dd). **Sobre a Base de Dados** <br> 
-Como a aplicação foi criada com Entity Framework, a criação da Base de Dados foi feita automaticante. Entretanto, os primeiros dados do banco foram populados de forma manual (seeding) no arquivo ApplicationContext. ### Executando o projeto
-
+Como a aplicação foi criada com Entity Framework, a criação da Base de Dados foi feita automaticante. Entretanto, os primeiros dados do banco foram populados de forma manual (seeding) no arquivo ApplicationContext. 
 
   
 ### Executando a aplicação a partir do editor de texto local
@@ -143,7 +147,7 @@ Para executar a aplicação desenvolvida no projeto, após fazer o clone do git 
   - Caso occora um erro de Axios, rode o seguinte comando no terminal do frontend: `npm install --save axios vue-axios`
 
 - Database
-  - Caso sua database não esteja funcionando corretamente, delete a pasta Migrations do seu projeto, e rode os seguintes comandos no terminal do Backend:
+  - Caso sua database não esteja funcionando corretamente, delete a pasta Migrations do seu projeto, e execute os seguintes comandos no terminal do Backend:
     - `dotnet ef migrations add <MigrationName>`
     - `dotnet ef database update`
     
@@ -151,7 +155,6 @@ Para executar a aplicação desenvolvida no projeto, após fazer o clone do git 
   - Caso seu programa não consiga instalar as dependencias do backend, e apresenta um erro de encoding em linhas aleatórias, pode ser um problema com o Nuget. Tente rodar os seguintes comandos no terminal do Backend:
     - `dotnet nuget locals all --clear` E tente instalar as dependencias novamente
     
----
 
 ---
 
