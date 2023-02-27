@@ -117,17 +117,16 @@ Para que seja possível utilizar DDS sem complicações,  siga os passos abaixo
 - Digite `npm install --save-dev @dds/components --registry=https://artifacts.dell.com/artifactory/api/npm/dx-npm-prod` e rode comando.
 - O @dds/components deve estar no seu package.json e você já pode usar o Javascript do DDS. 
 
-**Utilizando um atributo do DDS**]
+**Utilizando um atributo do DDS**
 
 <br>
 
-Para utilizar um atributo do dds nas páginas, é necessário: 
-- Ter o dds instalado conforme o tutorial anterior. 
-- Declarar o DDS no script da página que está sendo estilizada: Quando usar Typescript: *declare var DDS: any;* 
-
-<br>
-
-Quando usar Javascript: *var DDS = window.DDS;* 
+Para utilizar um atributo do dds nas páginas, é necessário:<br> 
+- Ter o dds instalado conforme o tutorial anterior. 
+- Declarar o DDS no script da página que está sendo estilizada:<br> 
+  Quando usar Typescript: *declare var DDS: any;*<br>
+  Quando usar Javascript: *var DDS = window.DDS;*<br> 
+  
 - Inicializar o atributo na interface, por exemplo, puxando um dropdown do dds: `interface Data { randomVar: unknown | null }`
 
 - Declarar o atributo no data do export default defineComponent: `export default defineComponent({ data() : Data { return { randomVar: null, }};)` 
