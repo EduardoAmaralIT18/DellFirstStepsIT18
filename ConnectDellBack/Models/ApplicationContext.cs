@@ -28,6 +28,11 @@ public class ApplicationContext : DbContext
                     .WithMany(user => user.listEditions)
                     .UsingEntity<MembershipModel>();
 
+        modelBuilder.Entity<EventsModel>()
+                    .HasMany(evnt => evnt.peopleInvolved)
+                    .WithMany(user => user.listEvents)
+                    .UsingEntity<ParticipationModel>();
+
         modelBuilder.Entity<UserModel>()
                     .HasOne(user => user.editionIntern)
                     .WithMany(edition => edition.interns);
@@ -328,7 +333,7 @@ public class ApplicationContext : DbContext
                 id = 1,
                 programid = 1,
                 name = "Edition 17",
-                startDate = new DateTime(2022,10,10),
+                startDate = new DateTime(2022,08,10),
                 endDate = new DateTime(2023,05,28),
                 description = "Seventeenth edition of the IT Academy program focused solely on the self-titled female audience.",
                 numberOfInterns = 21, 
@@ -545,7 +550,7 @@ public class ApplicationContext : DbContext
                 text = "The all-girls team starts development of the Dell FirstSteps Project, that will help organize all contents about Dell's Internship Programs.",
                 date = new DateTime(2022,01,04),
             }
-         );
+        );
 
         modelBuilder.Entity<OwnershipModel>().HasData(
             

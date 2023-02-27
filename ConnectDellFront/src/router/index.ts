@@ -25,7 +25,7 @@ const router = createRouter({
     {
       path: '/users',
       name: 'UserPage',
-      component: () => import('../views/UserView.vue') //teste, pode trocar, so troca so o componente, nao o path nem o name
+      component: () => import('../views/UserView.vue')
     },
     {
       path: '/createprogram',
@@ -81,10 +81,15 @@ const router = createRouter({
       name: 'EditNews',
       component: () => import('../views/EditNewsView.vue')
     },
-    { 
-      path: '/calendar', 
-      name: 'calendar', 
-      component: () => import('../components/CalendarCreate.vue') 
+    {
+      path: '/calendar',
+      name: 'calendar',
+      component: () => import('../components/CalendarCreate.vue')
+    },
+    {
+      path: '/editEvent',
+      name: 'editEvent',
+      component: () => import('../components/EditEvent.vue')
     },
     {
       path: '/addevent',

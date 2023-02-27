@@ -1,24 +1,37 @@
 # Documentação Dell First Steps
 Essa documentação é pertinente ao projeto Dell First Steps, um programa colaborativo entre os times de estagiários da Dell. O projeto teve seu início no dia 02 de Janeiro do ano de 2023 e continua em desenvolvimento ativo.
 
-# Sobre a aplicação Dell First Steps
+## Sobre a aplicação Dell First Steps
 Trata-se de um sistema de gerenciamento dos programas de Estágio da Dell em parceria com universidades. Até o presente momento, a aplicação gerencia as seguintes informações: 
 
+<br>
+
 **Programs:** São os programas de estágio da Dell. Exemplo: IT Academy (Dell e PUCRS),  Dell Product Design Program (DPDP, Dell e Unisinos) e Infrastructure Residency.
+
+<br>
+
 **Editions:** São as edições de determinado programa de estágio. Por exemplo, o IT Academy encontra-se na edição 17, enquanto o DPDP está na edição 5.
+
+<br>
+
 **News:** São as notícias sobre os programas de estágio.
+
+<br>
+
 **Roles:** São os tipos de usuários do sistema: Admin (Admnistrador), Intern (Estagiário), DellManager (Gerente Dell), DellMember (outros funcionários Dell) e PucrsStaff (Funcionários PUCRS). Nesta aplicação, **somente o Admin tem acesso à página da lista de usuários**, podendo adicioná-los, editá-los e removê-los. É também, **o único usuário** que pode adicionar e editar programas/edições/notícias.
 
-
+<br>
 
 Até o presente momento, a aplicação contém as seguintes funcionalidades:
 
-1- Adicionar novos programas de Estágio. Por exemplo, IT Academy.
-2- Editar informações de um programa criado anteriormente.
-3- Adicionar uma nova edição ao respectivo programa.
-4- Editar informações de uma edição.
-5- Adicionar notícias sobre os programas de estágio.
-6- Editar notícias dos programas de estágio.
+- 1- Adicionar novos programas de Estágio. Por exemplo, IT Academy.
+- 2- Editar informações de um programa criado anteriormente.
+- 3- Adicionar uma nova edição ao respectivo programa.
+- 4- Editar informações de uma edição.
+- 5- Adicionar notícias sobre os programas de estágio.
+- 6- Editar notícias dos programas de estágio.
+
+---
 
 ### Tecnologias Utilizadas
 | **Tecnologia**          | **Instalação**        |

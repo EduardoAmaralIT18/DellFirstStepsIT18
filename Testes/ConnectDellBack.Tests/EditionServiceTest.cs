@@ -61,6 +61,8 @@ namespace ConnectDellBack.Tests
             return result.name;
         }
 
+
+
         [Test]
         public void update_FirstEdition_AssertEqual()
         {
@@ -85,7 +87,6 @@ namespace ConnectDellBack.Tests
 
         //    Assert.That(names.ToString(), Is.EqualTo(""));
         //}
-
 
         [OneTimeTearDown]
         public void CleanUp()

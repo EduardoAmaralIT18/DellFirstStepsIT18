@@ -37,6 +37,7 @@ public class EventService : IEventService
 
         return entries;
     }
+
     public async Task<int> removeEvent(int idEvent)
     {
         var evnt = await _dbContext.events.Where(evnt => evnt.id == idEvent).FirstOrDefaultAsync();
@@ -44,21 +45,23 @@ public class EventService : IEventService
         var entries = await _dbContext.SaveChangesAsync();
 
         return entries;
-
     }
 
-    public async Task<EventDTO> getEvent(int eventId)
+    public async Task<EventsModel> getEventToUpdate(int eventId)
     {
         var calendarEvent = await _dbContext.events.Where(e => e.id == eventId)
-                                                    .Include(e => e.peopleInvolved)
-                                            .FirstOrDefaultAsync();
-        return EventDTO.convertModel2DTO(calendarEvent);
+                                                    .Include(e => e.peopleInvolved)   
+                                                    .Include(e => e.participations)
+                                                    .ThenInclude(u => u.participant)
+                                                    .FirstOrDefaultAsync();
+        return calendarEvent;
     }
 
     public async Task<int> updateEvent(EventsModel eventsForm)
     {
         var eventFromDb = await _dbContext.events.Where(e => e.id == eventsForm.id)
                                             .Include(e => e.peopleInvolved)
+                                            .Include(e => e.participations)
                                             .FirstOrDefaultAsync();
 
         if (eventFromDb != null)
@@ -68,15 +71,16 @@ public class EventService : IEventService
             eventFromDb.eventType = eventsForm.eventType;
             eventFromDb.startDate = eventsForm.startDate;
             eventFromDb.endDate = eventsForm.endDate;
-            eventFromDb.where = eventsForm.where;
+            eventFromDb.where = eventsForm.where; 
+            eventFromDb.peopleInvolved.Clear();
 
             List<UserModel> peopleInvolvedAux = new List<UserModel>();
 
-            foreach (var item in eventFromDb.peopleInvolved)
+            foreach (var item in eventsForm.peopleInvolved)
             {
                 peopleInvolvedAux.Add(await _dbContext.users.Where(user => user.id == item.id).FirstOrDefaultAsync());
             }
-            eventFromDb.peopleInvolved.Clear();
+           
             eventFromDb.peopleInvolved.AddRange(peopleInvolvedAux);
 
             int entries = await _dbContext.SaveChangesAsync();
@@ -86,6 +90,8 @@ public class EventService : IEventService
             return 0;
         }
     }
+
+    
 
     public async Task<IEnumerable<EventDTO>> getAllEvents(int editionId) {
         // VERSÃO ANTIGA

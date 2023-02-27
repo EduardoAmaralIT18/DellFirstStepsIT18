@@ -18,6 +18,8 @@ namespace ConnectDellBack.Tests
         ApplicationContext context;
         EventService eventService;
         EventController eventController;
+        EventDTO evnt;
+        EventsModel model;
 
         [OneTimeSetUp]
         public void SetUp()
@@ -28,11 +30,40 @@ namespace ConnectDellBack.Tests
             eventService = new EventService(context);
             eventController = new EventController(new NullLogger<EventController>(), eventService);
 
-
         }
 
         [Test]
         [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
+        public async Task<String> HTTPGET_GetEventToUpdate_ReturnOk()
+        {
+            ActionResult<EventDTO> actionResult = await eventController.getEventToUpdate(1);
+            return actionResult.Result.ToString();
+        }
+
+        [Test]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult")]
+        public async Task<String> HTTPPOST_updateEvent_ReturnTrue()
+        {
+            var eventOriginal = context.events.Where(ev => ev.id == 1).FirstOrDefault();
+            eventOriginal.name = "event";
+            ActionResult result = await eventController.updateEvent(eventOriginal);
+
+            return result.ToString();
+        }
+
+        [Test]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult")]
+        public async Task<String> HTTPGET_addEvent_ReturnOk()
+        {
+            evnt = new EventDTO() {name = "name",
+                                    phaseType = PhaseType.Set_Up,
+                                    eventType = EventType.Activity,
+                                    startDate = DateTime.Now,
+                                    endDate = DateTime.Now,
+                                    where = "casa nelson",
+        };
+            ActionResult<IEnumerable<EventDTO>> actionResult = await eventController.addEvent(evnt);
+        }
         public async Task<String> HTTPGET_getAllEvents_ReturnOk()
         {
             ActionResult<IEnumerable<EventDTO>> actionResult = await eventController.getAllEvents(1);

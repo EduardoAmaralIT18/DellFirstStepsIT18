@@ -11,7 +11,8 @@ namespace ConnectDellBack.Services
         public Task<int> updateEvent(EventsModel eventsForm);
 
         //get pro formulario
-        public Task<EventDTO> getEvent(int eventId);
+        public Task<EventsModel> getEventToUpdate(int eventId);
+
 
         //Pega todos os eventos de uma edição especifica.
         public Task<IEnumerable<EventDTO>> getAllEvents(int editionId);

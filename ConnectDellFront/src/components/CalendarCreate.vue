@@ -1,34 +1,40 @@
 <template>
+  <!-- mudar a ref e o id do bota pra distinguir entre as modais -->
+  <div role="dialog" data-dds="modal" class="dds__modal" id="editevent" ref="editevent">
+    <div class="dds__modal__content">
+      <div class="dds__modal__header">
+        <h3 class="dds__modal__title title" id="modal-headline-369536123">
+
+          Manage Event
+          <!-- <h2 class="title">Add Event</h2> -->
+        </h3>
+      </div>
+      <div id="modal-body-532887773" class="dds__modal__body">
+        <EditEvent @close-modal.="modalEdit.close()" @load-events.="eventsGet()"/>
+      </div>
+      <div class="dds__modal__footer">
+        <!-- <button :class="buttonColor" type="button" name="modal-secondary-button"
+                        @click="$router.push({ name: 'HomePage' });">Ok</button> -->
+      </div>
+    </div>
+  </div>
+
   <div class="container">
     <p class="title">Edition's Calendar</p>
-    <a
-      v-if="isOwner"
-      class="addevent dds__button dds__button--lg"
-      type="submit"
-      id="example"
-      style="color: white"
-    >
+    <a v-if="isOwner" class="addevent dds__button dds__button--lg" type="submit" id="exampleAdd" style="color: white">
       Add Event
     </a>
+
+    <a id="exampleEdit">EDIT</a>
     <!-- <div>
       <input type="checkbox" id="phases" checked><label for="phases">Phases</label>
       <input type="checkbox" id="activities" checked><label for="activities">Activities</label>
     </div> -->
     <!-- <a @click="options = !options">Change Options</a> -->
-    <full-calendar
-      class="calendar"
-      :event-limit="2"
-      :options="calendarOptions"
-    />
+    <full-calendar class="calendar" :event-limit="2" :options="calendarOptions" />
   </div>
 
-  <div
-    role="dialog"
-    data-dds="modal"
-    class="dds__modal"
-    id="uniqueid"
-    ref="uniqueid"
-  >
+  <div role="dialog" data-dds="modal" class="dds__modal" id="addevent" ref="addevent">
     <div class="dds__modal__content">
       <div class="dds__modal__header">
         <h3 class="dds__modal__title title" id="modal-headline-369536123">
@@ -38,7 +44,7 @@
       </div>
       <div id="modal-body-532887773" class="dds__modal__body">
         <!-- estrutura do modal -->
-        <AddEvent @close-modal.="modal.close()" />
+        <AddEvent @close-modal.="modalAdd.close()" @load-events.="eventsGet()" />
       </div>
       <div class="dds__modal__footer">
         <!-- <button :class="buttonColor" type="button" name="modal-secondary-button"
@@ -68,6 +74,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
+import EditEvent from '../components/EditEvent.vue'
 import AddEvent from "../components/AddEvent.vue";
 var DDS = window.DDS;
 
@@ -77,6 +84,7 @@ var DDS = window.DDS;
 export default defineComponent({
   components: {
     FullCalendar,
+    EditEvent,
     AddEvent,
   },
   props: {
@@ -118,15 +126,29 @@ export default defineComponent({
           list: "Agenda",
         },
       },
-      modal: null,
+      modalEdit: null,
+      modalAdd: null
     };
   },
   mounted() {
-    this.createModal();
+    this.createModalEdit();
+    this.createModalAdd();
   },
 
   created() {
-    axios
+    this.eventsGet();
+  },
+  computed: {
+    isOwner() {
+      if (this.$cookies.get("isOwner") == 1)
+        return true;
+      else
+        return false;
+    },
+  },
+  methods: {
+    eventsGet() {
+      axios
       .get(`/Event/getAllEvents?editionId=${this.cookiesEdit}`)
       .then(function (response) {
         return response;
@@ -137,26 +159,29 @@ export default defineComponent({
           this.eventsList = response.data;
           this.loadEvents();
           console.log("Entrou aqui");
+        } else if (response.status == 204) {
+          console.log("no content - no events in this edition");
         }
       });
-  },
-  computed: {
-    isOwner() {
-      if (this.$cookies.get("isOwner") == 1) return true;
-      else return false;
     },
-  },
-  methods: {
+    createModalEdit() {//edit
+      const element = this.$refs.editevent;
+      //console.log(element);
+      console.log(DDS);
+      console.log(element);
+      this.modalEdit = new DDS.Modal(element, { trigger: "#exampleEdit" });
+      console.log(this.modal);
+    },
     eventDescription() {
       //Swal parace um metodo de add? Nome do evento?
       swal("teste");
     },
-    createModal() {
-      const element = this.$refs.uniqueid;
+    createModalAdd() {//add
+      const element = this.$refs.addevent;
       //console.log(element);
       console.log(DDS);
       console.log(element);
-      this.modal = new DDS.Modal(element, { trigger: "#example" });
+      this.modalAdd = new DDS.Modal(element, { trigger: "#exampleAdd" });
       console.log(this.modal);
     },
 
@@ -168,6 +193,7 @@ export default defineComponent({
     //},
 
     loadEvents() {
+      this.calendarOptions.events = [];
       this.eventsList.forEach((element) => {
         if (element.eventType == 0) {
           console.log(element.calendarEndDate),
@@ -225,6 +251,9 @@ export default defineComponent({
 
       // Fim do load events
     },
+    
+
+      
   },
 });
 </script>
@@ -317,6 +346,7 @@ a {
   border-color: #0063b8;
   color: var(--fc-button-text-color);
 }
+
 .dds__modal__content {
   width: 800px;
 }

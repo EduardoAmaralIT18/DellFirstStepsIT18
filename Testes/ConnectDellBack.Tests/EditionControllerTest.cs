@@ -63,6 +63,13 @@ namespace ConnectDellBack.Tests
             return actionResult.Result.ToString();
         }
 
+        [Test]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult" )]
+        public async Task<String> HTTTPGET_updateEdition_ReturnOK()
+        {
+            model.name = "updatedName";
+            ActionResult<IEnumerable<EditionDTO>> actionResult = await editionController.updateEdition(model);
+        }
         //[Test]
         //[TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult" )]
         //public async Task<String> HTTTPGET_updateEdition_ReturnOK()
@@ -73,6 +80,11 @@ namespace ConnectDellBack.Tests
         //    return actionResult.Result.ToString();
         //}
 
+        [Test]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult" )]
+        public async Task<String> HTTPGET_allEditionsNames_ReturnOk() {
+            ActionResult<EditionDTO> actionResult = await editionController.getEditionsNames(1);
+        }
         //[Test]
         //[TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult" )]
         //public async Task<String> HTTPGET_allEditionsNames_ReturnOk() {
