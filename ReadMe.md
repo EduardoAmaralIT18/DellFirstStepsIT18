@@ -111,11 +111,11 @@ Para que seja possível utilizar DDS sem complicações,  siga os passos abaixo
 - Mude o repository pra dx-npm-prod.
 - Insira a senha do notebook novamente no campo de insert your credentials.
 - Copie o último código que aparece na página, que começa com @<SCOPED>.
-- Vá para o Windows file explorer -> Meu computador, C: -> Usuários -> Nome_Sobrenome.
-- No arquivo .npmrc (se não existir pode criar), cole o código copiado anteriormente e altere o <SCOPED> por dds.
-- Vá no front do projeto, abra o terminal, digite `npm config set strict-ssl false` e rode o comando.
-- Digite `npm install --save-dev @dds/components --registry=https://artifacts.dell.com/artifactory/api/npm/dx-npm-prod` e rode comando.
-- O @dds/components deve estar no seu package.json e você já pode usar o Javascript do DDS. 
+- Vá para o Windows file explorer -> Meu computador, C: -> Usuários -> Nome_Sobrenome.
+- No arquivo .npmrc (se não existir pode criar), cole o código copiado anteriormente e altere o <SCOPED> por dds.
+- Vá no front do projeto, abra o terminal, digite `npm config set strict-ssl false` e rode o comando.
+- Digite `npm install --save-dev @dds/components --registry=https://artifacts.dell.com/artifactory/api/npm/dx-npm-prod` e rode comando.
+- O @dds/components deve estar no seu package.json e você já pode usar o Javascript do DDS. 
 
 **Utilizando um atributo do DDS**]
 
