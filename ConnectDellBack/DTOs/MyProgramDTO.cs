@@ -6,6 +6,8 @@ namespace ConnectDellBack.DTOs
     {
         public int id {get; set;}
         public string name { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime? endDate { get; set; }
         public string description { get; set; }
         public List<EditionModel>? editions { get; set; } = new List<EditionModel>();
 
@@ -14,6 +16,8 @@ namespace ConnectDellBack.DTOs
             var aux = new MyProgramDTO();
             aux.id = prog.id;
             aux.name = prog.name;
+            aux.startDate = prog.startDate;
+            aux.endDate = prog.endDate;
             aux.description = prog.description;
             return aux;
         }
@@ -22,6 +26,8 @@ namespace ConnectDellBack.DTOs
             var aux = new MyProgramDTO();
             aux.id = prog.id;
             aux.name = prog.name;
+            aux.startDate = prog.startDate;
+            aux.endDate = prog.endDate;
             aux.description = prog.description;
             foreach (var item in prog.editions)
             {
@@ -40,6 +46,8 @@ namespace ConnectDellBack.DTOs
             var aux = new MyProgramDTO();
             aux.id = prog.id;
             aux.name = prog.name;
+            aux.startDate = prog.startDate;
+            aux.endDate = prog.endDate;
             aux.description = prog.description;
             aux.editions.Add(new EditionModel()
             {
@@ -55,6 +63,8 @@ namespace ConnectDellBack.DTOs
             var aux = new MyProgramDTO();
             aux.id = prog.id;
             aux.name = prog.name;
+            aux.startDate = prog.startDate;
+            aux.endDate = prog.endDate;
             aux.description = prog.description;
             aux.editions.Add(new EditionModel()
             {

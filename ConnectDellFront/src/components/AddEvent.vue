@@ -58,6 +58,7 @@
                 id="startDate"
                 name="startDate"
               />
+              <small class="warning" v-if="v$.event.startDate.$error" >The Data field is required and it must be between the start and end date of the edition.</small>
             </div>
           </div>
           <div class="enddate dds__col--3 dds__col--sm-3">
@@ -70,9 +71,7 @@
                 name="endDate"
                 :min="event.startDate"
               />
-              <small class="warning" v-if="v$.event.endDate.$error"
-                >The End Date filed is required.</small
-              >
+              <small class="warning" v-if="v$.event.endDate.$error">The Data field is required, it must be between the start and end date of the edition and cannot be before the actual start date of the event.</small>
             </div>
           </div>
         </div>
@@ -88,6 +87,7 @@
                 name="appt"
                 required
             />
+            <small class="warning" v-if="v$.event.startDate.$error" >The Data field is required and it must be between the start and end date of the edition.</small>
           </div>
           </div>
           <div class="enddate dds__col--3 dds__col--sm-3">
@@ -100,6 +100,7 @@
                 name="endTime"
                 required
             />
+            <small class="warning" v-if="v$.event.endDate.$error">The Data field is required, it must be between the start and end date of the edition and cannot be before the actual start date of the event.</small>
             </div>
           </div>
         </div>
@@ -208,7 +209,6 @@ import axios from "axios";
 import { useVuelidate } from "@vuelidate/core";
 import { minLength, maxLength, required } from "@vuelidate/validators";
 
-
 type User = {
   id: number;
   name: string;
@@ -225,6 +225,8 @@ interface Data {
     eventType: Number | string;
     editionId: Number;
   };
+  editionStartDate: Date,
+  editionEndDate: Date
 }
 
 export default defineComponent({
@@ -241,9 +243,12 @@ export default defineComponent({
         },
         startDate: {
           required,
+          minValue: value => value >= this.editionStartDate,
         },
         endDate: {
           required,
+          minValue: value => (value >= this.editionStartDate) && (value >= this.event.startDate),
+          maxValue: value => value <= this.editionEndDate
         },
         eventType: {
           required,
@@ -266,6 +271,8 @@ export default defineComponent({
         eventType: 1,
         editionId: 0,
       },
+      editionStartDate: this.$cookies.get("startDateEdition"),
+      editionEndDate: this.$cookies.get("endDateEdition")
     };
   },
   methods: {

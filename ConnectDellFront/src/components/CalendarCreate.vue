@@ -137,8 +137,6 @@ export default defineComponent({
           this.eventsList = response.data;
           this.loadEvents();
           console.log("Entrou aqui");
-        } else if (response.status == 204) {
-          alert("There was an error on our database! Please, try again later.");
         }
       });
   },

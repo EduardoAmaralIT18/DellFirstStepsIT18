@@ -228,7 +228,9 @@ interface Data {
         startDate: null | Date | string,
         endDate: null | Date | string,
         program: Number
-    },
+    }
+    programStartDate: Date,
+    programEndDate: Date | null | undefined,
     cookiesId: Number | null,
     cookiesEdit: Number | null,
     messageError: string,
@@ -275,6 +277,8 @@ export default defineComponent({
             members: null,
             multiSelect: null,
             loading: null,
+            programStartDate: this.$cookies.get("programStartDate"),
+            programEndDate: this.$cookies.get("programEndDate"),        
         };
     },
     validations() {
@@ -284,10 +288,13 @@ export default defineComponent({
                     required
                 },
                 startDate: {
-                    required
+                    required,
+                    minValue: value => value >= this.programStartDate
                 },
                 endDate: {
-                    required
+                    required,
+                    programStartDate: this.$cookies.get("programStartDate"),
+                    programEndDate: this.$cookies.get("programEndDate"),
                 }
             }
         }
