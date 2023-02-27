@@ -212,6 +212,20 @@ Vamos trabalhar com uma padronização simples para a nomenclatura das branchs. 
 - seuNome ou nomeGrupo/tipoDemanda/#numeroIssue (Issue criada anteriormente)
   - Exemplo: _alexya/documentation/#3_
 
+  ### Sobre Testes Unitários
+Foi acertado que o Definition of Done (DOD) para testes seria de no mínimo 50% no backend. A realização de testes no backend foi realizada com Nunit. A fim de garantir a realização dos testes com eficiência, uma Spike foi criada na primeira Sprint e os cursos abaixo serviram de base para esta Spike:
+- [CURSO WEB API COM MODULO DE TESTES](https://delldigital.udemy.com/course/the-complete-guide-to-aspnet-web-api/) 
+ 
+- [CURSO DE TESTE COM .NET E ENTITY](https://delldigital.udemy.com/course/complete-guide-to-unit-testing-in-net-core-nunit-xunit/) 
+ 
+- [CURSO GERAL DE TESTES EM C#](https://delldigital.udemy.com/course/unit-testing-csharp/)
+
+- [CREATING A TEST – C#](https://www.linkedin.com/learning/c-sharp-test-driven-development-14275015/creating-a-test)
+
+- [Understand the NUnit framework - ASP.NET Core](https://www.linkedin.com/learning/advanced-asp-dot-net-core-unit-testing/understand-the-nunit-framework?autoplay=true) 
+
+  Dito isto, recomenda-se que os próximos times do IT Academy realizem uma Spike de testes para ampliarem seus conhecimentos sobre testes.
+  
 #### Comitando trabalho
 
 Dentro do Vs code, existem opções que podem auxiliar no processo de dar commits e pushs. Assim que finalizar seu serviço, vá no terceiro ícone da barra lateral do VsCode. Lá é possível ver a opção de realizar commit. No campo acima do botão, descrever o trabalho que foi feito. Selecionar somente as files do programa que foram trabalhadas e clicar no ícone de <kbd>+</kbd>. Assim que finalizado, clicar no botão de commit. Quando completo, clicar em sincronizar mudanças, para enviar o trabalho feito para o git.
