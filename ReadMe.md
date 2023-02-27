@@ -101,7 +101,10 @@ Para rodar o projeto, utilize os seguintes comandos nas pastas de backend ou fro
 ### DDS- Dell Design System
 O [Dell Design System (DDS)](https://www.delldesignsystem.com/) é uma biblioteca que visa padronizar os elementos visuais das aplicações Dell. 
 
-**Instalação geral do DDS:**<br>
+**Instalação geral do DDS:**
+
+<br>
+
 Para que seja possível utilizar DDS sem complicações,  siga os passos abaixo: 
 - Acesse https://dcsartifacts.dell.com/ui/login/  e logue com seu usuário Dell (nome_sobrenome) e senha do notebook Dell.
 - Clique no canto direito superior em Welcome e depois em Set me Up - > NPM.
@@ -112,19 +115,41 @@ Para que seja possível utilizar DDS sem complicações,  siga os passos abaixo
 -    No arquivo .npmrc (se não existir pode criar), cole o código copiado anteriormente e altere o <SCOPED> por dds.
 -    Vá no front do projeto, abra o terminal, digite npm config set strict-ssl false e rode o comando.
 -    Digite npm install --save-dev @dds/components --registry=https://artifacts.dell.com/artifactory/api/npm/dx-npm-prod e rode comando.
--    O @dds/components deve estar no seu package.json e você já pode usar o Javascript do DDS. **Utilizando um atributo do DDS**<br>
+-    O @dds/components deve estar no seu package.json e você já pode usar o Javascript do DDS. 
+
+**Utilizando um atributo do DDS**]
+
+<br>
+
 Para utilizar um atributo do dds nas páginas, é necessário: 
 -    Ter o dds instalado conforme o tutorial anterior. 
-- Declarar o DDS no script da página que está sendo estilizada: Quando usar Typescript: *declare var DDS: any;* <br>
+- Declarar o DDS no script da página que está sendo estilizada: Quando usar Typescript: *declare var DDS: any;* 
+
+<br>
+
 Quando usar Javascript: *var DDS = window.DDS;* 
-  -    Inicializar o atributo na interface, por exemplo, puxando um dropdown do dds:<br> 
+ - Inicializar o atributo na interface, por exemplo, puxando um dropdown do dds:<br> 
 `interface Data { randomVar: unknown | null }`
--    Declarar o atributo no data do export default defineComponent:<br>
+- Declarar o atributo no data do export default defineComponent:<br>
 `export default defineComponent({ data() : Data { return { randomVar: null, }};)` 
--    Criar a variável que recebe o atributo requerido do dds dentro do mounted() no export default defineComponent:<br>
-`export default defineComponent({ mounted() { this.randomVar = DDS.dropdown(this.$refs.randomVar)}})`<br><br>  
+- Criar a variável que recebe o atributo requerido do dds dentro do mounted() no export default defineComponent:<br>
+`export default defineComponent({ mounted() { this.randomVar = DDS.dropdown(this.$refs.randomVar)}})`
+
+<br>
+
+
 OBS.: Dentro do parâmetro deste exemplo com dropdown, o código em parênteses , *this.$refs*, é o "get" do Vue.
-Para aproveitar melhor tudo o que o DDS oferece, sempre analisar os "Events" no fim da página, em que constam vários métodos que podem satisfazer as necessidades da página que está sendo estilizada. No exemplo de dropdown: ![image](https://user-images.githubusercontent.com/122370584/221579964-f9eb32b8-9530-4786-834e-64e91ff15b2f.png) - Clicar em "copy" no código que é apresentado no site e colar  na página que precisa da estilização. **OBS.:** Para eventuais dúvidas em relação a Javascript e DDS, entre em contato com Norton Zambone ou Aaron Carneiro via chat no Teams ou [acesse o Teams do DDS](https://teams.microsoft.com/l/team/19%3a9354a17c845d4069af19fccdd15fdecb%40thread.skype/conversations?groupId=e7dbbb3b-12b5-444b-982f-3deb03d25261&tenantId=945c199a-83a2-4e80-9f8c-5a91be5752dd). **Sobre a Base de Dados** <br> 
+Para aproveitar melhor tudo o que o DDS oferece, sempre analisar os "Events" no fim da página, em que constam vários métodos que podem satisfazer as necessidades da página que está sendo estilizada. 
+
+<br>
+
+No exemplo de dropdown: 
+<br>
+![image](https://user-images.githubusercontent.com/122370584/221579964-f9eb32b8-9530-4786-834e-64e91ff15b2f.png) 
+
+- Clicar em "copy" no código que é apresentado no site e colar  na página que precisa da estilização. **OBS.:** Para eventuais dúvidas em relação a Javascript e DDS, entre em contato com Norton Zambone ou Aaron Carneiro via chat no Teams ou [acesse o Teams do DDS](https://teams.microsoft.com/l/team/19%3a9354a17c845d4069af19fccdd15fdecb%40thread.skype/conversations?groupId=e7dbbb3b-12b5-444b-982f-3deb03d25261&tenantId=945c199a-83a2-4e80-9f8c-5a91be5752dd). 
+
+**Sobre a Base de Dados** <br> 
 Como a aplicação foi criada com Entity Framework, a criação da Base de Dados foi feita automaticante. Entretanto, os primeiros dados do banco foram populados de forma manual (seeding) no arquivo ApplicationContext. 
 
   
