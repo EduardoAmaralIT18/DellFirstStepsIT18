@@ -4,21 +4,21 @@ Essa documentação é pertinente ao projeto Dell First Steps, um programa colab
 # Sobre a aplicação Dell First Steps
 Trata-se de um sistema de gerenciamento dos programas de Estágio da Dell em parceria com universidades. Até o presente momento, a aplicação gerencia as seguintes informações: 
 
-**Programs:** São os programas de estágio da Dell. Exemplo: IT Academy (Dell e PUCRS),  Dell Product Design Program (DPDP, Dell e Unisinos) e Infrastructure Residency.
-**Editions:** São as edições de determinado programa de estágio. Por exemplo, o IT Academy encontra-se na edição 17, enquanto o DPDP está na edição 5.
-**News:** São as notícias sobre os programas de estágio.
-**Roles:** São os tipos de usuários do sistema: Admin (Admnistrador), Intern (Estagiário), DellManager (Gerente Dell), DellMember (outros funcionários Dell) e PucrsStaff (Funcionários PUCRS). Nesta aplicação, **somente o Admin tem acesso à página da lista de usuários**, podendo adicioná-los, editá-los e removê-los. É também, **o único usuário** que pode adicionar e editar programas/edições/notícias.
+- **Programs:** São os programas de estágio da Dell. Exemplo: IT Academy (Dell e PUCRS),  Dell Product Design Program (DPDP, Dell e Unisinos) e Infrastructure Residency.
+- **Editions:** São as edições de determinado programa de estágio. Por exemplo, o IT Academy encontra-se na edição 17, enquanto o DPDP está na edição 5.
+- **News:** São as notícias sobre os programas de estágio.
+- **Roles:** São os tipos de usuários do sistema: Admin (Admnistrador), Intern (Estagiário), DellManager (Gerente Dell), DellMember (outros funcionários Dell) e PucrsStaff (Funcionários PUCRS). Nesta aplicação, _somente o Admin tem acesso à página da lista de usuários_, podendo adicioná-los, editá-los e removê-los. É também, _o único usuário_ que pode adicionar e editar programas/edições/notícias.
 
 
 
 Até o presente momento, a aplicação contém as seguintes funcionalidades:
 
-1- Adicionar novos programas de Estágio. Por exemplo, IT Academy.
-2- Editar informações de um programa criado anteriormente.
-3- Adicionar uma nova edição ao respectivo programa.
-4- Editar informações de uma edição.
-5- Adicionar notícias sobre os programas de estágio.
-6- Editar notícias dos programas de estágio.
+1. Adicionar novos programas de Estágio. Por exemplo, IT Academy.
+2. Editar informações de um programa criado anteriormente.
+3. Adicionar uma nova edição ao respectivo programa.
+4. Editar informações de uma edição.
+5. Adicionar notícias sobre os programas de estágio.
+6. Editar notícias dos programas de estágio.
 
 ### Tecnologias Utilizadas
 | **Tecnologia**          | **Instalação**        |
@@ -95,6 +95,35 @@ Para rodar o projeto, utilize os seguintes comandos nas pastas de backend ou fro
 - Frontend: 
   - `npm install`
   
+  [10:59 AM] Mauzolf Santos, Juliana - Dell Team
+### DDS- Dell Design System
+O [Dell Design System (DDS)](https://www.delldesignsystem.com/) é uma biblioteca que visa padronizar os elementos visuais das aplicações Dell. **Instalação geral do DDS:**<br>
+Para que seja possível utilizar DDS sem complicações,  siga os passos abaixo: 
+- Acesse https://dcsartifacts.dell.com/ui/login/  e logue com seu usuário Dell (nome_sobrenome) e senha do notebook Dell.
+- Clique no canto direito superior em Welcome e depois em Set me Up - > NPM.
+- Mude o repository pra dx-npm-prod.
+- Insira a senha do notebook novamente no campo de insert your credentials.
+- Copie o último código que aparece na página, que começa com @<SCOPED>.
+-    Vá para o Windows file explorer -> Meu computador, C: -> Usuários -> Nome_Sobrenome.
+-    No arquivo .npmrc (se não existir pode criar), cole o código copiado anteriormente e altere o <SCOPED> por dds.
+-    Vá no front do projeto, abra o terminal, digite npm config set strict-ssl false e rode o comando.
+-    Digite npm install --save-dev @dds/components --registry=https://artifacts.dell.com/artifactory/api/npm/dx-npm-prod e rode comando.
+-    O @dds/components deve estar no seu package.json e você já pode usar o Javascript do DDS. **Utilizando um atributo do DDS**<br>
+Para utilizar um atributo do dds nas páginas, é necessário: 
+-    Ter o dds instalado conforme o tutorial anterior. 
+- Declarar o DDS no script da página que está sendo estilizada: Quando usar Typescript: *declare var DDS: any;* <br>
+Quando usar Javascript: *var DDS = window.DDS;* -    Inicializar o atributo na interface, por exemplo, puxando um dropdown do dds:<br> 
+`interface Data { randomVar: unknown | null }`
+-    Declarar o atributo no data do export default defineComponent:<br>
+`export default defineComponent({ data() : Data { return { randomVar: null, }};)` 
+-    Criar a variável que recebe o atributo requerido do dds dentro do mounted() no export default defineComponent:<br>
+`export default defineComponent({ mounted() { this.randomVar = DDS.dropdown(this.$refs.randomVar)}})`<br><br>  
+OBS.: Dentro do parâmetro deste exemplo com dropdown, o código em parênteses , *this.$refs*, é o "get" do Vue.
+Para aproveitar melhor tudo o que o DDS oferece, sempre analisar os "Events" no fim da página, em que constam vários métodos que podem satisfazer as necessidades da página que está sendo estilizada. No exemplo de dropdown: ![image](https://user-images.githubusercontent.com/122370584/221579964-f9eb32b8-9530-4786-834e-64e91ff15b2f.png) - Clicar em "copy" no código que é apresentado no site e colar  na página que precisa da estilização. **OBS.:** Para eventuais dúvidas em relação a Javascript e DDS, entre em contato com Norton Zambone ou Aaron Carneiro via chat no Teams ou [acesse o Teams do DDS](https://teams.microsoft.com/l/team/19%3a9354a17c845d4069af19fccdd15fdecb%40thread.skype/conversations?groupId=e7dbbb3b-12b5-444b-982f-3deb03d25261&tenantId=945c199a-83a2-4e80-9f8c-5a91be5752dd). **Sobre a Base de Dados** <br> 
+Como a aplicação foi criada com Entity Framework, a criação da Base de Dados foi feita automaticante. Entretanto, os primeiros dados do banco foram populados de forma manual (seeding) no arquivo ApplicationContext. ### Executando o projeto
+
+
+  
 ### Executando a aplicação a partir do editor de texto local
 
 Para executar a aplicação desenvolvida no projeto, após fazer o clone do git e as configuraçãos de ambiente já mencionadas anteriormente, é necessário:
@@ -122,6 +151,7 @@ Para executar a aplicação desenvolvida no projeto, após fazer o clone do git 
   - Caso seu programa não consiga instalar as dependencias do backend, e apresenta um erro de encoding em linhas aleatórias, pode ser um problema com o Nuget. Tente rodar os seguintes comandos no terminal do Backend:
     - `dotnet nuget locals all --clear` E tente instalar as dependencias novamente
     
+---
 
 ---
 
