@@ -154,6 +154,7 @@ No exemplo de dropdown: 
 **Sobre a Base de Dados** <br> 
 Como a aplicação foi criada com Entity Framework, a criação da Base de Dados foi feita automaticante. Entretanto, os primeiros dados do banco foram populados de forma manual (seeding) no arquivo ApplicationContext. 
 
+---
   
 ### Executando a aplicação a partir do editor de texto local
 
