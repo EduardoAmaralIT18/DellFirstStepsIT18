@@ -10,6 +10,7 @@ Trata-se de um sistema de gerenciamento dos programas de Estágio da Dell em par
 - **News:** São as notícias sobre os programas de estágio.
 - **Roles:** São os tipos de usuários do sistema: Admin (Admnistrador), Intern (Estagiário), DellManager (Gerente Dell), DellMember (outros funcionários Dell) e PucrsStaff (Funcionários PUCRS). Nesta aplicação, _somente o Admin tem acesso à página da lista de usuários_, podendo adicioná-los, editá-los e removê-los. É também, _o único usuário_ que pode adicionar e editar programas/edições/notícias.
 
+**Uma imagem do Diagrama de Banco de Dados da aplicação se encontra na pasta DBDiagram do projeto.**
 
 Até o presente momento, a aplicação contém as seguintes funcionalidades:
 
@@ -156,7 +157,10 @@ No exemplo de dropdown: 
 Como a aplicação foi criada com Entity Framework, a criação da Base de Dados foi feita automaticante. Entretanto, os primeiros dados do banco foram populados de forma manual (seeding) no arquivo ApplicationContext. 
 
 ---
-  
+### Executando a aplicação a partir do editor de texto local
+O [FullCalendar](https://fullcalendar.io/docs#toc) foi o componente utilizado para o calendário presente nas edições. Toda sua documentação encontra-se disponível no link acima.
+
+---
 ### Executando a aplicação a partir do editor de texto local
 
 Para executar a aplicação desenvolvida no projeto, após fazer o clone do git e as configuraçãos de ambiente já mencionadas anteriormente, é necessário:
