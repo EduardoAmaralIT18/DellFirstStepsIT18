@@ -5,15 +5,17 @@ namespace ConnectDellBack.Services
 {
     public interface IEventService
     {
+       public Task<int> AddEvent(EventDTO events);
         //update
-        public Task<int> updateEvent(EventsModel eventsForm);
+        public Task<int> UpdateEvent(EventsModel eventsForm);
 
         //get pro formulario
-        public Task<EventDTO> getEvent(int eventId);
+        public Task<EventsModel> GetEventToUpdate(int eventId);
 
         //Pega todos os eventos de uma edição especifica.
-        public Task<IEnumerable<EventDTO>> getAllEvents(int editionId);
+        public Task<IEnumerable<EventDTO>> GetAllEvents(int editionId);
 
     }
+
 
 }

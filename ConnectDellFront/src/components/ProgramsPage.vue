@@ -60,6 +60,8 @@ export default defineComponent({
           if (response.status == 200) {
             this.program = response.data;
             this.$cookies.set("programName", response.data.name);
+            this.$cookies.set("programStartDate", this.program.startDate);
+            this.$cookies.set("programEndDate", this.program.endDate);
             this.owners = response.data.owners;
             this.editions = response.data.editions;
           } else if (response.status == 204) {
@@ -76,6 +78,8 @@ export default defineComponent({
           if (response.status == 200) {
             this.program = response.data;
             this.$cookies.set("programName", response.data.name);
+            this.$cookies.set("programStartDate", this.program.startDate);
+            this.$cookies.set("programEndDate", this.program.endDate);
             this.owners = response.data.owners;
           } else if (response.status == 204) {
             alert("There was an error on our database! Please, try again later.");

@@ -5,10 +5,10 @@ namespace ConnectDellBack.Services;
 
 public interface INewsService
 {
-    public Task<IEnumerable<NewsModel>> getNews();
-    public Task<NewsModel> getSpecificNews(int id);
+    public Task<IEnumerable<NewsModel>> GetNews();
+    public Task<NewsModel> GetSpecificNews(int id);
 
-    public Task<bool> addContent(ContentDTO content);
+    public Task<bool> AddContent(ContentDTO content);
 
-    public Task<bool> updateNews(ContentDTO contentForm);
+    public Task<bool> UpdateNews(ContentDTO contentForm);
 }

@@ -169,7 +169,7 @@ export default defineComponent({
             this.role = this.$cookies.get("role");
             this.user = this.$cookies.get("id");
 
-            axios.get('/Program/GetPrograms', {
+            axios.get('/Program/getPrograms', {
                 params: {
                     idUser: this.user,
                     role: this.role,
@@ -205,7 +205,7 @@ export default defineComponent({
                 }).then(function (response) {
                     return response;
                 }).then(response => {
-                    if (response.status == 200) {
+                    if (response.status == 202) {
                         this.modalTitle = "News Published";
                         this.modalMessage = "Your news was successfully published."
                         this.modalSuccess = true;

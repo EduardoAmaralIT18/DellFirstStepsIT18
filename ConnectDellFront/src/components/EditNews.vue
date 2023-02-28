@@ -196,7 +196,7 @@ export default defineComponent({
         },
         getPrograms(): void {
             let role = this.$cookies.get("role");
-            axios.get('/Program/GetPrograms', {
+            axios.get('/Program/getPrograms', {
                 params: {
                     idUser: this.user,
                     role: role,
@@ -223,7 +223,7 @@ export default defineComponent({
                 data.append('imageName', this.news.title);
                 data.append('image', this.news.image);
 
-                axios.post('/News/UpdateNews', data, {
+                axios.post('/News/updateNews', data, {
                     headers: {
                         'accept': 'application/json',
                         'Content-Type': 'multipart/form-data'
@@ -231,7 +231,7 @@ export default defineComponent({
                 }).then(function (response) {
                     return response;
                 }).then(response => {
-                    if (response.status == 200) {
+                    if (response.status == 202) {
                         this.modalTitle = "News Edited";
                         this.modalMessage = "Your news was successfully edited."
                         this.modalSuccess = true;

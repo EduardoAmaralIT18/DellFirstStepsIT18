@@ -244,7 +244,7 @@ export default defineComponent({
 
   methods: {
     fetchData(): void {
-      axios.get(`/Program/GetProgram?id=${this.idProgram}`)
+      axios.get(`/Program/getProgram?id=${this.idProgram}`)
         .then(function (response) {
           return response;
         })
@@ -263,7 +263,7 @@ export default defineComponent({
           }
         });
 
-      axios.get(`/Program/GetProgramsName`)
+      axios.get(`/Program/getProgramsName`)
         .then(function (response) {
           return response;
         })
@@ -275,7 +275,7 @@ export default defineComponent({
           }
         });
 
-      axios.get(`/user/GetOwners`)
+      axios.get(`/user/getOwners`)
         .then(function (response) {
           return response;
         })
@@ -350,7 +350,7 @@ export default defineComponent({
           if (this.program.endDate != "") {
             targetEndDate = this.program.endDate;
           }
-          axios.post('/Program/UpdateProgram', {
+          axios.post('/Program/updateProgram', {
             id: this.program.id,
             name: this.program.name,
             startDate: this.program.startDate,
@@ -370,7 +370,7 @@ export default defineComponent({
                 this.messageError = `Your changes were successfully apllied on the program "${this.program.name}".`;
                 this.buttonColor = "blueButton";
                 return;
-              } else if (response.status == 404) {
+              } else if (response.status == 400) {
                 this.titleError = "Error";
                 this.messageError = `I'm sorry, something went wrong. Try again later.`;
                 this.buttonColor = "errorButton";

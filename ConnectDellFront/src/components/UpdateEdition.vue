@@ -82,14 +82,14 @@
                     <!-- <div class="multiselec dds__select__wrapper"> -->
                     <!-- <MultiSelect style="box-shadow: none ;" v-model="v$.program.members.$model" tipo="owner"/> -->
 
-                    <div class="dds__dropdown" data-dds="dropdown" ref="multiselect" id="multi-select-list-dropdown"
+                    <div class="dds__dropdown" data-dds="dropdown" ref="multiselectEdit" id="multiselectUpEdition"
                         data-selection="multiple" data-select-all-label="Select all">
                         <div class="dds__dropdown__input-container">
                             <div class="dds__dropdown__input-wrapper" autocomplete="off" aria-haspopup="listbox"
                                 aria-controls="multi-select-list-dropdown-popup">
-                                <input @blur="v$.edition.members.$touch"
-                                    id="multi-select-list-dropdown-input" name="multi-select-list-dropdown-name" type="text"
-                                    role="combobox" class="dds__dropdown__input-field"
+                                <input @blur="v$.edition.members.$touch" id="multi-select-list-dropdown-input"
+                                    name="multi-select-list-dropdown-name" type="text" role="combobox"
+                                    class="dds__dropdown__input-field"
                                     aria-labelledby="multi-select-list-dropdown-label multi-select-list-dropdown-helper"
                                     autocomplete="off" aria-expanded="false"
                                     aria-controls="multi-select-list-dropdown-list" />
@@ -99,7 +99,7 @@
                             role="presentation" tabindex="-1">
                             <ul class="dds__dropdown__list" role="listbox" tabindex="-1"
                                 id="multi-select-list-dropdown-list">
-                                <li v-for="member in members" :key="member.id" class="dds__dropdown__item" role="none">
+                                <li v-for="member in allMembers" :key="member.id" class="dds__dropdown__item" role="none">
                                     <button type="button" class="dds__dropdown__item-option" role="option"
                                         data-selected="false" :data-value=member.id tabindex="-1">
                                         <span class="dds__dropdown__item-label">{{ member.name }}</span>
@@ -115,8 +115,7 @@
                 <div class="dds__col--3 dds__col--sm-3">
                     <div class="dds__text-area__header">
                         <label for="startDate">Start date <span>*</span></label>
-                        <small v-if="v$.edition.startDate.$error" class="help-block">The Start Date field is
-                            required</small>
+                        <small v-if="v$.edition.startDate.$error" class="help-block">The Start Date field is required and must be between the Program start and end dates.</small>
                     </div>
                     <div class="dds__text-area__wrapper">
                         <input v-model="v$.edition.startDate.$model" type="date" id="startDate" name="startDate">
@@ -125,8 +124,7 @@
                 <div class="enddate dds__col--3 dds__col--sm-3">
                     <div class="dds__text-area__header">
                         <label for="endDate"> End date <span>*</span></label>
-                        <small v-if="v$.edition.endDate.$error" class="help-block">The End Date field is
-                            required</small>
+                        <small v-if="v$.edition.endDate.$error" class="help-block">The End Date field is required and must be between the Program start and end dates.</small>
                     </div>
                     <div class="dds__text-area__wrapper">
                         <input v-model="v$.edition.endDate.$model" type="date" id="endDate" name="endDate"
@@ -228,7 +226,9 @@ interface Data {
         startDate: null | Date | string,
         endDate: null | Date | string,
         program: Number
-    },
+    }
+    programStartDate: Date,
+    programEndDate: Date,
     cookiesId: Number | null,
     cookiesEdit: Number | null,
     messageError: string,
@@ -236,7 +236,7 @@ interface Data {
     buttonColor: string,
     editionsNames: EditionsNames | null,
     originalName: string,
-    members: User | null,
+    allMembers: User | null,
     multiSelect: unknown | null,
     loading: unknown | null,
 
@@ -248,9 +248,9 @@ export default defineComponent({
 
     mounted() {
         this.createModal();
+        this.createMultiselect();
         this.loading = DDS.LoadingIndicator(this.$refs.loading);
     },
-
     data(): Data {
         return {
             edition: {
@@ -272,9 +272,11 @@ export default defineComponent({
             buttonColor: "nullButton",
             editionsNames: [],
             originalName: '',
-            members: null,
+            allMembers: null,
             multiSelect: null,
             loading: null,
+            programStartDate: this.$cookies.get("programStartDate"),
+            programEndDate: this.$cookies.get("programEndDate"),
         };
     },
     validations() {
@@ -284,10 +286,13 @@ export default defineComponent({
                     required
                 },
                 startDate: {
-                    required
+                    required,
+                    minValue: value => value >= this.programStartDate
                 },
                 endDate: {
-                    required
+                    required,
+                    minValue: value => value >= this.edition.startDate,
+                    maxValue: value => value <= this.programEndDate,
                 }
             }
         }
@@ -313,7 +318,7 @@ export default defineComponent({
                     this.edition.startDate = new Date(response.data.startDate).toISOString().substring(0, 10);
                     this.edition.endDate = new Date(response.data.endDate).toISOString().substring(0, 10);
                     //this.edition.program = response.data.program;
-                } else if (response.status == 204) {
+                } else if (response.status == 404) {
                     alert("There was an error on our database! Please, try again later.");
                 }
             })
@@ -331,8 +336,7 @@ export default defineComponent({
                 return response;
             })
             .then(response => {
-                this.members = response.data;
-                this.createMultiselect();
+                this.allMembers = response.data;
                 this.loading.show();
                 return;
             });
@@ -361,13 +365,13 @@ export default defineComponent({
                         return response;
                     })
                     .then(response => {
-                        if (response.status == 200) {
+                        if (response.status == 202) {
                             //alert("Edition updated!");
                             this.titleError = "Edition Updated";
                             this.messageError = `The edition "${this.edition.name}" of ${this.$cookies.get("programName")} was successfully updated.`;
                             this.buttonColor = "blueButton";
                             return;
-                        } else if (response.status == 404) {
+                        } else if (response.status == 400) {
                             this.buttonColor = "errorButton";
                             this.titleError = "Error";
                             this.messageError = "Error Message";
@@ -389,10 +393,10 @@ export default defineComponent({
         },
 
         createMultiselect(): void {
-            this.multiSelect = DDS.Dropdown(this.$refs.multiselect);
+            this.multiSelect = DDS.Dropdown(this.$refs.multiselectEdit);
 
             // eslint-disable-next-line
-            this.$refs.multiselect.addEventListener("ddsDropdownSelectionChangeEvent", (e) => {
+            this.$refs.multiselectEdit.addEventListener("ddsDropdownSelectionChangeEvent", (e) => {
                 this.searchMembers();
             });
         },
@@ -427,7 +431,7 @@ export default defineComponent({
             var ownerMultiselect = this.multiSelect.getSelection();
 
             ownerMultiselect.forEach((mMulti: number) => {
-                this.edition.members?.push(this.members?.find(m => m.id == mMulti as number))
+                this.edition.members?.push(this.allMembers?.find(m => m.id == mMulti as number))
             });
         },
 

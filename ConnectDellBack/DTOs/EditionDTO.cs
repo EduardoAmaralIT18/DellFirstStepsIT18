@@ -20,7 +20,7 @@ public class EditionDTO
     public List<UserModel> interns {get;set;} = new List<UserModel>();
     public List<EventsModel> events {get;set;} = new List<EventsModel>();
     
-    public static EditionDTO convertModel2DTO(EditionModel edition)
+    public static EditionDTO ConvertModel2DTO(EditionModel edition)
     {
         EditionDTO aux = new EditionDTO();
         aux.id = edition.id;
@@ -44,7 +44,7 @@ public class EditionDTO
         return aux;
     }
 
-    public static EditionDTO convertModel2DTOJustName (EditionModel edition) {
+    public static EditionDTO ConvertModel2DTOJustName (EditionModel edition) {
         EditionDTO aux = new EditionDTO();
         aux.name = edition.name;
         return aux;

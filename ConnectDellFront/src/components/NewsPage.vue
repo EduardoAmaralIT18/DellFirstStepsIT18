@@ -117,7 +117,7 @@ export default defineComponent({
                     return response;
                 })
                 .then(response => {
-                    if (response.status == 404) {
+                    if (response.status == 204) {
                         this.news = null;
                         alert("No news found!");
                     } else if (response.status == 200) {

@@ -20,33 +20,56 @@ public class EventController : ControllerBase
         _service = service;
     }
 
-    [HttpGet("getEventToUpdate")]
-    public async Task<ActionResult<EventDTO>> getEventToUpdate(int eventId)
+    [HttpPost("addEvent")]
+    public async Task<ActionResult> AddEvent(EventDTO events)
     {
-        var result = await _service.getEvent(eventId);
-        return result == null ? NoContent() : Ok(result);
+        int entries = await _service.AddEvent(events);
+        if (entries > 0)
+        {
+            return Ok();
+        }
+        else
+        {
+            return NotFound();
+        }
     }
 
-    [HttpPost("updateEvent")] 
-    public async Task<ActionResult> updateEvent(EventsModel eventForm) {
-        int entries = await _service.updateEvent(eventForm);
-        if (entries > 0) {
+    [HttpGet("getEventToUpdate")]
+    public async Task<ActionResult<EventDTO>> GetEventToUpdate(int eventId)
+    {
+        var result = await _service.GetEventToUpdate(eventId);
+        EventDTO eventDTO = EventDTO.ConvertModel2DTO(result);
+        return result == null ? NotFound() : Ok(eventDTO);
+    }
+
+    [HttpPost("updateEvent")]
+    public async Task<ActionResult> UpdateEvent(EventsModel eventForm)
+    {
+        int entries = await _service.UpdateEvent(eventForm);
+        if (entries > 0)
+        {
             return Ok();
-        } else {
+        }
+        else
+        {
             return NotFound();
         }
     }
 
     [HttpGet("getAllEvents")]
-    public async Task<ActionResult<IEnumerable<EventDTO>>> getAllEvents(int editionId) {
-        var result = await _service.getAllEvents(editionId);
-        
+    public async Task<ActionResult<IEnumerable<EventDTO>>> GetAllEvents(int editionId)
+    {
+        var result = await _service.GetAllEvents(editionId);
+
         if (result.Count() > 0)
         {
             return Ok(result);
-        } else if (result.Count() == 0){
+        }
+        else if (result.Count() == 0)
+        {
             return NoContent();
-        } else
+        }
+        else
         {
             return BadRequest();
 

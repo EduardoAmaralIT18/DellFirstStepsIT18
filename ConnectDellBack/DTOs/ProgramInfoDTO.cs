@@ -11,7 +11,7 @@ public class ProgramInfoDTO
     public List<EditionDTO>? editions { get; set; } = new List<EditionDTO>();
     public List<UserModel> owners { get; set; } = new List<UserModel>();
 
-    public static ProgramInfoDTO convertModel2DTOAdmin(List<OwnershipModel> ownership, ProgramModel programOwners)
+    public static ProgramInfoDTO ConvertModel2DTOAdmin(List<OwnershipModel> ownership, ProgramModel programOwners)
     {
         ProgramInfoDTO aux = new ProgramInfoDTO();
         aux.name = ownership[0].program.name;
@@ -45,7 +45,7 @@ public class ProgramInfoDTO
         return aux;
     }
 
-    public static ProgramInfoDTO convertModel2DTOIntern(ProgramModel program, EditionDTO edition)
+    public static ProgramInfoDTO ConvertModel2DTOIntern(ProgramModel program, EditionDTO edition)
     {
         ProgramInfoDTO aux = new ProgramInfoDTO();
         if (program != null)
@@ -78,7 +78,7 @@ public class ProgramInfoDTO
         return aux;
     }
 
-    public static ProgramInfoDTO convertModel2DTOOthers(ProgramModel program, List<EditionDTO> editions)
+    public static ProgramInfoDTO ConvertModel2DTOOthers(ProgramModel program, List<EditionDTO> editions)
     {
         ProgramInfoDTO aux = new ProgramInfoDTO();
         if (program != null)
@@ -107,7 +107,7 @@ public class ProgramInfoDTO
         return aux;
     }
 
-    public static ProgramInfoDTO convertModel2DTONoPermission(ProgramModel program)
+    public static ProgramInfoDTO ConvertModel2DTONoPermission(ProgramModel program)
     {
         ProgramInfoDTO aux = new ProgramInfoDTO();
         if (program != null)
@@ -130,7 +130,7 @@ public class ProgramInfoDTO
         return aux;
     }
 
-public static ProgramInfoDTO convertModel2DTOProgramsName(ProgramModel program)
+public static ProgramInfoDTO ConvertModel2DTOProgramsName(ProgramModel program)
     {
         ProgramInfoDTO aux = new ProgramInfoDTO();
         if (program != null)

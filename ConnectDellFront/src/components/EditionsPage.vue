@@ -30,7 +30,7 @@ export default defineComponent({
       .then(response => {
         if (response.status == 200) {
           this.edition = response.data;
-        } else if (response.status == 204) {
+        } else if (response.status == 404) {
           alert("There was an error on our database! Please, try again later.");
         }
       })

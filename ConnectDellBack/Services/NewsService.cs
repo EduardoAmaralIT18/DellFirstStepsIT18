@@ -13,7 +13,7 @@ public class NewsService : INewsService
         dbnews = _dbnews;
     }
 
-    public async Task<IEnumerable<NewsModel>> getNews()
+    public async Task<IEnumerable<NewsModel>> GetNews()
     {
 
         var news = await dbnews.news.Include(news => news.program)
@@ -23,7 +23,7 @@ public class NewsService : INewsService
         return news;
     }
 
-    public async Task<NewsModel> getSpecificNews(int formId)
+    public async Task<NewsModel> GetSpecificNews(int formId)
     {
 
         var news = await dbnews.news.Include(news => news.program)
@@ -34,7 +34,7 @@ public class NewsService : INewsService
         return news;
     }
 
-    public async Task<bool> addContent(ContentDTO content)
+    public async Task<bool> AddContent(ContentDTO content)
     {
         var news = new NewsModel()
         {
@@ -84,7 +84,7 @@ public class NewsService : INewsService
 
     }
 
-    public async Task<bool> updateNews(ContentDTO contentForm)
+    public async Task<bool> UpdateNews(ContentDTO contentForm)
     {
         var news = dbnews.news.Where(news => news.id == contentForm.id).FirstOrDefault();
 

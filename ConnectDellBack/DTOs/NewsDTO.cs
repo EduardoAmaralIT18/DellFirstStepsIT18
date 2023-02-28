@@ -14,7 +14,7 @@ public class NewsDTO
     public string image { get; set; }
     public string date { get; set; } = null!;
 
-    public static NewsDTO convertModel2DTO(NewsModel news)
+    public static NewsDTO ConvertModel2DTO(NewsModel news)
     {
         NewsDTO aux = new NewsDTO();
         aux.id = news.id;
@@ -32,23 +32,5 @@ public class NewsDTO
         aux.date = news.date.ToLongDateString() + " - " + news.date.ToShortTimeString();
         return aux;
     }
-    // public string getImage(int imageID)
-    // {
-
-    //     ImageModel? img = db.images.OrderByDescending(i => i.imageId)
-    //                             .FirstOrDefault();
-
-    //     if (img != null)
-    //     {
-    //         string imageBase64Data = Convert.ToBase64String(img.imageData);
-
-    //         string imageDataURL =
-    //             string.Format("data:image/jpg;base64,{0}", imageBase64Data);
-
-    //         return imageDataURL;
-    //     }
-
-    //     return "";
-    // }
 
 }
