@@ -117,8 +117,9 @@ Para que seja possível utilizar DDS sem complicações,  siga os passos abaixo
 - No arquivo .npmrc (se não existir pode criar), cole o código copiado anteriormente e altere o <SCOPED> por dds.
 - Vá no front do projeto, abra o terminal, digite `npm config set strict-ssl false` e rode o comando.
 - Digite `npm install --save-dev @dds/components --registry=https://artifacts.dell.com/artifactory/api/npm/dx-npm-prod` e rode comando.
-- O @dds/components deve estar no seu package.json e você já pode usar o Javascript do DDS. 
-
+- O `@dds/components` deve estar no seu package.json. 
+- **OBS.:** Caso esteja usando **TypeScript**, é necessário inserir o código abaixo no arquivo /*shims-vue.d.ts*/:<br>
+`declare module '@dds/components';`
 ---
 
 **Utilizando um atributo do DDS**
@@ -219,7 +220,7 @@ Vamos trabalhar com uma padronização simples para a nomenclatura das branchs. 
 ---
 
 ### Sobre Testes Unitários
-Foi acertado que o Definition of Done (DOD) para testes seria de no mínimo 50% no backend. A realização de testes no backend foi realizada com Nunit. A fim de garantir a realização dos testes com eficiência, uma Spike foi criada na primeira Sprint e os cursos abaixo serviram de base para esta Spike:
+Foi acertado que o Definition of Done (DOD) para testes seria de no mínimo 70% no backend. A realização de testes no backend foi realizada com Nunit. A fim de garantir a realização dos testes com eficiência, uma Spike foi criada na primeira Sprint e os cursos abaixo serviram de base para esta Spike:
 - [CURSO WEB API COM MODULO DE TESTES](https://delldigital.udemy.com/course/the-complete-guide-to-aspnet-web-api/) 
  
 - [CURSO DE TESTE COM .NET E ENTITY](https://delldigital.udemy.com/course/complete-guide-to-unit-testing-in-net-core-nunit-xunit/) 
