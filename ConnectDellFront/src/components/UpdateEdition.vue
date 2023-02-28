@@ -115,8 +115,7 @@
                 <div class="dds__col--3 dds__col--sm-3">
                     <div class="dds__text-area__header">
                         <label for="startDate">Start date <span>*</span></label>
-                        <small v-if="v$.edition.startDate.$error" class="help-block">The Start Date field is
-                            required and can not be before the Program Start Date</small>
+                        <small v-if="v$.edition.startDate.$error" class="help-block">The Start Date field is required and must be between the Program start and end dates.</small>
                     </div>
                     <div class="dds__text-area__wrapper">
                         <input v-model="v$.edition.startDate.$model" type="date" id="startDate" name="startDate">
@@ -125,8 +124,7 @@
                 <div class="enddate dds__col--3 dds__col--sm-3">
                     <div class="dds__text-area__header">
                         <label for="endDate"> End date <span>*</span></label>
-                        <small v-if="v$.edition.endDate.$error" class="help-block">The End Date field is
-                            required and can not be after the Program End Date</small>
+                        <small v-if="v$.edition.endDate.$error" class="help-block">The End Date field is required and must be between the Program start and end dates.</small>
                     </div>
                     <div class="dds__text-area__wrapper">
                         <input v-model="v$.edition.endDate.$model" type="date" id="endDate" name="endDate"

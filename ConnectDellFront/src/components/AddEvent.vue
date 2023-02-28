@@ -1,8 +1,7 @@
 <template>
-  <!-- <div class="container"> -->
-
   <form data-dds="form" class="dds__form dds__container">
     <fieldset class="dds__form__section">
+
       <div class="dds__row">
         <div class="dds__col--12 dds__col--sm-12">
           <div class="dds__input-text__container">
@@ -19,14 +18,15 @@
           </div>
         </div>
       </div>
+
       <div class="mode dds__row">
         <div class="dds__col--12 dds__col--sm-12">
           <div class="dds__select" data-dds="select">
             <div>Event Type<span>*</span></div>
             <select v-model="v$.event.eventType.$model">
               <option disabled value="">Please select one</option>
-              <option value="0">Phase</option>
-              <option value="1">Activity</option>
+              <option :value=0>Phase</option>
+              <option :value=1>Activity</option>
             </select>
             <small class="warning" v-if="v$.event.eventType.$error">The Event Type field is required.</small>
           </div>
@@ -51,13 +51,6 @@
           </div>
         </div>
       </div>
-      <div class="enddate dds__col--3 dds__col--sm-3">
-        <div>
-          <label for="endDate">End date<span> *</span></label>
-          <input v-model="v$.event.endDate.$model" type="date" id="endDate" name="endDate" :min="event.startDate" />
-          <small class="warning" v-if="v$.event.endDate.$error">The End Date filed is required.</small>
-        </div>
-      </div>
 
       <div class="dates dds__row" v-if="event.eventType == 1">
         <div class="dds__col--3 dds__col--sm-3">
@@ -77,32 +70,26 @@
           </div>
         </div>
       </div>
-      <div class="enddate dds__col--3 dds__col--sm-3">
-        <div>
-          <label for="endDate">End time<span> *</span></label>
-          <input v-model="v$.event.endDate.$model" type="datetime-local" id="endTime" name="endTime" required />
-        </div>
-      </div>
+
       <div class="phasetype dds__row">
         <div class="dds__col--12 dds__col--sm-12">
-          <div v-if="event.eventType == 0" class="dds__select" data-dds="select">
-            <div style="margin-top: 17px;">Phase</div>
+          <div v-if="event.eventType === 0" class="dds__select" data-dds="select">
+            <div style="margin-top: 17px;">Phase <span> *</span></div>
             <select v-model="event.phaseType">
               <option disabled value="">Please select one</option>
-              <option value="0">Set Up</option>
-              <option value="1">Training</option>
-              <option value="2">Sprints</option>
-              <option value="3">Hands On</option>
-              <option value="4">Manager Meetings</option>
+              <option :value=0>Set Up</option>
+              <option :value=1>Training</option>
+              <option :value=2>Sprints</option>
+              <option :value=3>Hands On</option>
             </select>
           </div>
         </div>
       </div>
+
       <div class="dds__row">
         <div class="dds__col--12 dds__col--sm-12">
           <div class="dds__select" data-dds="select">
             <label id="select-label-141366292" for="select-control-141366292">People Involved</label>
-
             <div class="dds__dropdown" data-dds="dropdown" ref="multiselectAdd" id="multiselectAdd"
               data-selection="multiple" data-select-all-label="Select all">
               <div class="dds__dropdown__input-container">
@@ -122,21 +109,10 @@
                 </ul>
               </div>
             </div>
-
-
-            <!-- <div class="multiselec dds__select__wrapper">
-              <MultiSelect
-                style="box-shadow: none"
-                v-model="event.peopleInvolved"
-                tipo="all"
-              /> -->
-            <!-- <small class="warning" v-if="event.peopleInvolved"
-          >The Members field is required.</small
-        > -->
-            <!-- </div> -->
           </div>
         </div>
       </div>
+
       <div class="dds__row">
         <div class="dds__col--12 dds__col--sm-12">
           <div class="dds__text-area__container" data-dds="text-area">
@@ -148,14 +124,11 @@
                 data-maxlength="null" required="true"
                 aria-labelledby="text-area-label-980579425 text-area-helper-980579425" v-model="event.where"></textarea>
               <small id="text-area-helper-980579425" class="dds__input-text__helper"></small>
-              <!-- <small class="warning" v-if="event.where"
-          >The Description field is required with at least 10 and at
-          most 1500 characters.</small
-        > -->
             </div>
           </div>
         </div>
       </div>
+
     </fieldset>
     <button class="submitbutton dds__button dds__button--secondary" type="button" @click.prevent="$emit('close-modal')">
       Cancel
@@ -175,17 +148,13 @@
       </div>
     </div>
   </div>
-
-
-  <!-- </div> -->
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-//import MultiSelect from "./MultipleSelect.vue";
 import axios from "axios";
 import { useVuelidate } from "@vuelidate/core";
-import { minLength, maxLength, required } from "@vuelidate/validators";
+import { minLength, maxLength, required, requiredIf } from "@vuelidate/validators";
 declare var DDS: any;
 
 type User = {
@@ -213,9 +182,11 @@ interface Data {
 }
 
 export default defineComponent({
+
   setup() {
     return { v$: useVuelidate() };
   },
+
   validations() {
     return {
       event: {
@@ -227,6 +198,7 @@ export default defineComponent({
         startDate: {
           required,
           minValue: value => value >= this.editionStartDate,
+          maxValue: value => value <= this.editionEndDate
         },
         endDate: {
           required,
@@ -236,9 +208,13 @@ export default defineComponent({
         eventType: {
           required,
         },
+        phaseType: {
+          requiredIf: requiredIf(this.event.eventType == 0),
+        }
       },
     };
   },
+
   data(): Data {
     return {
       event: {
@@ -247,8 +223,8 @@ export default defineComponent({
         startDate: null,
         endDate: null,
         where: "",
-        phaseType: 1,
-        eventType: 1,
+        phaseType: "",
+        eventType: "",
         editionId: 0,
       },
       editionStartDate: this.$cookies.get("startDateEdition"),
@@ -258,9 +234,19 @@ export default defineComponent({
       multiselect: [],
       loading: null
     };
-
   },
+
   created() {
+    this.event = {
+      name: "",
+      peopleInvolved: [],
+      startDate: null,
+      endDate: null,
+      where: "",
+      phaseType: "",
+      eventType: "",
+      editionId: this.$cookies.get("editionId"),
+    };
 
     axios.get("/edition/getUsersNotAdmin")
       .then(function (response) {
@@ -270,7 +256,6 @@ export default defineComponent({
         this.options = response.data;
         return;
       });
-
     axios.get("/user/GetOwners")
       .then(function (response) {
         return response;
@@ -286,41 +271,18 @@ export default defineComponent({
         }
         return;
       })
-
     setTimeout(() => {
       this.showMembers();
       this.loading.hide();
     }, 1000);
   },
+
   methods: {
-
     onSubmit(): void {
-      console.log(this.event.startDate);
+      if (this.event.eventType === 1) {
+        this.event.phaseType = 4;
+      }
 
-      if (this.event.eventType == "0") {
-        this.event.eventType = 0;
-      } else {
-        this.event.eventType = 1;
-      }
-      switch (this.event.phaseType) {
-        case "0":
-          this.event.phaseType = 0;
-          break;
-        case "1":
-          this.event.phaseType = 1;
-          break;
-        case "2":
-          this.event.phaseType = 2;
-          break;
-        case "3":
-          this.event.phaseType = 3;
-          break;
-        case "4":
-          this.event.phaseType = 4;
-          break;
-        default:
-          console.log("Erro no switch");
-      }
       axios
         .post("/event/addEvent", {
           name: this.event.name,
@@ -349,13 +311,19 @@ export default defineComponent({
           }
         });
 
-      this.event.name = "";
-      this.event.peopleInvolved = [];
-      this.event.startDate = null;
-      this.event.endDate = null;
-      this.event.where = "";
-      this.event.phaseType = 1;
-      this.event.eventType = 1;
+      this.event = {
+        name: "",
+        peopleInvolved: [],
+        startDate: null,
+        endDate: null,
+        where: "",
+        phaseType: "",
+        eventType: "",
+        editionId: this.$cookies.get("editionId"),
+      };
+      this.multiselect.clearSelection();
+
+      this.v$.$reset();
     },
     searchMembers(): void {
       this.event.peopleInvolved = [];
@@ -373,17 +341,12 @@ export default defineComponent({
     createMultiselect(): void {
       this.multiselect = DDS.Dropdown(this.$refs.multiselectAdd);
       this.loading = DDS.LoadingIndicator(this.$refs.loading);
-
-
       // eslint-disable-next-line            
       this.$refs.multiselectAdd.addEventListener("ddsDropdownSelectionChangeEvent", (e) => {
         this.searchMembers();
       });
     }
   },
-
-
-
 });
 </script>
 

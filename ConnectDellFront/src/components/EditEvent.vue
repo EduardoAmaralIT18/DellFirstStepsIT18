@@ -1,5 +1,4 @@
 <template>
-  <!-- <div class="container"> -->
   <form data-dds="form" class="dds__form dds__container">
     <fieldset class="dds__form__section">
 
@@ -19,6 +18,7 @@
           </div>
         </div>
       </div>
+
       <div class="mode dds__row">
         <div class="dds__col--12 dds__col--sm-12">
           <div class="dds__select" data-dds="select">
@@ -44,6 +44,7 @@
               v-if="v$.event.endDate.$error">The End Date filed is required.</small> </div>
         </div>
       </div>
+
       <div class="dates dds__row" v-if="event.eventType == 1">
         <div class="dds__col--3 dds__col--sm-3">
           <div> <label for="startDate">Start time<span> *</span></label> <input v-model="v$.event.startDate.$model"
@@ -76,7 +77,6 @@
           <div class="dds__select" data-dds="select">
             <label id="select-label-141366292" for="select-control-141366292">People Involved</label>
             <div class="multiselec dds__select__wrapper">
-
               <div class="dds__dropdown" data-dds="dropdown" ref="multiselectEdit" id="multiselectEdit"
                 data-selection="multiple" data-select-all-label="Select all">
                 <div class="dds__dropdown__input-container">
@@ -97,17 +97,11 @@
                   </ul>
                 </div>
               </div>
-
-
-
-              <!-- <MultiSelect style="box-shadow: none" v-model="event.peopleInvolved" tipo="all" /> -->
-              <!-- <small class="warning" v-if="event.peopleInvolved"
-                  >The Members field is required.</small
-                > -->
             </div>
           </div>
         </div>
       </div>
+
       <div class="dds__row">
         <div class="dds__col--12 dds__col--sm-12">
           <div class="dds__text-area__container" data-dds="text-area">
@@ -119,14 +113,11 @@
                 data-maxlength="null" required="true"
                 aria-labelledby="text-area-label-980579425 text-area-helper-980579425" v-model="event.where"></textarea>
               <small id="text-area-helper-980579425" class="dds__input-text__helper"></small>
-              <!-- <small class="warning" v-if="event.where"
-                  >The Description field is required with at least 10 and at
-                  most 1500 characters.</small
-                > -->
             </div>
           </div>
         </div>
       </div>
+
     </fieldset>
 
     <button class="submitbutton dds__button dds__button--secondary" type="button" @click.prevent="$emit('close-modal')">
@@ -138,17 +129,7 @@
       Save
     </button>
 
-    <!-- <button
-        class="submitbutton dds__button dds__button--lg"
-        type="submit"
-        @click.prevent="onSubmit()"
-        :disabled=".$invalid"
-      >
-        Submit
-      </button> -->
   </form>
-  <!-- </div> -->
-
 
   <div ref="loading" id="loadingIndicator-overlay" class="dds__loading-indicator__container" data-dds="loading-indicator">
     <div class="dds__loading-indicator__overlay" aria-hidden="true"></div>
@@ -159,6 +140,7 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script lang="ts">
@@ -167,7 +149,6 @@ import { useVuelidate } from '@vuelidate/core';
 import { required, maxLength, minLength } from '@vuelidate/validators';
 import axios from "axios";
 declare var DDS: any;
-
 
 interface Data {
   event: Event,
@@ -220,11 +201,13 @@ export default defineComponent({
       loading: null
     }
   },
+
   setup() {
     return {
       v$: useVuelidate(),
     }
   },
+
   props: { eventProp: Event, },
 
   validations() {
@@ -237,12 +220,13 @@ export default defineComponent({
       }
     }
   },
+
   mounted() {
     this.createMultiselect();
   },
+
   created() {
     this.event = this.eventProp;
-
     axios.get("/edition/getUsersNotAdmin")
       .then(function (response) {
         return response;
@@ -270,6 +254,7 @@ export default defineComponent({
       this.loading.hide();
     }, 1000);
   },
+
   updated() {
     this.event = this.eventProp;
     this.loading.show();
@@ -278,6 +263,7 @@ export default defineComponent({
       this.loading.hide();
     }, 1000);
   },
+
   methods: {
     onSubmit() {
       if (!this.v$.$invalid) {
@@ -286,27 +272,6 @@ export default defineComponent({
         } else {
           this.event.eventType = 1;
         }
-
-        // switch (this.event.phaseType) {
-        //   case "0":
-        //     this.event.phaseType = 0;
-        //     break;
-        //   case "1":
-        //     this.event.phaseType = 1;
-        //     break;
-        //   case "2":
-        //     this.event.phaseType = 2;
-        //     break;
-        //   case "3":
-        //     this.event.phaseType = 3;
-        //     break;
-        //   case "4":
-        //     this.event.phaseType = 4;
-        //     break;
-        //   default:
-        //     console.log("Erro no switch");
-        // }
-
         axios.post('event/updateEvent', this.event)
           .then(function (response) {
             return response;
@@ -315,17 +280,12 @@ export default defineComponent({
             if (response.status == 200) {
               this.$emit('close-modal');
               this.$emit('load-events');
-              //deu certo
             } else {
               this.$emit('close-modal');
               this.$emit('load-events');
-              //erro
             }
           })
-
-
       }
-
     },
     searchMembers(): void {
       this.event.peopleInvolved = [];
@@ -343,17 +303,12 @@ export default defineComponent({
     createMultiselect(): void {
       this.multiselect = DDS.Dropdown(this.$refs.multiselectEdit);
       this.loading = DDS.LoadingIndicator(this.$refs.loading);
-
-
       // eslint-disable-next-line            
       this.$refs.multiselectEdit.addEventListener("ddsDropdownSelectionChangeEvent", (e) => {
         this.searchMembers();
       });
     },
-
   },
-
-
 })
 </script>
 
