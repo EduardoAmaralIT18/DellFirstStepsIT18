@@ -227,8 +227,7 @@ interface Data {
     editionId: Number;
   };
   editionStartDate: Date,
-  editionEndDate: Date
-  },
+  editionEndDate: Date,
   owners: User,
   options: User,
   multiselect: any,
