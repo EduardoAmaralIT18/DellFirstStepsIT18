@@ -318,7 +318,7 @@ export default defineComponent({
                     this.edition.startDate = new Date(response.data.startDate).toISOString().substring(0, 10);
                     this.edition.endDate = new Date(response.data.endDate).toISOString().substring(0, 10);
                     //this.edition.program = response.data.program;
-                } else if (response.status == 204) {
+                } else if (response.status == 404) {
                     alert("There was an error on our database! Please, try again later.");
                 }
             })
@@ -365,13 +365,13 @@ export default defineComponent({
                         return response;
                     })
                     .then(response => {
-                        if (response.status == 200) {
+                        if (response.status == 202) {
                             //alert("Edition updated!");
                             this.titleError = "Edition Updated";
                             this.messageError = `The edition "${this.edition.name}" of ${this.$cookies.get("programName")} was successfully updated.`;
                             this.buttonColor = "blueButton";
                             return;
-                        } else if (response.status == 404) {
+                        } else if (response.status == 400) {
                             this.buttonColor = "errorButton";
                             this.titleError = "Error";
                             this.messageError = "Error Message";

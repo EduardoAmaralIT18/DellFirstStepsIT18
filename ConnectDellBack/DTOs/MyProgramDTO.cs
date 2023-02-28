@@ -11,7 +11,7 @@ namespace ConnectDellBack.DTOs
         public string description { get; set; }
         public List<EditionModel>? editions { get; set; } = new List<EditionModel>();
 
-        public static MyProgramDTO convertToDTOAll(ProgramModel prog)
+        public static MyProgramDTO ConvertToDTOAll(ProgramModel prog)
         {
             var aux = new MyProgramDTO();
             aux.id = prog.id;
@@ -21,7 +21,7 @@ namespace ConnectDellBack.DTOs
             aux.description = prog.description;
             return aux;
         }
-        public static MyProgramDTO convertToDTOAdmin(ProgramModel prog)
+        public static MyProgramDTO ConvertToDTOAdmin(ProgramModel prog)
         {
             var aux = new MyProgramDTO();
             aux.id = prog.id;
@@ -41,7 +41,7 @@ namespace ConnectDellBack.DTOs
             return aux;
         }
 
-        public static MyProgramDTO convertToDTOIntern(ProgramModel prog, EditionModel edition)
+        public static MyProgramDTO ConvertToDTOIntern(ProgramModel prog, EditionModel edition)
         {
             var aux = new MyProgramDTO();
             aux.id = prog.id;
@@ -58,7 +58,7 @@ namespace ConnectDellBack.DTOs
             return aux;
         }
 
-        public static MyProgramDTO convertToDTOOthers(ProgramModel prog, EditionModel edition)
+        public static MyProgramDTO ConvertToDTOOthers(ProgramModel prog, EditionModel edition)
         {
             var aux = new MyProgramDTO();
             aux.id = prog.id;

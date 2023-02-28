@@ -235,7 +235,7 @@ export default defineComponent({
         this.options = response.data;
         return;
       });
-    axios.get("/user/GetOwners")
+    axios.get("/user/getOwners")
       .then(function (response) {
         return response;
       })

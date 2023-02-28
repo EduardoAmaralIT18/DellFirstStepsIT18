@@ -21,9 +21,9 @@ public class EventController : ControllerBase
     }
 
     [HttpPost("addEvent")]
-    public async Task<ActionResult> addEvent(EventDTO events)
+    public async Task<ActionResult> AddEvent(EventDTO events)
     {
-        int entries = await _service.addEvent(events);
+        int entries = await _service.AddEvent(events);
         if (entries > 0)
         {
             return Ok();
@@ -34,31 +34,18 @@ public class EventController : ControllerBase
         }
     }
 
-    [HttpGet("removeEvent")]
-    public async Task<ActionResult> removeEvent(int evnt)
-    {
-        var entries = await _service.removeEvent(evnt);
-        if (entries > 0)
-        {
-            return Ok();
-        }
-        else
-        {
-            return NotFound();
-        }
-    }
     [HttpGet("getEventToUpdate")]
-    public async Task<ActionResult<EventDTO>> getEventToUpdate(int eventId)
+    public async Task<ActionResult<EventDTO>> GetEventToUpdate(int eventId)
     {
-        var result = await _service.getEventToUpdate(eventId);
-        EventDTO eventDTO = EventDTO.convertModel2DTO(result);
+        var result = await _service.GetEventToUpdate(eventId);
+        EventDTO eventDTO = EventDTO.ConvertModel2DTO(result);
         return result == null ? NotFound() : Ok(eventDTO);
     }
 
     [HttpPost("updateEvent")]
-    public async Task<ActionResult> updateEvent(EventsModel eventForm)
+    public async Task<ActionResult> UpdateEvent(EventsModel eventForm)
     {
-        int entries = await _service.updateEvent(eventForm);
+        int entries = await _service.UpdateEvent(eventForm);
         if (entries > 0)
         {
             return Ok();
@@ -70,9 +57,9 @@ public class EventController : ControllerBase
     }
 
     [HttpGet("getAllEvents")]
-    public async Task<ActionResult<IEnumerable<EventDTO>>> getAllEvents(int editionId)
+    public async Task<ActionResult<IEnumerable<EventDTO>>> GetAllEvents(int editionId)
     {
-        var result = await _service.getAllEvents(editionId);
+        var result = await _service.GetAllEvents(editionId);
 
         if (result.Count() > 0)
         {

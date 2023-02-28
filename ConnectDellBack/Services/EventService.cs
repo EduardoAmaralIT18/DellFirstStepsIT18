@@ -12,7 +12,7 @@ public class EventService : IEventService
         _dbContext = dbContext;
     }
 
-    public async Task<int> addEvent(EventDTO events)
+    public async Task<int> AddEvent(EventDTO events)
     {
         for (int i = 0; i < events.peopleInvolved.Count; i++)
         {
@@ -38,16 +38,7 @@ public class EventService : IEventService
         return entries;
     }
 
-    public async Task<int> removeEvent(int idEvent)
-    {
-        var evnt = await _dbContext.events.Where(evnt => evnt.id == idEvent).FirstOrDefaultAsync();
-        _dbContext.events.Remove(evnt);
-        var entries = await _dbContext.SaveChangesAsync();
-
-        return entries;
-    }
-
-    public async Task<EventsModel> getEventToUpdate(int eventId)
+    public async Task<EventsModel> GetEventToUpdate(int eventId)
     {
         var calendarEvent = await _dbContext.events.Where(e => e.id == eventId)
                                                     .Include(e => e.peopleInvolved)   
@@ -57,7 +48,7 @@ public class EventService : IEventService
         return calendarEvent;
     }
 
-    public async Task<int> updateEvent(EventsModel eventsForm)
+    public async Task<int> UpdateEvent(EventsModel eventsForm)
     {
         var eventFromDb = await _dbContext.events.Where(e => e.id == eventsForm.id)
                                             .Include(e => e.peopleInvolved)
@@ -93,22 +84,7 @@ public class EventService : IEventService
 
     
 
-    public async Task<IEnumerable<EventDTO>> getAllEvents(int editionId) {
-        // VERSÃO ANTIGA
-        // var eventFromDb = await _dbContext.editions.Where(ed => ed.id == editionId)
-        //                                             .Include(ed => ed.events)
-        //                                             .FirstOrDefaultAsync();
-
-        // List<EventDTO> allEvents = new List<EventDTO>();
-
-        // foreach(var item in eventFromDb.events){
-        //     allEvents.Add(EventDTO.convertModel2DTO(item));
-        // }
-
-        // return allEvents;
-
-        //Busca todos os eventos associados ao id da edição passada por parametro.
-
+    public async Task<IEnumerable<EventDTO>> GetAllEvents(int editionId) {
         EventsModel[]? eventFromDb = null;
 
         eventFromDb = await _dbContext.events.Where(ev => ev.edition.id == editionId)
@@ -123,7 +99,7 @@ public class EventService : IEventService
         
             foreach (var item in eventFromDb)
             {
-                aux.Add(EventDTO.convertModel2DTO(item));
+                aux.Add(EventDTO.ConvertModel2DTO(item));
             }
         
             return aux;

@@ -256,7 +256,7 @@ export default defineComponent({
         this.options = response.data;
         return;
       });
-    axios.get("/user/GetOwners")
+    axios.get("/user/getOwners")
       .then(function (response) {
         return response;
       })
@@ -290,8 +290,8 @@ export default defineComponent({
           startDate: this.event.startDate,
           endDate: this.event.endDate,
           where: this.event.where,
-          phaseType: this.event.phaseType,
-          eventType: this.event.eventType,
+          phaseType: this.event.phaseType as number,
+          eventType: this.event.eventType as number,
           editionId: this.$cookies.get("editionId"),
         })
         .then(function (response) {
@@ -321,6 +321,7 @@ export default defineComponent({
         eventType: "",
         editionId: this.$cookies.get("editionId"),
       };
+      
       this.multiselect.clearSelection();
 
       this.v$.$reset();

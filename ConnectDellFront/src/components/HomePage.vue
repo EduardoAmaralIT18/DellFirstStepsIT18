@@ -155,12 +155,12 @@ export default defineComponent({
             this.user.name = this.$cookies.get("name");
             this.user.role = this.$cookies.get("role") ? Number(this.$cookies.get("role")) : -1;
 
-            axios.get(`/Program/GetPrograms?idUser=${this.user.id}&role=${this.user.role}`)
+            axios.get(`/Program/getPrograms?idUser=${this.user.id}&role=${this.user.role}`)
                 .then(function (response) {
                     return response;
                 })
                 .then(response => {
-                    if (response.status == 404) {
+                    if (response.status == 204) {
                         this.myPrograms = [];
                         this.programs = [];
                     } else if (response.status == 200) {

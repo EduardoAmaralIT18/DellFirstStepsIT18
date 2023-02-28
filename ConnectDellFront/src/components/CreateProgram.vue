@@ -240,7 +240,7 @@ export default defineComponent({
       };
   },
   created() {
-      axios.get(`/Program/GetProgramsName`)
+      axios.get(`/Program/getProgramsName`)
           .then(function (response) {
               return response;
           })
@@ -253,7 +253,7 @@ export default defineComponent({
               }
           });
 
-      axios.get(`/user/GetOwners`)
+      axios.get(`/user/getOwners`)
           .then(function (response) {
               return response;
           })

@@ -400,14 +400,14 @@ export default defineComponent({
                         return response;
                     })
                     .then(response => {
-                        if (response.status == 200) {
+                        if (response.status == 202) {
                             // alert("Edition Created!");
                             // this.$router.push({ name: 'ProgramsPage' });
                             this.titleError = "Edition Created";
                             this.messageError = `The edition "${this.edition.name}" of ${this.$cookies.get("programName")} was successfully created.`;
                             this.buttonColor = "blueButton";
                             return;
-                        } else if (response.status == 404) {
+                        } else if (response.status == 400) {
                             //this.$router.push({ name: 'ProgramsPage' });
                             //alert("There was an error on our database! Please, try again later.");
                             this.buttonColor = "errorButton";

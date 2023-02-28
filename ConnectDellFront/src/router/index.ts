@@ -71,12 +71,6 @@ const router = createRouter({
     },
 
     {
-      path: '/usertable',
-      name: 'usertable',
-      component: () => import('../views/UserTableView.vue')
-    },
-
-    {
       path: '/editnews/:idNews',
       name: 'EditNews',
       component: () => import('../views/EditNewsView.vue')
