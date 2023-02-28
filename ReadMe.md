@@ -97,7 +97,9 @@ Para rodar o projeto, utilize os seguintes comandos nas pastas de backend ou fro
   - `dotnet ef database update`
 - Frontend: 
   - `npm install`
-  
+
+---
+
 ### DDS- Dell Design System
 O [Dell Design System (DDS)](https://www.delldesignsystem.com/) é uma biblioteca que visa padronizar os elementos visuais das aplicações Dell. 
 
@@ -116,6 +118,8 @@ Para que seja possível utilizar DDS sem complicações,  siga os passos abaixo
 - Vá no front do projeto, abra o terminal, digite `npm config set strict-ssl false` e rode o comando.
 - Digite `npm install --save-dev @dds/components --registry=https://artifacts.dell.com/artifactory/api/npm/dx-npm-prod` e rode comando.
 - O @dds/components deve estar no seu package.json e você já pode usar o Javascript do DDS. 
+
+---
 
 **Utilizando um atributo do DDS**
 
@@ -210,8 +214,10 @@ Vamos trabalhar com uma padronização simples para a nomenclatura das branchs. 
 
 - seuNome ou nomeGrupo/tipoDemanda/#numeroIssue (Issue criada anteriormente)
   - Exemplo: _alexya/documentation/#3_
+  
+---
 
-  ### Sobre Testes Unitários
+### Sobre Testes Unitários
 Foi acertado que o Definition of Done (DOD) para testes seria de no mínimo 50% no backend. A realização de testes no backend foi realizada com Nunit. A fim de garantir a realização dos testes com eficiência, uma Spike foi criada na primeira Sprint e os cursos abaixo serviram de base para esta Spike:
 - [CURSO WEB API COM MODULO DE TESTES](https://delldigital.udemy.com/course/the-complete-guide-to-aspnet-web-api/) 
  
