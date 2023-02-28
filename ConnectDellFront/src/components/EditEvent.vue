@@ -77,7 +77,7 @@
             <label id="select-label-141366292" for="select-control-141366292">People Involved</label>
             <div class="multiselec dds__select__wrapper">
 
-              <div class="dds__dropdown" data-dds="dropdown" ref="multiselectEdit" id="multi-select-list-dropdown"
+              <div class="dds__dropdown" data-dds="dropdown" ref="multiselectEdit" id="multiselectEdit"
                 data-selection="multiple" data-select-all-label="Select all">
                 <div class="dds__dropdown__input-container">
                   <div class="dds__dropdown__input-wrapper" autocomplete="off" aria-haspopup="listbox"
@@ -225,7 +225,7 @@ export default defineComponent({
       v$: useVuelidate(),
     }
   },
-  props: { eventProp: Event },
+  props: { eventProp: Event, },
 
   validations() {
     return {
@@ -237,8 +237,12 @@ export default defineComponent({
       }
     }
   },
+  mounted() {
+    this.createMultiselect();
+  },
   created() {
     this.event = this.eventProp;
+
     axios.get("/edition/getUsersNotAdmin")
       .then(function (response) {
         return response;
@@ -257,7 +261,6 @@ export default defineComponent({
           this.owners.forEach(u => {
             this.options.push(u);
           })
-          this.createMultiselect();
           this.loading.show();
         }
         return;
@@ -267,7 +270,14 @@ export default defineComponent({
       this.loading.hide();
     }, 1000);
   },
-  updated() { this.event = this.eventProp; },
+  updated() {
+    this.event = this.eventProp;
+    this.loading.show();
+    setTimeout(() => {
+      this.showMembers();
+      this.loading.hide();
+    }, 1000);
+  },
   methods: {
     onSubmit() {
       if (!this.v$.$invalid) {

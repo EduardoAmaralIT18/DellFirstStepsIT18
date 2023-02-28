@@ -75,7 +75,7 @@
       </div>
       <div id="modal-body-532887773" class="dds__modal__body">
         <!-- estrutura do modal -->
-        <AddEvent @close-modal.="modalAdd.close()" @load-events.="eventsGet()" hasMultiselect="hasMultiSelect"/>
+        <AddEvent @close-modal.="modalAdd.close()" @load-events.="eventsGet()" />
       </div>
       <div class="dds__modal__footer">
         <!-- <button :class="buttonColor" type="button" name="modal-secondary-button"

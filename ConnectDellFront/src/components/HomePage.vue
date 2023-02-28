@@ -38,7 +38,7 @@
                                 </div>
                                 <div class="dds__card__footer">
                                     <RouterLink style="text-decoration: none" class="link" to="/programinfo"
-                                        @click="settingCookies(item.id, item.startDate, item.progEndDate)">
+                                        @click="settingCookies(item.id)">
                                         Learn more ➔
                                     </RouterLink>
                                     <!-- adicionar metodo que seta os cookies com o id referente a div clicada -->
@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="dds__card__footer">
                                     <RouterLink style="text-decoration: none" class="link" to="/programinfo"
-                                        @click="settingCookiesNoPermission(item.id, item.startDate, item.progEndDate)">
+                                        @click="settingCookiesNoPermission(item.id)">
                                         Learn more ➔
                                     </RouterLink>
                                     <!-- adicionar metodo que seta os cookies com o id referente a div clicada -->
@@ -104,7 +104,7 @@ interface Program {
     name: string;
     description: string;
     startDate: any;
-    progEndDate: any;
+    endDate: any;
 }
 
 interface Data {
@@ -171,19 +171,15 @@ export default defineComponent({
                     }
                 });
         },
-        settingCookies(id: Number, startDate: any, progEndDate: any) {
+        settingCookies(id: Number) {
 
             this.$cookies.set("programId", id);
             this.$cookies.set("Permission", -1);
-            this.$cookies.set("programStartDate", startDate);
-            this.$cookies.set("programEndDate", progEndDate);
         },
-        settingCookiesNoPermission(id: Number, startDate: any, progEndDate: any) {
+        settingCookiesNoPermission(id: Number) {
 
             this.$cookies.set("programId", -1);
             this.$cookies.set("Permission", id);
-            this.$cookies.set("programStartDate", startDate);
-            this.$cookies.set("programEndDate", progEndDate);
 
         },
         HasMyPrograms() {

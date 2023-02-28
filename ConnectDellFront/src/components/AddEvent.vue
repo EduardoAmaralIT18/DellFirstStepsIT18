@@ -103,7 +103,7 @@
           <div class="dds__select" data-dds="select">
             <label id="select-label-141366292" for="select-control-141366292">People Involved</label>
 
-            <div class="dds__dropdown" data-dds="dropdown" ref="multiselect" id="multi-select-list-dropdown"
+            <div class="dds__dropdown" data-dds="dropdown" ref="multiselectAdd" id="multiselectAdd"
               data-selection="multiple" data-select-all-label="Select all">
               <div class="dds__dropdown__input-container">
                 <div class="dds__dropdown__input-wrapper" autocomplete="off" aria-haspopup="listbox"
@@ -216,9 +216,6 @@ export default defineComponent({
   setup() {
     return { v$: useVuelidate() };
   },
-  props: {
-    hasMultiselect: Boolean
-  },
   validations() {
     return {
       event: {
@@ -264,6 +261,7 @@ export default defineComponent({
 
   },
   created() {
+
     axios.get("/edition/getUsersNotAdmin")
       .then(function (response) {
         return response;
@@ -373,12 +371,12 @@ export default defineComponent({
       this.searchMembers();
     },
     createMultiselect(): void {
-      this.multiselect = DDS.Dropdown(this.$refs.multiselect);
+      this.multiselect = DDS.Dropdown(this.$refs.multiselectAdd);
       this.loading = DDS.LoadingIndicator(this.$refs.loading);
 
 
       // eslint-disable-next-line            
-      this.$refs.multiselect.addEventListener("ddsDropdownSelectionChangeEvent", (e) => {
+      this.$refs.multiselectAdd.addEventListener("ddsDropdownSelectionChangeEvent", (e) => {
         this.searchMembers();
       });
     }
