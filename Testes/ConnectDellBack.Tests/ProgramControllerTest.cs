@@ -60,7 +60,7 @@ namespace ConnectDellBack.Tests
 
         public async Task<String> ShowBasicInfoByController_ReturnTrue()
         {
-            ActionResult<ProgramInfoDTO> actionResult = await programController.showBasicInfo(20);
+            ActionResult<ProgramInfoDTO> actionResult = await programController.ShowBasicInfo(20);
             return actionResult.Result.ToString();
         }
 

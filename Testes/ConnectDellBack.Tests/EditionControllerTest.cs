@@ -18,8 +18,8 @@ namespace ConnectDellBack.Tests
         ApplicationContext context;
         EditionService editionService;
         EditionController editionController;
-        EditionDTO edition;
-        EditionModel model;
+        EditionDTO editionDTO;
+        EditionModel editionModel;
 
         [OneTimeSetUp]
         public void SetUp()
@@ -38,7 +38,7 @@ namespace ConnectDellBack.Tests
                 description = "Test description"
             };
 
-            model = new EditionModel()
+            editionModel = new EditionModel()
             {
                 id = 1,
                 name = "Test",
@@ -50,48 +50,37 @@ namespace ConnectDellBack.Tests
                 curriculum = "vue :c",
                 program = prog
             };
-            edition = EditionDTO.convertModel2DTO(model);
+            editionDTO = EditionDTO.ConvertModel2DTO(editionModel);
         }
 
         [Test]
-        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult")]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.AcceptedResult")]
         public async Task<String> HTTPGET_addEdition_ReturnOk()
         {
-            ActionResult<IEnumerable<EditionDTO>> actionResult = await editionController.addEdition(edition);
+            ActionResult<IEnumerable<EditionDTO>> actionResult = await editionController.AddEdition(editionDTO);
 
             Console.WriteLine(actionResult);
             return actionResult.Result.ToString();
         }
 
         [Test]
-        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult" )]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.AcceptedResult")]
         public async Task<String> HTTTPGET_updateEdition_ReturnOK()
         {
-            model.name = "updatedName";
-            ActionResult<IEnumerable<EditionDTO>> actionResult = await editionController.updateEdition(model);
-        }
-        //[Test]
-        //[TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult" )]
-        //public async Task<String> HTTTPGET_updateEdition_ReturnOK()
-        //{
-        //    ActionResult<IEnumerable<EditionDTO>> actionResult = await editionController.updateEdition(edition);
+            editionModel.name = "updatedName";
+            ActionResult<IEnumerable<EditionDTO>> actionResult = await editionController.UpdateEdition(editionModel);
+            return actionResult.Result.ToString();
 
-        //    Console.WriteLine(actionResult);
-        //    return actionResult.Result.ToString();
-        //}
+        }
 
         [Test]
-        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult" )]
-        public async Task<String> HTTPGET_allEditionsNames_ReturnOk() {
-            ActionResult<EditionDTO> actionResult = await editionController.getEditionsNames(1);
-        }
-        //[Test]
-        //[TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult" )]
-        //public async Task<String> HTTPGET_allEditionsNames_ReturnOk() {
-        //    ActionResult<IEnumerable<EditionDTO>> actionResult = await editionController.getEditionsNames(1);
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
+        public async Task<String> HTTPGET_allEditionsNames_ReturnOk()
+        {
+            var actionResult = await editionController.GetEditionsNames(1);
 
-        //    return actionResult.Result.ToString();
-        //}
+            return actionResult.Result.ToString();
+        }
 
         [OneTimeTearDown]
         public void CleanUp()

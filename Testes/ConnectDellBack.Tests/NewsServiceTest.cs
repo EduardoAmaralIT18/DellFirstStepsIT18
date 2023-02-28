@@ -32,6 +32,7 @@ namespace ConnectDellBack.Tests
             
             content = new ContentDTO()
             {
+                id = 1,
                 title = "Title Test",
                 text = "Text Test",
                 author = 1,
@@ -43,7 +44,7 @@ namespace ConnectDellBack.Tests
         [TestCase(ExpectedResult = 1)]
         public async Task<int> get_AllNewsFromDB_ReturnNewsCount()
         {
-            var result = await newsService.getNews();
+            var result = await newsService.GetNews();
 
             return result.Count();
         }
@@ -52,7 +53,7 @@ namespace ConnectDellBack.Tests
         [TestCase(ExpectedResult = true)]
         public async Task<bool> AddContent_WithoutImage_ReturnTrue()
         {
-            var result = await newsService.addContent(content);
+            var result = await newsService.AddContent(content);
 
             return result;
         }
@@ -71,7 +72,7 @@ namespace ConnectDellBack.Tests
             content.image = file;
             content.imageName = "TitleTestImge";
             
-            var result = await newsService.addContent(content);
+            var result = await newsService.AddContent(content);
 
             return result;
         }

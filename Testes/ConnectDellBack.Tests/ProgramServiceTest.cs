@@ -37,7 +37,7 @@ namespace ConnectDellBack.Tests
                 endDate = DateTime.Now,
                 description = "test description"
             };
-            programDTO = ProgramInfoDTO.convertModel2DTONoPermission(program);
+            programDTO = ProgramInfoDTO.ConvertModel2DTONoPermission(program);
             programService = new ProgramService(context);
         }
 
@@ -53,7 +53,7 @@ namespace ConnectDellBack.Tests
         [Test]
         public void addProgramToDB_ReturnTrue()
         {
-            programService.addProgram(program);
+            programService.AddProgram(program);
             var result = context.programs.Where(progra => progra.id == 20)
                                           .FirstOrDefault();
             Assert.That(result.name, Is.EqualTo(program.name));
@@ -63,7 +63,7 @@ namespace ConnectDellBack.Tests
         [TestCase(ExpectedResult = "Test")]
         public async Task<String> getProgramInfoNoPermissionFromDBAsDTO_ReturnTrue()
         {
-            ProgramInfoDTO program = await programService.getProgramInfoNoPermission(20);
+            ProgramInfoDTO program = await programService.GetProgramInfoNoPermission(20);
 
             return program.name;
         }

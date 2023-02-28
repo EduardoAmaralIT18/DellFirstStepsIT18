@@ -22,7 +22,7 @@ namespace ConnectDellBack.Tests
                                                                                 .Options;
         ApplicationContext context;
         EventService eventService;
-        EventsModel evnt;
+        EventsModel eventModel;
         EventDTO eventDTO;
         EditionModel modelToEvent;
        
@@ -41,15 +41,15 @@ namespace ConnectDellBack.Tests
                 startDate = new DateTime(2021, 10, 10),
                 endDate = new DateTime(2022, 09, 10),
                 description = "Sixteenth edition of the IT Academy program aimed at undergraduate students in computer science courses.",
-                numberOfMembers = 25,
                 numberOfInterns = 20,
                 mode = Mode.Remote,
                 curriculum = "CSS, HTML, C#, JavaScript, SQL Server, Entity Framework, Asp.NET, Vue.js",
                 program = context.programs.Where(prog => prog.id == 1).FirstOrDefault()
             };
 
-            evnt = new EventsModel()
+            eventModel = new EventsModel()
             {
+                id = 13,
                 name = "Event test",
                 phaseType = PhaseType.HandsOn,
                 eventType = EventType.Activity,
@@ -61,7 +61,7 @@ namespace ConnectDellBack.Tests
 
             };
 
-            eventDTO = EventDTO.convertModel2DTO(evnt);
+            eventDTO = EventDTO.ConvertModel2DTO(eventModel);
         }
 
 
@@ -71,7 +71,7 @@ namespace ConnectDellBack.Tests
         {
             var eventExpected = context.events.Where(ev => ev.id == 1).FirstOrDefault();
 
-            var eventServices = await eventService.getEvent(1);
+            var eventServices = await eventService.GetEventToUpdate(1);
             return eventServices.Equals(eventExpected);
 
 
@@ -81,9 +81,11 @@ namespace ConnectDellBack.Tests
         [TestCase(ExpectedResult = true)]
         public async Task<bool> update_SpecificEvent_ReturnTrue()
         {
-            var eventOriginal = context.events.Where(ev => ev.id == 1).FirstOrDefault();
+            var eventOriginal = await context.events.Where(ev => ev.id == 1).FirstOrDefaultAsync();
             eventOriginal.name = "name";
-            var entries = await eventService.updateEvent(eventOriginal);
+            var entries = await eventService.UpdateEvent(eventOriginal);
+            var updatedEvent = await context.events.Where(ev => ev.id == 1).FirstOrDefaultAsync();
+            Assert.That(eventOriginal.name, Is.EqualTo(updatedEvent.name));
 
             return entries > 0;
 
@@ -93,8 +95,8 @@ namespace ConnectDellBack.Tests
         [TestCase(ExpectedResult = "Event test")]
         public async Task<string> add_NewEvent_ReturnNewEvent()
         {
-            await eventService.addEvent(eventDTO);
-            var result = await context.events.Where(ev => ev.id == 2).FirstOrDefaultAsync();
+            await eventService.AddEvent(eventDTO);
+            var result = await context.events.Where(ev => ev.id == 13).FirstOrDefaultAsync();
             return result.name;
         }
 
@@ -103,7 +105,7 @@ namespace ConnectDellBack.Tests
         public async Task<int> getAllEvents_Return12()
         {
             // Right now there are 12 events being seeded in the ApplicationContext on the first edition
-            var list = await  eventService.getAllEvents(1);
+            var list = await  eventService.GetAllEvents(1);
             var result = list.Count();
 
             return result;
@@ -114,7 +116,7 @@ namespace ConnectDellBack.Tests
         public async Task<int> getAllEvents_EmptyEdition_Returns0()
         {
             // Right now there are no events being seeded in the ApplicationContext on the second edition
-            var list = await eventService.getAllEvents(2);
+            var list = await eventService.GetAllEvents(2);
             var result = list.Count();
             return result;
             
@@ -124,7 +126,7 @@ namespace ConnectDellBack.Tests
         public async Task<int> getAllEvents_InvalidId_Returns0()
         {
             // This id doesnt exist in the ApplicationContext
-            var list = await eventService.getAllEvents(9921659);
+            var list = await eventService.GetAllEvents(9921659);
             var result = list.Count();
             return result;
         }

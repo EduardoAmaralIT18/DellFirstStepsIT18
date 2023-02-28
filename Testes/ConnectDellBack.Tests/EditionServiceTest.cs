@@ -21,8 +21,8 @@ namespace ConnectDellBack.Tests
                                                                                 .Options;
         ApplicationContext context;
         EditionService editionService;
-        EditionDTO edition;
-        EditionModel model;
+        EditionDTO editionDTO;
+        EditionModel editionModel;
 
         [OneTimeSetUp]
         public void SetUp()
@@ -32,9 +32,8 @@ namespace ConnectDellBack.Tests
 
             editionService = new EditionService(context);
 
-            model = new EditionModel()
+            editionModel = new EditionModel()
             {
-                // ID is 8 since we already have 7 editions in the Application Context
                 id = 8,
                 name = "Edition 99",
                 startDate = new DateTime(2021, 10, 10),
@@ -46,7 +45,20 @@ namespace ConnectDellBack.Tests
                 program = context.programs.Where(prog => prog.id == 1).FirstOrDefault(),
                 members = null
             };
-            //EditionDTO.convertModel2DTO(model);
+            editionDTO = new EditionDTO()
+            {
+                id = 8,
+                name = "Edition 99",
+                startDate = new DateTime(2021, 10, 10),
+                endDate = new DateTime(2022, 09, 10),
+                description = "Sixteenth edition of the IT Academy program aimed at undergraduate students in computer science courses.",
+                numberOfInterns = 20,
+                mode = 1,
+                curriculum = "CSS, HTML, C#, JavaScript, SQL Server, Entity Framework, Asp.NET, Vue.js",
+                program = 1,
+                members = null
+            };
+            //editionDTO = EditionDTO.ConvertModel2DTO(editionModel);
         }
 
         [Test]
@@ -54,7 +66,7 @@ namespace ConnectDellBack.Tests
         public async Task<string> add_NewEdition_ReturnNewEdition()
         {
 
-            await editionService.addEdition(edition);
+            await editionService.AddEdition(editionDTO);
 
             var result = await context.editions.Where(ed => ed.id == 8).FirstOrDefaultAsync();
 
@@ -64,29 +76,26 @@ namespace ConnectDellBack.Tests
 
 
         [Test]
-        public void update_FirstEdition_AssertEqual()
+        [TestCase(ExpectedResult = true)]
+        public async Task<bool> update_FirstEdition_AssertEqual()
         {
-            model.name = "Updated name";
-            editionService.updateEdition(model);
-            var editionUpdated = context.editions.Where(ed => ed.id == 8).FirstOrDefault();
+            var originalEdition = await context.editions.Where(ed => ed.id == 1).FirstOrDefaultAsync();
+            var aux = originalEdition;
+            aux.name = "Updated name";
+            var entries = await editionService.UpdateEdition(aux);
+            var editionUpdated = await context.editions.Where(ed => ed.id == 1).FirstOrDefaultAsync();
 
-            Mode workModeUpdated = (Mode)model.mode;
+            Mode workModeUpdated = (Mode)originalEdition.mode;
 
-            Assert.That(editionUpdated.id, Is.EqualTo(model.id));
-            Assert.That(editionUpdated.name, Is.EqualTo(model.name));
-            Assert.That(editionUpdated.description, Is.EqualTo(model.description));
-            Assert.That(editionUpdated.numberOfInterns, Is.EqualTo(model.numberOfInterns));
-            Assert.That(editionUpdated.curriculum, Is.EqualTo(model.curriculum));
+            Assert.That(editionUpdated.id, Is.EqualTo(originalEdition.id));
+            Assert.That(editionUpdated.name, Is.EqualTo(originalEdition.name));
+            Assert.That(editionUpdated.description, Is.EqualTo(originalEdition.description));
+            Assert.That(editionUpdated.numberOfInterns, Is.EqualTo(originalEdition.numberOfInterns));
+            Assert.That(editionUpdated.curriculum, Is.EqualTo(originalEdition.curriculum));
             Assert.That(editionUpdated.mode, Is.EqualTo(workModeUpdated));
+
+            return entries > 0;
         }
-
-        //[Test]
-        //public void checkEditionNames_AssertEqual()
-        //{
-        //    Task<IEnumerable<EditionDTO>> names = editionService.allEditions(1);
-
-        //    Assert.That(names.ToString(), Is.EqualTo(""));
-        //}
 
         [OneTimeTearDown]
         public void CleanUp()

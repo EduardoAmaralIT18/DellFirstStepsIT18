@@ -18,8 +18,8 @@ namespace ConnectDellBack.Tests
         ApplicationContext context;
         EventService eventService;
         EventController eventController;
-        EventDTO evnt;
-        EventsModel model;
+        EventDTO eventDTO;
+        EventsModel eventModel;
 
         [OneTimeSetUp]
         public void SetUp()
@@ -36,7 +36,7 @@ namespace ConnectDellBack.Tests
         [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
         public async Task<String> HTTPGET_GetEventToUpdate_ReturnOk()
         {
-            ActionResult<EventDTO> actionResult = await eventController.getEventToUpdate(1);
+            ActionResult<EventDTO> actionResult = await eventController.GetEventToUpdate(1);
             return actionResult.Result.ToString();
         }
 
@@ -44,29 +44,31 @@ namespace ConnectDellBack.Tests
         [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult")]
         public async Task<String> HTTPPOST_updateEvent_ReturnTrue()
         {
-            var eventOriginal = context.events.Where(ev => ev.id == 1).FirstOrDefault();
-            eventOriginal.name = "event";
-            ActionResult result = await eventController.updateEvent(eventOriginal);
+            var eventUpdated = context.events.Where(ev => ev.id == 1).FirstOrDefault();
+            eventUpdated.name = "event";
+            ActionResult result = await eventController.UpdateEvent(eventUpdated);
 
             return result.ToString();
         }
 
         [Test]
-        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult")]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[ConnectDellBack.DTOs.EventDTO]]")]
         public async Task<String> HTTPGET_addEvent_ReturnOk()
         {
-            evnt = new EventDTO() {name = "name",
-                                    phaseType = PhaseType.Set_Up,
-                                    eventType = EventType.Activity,
-                                    startDate = DateTime.Now,
-                                    endDate = DateTime.Now,
-                                    where = "casa nelson",
-        };
-            ActionResult<IEnumerable<EventDTO>> actionResult = await eventController.addEvent(evnt);
+            eventDTO = new EventDTO() {name = "name",
+                                       phaseType = (int)PhaseType.Set_Up,
+                                       eventType = (int)EventType.Activity,
+                                       startDate = DateTime.Now,
+                                       endDate = DateTime.Now,
+                                       where = "casa nelson",
+                                       };
+
+            ActionResult<IEnumerable<EventDTO>> actionResult = await eventController.AddEvent(eventDTO);
+            return actionResult.ToString();
         }
         public async Task<String> HTTPGET_getAllEvents_ReturnOk()
         {
-            ActionResult<IEnumerable<EventDTO>> actionResult = await eventController.getAllEvents(1);
+            ActionResult<IEnumerable<EventDTO>> actionResult = await eventController.GetAllEvents(1);
 
             Console.WriteLine(actionResult);
             return actionResult.Result.ToString();
@@ -76,7 +78,7 @@ namespace ConnectDellBack.Tests
         [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.NoContentResult")]
         public async Task<String> HTTPGET_getAllEvents_EditionWithoutEvents_ReturnNoContentResult()
         {
-            var actionResult = await eventController.getAllEvents(2);
+            var actionResult = await eventController.GetAllEvents(2);
 
             Console.WriteLine(actionResult);
             return actionResult.Result.ToString();
@@ -85,7 +87,7 @@ namespace ConnectDellBack.Tests
         [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.NoContentResult")]
         public async Task<String> HTTPGET_getAllEvents_InvalidId_ReturnNoContentResult()
         {
-            ActionResult<IEnumerable<EventDTO>>? actionResult = await eventController.getAllEvents(-1);
+            ActionResult<IEnumerable<EventDTO>>? actionResult = await eventController.GetAllEvents(-1);
 
             Console.WriteLine(actionResult);
             return actionResult.Result.ToString();

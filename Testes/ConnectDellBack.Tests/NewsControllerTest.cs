@@ -31,6 +31,7 @@ namespace ConnectDellBack.Tests
 
             content = new ContentDTO()
             {
+                id = 1,
                 title = "Title Test",
                 text = "Text Test",
                 author = 1,
@@ -48,7 +49,7 @@ namespace ConnectDellBack.Tests
         }
 
         [Test]
-        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult")]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.AcceptedResult")]
         public async Task<String> HTTPPOST_AddContent_ReturnOK()
         {
 
@@ -58,7 +59,7 @@ namespace ConnectDellBack.Tests
         }
 
         [Test]
-        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.AcceptedResult")]
         public async Task<String> HTTPPOST_UpdateNews_ReturnOk()
         {
             content.title = "New title";
