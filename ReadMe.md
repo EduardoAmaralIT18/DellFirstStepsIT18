@@ -95,6 +95,7 @@ Para rodar o projeto, utilize os seguintes comandos nas pastas de backend ou fro
 - Backend: 
   - `dotnet add package Microsoft.EntityFrameworkCore.Design`
   - `dotnet add package Microsoft.EntityFrameworkCore.SqlServer`
+  - `dotnet ef migrations add v1`
   - `dotnet ef database update`
 - Frontend: 
   - `npm install`
