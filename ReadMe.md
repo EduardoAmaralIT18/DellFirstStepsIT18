@@ -157,7 +157,7 @@ No exemplo de dropdown: 
 Como a aplicação foi criada com Entity Framework, a criação da Base de Dados foi feita automaticante. Entretanto, os primeiros dados do banco foram populados de forma manual (seeding) no arquivo ApplicationContext. 
 
 ---
-### Executando a aplicação a partir do editor de texto local
+### O Calendário utilizado
 O [FullCalendar](https://fullcalendar.io/docs#toc) foi o componente utilizado para o calendário presente nas edições. Toda sua documentação encontra-se disponível no link acima.
 
 ---
