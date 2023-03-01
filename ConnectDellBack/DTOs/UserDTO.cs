@@ -13,7 +13,7 @@ public class UserDTO
     public string roleName {get; set;}
 
 
-    public static UserDTO convertToDTO(UserModel usr)
+    public static UserDTO ConvertToDTO(UserModel usr)
     {
         var aux = new UserDTO();
         aux.id = usr.id;

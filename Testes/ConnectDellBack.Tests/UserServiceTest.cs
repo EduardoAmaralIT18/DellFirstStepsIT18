@@ -32,7 +32,7 @@ namespace ConnectDellBack.Tests
         [TestCase(ExpectedResult = 32)]
         public async Task<int> get_AllUsersFromDB_ReturnUserCount()
         {
-            var result = await userService.listUsers();
+            var result = await userService.ListUsers();
 
             return result.Count();
         }
@@ -46,17 +46,17 @@ namespace ConnectDellBack.Tests
 
         [Test]
         [TestCase(ExpectedResult = 1)]
-        public async Task<int> changeRole_ReturnOneEntryAltered(){
-            var result = await userService.changeRole(1, 1);
+        public async Task<int> ChangeRole_ReturnOneEntryAltered(){
+            var result = await userService.ChangeRole(1, 1);
 
             return result;
         }
 
         [Test]
         [TestCase(ExpectedResult = 1)]
-        public async Task<int> removeUser_ReturnOneEntryAltered()
+        public async Task<int> RemoveUser_ReturnOneEntryAltered()
         {
-            var result = await userService.removeUser(1);
+            var result = await userService.RemoveUser(1);
 
             return result;
         }

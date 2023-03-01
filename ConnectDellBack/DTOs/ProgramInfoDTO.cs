@@ -8,10 +8,10 @@ public class ProgramInfoDTO
     public DateTime startDate { get; set; }
     public DateTime? endDate { get; set; }
     public string description { get; set; }
-    public List<EditionModel>? editions { get; set; } = new List<EditionModel>();
+    public List<EditionDTO>? editions { get; set; } = new List<EditionDTO>();
     public List<UserModel> owners { get; set; } = new List<UserModel>();
 
-    public static ProgramInfoDTO convertModel2DTOAdmin(List<OwnershipModel> ownership, ProgramModel programOwners)
+    public static ProgramInfoDTO ConvertModel2DTOAdmin(List<OwnershipModel> ownership, ProgramModel programOwners)
     {
         ProgramInfoDTO aux = new ProgramInfoDTO();
         aux.name = ownership[0].program.name;
@@ -23,16 +23,17 @@ public class ProgramInfoDTO
         aux.description = ownership[0].program.description;
         foreach (var item in ownership[0].program.editions)
         {
-            aux.editions.Add(new EditionModel()
+            aux.editions.Add(new EditionDTO()
             {
                 name = item.name,
                 description = item.description,
                 startDate = item.startDate,
                 endDate = item.endDate,
+                calendarEndDate = item.endDate.AddDays(1),
                 id = item.id
             });
         }
-        aux.editions = aux.editions.OrderByDescending(i => i.startDate).ToList<EditionModel>();
+        aux.editions = aux.editions.OrderByDescending(i => i.startDate).ToList<EditionDTO>();
         foreach (var item in programOwners.owners)
         {
             aux.owners.Add(new UserModel()
@@ -44,7 +45,7 @@ public class ProgramInfoDTO
         return aux;
     }
 
-    public static ProgramInfoDTO convertModel2DTOIntern(ProgramModel program, EditionModel edition)
+    public static ProgramInfoDTO ConvertModel2DTOIntern(ProgramModel program, EditionDTO edition)
     {
         ProgramInfoDTO aux = new ProgramInfoDTO();
         if (program != null)
@@ -56,12 +57,14 @@ public class ProgramInfoDTO
                 aux.endDate = program.endDate;
             }
             aux.description = program.description;
-            aux.editions.Add(new EditionModel()
+            aux.editions.Add(new EditionDTO()
             {
+                id = edition.id,
                 name = edition.name,
                 description = edition.description,
                 startDate = edition.startDate,
-                endDate = edition.endDate
+                endDate = edition.endDate,
+                calendarEndDate = edition.endDate.AddDays(1)
             });
 
             foreach (var item in program.owners)
@@ -75,7 +78,7 @@ public class ProgramInfoDTO
         return aux;
     }
 
-    public static ProgramInfoDTO convertModel2DTOOthers(ProgramModel program, List<EditionModel> editions)
+    public static ProgramInfoDTO ConvertModel2DTOOthers(ProgramModel program, List<EditionDTO> editions)
     {
         ProgramInfoDTO aux = new ProgramInfoDTO();
         if (program != null)
@@ -89,10 +92,10 @@ public class ProgramInfoDTO
             aux.description = program.description;
             foreach (var item in editions)
             {
-                aux.editions.Add(new EditionModel()
-                { name = item.name, description = item.description, startDate = item.startDate, id = item.id, endDate = item.endDate });
+                aux.editions.Add(new EditionDTO()
+                { name = item.name, description = item.description, startDate = item.startDate, id = item.id, endDate = item.endDate, calendarEndDate = item.calendarEndDate});
             }
-            aux.editions = aux.editions.OrderByDescending(i => i.startDate).ToList<EditionModel>();
+            aux.editions = aux.editions.OrderByDescending(i => i.startDate).ToList<EditionDTO>();
             foreach (var item in program.owners)
             {
                 aux.owners.Add(new UserModel()
@@ -104,7 +107,7 @@ public class ProgramInfoDTO
         return aux;
     }
 
-    public static ProgramInfoDTO convertModel2DTONoPermission(ProgramModel program)
+    public static ProgramInfoDTO ConvertModel2DTONoPermission(ProgramModel program)
     {
         ProgramInfoDTO aux = new ProgramInfoDTO();
         if (program != null)
@@ -127,7 +130,7 @@ public class ProgramInfoDTO
         return aux;
     }
 
-public static ProgramInfoDTO convertModel2DTOProgramsName(ProgramModel program)
+public static ProgramInfoDTO ConvertModel2DTOProgramsName(ProgramModel program)
     {
         ProgramInfoDTO aux = new ProgramInfoDTO();
         if (program != null)

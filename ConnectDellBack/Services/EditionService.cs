@@ -10,9 +10,7 @@ public class EditionService : IEditionService
         _dbContext = dbContext;
     }
 
-
-
-    public async Task<int> addEdition(EditionDTO edition)
+    public async Task<int> AddEdition(EditionDTO edition)
     {
         var aux = new List<UserModel>();
         if (edition.members != null)
@@ -23,8 +21,6 @@ public class EditionService : IEditionService
                 aux.Add(member);
             }
         }
-
-
 
         var targetInterns = aux;
         targetInterns.Where(usr => usr.role == Role.Intern).ToList();
@@ -37,7 +33,6 @@ public class EditionService : IEditionService
             description = edition.description,
             curriculum = edition.curriculum,
             numberOfInterns = edition.numberOfInterns,
-            numberOfMembers = edition.numberOfMembers,
             members = aux,
             interns = targetInterns,
 
@@ -51,7 +46,7 @@ public class EditionService : IEditionService
     }
 
 
-    public async Task<int> updateEdition(EditionModel editionForm)
+    public async Task<int> UpdateEdition(EditionModel editionForm)
     {
         //Puxar objeto do database
         //mexer nas váriáveis dele na mão
@@ -59,17 +54,16 @@ public class EditionService : IEditionService
 
         var edition = _dbContext.editions.Where(ed => ed.id == editionForm.id)
                                          .Include(ed => ed.members)
-                                        //.Include(ed => ed.memberships)
-                                        .FirstOrDefault();
+                                         .FirstOrDefault();
 
         if (edition != null)
         {
             edition.name = editionForm.name;
             edition.startDate = editionForm.startDate;
             edition.endDate = editionForm.endDate;
+            edition.endDate = editionForm.endDate.AddDays(1);
             edition.description = editionForm.description;
             edition.curriculum = editionForm.curriculum;
-            edition.numberOfMembers = editionForm.numberOfMembers;
             edition.numberOfInterns = editionForm.numberOfInterns;
             // edition.members = editionForm.members;
 
@@ -97,29 +91,17 @@ public class EditionService : IEditionService
 
     }
 
-    public async Task<EditionDTO> getEditionInfo(int idProgram, int idEdition)
+    public async Task<EditionDTO> GetEditionInfo(int idProgram, int idEdition)
     {
         var edition = await _dbContext.editions.Where(ed => ed.id == idEdition)
                                                 .Include(ed => ed.program)
                                                 //.Include(ed => ed.membership)
                                                 .Include(ed => ed.members)
                                                 .FirstOrDefaultAsync();
-        return EditionDTO.convertModel2DTO(edition);
+        return EditionDTO.ConvertModel2DTO(edition);
     }
-
-    //public async Task<> getAllEditionNames(){
-
-    //}
-
-    public async Task<UserDTO> showUser(int idEdition)
-    {
-        // var interns = _dbContext.users.Include(i => i.editionIntern)
-        //                               .Where(i => i.role == Role.Intern)
-        //                               .Where(i => i.listEditions.)
-        return new UserDTO();
-    }
-
-    public async Task<IEnumerable<UserDTO>> getUsersNotAdmin()
+ 
+    public async Task<IEnumerable<UserDTO>> GetUsersNotAdmin()
     {
         var aux = await _dbContext.users.Where(usr => ((int)usr.role) != 0)
                                         .OrderBy(usr => usr.name)
@@ -128,12 +110,12 @@ public class EditionService : IEditionService
         var members = new List<UserDTO>();
         foreach (var item in aux)
         {
-            members.Add(UserDTO.convertToDTO(item));
+            members.Add(UserDTO.ConvertToDTO(item));
         }
         return members;
     }
 
-    public async Task<IEnumerable<EditionDTO>> allEditions(int idProgram)
+    public async Task<IEnumerable<EditionDTO>> AllEditions(int idProgram)
     {
         var editions = await _dbContext.editions.Where(edit => edit.program.id == idProgram)
                                                 .Include(ed => ed.program)
@@ -141,10 +123,9 @@ public class EditionService : IEditionService
         List<EditionDTO> aux = new List<EditionDTO>();
         foreach (var edition in editions)
         {
-            aux.Add(EditionDTO.convertModel2DTOJustName(edition));
+            aux.Add(EditionDTO.ConvertModel2DTOJustName(edition));
         }
         return aux;
     }
-
 
 }

@@ -60,16 +60,7 @@ namespace ConnectDellBack.Tests
 
         public async Task<String> ShowBasicInfoByController_ReturnTrue()
         {
-            ActionResult<ProgramInfoDTO> actionResult = await programController.showBasicInfo(20);
-            return actionResult.Result.ToString();
-        }
-
-        [Test]
-        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
-        public async Task<String> HTTPGET_GetProgramsName_ReturnOk()
-        {
-            ActionResult<IEnumerable<ProgramInfoDTO>> actionResult = await programController.GetProgramsName();
-
+            ActionResult<ProgramInfoDTO> actionResult = await programController.ShowBasicInfo(20);
             return actionResult.Result.ToString();
         }
 

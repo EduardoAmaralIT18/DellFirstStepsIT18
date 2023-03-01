@@ -79,21 +79,22 @@
             </form>
         </div>
     </div>
-    <div role="dialog" data-dds="modal" class="dds__modal" id="modalId" ref="modalId"
-        @ddsModalClosedEvent="navigateToParent">
-        <div class="dds__modal__content">
-            <div class="dds__modal__header">
-                <h3 class="dds__modal__title" id="modal-headline-369536123">{{ modalTitle }}</h3>
-            </div>
-            <div id="modal-body-532887773" class="dds__modal__body">
-                <p>
-                    {{ modalMessage }}
-                </p>
-            </div>
-            <div class="dds__modal__footer">
-                <button class="dds__button dds__button--lg"
-                    v-bind:class="modalSuccess ? '' : 'dds__button--destructive'" type="button"
-                    name="modal-secondary-button" @click.prevent="navigateToParent">OK</button>
+    <div role="dialog" data-dds="modal" class="dds__modal" id="modalId" ref="modalId">
+        <div class="dds__modal--md" @ddsModalClosedEvent="navigateToParent">
+            <div class="dds__modal__content">
+                <div class="dds__modal__header">
+                    <h3 class="dds__modal__title" id="modal-headline-369536123">{{ modalTitle }}</h3>
+                </div>
+                <div id="modal-body-532887773" class="dds__modal__body">
+                    <p class="modalMessage">
+                        {{ modalMessage }}
+                    </p>
+                </div>
+                <div class="dds__modal__footer">
+                    <button class="buttonModal dds__button dds__button--block"
+                        v-bind:class="modalSuccess ? '' : 'dds__button--destructive'" type="button"
+                        name="modal-secondary-button" @click.prevent="navigateToParent">OK</button>
+                </div>
             </div>
         </div>
     </div>
@@ -195,7 +196,7 @@ export default defineComponent({
         },
         getPrograms(): void {
             let role = this.$cookies.get("role");
-            axios.get('/Program/GetPrograms', {
+            axios.get('/Program/getPrograms', {
                 params: {
                     idUser: this.user,
                     role: role,
@@ -222,7 +223,7 @@ export default defineComponent({
                 data.append('imageName', this.news.title);
                 data.append('image', this.news.image);
 
-                axios.post('/News/UpdateNews', data, {
+                axios.post('/News/updateNews', data, {
                     headers: {
                         'accept': 'application/json',
                         'Content-Type': 'multipart/form-data'
@@ -230,7 +231,7 @@ export default defineComponent({
                 }).then(function (response) {
                     return response;
                 }).then(response => {
-                    if (response.status == 200) {
+                    if (response.status == 202) {
                         this.modalTitle = "News Edited";
                         this.modalMessage = "Your news was successfully edited."
                         this.modalSuccess = true;
@@ -288,10 +289,6 @@ span {
     font-weight: bold;
 }
 
-button {
-    margin-top: 5%;
-}
-
 .dds__file-input {
     margin-top: 3%;
 }
@@ -316,10 +313,6 @@ label {
     margin-top: 8px;
 }
 
-button {
-    margin-top: 30px;
-}
-
 small {
     color: red;
 }
@@ -341,5 +334,15 @@ small {
 .submitbutton {
     display: flex;
     float: left;
+    margin-top: 30px;
+}
+
+.modalMessage {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.dds__modal--md {
+    width: 400px;
 }
 </style>

@@ -49,7 +49,7 @@ namespace ConnectDellBack.Tests
         [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult")]
         public async Task<String> Get_ChangeRole_ReturnOkResult()
         {
-            ActionResult actionResult = await userController.changeRole(1,1);
+            ActionResult actionResult = await userController.ChangeRole(1,1);
 
             return actionResult.ToString();
         }
@@ -58,7 +58,7 @@ namespace ConnectDellBack.Tests
         [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult")]
         public async Task<String> Get_RemoveResult_ReturnOkResult()
         {
-            ActionResult actionResult = await userController.removeUser(1);
+            ActionResult actionResult = await userController.RemoveUser(1);
 
             return actionResult.ToString();
         }

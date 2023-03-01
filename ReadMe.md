@@ -1,7 +1,7 @@
 # Documentação Dell First Steps
 Essa documentação é pertinente ao projeto Dell First Steps, uma aplicação desenvolvida por estágiários do IT Academy. O projeto teve seu início no dia 02 de Janeiro do ano de 2023 e continua em desenvolvimento ativo.
 
-# Sobre a aplicação Dell First Steps
+## Sobre a aplicação Dell First Steps
 Trata-se de um sistema de gerenciamento dos programas de Estágio da Dell em parceria com universidades. Até o presente momento, a aplicação gerencia as seguintes informações: 
 
 - **Programs:** São os programas de estágio da Dell. Exemplo: IT Academy (Dell e PUCRS),  Dell Product Design Program (DPDP, Dell e Unisinos) e Infrastructure Residency.

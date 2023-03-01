@@ -18,7 +18,7 @@ public class ProgramController : ControllerBase
         _service = service;
     }
 
-    [HttpGet("GetPrograms")]
+    [HttpGet("getPrograms")]
     public async Task<ActionResult<ProgramDTO>> GetPrograms(int idUser, int role)
     {
         var result = await _service.GetPrograms(idUser, role);
@@ -26,52 +26,51 @@ public class ProgramController : ControllerBase
     }
 
     [HttpPost("addProgram")]
-    public async Task<ActionResult> addProgram(ProgramModel program)
+    public async Task<ActionResult> AddProgram(ProgramModel program)
     {
-        int entries = await _service.addProgram(program);
+        int entries = await _service.AddProgram(program);
         if (entries > 0)
         {
-            return Ok();
+            return Accepted();
         }
         else
         {
-            return NotFound();
+            return BadRequest();
         }
     }
 
     [HttpGet("showInfoProgram")]
-    public async Task<ActionResult<ProgramInfoDTO>> showInfoProgram(int id1, int idUser)
+    public async Task<ActionResult<ProgramInfoDTO>> ShowInfoProgram(int id1, int idUser)
     {
-        var result = await _service.getProgramInfo(id1, idUser);
+        var result = await _service.GetProgramInfo(id1, idUser);
         return result == null ? NoContent() : Ok(result);
     }
 
     [HttpGet("showBasicInfo")]
-    public async Task<ActionResult<ProgramInfoDTO>> showBasicInfo(int id1)
+    public async Task<ActionResult<ProgramInfoDTO>> ShowBasicInfo(int id)
     {
-        var result = await _service.getProgramInfoNoPermission(id1);
+        var result = await _service.GetProgramInfoNoPermission(id);
         return result == null ? NoContent() : Ok(result);
     }
 
-    [HttpPost("UpdateProgram")]
+    [HttpPost("updateProgram")]
     public async Task<ActionResult> UpdateProgram(ProgramModel program)
     {
         int entries = await _service.UpdateProgram(program);
-        return entries > 0 ? Ok() : NotFound();
+        return entries > 0 ? Ok() : BadRequest();
     }
 
-    [HttpGet("GetProgram")]
+    [HttpGet("getProgram")]
     public async Task<ActionResult<ProgramModel>> GetProgram(int id)
     {
         var result = await _service.GetProgram(id);
-        return result == null ? NoContent() : Ok(result);
+        return result == null ? NotFound() : Ok(result);
     }
 
-    [HttpGet("GetProgramsName")]
+    [HttpGet("getProgramsName")]
     public async Task<ActionResult<IEnumerable<ProgramInfoDTO>>> GetProgramsName()
     {
         var result = await _service.GetProgramsName();
         return result == null ? NoContent() : Ok(result);
     }
-
 }

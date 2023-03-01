@@ -21,9 +21,8 @@ namespace ConnectDellBack.Tests
                                                                                 .Options;
         ApplicationContext context;
         EditionService editionService;
-        EditionDTO edition;
-        EditionModel model;
-        EditionDTO modelUpdate;
+        EditionDTO editionDTO;
+        EditionModel editionModel;
 
         [OneTimeSetUp]
         public void SetUp()
@@ -33,77 +32,70 @@ namespace ConnectDellBack.Tests
 
             editionService = new EditionService(context);
 
-            modelUpdate = new EditionDTO()
+            editionModel = new EditionModel()
             {
-                id = 2,
-                name = "Test",
-                startDate = DateTime.Now,
-                endDate = DateTime.Now,
-                description = "Testing the database",
-                numberOfMembers = 3,
-                numberOfInterns = 3,
-                mode = 2,
-                curriculum = "Test",
-                program = 1
-            };
-
-            model = new EditionModel()
-            {
-                id = 2,
-                name = "Edição 16",
+                id = 8,
+                name = "Edition 99",
                 startDate = new DateTime(2021, 10, 10),
                 endDate = new DateTime(2022, 09, 10),
                 description = "Sixteenth edition of the IT Academy program aimed at undergraduate students in computer science courses.",
-                numberOfMembers = 25,
                 numberOfInterns = 20,
                 mode = Mode.Remote,
                 curriculum = "CSS, HTML, C#, JavaScript, SQL Server, Entity Framework, Asp.NET, Vue.js",
-                program = context.programs.Where(prog => prog.id == 1).FirstOrDefault()
+                program = context.programs.Where(prog => prog.id == 1).FirstOrDefault(),
+                members = null
             };
-
-            edition = EditionDTO.convertModel2DTO(model);
+            editionDTO = new EditionDTO()
+            {
+                id = 8,
+                name = "Edition 99",
+                startDate = new DateTime(2021, 10, 10),
+                endDate = new DateTime(2022, 09, 10),
+                description = "Sixteenth edition of the IT Academy program aimed at undergraduate students in computer science courses.",
+                numberOfInterns = 20,
+                mode = 1,
+                curriculum = "CSS, HTML, C#, JavaScript, SQL Server, Entity Framework, Asp.NET, Vue.js",
+                program = 1,
+                members = null
+            };
+            //editionDTO = EditionDTO.ConvertModel2DTO(editionModel);
         }
 
         [Test]
-        public void add_NewEdition_ReturnNewEdition()
+        [TestCase(ExpectedResult = "Edition 99")]
+        public async Task<string> add_NewEdition_ReturnNewEdition()
         {
 
-            editionService.addEdition(edition);
+            await editionService.AddEdition(editionDTO);
 
+            var result = await context.editions.Where(ed => ed.id == 8).FirstOrDefaultAsync();
 
-            //Assert.AreEqual(expectedStudent, st2);
-
-            EditionDTO result = EditionDTO.convertModel2DTO(
-                         context.editions.Where(ed => ed.id == 2).FirstOrDefault());
-
-            Assert.That(result.name, Is.EqualTo(edition.name));
+            return result.name;
         }
 
+
+
         [Test]
-        public void update_FirstEdition_AssertEqual()
+        [TestCase(ExpectedResult = true)]
+        public async Task<bool> update_FirstEdition_AssertEqual()
         {
-            editionService.updateEdition(modelUpdate);
-            var editionUpdated = context.editions.Where(ed => ed.id == 2).FirstOrDefault();
+            var originalEdition = await context.editions.Where(ed => ed.id == 1).FirstOrDefaultAsync();
+            var aux = originalEdition;
+            aux.name = "Updated name";
+            var entries = await editionService.UpdateEdition(aux);
+            var editionUpdated = await context.editions.Where(ed => ed.id == 1).FirstOrDefaultAsync();
 
-            Mode workModeUpdated = (Mode)modelUpdate.mode;
+            Mode workModeUpdated = (Mode)originalEdition.mode;
 
-            Assert.That(editionUpdated.id, Is.EqualTo(modelUpdate.id));
-            Assert.That(editionUpdated.name, Is.EqualTo(modelUpdate.name));
-            Assert.That(editionUpdated.description, Is.EqualTo(modelUpdate.description));
-            Assert.That(editionUpdated.numberOfMembers, Is.EqualTo(modelUpdate.numberOfMembers));
-            Assert.That(editionUpdated.numberOfInterns, Is.EqualTo(modelUpdate.numberOfInterns));
-            Assert.That(editionUpdated.curriculum, Is.EqualTo(modelUpdate.curriculum));
+            Assert.That(editionUpdated.id, Is.EqualTo(originalEdition.id));
+            Assert.That(editionUpdated.name, Is.EqualTo(originalEdition.name));
+            Assert.That(editionUpdated.description, Is.EqualTo(originalEdition.description));
+            Assert.That(editionUpdated.numberOfInterns, Is.EqualTo(originalEdition.numberOfInterns));
+            Assert.That(editionUpdated.curriculum, Is.EqualTo(originalEdition.curriculum));
             Assert.That(editionUpdated.mode, Is.EqualTo(workModeUpdated));
+
+            return entries > 0;
         }
-
-        // [Test]
-        // public async void checkEditionNames_AssertEqual()
-        // {
-        //     Task<IEnumerable<EditionDTO>> names = editionService.allEditions(1);
-
-        //     Assert.That(names.ToString(), Is.EqualTo(""));
-        // }
-
 
         [OneTimeTearDown]
         public void CleanUp()

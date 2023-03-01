@@ -29,7 +29,7 @@ public class ProgramService : IProgramService
 
         foreach (var item in allPrograms)
         {
-            programs.Add(MyProgramDTO.convertToDTOAll(item));
+            programs.Add(MyProgramDTO.ConvertToDTOAll(item));
         }
 
         switch (role)
@@ -37,18 +37,18 @@ public class ProgramService : IProgramService
             case 0:
                 foreach (var item in user.ProgramsAdmins)
                 {
-                    myPrograms.Add(MyProgramDTO.convertToDTOAdmin(item));
+                    myPrograms.Add(MyProgramDTO.ConvertToDTOAdmin(item));
                 }
                 break;
             case 1:
-                myPrograms.Add(MyProgramDTO.convertToDTOIntern(user.editionIntern.program, user.editionIntern));
+                myPrograms.Add(MyProgramDTO.ConvertToDTOIntern(user.editionIntern.program, user.editionIntern));
 
                 break;
             default: //Other
                 var membership = user.memberships.DistinctBy(user => user.edition.program);
                 foreach (var item in membership)
                 {
-                    myPrograms.Add(MyProgramDTO.convertToDTOOthers(item.edition.program, item.edition));
+                    myPrograms.Add(MyProgramDTO.ConvertToDTOOthers(item.edition.program, item.edition));
                 }
 
                 break;
@@ -65,7 +65,7 @@ public class ProgramService : IProgramService
         return programDTO;
     }
 
-    public async Task<int> addProgram(ProgramModel program)
+    public async Task<int> AddProgram(ProgramModel program)
     {
         for (int i = 0; i < program.owners.Count; i++)
         {
@@ -78,7 +78,7 @@ public class ProgramService : IProgramService
     }
 
 
-    public async Task<ProgramInfoDTO> getProgramInfo(int id1, int idUser)
+    public async Task<ProgramInfoDTO> GetProgramInfo(int id1, int idUser)
     {
         var user = await _dbContext.users.Where(u => u.id == idUser)
                                     .Include(user => user.editionIntern)
@@ -104,34 +104,34 @@ public class ProgramService : IProgramService
                                     .FirstOrDefaultAsync();
 
             var ownership = user.ownerships.Where(o => o.program.id == id1).ToList();
-            program = ProgramInfoDTO.convertModel2DTOAdmin(ownership, multipleOwner);
+            program = ProgramInfoDTO.ConvertModel2DTOAdmin(ownership, multipleOwner);
         }
         else if (user.role.Equals(Role.Intern) && user.editionIntern.program.id == id1)
         {
             var prog = user.editionIntern.program;
-            var edition = user.editionIntern;
-            program = ProgramInfoDTO.convertModel2DTOIntern(prog, edition);
+            var edition = EditionDTO.ConvertModel2DTO(user.editionIntern);
+            program = ProgramInfoDTO.ConvertModel2DTOIntern(prog, edition);
         }
         else
         {
             var membership = user.memberships.Where(m => m.edition.program.id == id1).ToList();
-            List<EditionModel> editions = new List<EditionModel>();
+            List<EditionDTO> editions = new List<EditionDTO>();
             foreach (var i in membership)
             {
-                editions.Add(i.edition);
+                editions.Add(EditionDTO.ConvertModel2DTO(i.edition));
             }
-            program = ProgramInfoDTO.convertModel2DTOOthers(membership[0].edition.program, editions);
+            program = ProgramInfoDTO.ConvertModel2DTOOthers(membership[0].edition.program, editions);
         }
         return program;
     }
 
-    public async Task<ProgramInfoDTO> getProgramInfoNoPermission(int id1)
+    public async Task<ProgramInfoDTO> GetProgramInfoNoPermission(int id1)
     {
         var program = await _dbContext.programs.Where(p => p.id == id1)
                                                 .Include(p => p.owners)
                                                 .Include(p => p.ownerships)
                                                 .FirstOrDefaultAsync();
-        return ProgramInfoDTO.convertModel2DTONoPermission(program);
+        return ProgramInfoDTO.ConvertModel2DTONoPermission(program);
     }
 
 
@@ -178,7 +178,7 @@ public class ProgramService : IProgramService
         var programsList = await _dbContext.programs.ToListAsync();
         var auxList = new List<ProgramInfoDTO>();
         foreach (var aux in programsList) {
-            auxList.Add(ProgramInfoDTO.convertModel2DTOProgramsName(aux));
+            auxList.Add(ProgramInfoDTO.ConvertModel2DTOProgramsName(aux));
         }
         return auxList;
     }

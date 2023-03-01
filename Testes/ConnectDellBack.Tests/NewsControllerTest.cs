@@ -18,6 +18,7 @@ namespace ConnectDellBack.Tests
         ApplicationContext context;
         NewsService newsService;
         NewsController newsController;
+        ContentDTO content;       
 
         [OneTimeSetUp]
         public void SetUp()
@@ -28,6 +29,14 @@ namespace ConnectDellBack.Tests
             newsService = new NewsService(context);
             newsController = new NewsController(new NullLogger<NewsController>(), newsService);
 
+            content = new ContentDTO()
+            {
+                id = 1,
+                title = "Title Test",
+                text = "Text Test",
+                author = 1,
+                program = 1,
+            };
         }
 
         [Test]
@@ -40,16 +49,9 @@ namespace ConnectDellBack.Tests
         }
 
         [Test]
-        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkResult")]
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.AcceptedResult")]
         public async Task<String> HTTPPOST_AddContent_ReturnOK()
         {
-            var content = new ContentDTO()
-            {
-                title = "Title Test",
-                text = "Text Test",
-                author = 1,
-                program = 1,
-            };
 
             ActionResult actionResult = await newsController.AddContent(content);
 
@@ -57,10 +59,12 @@ namespace ConnectDellBack.Tests
         }
 
         [Test]
-        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.OkObjectResult")]
-        public async Task<String> HTTPGET_GetSpecificNews_ReturnOk()
+        [TestCase(ExpectedResult = "Microsoft.AspNetCore.Mvc.AcceptedResult")]
+        public async Task<String> HTTPPOST_UpdateNews_ReturnOk()
         {
-            ActionResult<NewsDTO> actionResult = await newsController.GetSpecificNews(1);
+            content.title = "New title";
+            ActionResult<NewsDTO> actionResult = await newsController.UpdateNews(content);
+
             return actionResult.Result.ToString();
         }
 
@@ -71,7 +75,6 @@ namespace ConnectDellBack.Tests
             ActionResult<NewsDTO> actionResult = await newsController.GetSpecificNews(1);
             return actionResult.Result.ToString();
         }
-
 
         [OneTimeTearDown]
         public void CleanUp()

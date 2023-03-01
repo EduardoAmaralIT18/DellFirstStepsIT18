@@ -21,61 +21,52 @@ public class NewsController : ControllerBase
     [HttpGet("getNews")]
     public async Task<ActionResult<IEnumerable<NewsDTO>>> GetNews()
     {
-        var news = await _newsService.getNews();
+        var news = await _newsService.GetNews();
 
         var newsDTO = new List<NewsDTO>();
         foreach (var item in news)
         {
-            newsDTO.Add(NewsDTO.convertModel2DTO(item));
+            newsDTO.Add(NewsDTO.ConvertModel2DTO(item));
         }
 
-        return news == null ? NotFound() : Ok(newsDTO);
+        return news == null ? NoContent() : Ok(newsDTO);
     }
 
     [HttpPost("addContent")]
     public async Task<ActionResult> AddContent([FromForm] ContentDTO content)
     {
-        // var cookies = Request.Cookies;
-
-        // if (cookies["role"].Equals("0"))
-        // {
-        var result = await _newsService.addContent(content);
+        var result = await _newsService.AddContent(content);
 
         if (result)
         {
-            return Ok();
+            return Accepted();
         }
         else
         {
-            return NotFound();
+            return BadRequest();
         }
-        // }
-        // else
-        // {
-        //     return BadRequest();
-        // }
     }
 
     [HttpGet("getSpecificNews")]
     public async Task<ActionResult<NewsDTO>> GetSpecificNews(int id)
     {
-        var news = await _newsService.getSpecificNews(id);
-        NewsDTO newsDTO = NewsDTO.convertModel2DTO(news);
+        var news = await _newsService.GetSpecificNews(id);
+        NewsDTO newsDTO = NewsDTO.ConvertModel2DTO(news);
         return news == null ? NotFound() : Ok(newsDTO);
     }
 
     [HttpPost("updateNews")]
     public async Task<ActionResult> UpdateNews([FromForm] ContentDTO contentForm)
     {
-        var result = await _newsService.updateNews(contentForm);
+        var result = await _newsService.UpdateNews(contentForm);
 
         if (result)
         {
-            return Ok();
+            return Accepted();
         }
         else
         {
-            return NotFound();
+            return BadRequest();
         }
     }
 }

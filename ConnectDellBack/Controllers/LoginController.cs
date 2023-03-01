@@ -20,7 +20,7 @@ public class LoginController : Controller
     [HttpGet("getUserList")]
     public async Task<IEnumerable<UserModel>> GetAllUsers()
     {
-        var list = await user.listUsers();
+        var list = await user.ListUsers();
         return list;
     }
 

@@ -11,6 +11,20 @@
                 My Programs
             </h4>
             <div class="row">
+                <div class="initialCard col-3 dds__ml-3 dds__mr-4 dds__mb-3" v-if="IsAdmin()">
+                    <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
+                        <div class="dds__card">
+                            <div class="dds__card__content">
+                                <div class="addProgramIcon dds__card__body">
+                                    <RouterLink style="text-decoration: none" to="/createprogram">
+                                        +
+                                    </RouterLink>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="initialCard col-3 dds__ml-3 dds__mr-4 dds__mb-3" v-for="(item, i) in myPrograms" :key="i">
                     <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
                         <div class="dds__card">
@@ -66,20 +80,6 @@
                     </div>
                 </div>
 
-                <div class="initialCard col-3 dds__ml-3 dds__mr-4 dds__mb-3" v-if="IsAdmin()">
-                    <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3">
-                        <div class="dds__card">
-                            <div class="dds__card__content">
-                                <div class="addProgramIcon dds__card__body">
-                                    <RouterLink style="text-decoration: none" to="/createprogram">
-                                        +
-                                    </RouterLink>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div v-if="!HasMyPrograms() && !HasPrograms()">
                     <p class="message">
                         <i class="dds__icon dds__icon--search dds__icon__search"></i>
@@ -103,6 +103,8 @@ interface Program {
     id: Number;
     name: string;
     description: string;
+    startDate: any;
+    endDate: any;
 }
 
 interface Data {
@@ -153,12 +155,12 @@ export default defineComponent({
             this.user.name = this.$cookies.get("name");
             this.user.role = this.$cookies.get("role") ? Number(this.$cookies.get("role")) : -1;
 
-            axios.get(`/Program/GetPrograms?idUser=${this.user.id}&role=${this.user.role}`)
+            axios.get(`/Program/getPrograms?idUser=${this.user.id}&role=${this.user.role}`)
                 .then(function (response) {
                     return response;
                 })
                 .then(response => {
-                    if (response.status == 404) {
+                    if (response.status == 204) {
                         this.myPrograms = [];
                         this.programs = [];
                     } else if (response.status == 200) {
@@ -170,12 +172,15 @@ export default defineComponent({
                 });
         },
         settingCookies(id: Number) {
+
             this.$cookies.set("programId", id);
             this.$cookies.set("Permission", -1);
         },
         settingCookiesNoPermission(id: Number) {
+
             this.$cookies.set("programId", -1);
             this.$cookies.set("Permission", id);
+
         },
         HasMyPrograms() {
             return this.myPrograms && this.myPrograms.length > 0;

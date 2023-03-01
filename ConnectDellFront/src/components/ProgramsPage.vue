@@ -60,6 +60,8 @@ export default defineComponent({
           if (response.status == 200) {
             this.program = response.data;
             this.$cookies.set("programName", response.data.name);
+            this.$cookies.set("programStartDate", this.program.startDate);
+            this.$cookies.set("programEndDate", this.program.endDate);
             this.owners = response.data.owners;
             this.editions = response.data.editions;
           } else if (response.status == 204) {
@@ -68,7 +70,7 @@ export default defineComponent({
         })
     } else if (this.cookiesId == -1) {
 
-      axios.get(`/Program/showBasicInfo?id1=${this.cookiesPermission}`)
+      axios.get(`/Program/showBasicInfo?id=${this.cookiesPermission}`)
         .then(function (response) {
           return response
         })
@@ -76,6 +78,8 @@ export default defineComponent({
           if (response.status == 200) {
             this.program = response.data;
             this.$cookies.set("programName", response.data.name);
+            this.$cookies.set("programStartDate", this.program.startDate);
+            this.$cookies.set("programEndDate", this.program.endDate);
             this.owners = response.data.owners;
           } else if (response.status == 204) {
             alert("There was an error on our database! Please, try again later.");
@@ -121,10 +125,11 @@ export default defineComponent({
       })
       return retorno;
     },
-    settingCookies(id) {
-      console.log("id" + id);
+    settingCookies(id, startDate, endDate, calendarEndDate) {
       this.$cookies.set("editionId", id);
-
+      this.$cookies.set("startDateEdition", startDate);
+      this.$cookies.set("endDateEdition", endDate);
+      this.$cookies.set("endDateCalendarEdition", calendarEndDate)
       if (this.isOwner) {
         this.$cookies.set("isOwner", 1);
       } else {
@@ -239,7 +244,7 @@ export default defineComponent({
               <div class="dds__card__footer">
                 <RouterLink
                   style=" color: #0672CB; text-decoration: none;   font-size: 15px;  position: absolute;  bottom: 0;  text-align: center;   left: 0;  margin-left: 20px;  margin-top: 10px;  padding-bottom: 17px;"
-                  to="/editioninfo" @click="settingCookies(edition.id)"> View More ➔
+                  to="/editioninfo" @click="settingCookies(edition.id, edition.startDate, edition.endDate, edition.calendarEndDate)"> View More ➔
                 </RouterLink>
               </div>
             </div>
