@@ -310,12 +310,12 @@ export default defineComponent({
                           return response;
                       })
                       .then(response => {
-                          if (response.status == 200) {
+                          if (response.status == 202) {
                               this.titleError = "Program Created";
                               this.messageError = `The program "${this.program.name}" was successfully created.`;
                               this.buttonColor = "blueButton";
                               return;
-                          } else if (response.status == 404) {
+                          } else if (response.status == 400) {
                               this.titleError = "Error";
                               this.messageError = `I'm sorry, something went wrong. Try again later.`;
                               this.buttonColor = "errorButton";
@@ -337,12 +337,12 @@ export default defineComponent({
                           return response;
                       })
                       .then(response => {
-                          if (response.status == 200) {
+                          if (response.status == 202) {
                               this.titleError = "Program Created";
                               this.messageError = `The program "${this.program.name}" was successfully created.`;
                               this.buttonColor = "blueButton";
                               return;
-                          } else if (response.status == 404) {
+                          } else if (response.status == 400) {
                               this.titleError = "Error";
                               this.messageError = `I'm sorry, something went wrong. Try again later.`;
                               this.buttonColor = "errorButton";

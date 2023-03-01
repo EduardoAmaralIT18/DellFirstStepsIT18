@@ -300,8 +300,8 @@ export default defineComponent({
                 description: '',
                 curriculum: '',
                 mode: 1,
-                startDate: new Date().toISOString().slice(0, 10),
-                endDate: new Date().toISOString().slice(0, 10),
+                startDate: "",
+                endDate: "",
                 program: 0
             },
             members: null,

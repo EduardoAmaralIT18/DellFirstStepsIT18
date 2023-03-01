@@ -297,7 +297,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 body {
   font-family: "Roboto", sans-serif;
   font-weight: inherit;
