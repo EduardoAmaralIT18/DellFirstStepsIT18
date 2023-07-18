@@ -1,14 +1,11 @@
+import './assets/main.css'
+
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import VueCookies from 'vue-cookies'
-import VueAxios from 'vue-axios';
-import axios from 'axios';
 
-const app = createApp(App);
+const app = createApp(App)
 
-app.use(router);
-app.use(VueCookies, { expires: '1d'})
-app.use(VueAxios, axios);
+app.use(router)
 
-app.mount('#app');
+app.mount('#app')
