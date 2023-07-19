@@ -5,7 +5,7 @@ import "@dds/components/src/scss/dds-icons.scss";
 import "@dds/components/src/scss/dds-helpers.scss";
 import "@dds/components/src/scss/dds-main.scss";
 
-import { RouterLink, RouterView } from "vue-router";
+import { RouterView } from "vue-router";
 
 </script>
 
