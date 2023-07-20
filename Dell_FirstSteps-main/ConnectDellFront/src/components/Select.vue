@@ -1,17 +1,19 @@
-<script setup lang="ts">
+<template>
+  <div class="dds__select" data-dds="select">
+      <div class="dds__select__wrapper">
+        <select id="select-control-505500786" class="dds__select__field">
+          <option disabled value="">Please select one</option>
+          <option v-for="item in list" :value="item" :key="item">{{item}}</option>
+        </select>
+        <div id="select-error-505500786" class="dds__invalid-feedback">Error message</div>
+      </div>
+  </div>
+  </template>
 
-defineProps<{list: String[]}>()
+<script setup lang="ts">
+import { ref } from "vue";
+
+defineProps({list: String})
 </script>
 
 
-<template>
-<div class="dds__select" data-dds="select">
-    <label id="select-label-505500786" for="select-control-505500786" class="dds__label">Select label</label>
-    <div class="dds__select__wrapper">
-      <select v-for="item in list" id="select-control-505500786" class="dds__select__field">
-        <option>{{item}}</option>
-      </select>
-      <div id="select-error-505500786" class="dds__invalid-feedback">Error message</div>
-    </div>
-</div>
-</template>
