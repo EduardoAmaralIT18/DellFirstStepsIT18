@@ -1,15 +1,13 @@
 <template>
   <div class="signin-page">
     <h1>Sign In</h1>
-    <Select :list="users" />
+    <Select :list="users" @selectValue="handleClick"></Select>
   </div>
 </template>
 
 <script setup lang="ts">
     import Select from "../components/Select.vue";
     import axios from "axios";
-
-
     import { onMounted, ref } from "vue";
 
     const usersModel = ref([]);
@@ -26,11 +24,24 @@
           console.log(error);
         })
         
-        users.value = usersModel.value.map(user => user.name);
+        users.value = usersModel.value.map(user => user.email);
         console.log(users.value);
-        // usersModel.value.forEach(user => {
-        //   users.value.push(user.name);
-        // });
     });
+</script>
+
+<style>
+
+</style>
+
+<script lang="ts">
+  import router from "@/router";
+
+  export default {
+    methods: {
+      handleClick(email: string) {
+        console.log("email", email);
+      }
+    }
+  }
 </script>
 
