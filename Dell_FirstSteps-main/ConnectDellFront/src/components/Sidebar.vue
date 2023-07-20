@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import router from '@/router';
 import { ref } from 'vue';
-const props = defineProps({role:String})
-let isActive = ref(1)
+const role= localStorage.getItem("role");
+let isActive = ref()
 function handleClick(key: number){
   if(key!==isActive.value){
     if(key===1){

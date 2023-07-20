@@ -1,5 +1,6 @@
 <template>
     <Header/>
+    <Sidebar></Sidebar>
     <p>oi</p>
 </template>
 
