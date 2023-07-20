@@ -7,5 +7,5 @@ export default interface Program{
     startDate?: Date;
     endDate?: Date;
     editions?: Edition[];
-    owner: string;
+    owners: user[];
 }

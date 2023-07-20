@@ -50,7 +50,7 @@ function isAdmin() {
           <CardPlus url="createprogram"/>
         </div>
         <div class="card col-lg-12 col-md-12 col-sm-12 dds__mb-3" v-for="item in myPrograms" id="my-programs">
-          <Card :key="item.id" :name="item.name" :description="item.description"/>
+          <Card :key="item.id" :name="item.name" :description="item.description" :id="item.id"/>
         </div>
       </div>
     </div>
@@ -61,7 +61,7 @@ function isAdmin() {
 
     <div class="initialCard col-3 dds__mr-4 dds__mb-3">
       <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3" v-for="item in programs" id="programs">
-        <Card :key="item.id" :name="item.name" :description="item.description"/>
+        <Card :key="item.id" :name="item.name" :description="item.description" :id="item.id"/>
       </div>
     </div>
   </div>

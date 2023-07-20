@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import type Program from "@/interfaces/Program";
+import type Edition from "@/interfaces/Edition";
 
+function dateCompare() {
 
-defineProps<Program>()
+}
+defineProps<Edition>()
 </script>
 
 <template>
@@ -15,7 +17,7 @@ defineProps<Program>()
       </div>
       <div class="dds__card__body">{{ description }}</div>
     </div>
-    <RouterLink style="text-decoration: none" class="link" :to="`/programinfo/${id}`">
+    <RouterLink style="text-decoration: none" class="link" :to="`/editioninfo/${id}`">
       Learn more ➔
     </RouterLink>
   </div>
