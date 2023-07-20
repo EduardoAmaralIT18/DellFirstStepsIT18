@@ -2,7 +2,7 @@
   <div class="dds__select" data-dds="select">
       <div class="dds__select__wrapper">
         <select id="select-control-505500786" v-model="value" @change="handleChange" class="dds__select__field">
-          <!-- <option disabled value="">Please select user</option> -->
+          <option disabled value="Please select user">Please select user</option>
           <option
             v-for="item in list" 
             :value="item">

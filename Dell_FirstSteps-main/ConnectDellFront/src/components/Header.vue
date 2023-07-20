@@ -1,18 +1,23 @@
 <script setup lang="ts">
-const props = defineProps({ role: Number, name: String });
+import { ref } from "vue";
+
+const name = ref(localStorage.getItem("name"));
+const role = ref(localStorage.getItem("role"));
+
+console.log(role.value);
 
 // import Icon from "../assets/brand-delltechnologies.svg";
 
 function showRole() {
-  if (props.role === 0) {
+  if (role.value === '0') {
     return "Admin";
-  } else if (props.role === 1) {
+  } else if (role.value === '1') {
     return "Intern";
-  } else if (props.role === 2) {
+  } else if (role.value === '2') {
     return "Dell Manager";
-  } else if (props.role === 3) {
+  } else if (role.value === '3') {
     return "Dell Member";
-  } else if (props.role === 4) {
+  } else if (role.value === '4') {
     return "Dell Pucrs Staff";
   }
 }
@@ -25,7 +30,7 @@ function showRole() {
               <div class="col-4 dellLogo">
                 <a><img class="logo" alt="logo Dell" src="../assets/logoDell.png"></a>
               </div>
-              <div class="col-8">
+              <div v-if="role.value !== ''" class="col-8">
               <nav class="userName">
                   <div class="d-none d-lg-block">
                     <p class="name"> {{ name }} | {{ showRole() }}<img class="userPicture" alt="user icon" src="../assets/user.png"></p>

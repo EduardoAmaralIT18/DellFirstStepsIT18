@@ -1,7 +1,8 @@
 <template>
-  <div class="signin-page">
-    <h1>Sign In</h1>
-    <Select :list="users" @selectValue="handleClick"></Select>
+  <Header/>
+  <div class="signin-page" id="container">
+    <h1 class="signIn">Sign In</h1>
+    <Select id="select" :list="users" @selectValue="handleClick"></Select>
   </div>
 </template>
 
@@ -9,9 +10,18 @@
     import Select from "../components/Select.vue";
     import axios from "axios";
     import { onMounted, ref } from "vue";
+    import Header from "../components/Header.vue";
+import router from "@/router";
 
+    type User = {
+      id: number;
+      name: string;
+      email: string;
+      role: number;
+    }
+    
     const usersModel = ref([]);
-    const users = ref([]);
+    const users = ref<User[]>();
 
     onMounted(async () => {
       await axios
@@ -25,23 +35,39 @@
         })
         
         users.value = usersModel.value.map(user => user.email);
-        console.log(users.value);
+        localStorage.setItem("name", '');
+        localStorage.setItem("id", '');
+        localStorage.setItem("email", '');
+        localStorage.setItem("role", '');
     });
+
+    function handleClick(email: string) {
+        const user = usersModel.value.find(element => element.email === email);
+        localStorage.setItem("name", user.name);
+        localStorage.setItem("id", user.id);
+        localStorage.setItem("email", user.email);
+        localStorage.setItem("role", user.role);
+        router.push("/HomeView")
+      }
 </script>
 
 <style>
+  .signIn {
+    color:  #0063b8;
+    font-size: 200%;
+    font-weight: 400;
+  }
+  #container {
+    font-family: Roboto;
+    margin-top: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+  }
+
+  #select {
+    width: 50%
+  }
 
 </style>
-
-<script lang="ts">
-  import router from "@/router";
-
-  export default {
-    methods: {
-      handleClick(email: string) {
-        console.log("email", email);
-      }
-    }
-  }
-</script>
 
