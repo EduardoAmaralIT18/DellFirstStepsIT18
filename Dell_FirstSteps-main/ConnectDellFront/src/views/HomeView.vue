@@ -8,9 +8,11 @@ import axios from "axios";
 const myPrograms = ref<Program[]>([])
 const programs = ref<Program[]>([])
 const username = ref(localStorage.getItem('userName'))
+const role = ref(+localStorage.getItem('userRole')).value;
+const id = ref(+localStorage.getItem('userId')).value;
 
 onMounted(async () => {
-  await getPrograms(1, 0);
+  await getPrograms(id, role);
 })
 
 const getPrograms = async (userId: number, role: number) => {
@@ -25,7 +27,6 @@ const getPrograms = async (userId: number, role: number) => {
 }
 
 function isAdmin() {
-  const role = +localStorage.getItem('userRole');
   if (role == 0) {
     return true;
   }
