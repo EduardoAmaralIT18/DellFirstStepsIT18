@@ -20,24 +20,21 @@ function showRole() {
 
 <template>
   <header class="navbar shadow-lg fixed-top">
-    <!-- <Icon /> -->
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-4 dellLogo">
+                <a><img class="logo" alt="logo Dell" src="../assets/logoDell.png"></a>
+              </div>
+              <div class="col-8">
+              <nav class="userName">
+                  <div class="d-none d-lg-block">
+                    <p class="name"> {{ name }} | {{ showRole() }}<img class="userPicture" alt="user icon" src="../assets/user.png"></p>
+                  </div>
+                </nav>            
+              </div>
 
-    <svg width="350">
-      <image width="350" href="../assets/delltech_logo.svg"></image>
-    </svg>
-
-    <div class="col-8">
-      <nav class="userName">
-        <div class="d-none d-lg-block">
-          <p class="name">
-            {{ name }} | {{ showRole()
-            }}<svg class="dds__icon dds__icon--user" aria-hidden="true">
-              <use xlink:href="#dds__icon--user" />
-            </svg>
-          </p>
-        </div>
-      </nav>
-    </div>
+          </div>
+      </div>
   </header>
 </template>
 
@@ -46,17 +43,11 @@ function showRole() {
   padding-bottom: 0;
   display: flex;
   vertical-align: bottom;
-
   line-height: 50px;
-
-  background-color: #b40000;
-  box-shadow: 2px 2px #a6a6a6ba;
+  background-color: white;
   width: 100%;
   border-bottom: 2px solid #a6a6a6;
-
   height: 75px;
-}
-svg {
 }
 .name {
   color: #0672cb;
@@ -80,5 +71,10 @@ svg {
   padding: 10;
   position: relative;
   line-height: 0.2em;
+}
+.logo{
+  height: 55px;
+  margin-top: 10px;
+  margin-left: 1%;
 }
 </style>

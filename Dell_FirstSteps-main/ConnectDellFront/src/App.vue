@@ -6,11 +6,13 @@ import "@dds/components/src/scss/dds-helpers.scss";
 import "@dds/components/src/scss/dds-main.scss";
 import LoginView from "./views/LoginView.vue";
 import Header from "./components/Header.vue";
+import Sidebar from "./components/Sidebar.vue";
 </script>
 
 <template>
   <!-- <LoginView/> -->
-  <Header name="Luana" :role="0" />
+  <Header name="Luana" :role="1" />
+  <Sidebar :role="1"></Sidebar>
 </template>
 
 <style scoped></style>
