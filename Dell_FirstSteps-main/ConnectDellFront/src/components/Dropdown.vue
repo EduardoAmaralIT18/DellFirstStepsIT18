@@ -1,7 +1,7 @@
 <template>
     <div class="dds__dropdown" data-dds="dropdown" ref="list" id="multi-select-list-dropdown" data-selection="multiple" data-select-all-label="Select all">
   <div class="dds__dropdown__input-container">
-    <label id="dropdown-label-331655468" for="dropdown-control-331655468" class="dds__label">Label</label>
+    <label id="dropdown-label-331655468" for="dropdown-control-331655468" class="dds__label">{{ dropdownName }}</label>
     <div class="dds__dropdown__input-wrapper" autocomplete="off" aria-haspopup="listbox" aria-controls="multi-select-list-dropdown-popup">
       <input
         id="multi-select-list-dropdown-input"
@@ -14,20 +14,13 @@
         aria-expanded="false"
         aria-controls="multi-select-list-dropdown-list"
       />
-
-      <small id="multi-select-list-dropdown-helper" class="dds__input-text__helper">Helper Text</small>
     </div>
   </div>
   <div id="multi-select-list-dropdown-popup" class="dds__dropdown__popup dds__dropdown__popup--hidden" role="presentation" tabindex="-1">
     <ul class="dds__dropdown__list" role="listbox" tabindex="-1" id="multi-select-list-dropdown-list">
-      <li class="dds__dropdown__item" role="none">
-        <button type="button" class="dds__dropdown__item-option" role="option" data-selected="false" data-value="1" tabindex="-1">
-          <span class="dds__dropdown__item-label">List option 1</span>
-        </button>
-      </li>
-      <li class="dds__dropdown__item" role="none">
-        <button type="button" class="dds__dropdown__item-option" role="option" data-selected="false" data-value="2" tabindex="-1">
-          <span class="dds__dropdown__item-label">List option 2</span>
+      <li class="dds__dropdown__item" role="none" v-for="item in data">
+        <button type="button" class="dds__dropdown__item-option" role="option" data-selected="false" :data-value=item.id tabindex="-1" @click="print">
+          <span class="dds__dropdown__item-label" :key="item.id" >{{ item.name }}</span>
         </button>
       </li>
     </ul>
@@ -36,13 +29,23 @@
 </template>
 
 <script setup lang="ts">
+import User from "@/interfaces/User"
+import{ ref, onMounted, PropType } from 'vue'
 
-import{ ref, onMounted } from 'vue'
-
-const list = ref(null)
 declare var DDS: any;
-onMounted(()=> DDS.Dropdown(list.value))
+const list = ref(null)
+const drop = ref();
 
- 
+onMounted(()=> {
+    drop.value = DDS.Dropdown(list.value)
+})
 
+const props = defineProps ({
+    dropdownName: String,
+    data: Array as PropType<User[]>
+})
+
+function print(){
+    console.log(drop.value.getSelection())
+}
 </script>
