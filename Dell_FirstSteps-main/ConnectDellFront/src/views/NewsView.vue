@@ -1,6 +1,6 @@
 <template>
     <Header/>
-    <p>oi</p>
+    <p>news</p>
 </template>
 
 <script setup lang="ts">

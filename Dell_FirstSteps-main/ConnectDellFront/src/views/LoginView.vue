@@ -25,7 +25,7 @@ import router from "@/router";
 
     onMounted(async () => {
       await axios
-        .get("https://localhost:5002/Login/getUserList")
+        .get("https://localhost:5001/Login/getUserList")
         .then((response) => {
           usersModel.value = response.data;
           
@@ -35,10 +35,6 @@ import router from "@/router";
         })
         
         users.value = usersModel.value.map(user => user.email);
-        localStorage.setItem("name", '');
-        localStorage.setItem("id", '');
-        localStorage.setItem("email", '');
-        localStorage.setItem("role", '');
     });
 
     function handleClick(email: string) {
@@ -47,7 +43,7 @@ import router from "@/router";
         localStorage.setItem("id", user.id);
         localStorage.setItem("email", user.email);
         localStorage.setItem("role", user.role);
-        router.push("/HomeView")
+        router.push("/Home")
       }
 </script>
 
