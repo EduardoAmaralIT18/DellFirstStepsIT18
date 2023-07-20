@@ -9,10 +9,10 @@ defineProps<Program>()
     <div class="dds__card__content">
       <div class="dds__card__header">
       <span class="dds__card__header__text">
-        <h5 class="dds__card__header__title">{{name}}</h5>
+        <h5 class="dds__card__header__title">{{ name }}</h5>
       </span>
       </div>
-      <div class="dds__card__body">{{description}}</div>
+      <div class="dds__card__body">{{ description }}</div>
     </div>
     <RouterLink style="text-decoration: none" class="link" to="/programinfo">
       Learn more ➔
@@ -21,6 +21,7 @@ defineProps<Program>()
 </template>
 
 <style scoped>
+
 .dds__card {
   box-shadow: rgba(0, 0, 0, 0.176) 0px 3px 8px;
   border-radius: 10px;
@@ -52,14 +53,10 @@ defineProps<Program>()
   text-align: left;
 }
 
-.dds__card__footer {
-  margin-left: 0;
-}
-
 .link {
   position: absolute;
   left: 20px;
   bottom: 10px;
 }
-</style>
 
+</style>

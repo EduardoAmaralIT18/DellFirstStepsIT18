@@ -1,21 +1,19 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
+import {RouterLink} from 'vue-router';
 
-defineProps<{
-  url: string,
-}>()
+defineProps<{ url: string }>()
 </script>
 
 <template>
   <div class="dds__card">
     <div class="dds__card__content">
-        <div class="addProgramIcon dds__card__body">
-            <RouterLink style="text-decoration: none" to="/{{url}}">
-                +
-            </RouterLink>
-        </div>
+      <div class="addProgramIcon dds__card__body">
+        <RouterLink style="text-decoration: none" to="/{{url}}">
+          +
+        </RouterLink>
+      </div>
     </div>
-</div>
+  </div>
 </template>
 
 <style scoped>
@@ -32,12 +30,12 @@ defineProps<{
 }
 
 .addProgramIcon {
-    color: #0672CB;
-    text-align: center;
-    font-size: 89px;
-    padding-top: 40%;
-    padding-bottom: 35px;
-    text-decoration: none;
+  color: #0672CB;
+  text-align: center;
+  font-size: 89px;
+  padding-top: 40%;
+  padding-bottom: 35px;
+  text-decoration: none;
 }
 </style>
 
