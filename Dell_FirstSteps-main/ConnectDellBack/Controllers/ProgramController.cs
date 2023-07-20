@@ -40,9 +40,9 @@ public class ProgramController : ControllerBase
     }
 
     [HttpGet("showInfoProgram")]
-    public async Task<ActionResult<ProgramInfoDTO>> ShowInfoProgram(int id1, int idUser)
+    public async Task<ActionResult<ProgramInfoDTO>> ShowInfoProgram(int id, int userId)
     {
-        var result = await _service.GetProgramInfo(id1, idUser);
+        var result = await _service.GetProgramInfo(id, userId);
         return result == null ? NoContent() : Ok(result);
     }
 
