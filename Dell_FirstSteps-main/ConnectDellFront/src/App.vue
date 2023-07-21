@@ -4,12 +4,11 @@ import "@dds/components/src/scss/dds-fonts.scss";
 import "@dds/components/src/scss/dds-icons.scss";
 import "@dds/components/src/scss/dds-helpers.scss";
 import "@dds/components/src/scss/dds-main.scss";
-import LoginView from "./views/LoginView.vue";
 import Header from "./components/Header.vue"
 
 import Sidebar from "./components/Sidebar.vue";
-import { onMounted, onUpdated, ref, watchEffect,watch, computed } from 'vue';
-import { onBeforeRouteUpdate,useRoute } from "vue-router";
+import { ref, watch } from 'vue';
+import { useRoute } from "vue-router";
 
 localStorage.setItem("name", '');
 localStorage.setItem("id", '');
@@ -27,14 +26,27 @@ watch(route,()=>{
 })
 </script>
 
-<template>
-    <Header :name="name" :role="role"/>
-    <Sidebar/>
-    <main>
-        <RouterView id="router"/>
-    </main>
+<template class="template">
+    <Header class="header" :name="name" :role="role"/>
+    <div class="container">
+    <Sidebar class="sidebar" v-if="role !== ''"/>
+        <main class="main" >
+            <RouterView id="router"/>
+        </main>
+    </div>
 </template>
 
 <style scoped>
+    .template{
+        height: 100vh;
+    }
+    .container {
+        height: 92vh; /* TO-DO */
+        display: flex;
+        flex-direction: row; 
+    }
 
+    .main {
+        flex-grow: 2;
+    }
 </style>

@@ -1,7 +1,5 @@
 <template>
-    <Header/>
-    <Sidebar></Sidebar>
-    <p>oi</p>
+    <p>home</p>
 </template>
 
 <script setup lang="ts">

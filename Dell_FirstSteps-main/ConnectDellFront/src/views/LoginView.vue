@@ -1,5 +1,5 @@
 <template>
-  <div class="signin-page" id="container">
+  <div class="signin-page">
     <h1 class="signIn">Sign In</h1>
     <Select id="select" :list="users" @selectValue="handleClick"></Select>
   </div>
@@ -9,7 +9,6 @@
     import Select from "../components/Select.vue";
     import axios from "axios";
     import { onMounted, ref } from "vue";
-    import Header from "../components/Header.vue";
 import router from "@/router";
 
     type User = {
@@ -52,16 +51,19 @@ import router from "@/router";
     font-size: 200%;
     font-weight: 400;
   }
-  #container {
+  .signin-page {
     font-family: Roboto;
-    margin-top: 300px;
+    height: 100%;
+    padding-top: 10%;
     display: flex;
     flex-direction: column;
     align-items: center; 
+    /* background-color: salmon; */
   }
 
   #select {
-    width: 50%
+    min-width: auto;
+    margin: 2%;
   }
 
 </style>

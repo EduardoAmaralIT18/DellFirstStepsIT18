@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import router from "@/router";
-import { computed, ref, onMounted,watch } from "vue";
+import { computed } from "vue";
 
 const prop = defineProps({
   name:String,
