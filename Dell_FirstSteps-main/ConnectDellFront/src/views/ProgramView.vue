@@ -4,14 +4,12 @@ import type Program from "@/interfaces/Program";
 import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 import CardPlus from "@/components/CardPlus.vue";
-import Card from "@/components/Card.vue";
 import CardEdition from "@/components/CardEdition.vue";
 
 const route = useRoute();
 const program = ref<Program>({});
 const id = route.params.id
 const userId = ref(+localStorage.getItem('userId')).value;
-const description = ref<string>();
 onMounted(async () => {
   await getProgram(id, userId);
 })
@@ -27,13 +25,9 @@ const getProgram = async (programId: number, userId: number) => {
 }
 
 const dateHasPassed = (date: string): boolean => {
-
   const currentDate: Date = new Date();
-
   const dataInformada: Date = new Date(date);
-
   return dataInformada < currentDate;
-
 }
 
 function formatDate(dates: Date) {
@@ -58,8 +52,9 @@ function formatDate(dates: Date) {
       {{ program.description }}
     </h4>
 
-<!--    <div class="bottomInfo">-->
-<!--      <p class="owner">{{ program.owners.length > 1 ? "Owners" : "Owner" }}: &nbsp; </p>-->
+    <div class="bottomInfo">
+<!--      {{ program.owners }}-->
+<!--      <p class="owner">{{ program.owners.length > 1 ? "Owners" : "Owner" }} </p>-->
 <!--      <p class="owner"> {{ commaAnd() }}</p>-->
 <!--      <RouterLink style="text-decoration: none" :to="{ name: 'EditProgram', params: { idProgram: cookiesId } }">-->
 <!--        <p v-if="isOwner" class="button dds__button dds__button&#45;&#45;primary" type="button">-->
@@ -67,19 +62,18 @@ function formatDate(dates: Date) {
 <!--          Manage Program-->
 <!--        </p>-->
 <!--      </RouterLink>-->
-
-<!--    </div>-->
+    </div>
 
     <div class="row">
-
       <div class="initialCard col-3 dds__mr-4 dds__mb-3">
         <div>
+<!--          v-if="isowner"-->
           <CardPlus url="edition"/>
         </div>
 
         <div class="initialCard col-3 dds__mr-4 dds__mb-3">
           <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3" v-for="item in program.editions" id="editions">
-            <CardEdition :key="item.id" :name="item.name" :description="item.description" :id="item.id"/>
+            <CardEdition :key="item.id" :name="item.name" :description="item.description" :id="item.id" :start-date="item.startDate" :end-date="item.endDate"/>
           </div>
         </div>
       </div>

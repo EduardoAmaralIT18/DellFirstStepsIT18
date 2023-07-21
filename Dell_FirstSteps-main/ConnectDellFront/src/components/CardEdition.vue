@@ -1,9 +1,24 @@
 <script setup lang="ts">
 import type Edition from "@/interfaces/Edition";
 
-function dateCompare() {
+function dateCompare(start, end) {
+  var startDate = new Date(start)
+  var endDate = new Date(end)
+  var today = new Date()
+
+  if (startDate > today) {
+    return 'Not Started'
+  }
+  if (endDate < today) {
+    return 'Finished'
+  }
+  if ((startDate <= today) && (endDate >= today)) {
+    return 'Ongoing'
+  }
+  return 'Error'
 
 }
+
 defineProps<Edition>()
 </script>
 
@@ -14,6 +29,12 @@ defineProps<Edition>()
       <span class="dds__card__header__text">
         <h5 class="dds__card__header__title">{{ name }}</h5>
       </span>
+        <span class="dds__badge dds__badge--brand dds__badge--light">
+          <span class="dds__badge__label">{{
+            dateCompare(startDate, endDate)
+            }}
+          </span>
+        </span>
       </div>
       <div class="dds__card__body">{{ description }}</div>
     </div>
