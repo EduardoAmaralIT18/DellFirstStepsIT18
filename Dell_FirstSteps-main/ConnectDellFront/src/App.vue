@@ -5,7 +5,6 @@ import "@dds/components/src/scss/dds-icons.scss";
 import "@dds/components/src/scss/dds-helpers.scss";
 import "@dds/components/src/scss/dds-main.scss";
 import Header from "./components/Header.vue"
-
 import Sidebar from "./components/Sidebar.vue";
 import { ref, watch } from 'vue';
 import { useRoute } from "vue-router";
