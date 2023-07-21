@@ -70,10 +70,6 @@ function isAdmin() {
 </template>
 
 <style scoped>
-body {
-  font-family: 'Roboto', sans-serif;
-}
-
 .container {
   padding-top: 5%;
   padding-left: 15%;

@@ -15,39 +15,38 @@ localStorage.setItem("userEmail", "");
 localStorage.setItem("userRole", "");
 
 const name = ref<string>();
-const role = ref<number>();
+const role = ref<string>();
 
 const route = useRoute();
 watch(route, () => {
-  name.value = localStorage.getItem("userName")!;
-  role.value =
-    localStorage.getItem("userRole") === ""
-      ? undefined
-      : +localStorage.getItem("userRole")!;
+    name.value = localStorage.getItem("userName")!;
+    role.value = localStorage.getItem("userRole")!;
 });
 </script>
 
 <template class="template">
-  <Header class="header" :name="name" :role="role" />
-  <div class="container">
-    <Sidebar class="sidebar" v-if="role !== undefined" />
-    <main class="main">
-      <RouterView id="router" />
-    </main>
-  </div>
+    <Header class="header" :name="name" :role="role" />
+    <div class="container">
+        <Sidebar class="sidebar" v-if="role !== ''" />
+        <main class="main">
+            <RouterView id="router" />
+        </main>
+    </div>
 </template>
 
-<style scoped>
+<style>
 .template {
-  height: 100vh;
+    height: 100vh;
+    font-family: 'Roboto', sans-serif;
 }
+
 .container {
-  height: 92vh; /* TO-DO */
-  display: flex;
-  flex-direction: row;
+    height: 92vh;
+    display: flex;
+    flex-direction: row;
 }
 
 .main {
-  flex-grow: 2;
+    flex-grow: 2;
 }
 </style>

@@ -1,29 +1,34 @@
 <script setup lang="ts">
 defineProps({
   name: String,
-  role: Number,
+  role: String,
 });
 
-const type: any = {
-  0: "Admin",
-  1: "Intern",
-  2: "Dell Manager",
-  3: "Dell Member",
-  4: "Dell Pucrs Staff",
-  5: "",
-};
+function getRoleString(role: number) {
+  console.log(role);
+  switch (role) {
+    case 0:
+      return 'Admin';
+    case 1:
+      return 'Intern';
+    case 2:
+      return 'Dell Manager';
+    case 3:
+      return 'Dell Member';
+    case 4:
+      return 'Dell PUCRS Staff';
+    default:
+      return undefined;
+  }
+}
+
 </script>
 
 <template>
   <header class="navbar shadow-lg fixed-top">
     <img class="logo" alt="logo Dell" src="../assets/logoDell.png" />
-    <p v-if="name && role" class="name">{{ name }} | {{ type[role] }}</p>
-    <img
-      v-if="name && role"
-      class="userPicture"
-      alt="icon"
-      src="../assets/user.png"
-    />
+    <p v-if="name && role" class="name">{{ name }} | {{ getRoleString(+role) }}</p>
+    <img v-if="name && role" class="userPicture" alt="icon" src="../assets/user.png" />
   </header>
 </template>
 
@@ -49,6 +54,7 @@ const type: any = {
 .userPicture {
   width: 47px;
 }
+
 .logo {
   height: 45px;
 

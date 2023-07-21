@@ -3,7 +3,7 @@ import router from '@/router';
 import { ref } from 'vue';
 
 const role = +localStorage.getItem("userRole")!;
-let isActive = ref(1)
+let isActive = ref(0)
 
 function handleClick(key: number) {
   if (key !== isActive.value) {

@@ -15,14 +15,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits } from "vue";
+import { ref } from "vue";
   defineProps({
     list: Array<string>,
     selectValue: Function,
   });
 
   const selectedOption = ref("");
-  // const { emit } = defineEmits();
 
   
 </script>
