@@ -4,6 +4,8 @@ import "@dds/components/src/scss/dds-icons.scss";
 import TextInput from "./TextInput.vue";
 import DatePicker from "./DatePicker.vue";
 import Dropdown from "./Dropdown.vue"
+import TextArea from "./TextArea.vue";
+import PrimaryButton from "./PrimaryButton.vue";
 import Program from "@/interfaces/Program";
 import axios from "axios";
 </script>
@@ -16,22 +18,9 @@ import axios from "axios";
             <DatePicker boxName="Start Date" v-bind:required="true" v-bind:dateNow="true" @selectedDate="handleStartDate"></DatePicker>
             <DatePicker boxName="End Date" @selectedDate="handleEndDate"></DatePicker>
         </div>
-        <Dropdown dropdownName="Owners" :data="programInfo.owners" />
-        <div id="text-area-container-502168065" class="dds__text-area__container" data-dds="text-area"
-            data-counter-max="50">
-            <div class="dds__text-area__header">
-                <label id="text-area-label-867784391" for="text-area-control-867784391"
-                    class="dds__label dds__label--required">Description</label>
-            </div>
-            <div class="dds__text-area__wrapper">
-                <textarea class="dds__text-area" name="text-area-control-name-867784391" id="text-area-control-867784391"
-                    aria-required="true" aria-labelledby="text-area-label-867784391 text-area-helper-867784391" required
-                    v-model="programInfo.description" @input="" minlength="10" maxlength="50"></textarea>
-                <small id="text-area-helper-359524269" class="dds__input-text__helper">Helper Text</small>
-                <small id="text-area-error-867784391" class="dds__invalid-feedback">Error text</small>
-            </div>
-        </div>
-        <button class="dds__button dds__button--primary" type="button" @click="handleClick">Submit</button>
+        <Dropdown dropdownName="Owners" :data="ownerList" @ownerId="handleDropdown"/>
+        <TextArea boxName="Description" v-bind:minLength=10 v-bind:maxLength=50 v-bind:required="true" @descriptionText="handleDescription"></TextArea>
+        <PrimaryButton buttonName="Submit" @clicked="handleClick"></PrimaryButton>
     </div>
 </template>
 
@@ -46,24 +35,35 @@ export default {
                 description: "",
                 owners: []
             } as Program,
+            ownerList: new Array
         };
     },
     props: {
         formName: String
     },
     methods: {
-        handleInput(text: string) {
+        handleInput(text: string): void {
             this.programInfo.name = text;
             console.log(this.programInfo.name);
-            console.log(this.programInfo.description);
         },
-        handleStartDate(date: string) {
+        handleStartDate(date: string): void {
             this.programInfo.startDate = date
             console.log(this.programInfo.startDate);
         },
-        handleEndDate(date: Date) {
+        handleEndDate(date: Date): void {
             this.programInfo.endDate = date;
             console.log(this.programInfo.endDate);
+        },
+        handleDropdown(owner: []): void {   
+            this.programInfo.owners = [];   
+            owner.forEach(id => {
+                this.programInfo.owners?.push(this.ownerList.find(user => user.id === id));
+            })
+            console.log(this.programInfo.owners);
+        },
+        handleDescription(text: string): void {
+            this.programInfo.description = text;
+            console.log(this.programInfo.description);
         },
         async handleClick() {
             await axios
@@ -71,7 +71,8 @@ export default {
                 name: this.programInfo.name,
                 startDate: this.programInfo.startDate,
                 endDate: this.programInfo.endDate,
-                description: this.programInfo.description
+                description: this.programInfo.description,
+                owners: this.programInfo.owners
             })
                 .then(() => {
                 alert("Solicitação atendida com sucesso!");
@@ -84,7 +85,7 @@ export default {
             await axios
                 .get("https://localhost:5001/user/getOwners")
                 .then((response) => {
-                this.programInfo.owners = response.data;
+                this.ownerList = response.data;
             })
                 .catch((error) => {
                 console.log(error);
@@ -94,11 +95,6 @@ export default {
     mounted() {
         this.getOwners();
     },
-    components: {
-        TextInput,
-        DatePicker,
-        Dropdown
-    }
 };
 </script>
 
