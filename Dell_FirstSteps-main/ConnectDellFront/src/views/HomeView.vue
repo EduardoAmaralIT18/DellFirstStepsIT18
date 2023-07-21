@@ -8,8 +8,8 @@ import axios from "axios";
 const myPrograms = ref<Program[]>([])
 const programs = ref<Program[]>([])
 const username = ref(localStorage.getItem('userName'))
-const role = ref(+localStorage.getItem('userRole')).value;
-const id = ref(+localStorage.getItem('userId')).value;
+const role = ref(+localStorage.getItem('userRole')!).value;
+const id = ref(+localStorage.getItem('userId')!).value;
 
 onMounted(async () => {
   await getPrograms(id, role);
@@ -40,7 +40,7 @@ function isAdmin() {
       Welcome, {{ username }}
     </h4>
 
-    <h4 class="subtitle">
+    <h4 class="subtitle" v-if="myPrograms.length > 0">
       My Programs
     </h4>
 
@@ -49,8 +49,9 @@ function isAdmin() {
         <div v-if="isAdmin()">
           <CardPlus url="createprogram"/>
         </div>
+        
         <div class="card col-lg-12 col-md-12 col-sm-12 dds__mb-3" v-for="item in myPrograms" id="my-programs">
-          <Card :key="item.id" :name="item.name" :description="item.description"/>
+          <Card :key="item.id" :name="item.name" :description="item.description" :id="item.id" :owners="item.owners" :isBasic="false"/>
         </div>
       </div>
     </div>
@@ -61,7 +62,7 @@ function isAdmin() {
 
     <div class="initialCard col-3 dds__mr-4 dds__mb-3">
       <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3" v-for="item in programs" id="programs">
-        <Card :key="item.id" :name="item.name" :description="item.description"/>
+        <Card :key="item.id" :name="item.name" :description="item.description" :id="item.id" :owners="item.owners" :isBasic="true"/>
       </div>
     </div>
   </div>
