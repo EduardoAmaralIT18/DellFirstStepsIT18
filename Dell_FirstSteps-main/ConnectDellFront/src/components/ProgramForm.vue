@@ -1,43 +1,20 @@
 <script setup lang="ts">
 import "@dds/components/src/scss/dds-fonts.scss";
 import "@dds/components/src/scss/dds-icons.scss";
-import Dropdown from "@/components/Dropdown.vue"
 import TextInput from "./TextInput.vue";
+import DatePicker from "./DatePicker.vue";
+import Dropdown from "./Dropdown.vue"
+import Program from "@/interfaces/Program";
+import axios from "axios";
 </script>
 
 <template>
     <div class="form">
-        <h2 class="title">Create Program</h2>
+        <h2 class="title">{{ formName }}</h2>
         <TextInput boxName="Program Name" @typedText="handleInput"></TextInput>
         <div class="date-container">
-            <div class="dds__date-picker" data-dds="date-picker" id="startPicker">
-                <label id="date-picker-label-206993451" for="date-picker-control-name-206993451"
-                    class="dds__label dds__label--required">Start Date</label>
-                <div class="dds__date-picker__wrapper">
-                    <input type="date" class="dds__date-picker__input" placeholder="Enter the date" required="true"
-                        maxlength="256" id="date-picker-control-206993451" name="date-picker-control-name-206993451"
-                        aria-labelledby="date-picker-label-206993451 date-picker-helper-206993451"
-                        v-model="programInfo.startDate" @input="" />
-                    <small id="date-picker-helper-206993451" class="dds__date-picker__helper">Please, use the format
-                        MM/DD/YYYY</small>
-                    <div id="date-picker-error-206993451" class="dds__date-picker__invalid-feedback">Invalid date</div>
-                </div>
-            </div>
-            <div class="dds__date-picker" data-dds="date-picker" id="endPicker">
-                <label id="date-picker-label-206993451" for="date-picker-control-name-206993451"
-                    class="dds__label dds__label">
-                    End Date
-                </label>
-                <div class="dds__date-picker__wrapper">
-                    <input type="date" class="dds__date-picker__input" placeholder="Enter the date" maxlength="256"
-                        id="date-picker-control-206993451" name="date-picker-control-name-206993451"
-                        aria-labelledby="date-picker-label-206993451 date-picker-helper-206993451"
-                        v-model="programInfo.endDate"/>
-                    <small id="date-picker-helper-206993451" class="dds__date-picker__helper">Please, use the format
-                        MM/DD/YYYY</small>
-                    <div id="date-picker-error-206993451" class="dds__date-picker__invalid-feedback">Invalid date</div>
-                </div>
-            </div>
+            <DatePicker boxName="Start Date" v-bind:required="true" v-bind:dateNow="true" @selectedDate="handleStartDate"></DatePicker>
+            <DatePicker boxName="End Date" @selectedDate="handleEndDate"></DatePicker>
         </div>
         <Dropdown dropdownName="Owners" :data="programInfo.owners" />
         <div id="text-area-container-502168065" class="dds__text-area__container" data-dds="text-area"
@@ -59,58 +36,68 @@ import TextInput from "./TextInput.vue";
 </template>
 
 <script lang="ts">
-import Program from "@/interfaces/Program";
-import axios from "axios";
-
 export default {
     data() {
         return {
             programInfo: {
-                name: '',
+                name: "",
                 startDate: new Date().toISOString().slice(0, 10),
                 endDate: undefined,
-                description: '',
+                description: "",
                 owners: []
             } as Program,
-            counter: Number,
         };
+    },
+    props: {
+        formName: String
     },
     methods: {
         handleInput(text: string) {
             this.programInfo.name = text;
             console.log(this.programInfo.name);
             console.log(this.programInfo.description);
+        },
+        handleStartDate(date: string) {
+            this.programInfo.startDate = date
             console.log(this.programInfo.startDate);
+        },
+        handleEndDate(date: Date) {
+            this.programInfo.endDate = date;
             console.log(this.programInfo.endDate);
         },
         async handleClick() {
             await axios
                 .post(`https://localhost:5001/program/addProgram`, {
-                    name: this.programInfo.name,
-                    startDate: this.programInfo.startDate,
-                    endDate: this.programInfo.endDate,
-                    description: this.programInfo.description
-                })
+                name: this.programInfo.name,
+                startDate: this.programInfo.startDate,
+                endDate: this.programInfo.endDate,
+                description: this.programInfo.description
+            })
                 .then(() => {
-                    alert('Solicitação atendida com sucesso!');
-                })
+                alert("Solicitação atendida com sucesso!");
+            })
                 .catch((error) => {
-                    alert('Não foi possível atender a solicitação.')
-                });
+                alert("Não foi possível atender a solicitação.");
+            });
         },
         async getOwners() {
             await axios
                 .get("https://localhost:5001/user/getOwners")
-                .then( (response) => {
-                    this.programInfo.owners = response.data;
-                })
-                .catch( (error) => {
-                    console.log(error);
-                })
+                .then((response) => {
+                this.programInfo.owners = response.data;
+            })
+                .catch((error) => {
+                console.log(error);
+            });
         }
     },
-    mounted () {
+    mounted() {
         this.getOwners();
+    },
+    components: {
+        TextInput,
+        DatePicker,
+        Dropdown
     }
 };
 </script>
