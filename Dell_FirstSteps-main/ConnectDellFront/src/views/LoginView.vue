@@ -1,5 +1,4 @@
 <template>
-  <Header/>
   <div class="signin-page" id="container">
     <h1 class="signIn">Sign In</h1>
     <Select id="select" :list="users" @selectValue="handleClick"></Select>

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import router from '@/router';
 import { ref } from 'vue';
+
 const role= localStorage.getItem("role");
 let isActive = ref()
+
 function handleClick(key: number){
   if(key!==isActive.value){
     if(key===1){
@@ -17,7 +19,10 @@ function handleClick(key: number){
       isActive.value=3
       router.push("/News")
     }
+<<<<<<< Updated upstream
     
+=======
+>>>>>>> Stashed changes
   }
 }
 
@@ -52,6 +57,9 @@ function handleClick(key: number){
 
 <style scoped>
 nav{
+  position: fixed;
+  top: 81px;
+  z-index: 2;
   height: 100vh;
 }
 .text{

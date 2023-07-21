@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import router from "@/router";
+import { computed, ref, onMounted,watch } from "vue";
 
-const name = ref(localStorage.getItem("name"));
-const role = ref(localStorage.getItem("role"));
+const prop = defineProps({
+  name:String,
+  role:String
+})
 
-console.log(role.value);
 
-// import Icon from "../assets/brand-delltechnologies.svg";
-
-function showRole() {
-  if (role.value === '0') {
+const showRole = computed(() =>{
+  if (prop.role === '0') {
     return "Admin";
-  } else if (role.value === '1') {
+  } else if (prop.role === '1') {
     return "Intern";
-  } else if (role.value === '2') {
+  } else if (prop.role === '2') {
     return "Dell Manager";
-  } else if (role.value === '3') {
+  } else if (prop.role === '3') {
     return "Dell Member";
-  } else if (role.value === '4') {
+  } else if (prop.role === '4') {
     return "Dell Pucrs Staff";
   }
   return "-1";
-}
+})
 </script>
 
 <template>
@@ -31,10 +31,10 @@ function showRole() {
               <div class="col-4 dellLogo">
                 <a><img class="logo" alt="logo Dell" src="../assets/logoDell.png"></a>
               </div>
-              <div v-if=" showRole() !== '-1'" class="col-8">
+              <div v-if=" showRole !== '-1'" class="col-8">
               <nav class="userName">
                   <div class="d-none d-lg-block">
-                    <p class="name"> {{ name }} | {{ showRole() }}<img class="userPicture" alt="user icon" src="../assets/user.png"></p>
+                    <p class="name"> {{ name }} | {{ showRole }}<img class="userPicture" alt="user icon" src="../assets/user.png"></p>
                   </div>
                 </nav>            
               </div>
