@@ -11,12 +11,18 @@ import "@dds/components/src/scss/dds-icons.scss";
         <div class="dds__date-picker__wrapper">
             <input v-if="dateNow" type="date" class="dds__date-picker__input" placeholder="Enter the date" required="true" maxlength="256"
                 id="date-picker-control-206993451" name="date-picker-control-name-206993451"
-                aria-labelledby="date-picker-label-206993451 date-picker-helper-206993451" v-model="preset"
-                @input="sendStartToParent(preset)" />
+                aria-labelledby="date-picker-label-206993451 date-picker-helper-206993451" v-model= "preset"
+                @input="sendStartToParent(preset)"/>
             <input v-else type="date" class="dds__date-picker__input" placeholder="Enter the date" required="true" maxlength="256"
                 id="date-picker-control-206993451" name="date-picker-control-name-206993451"
                 aria-labelledby="date-picker-label-206993451 date-picker-helper-206993451" v-model="info"
-                @input="sendEndToParent(info)" />
+                @input="sendEndToParent(info)" :min="minRequired ? preset : undefined"/>
+
+            <!-- <input type="date" class="dds__date-picker__input" placeholder="Enter the date" required="true" maxlength="256"
+                id="date-picker-control-206993451" name="date-picker-control-name-206993451"
+                aria-labelledby="date-picker-label-206993451 date-picker-helper-206993451" :value="dateNow ? preset : info" :v-model="dateNow ? preset : info"
+                @input="dateNow? sendStartToParent(preset) : sendEndToParent(info)" :min="minRequired ? preset : undefined"/> -->
+
             <small id="date-picker-helper-206993451" class="dds__date-picker__helper">Please, use the format
                 MM/DD/YYYY</small>
             <div id="date-picker-error-206993451" class="dds__date-picker__invalid-feedback">Invalid date</div>
@@ -36,7 +42,8 @@ export default {
     props: {
         boxName: String,
         required: Boolean,
-        dateNow: Boolean
+        dateNow: Boolean,
+        minRequired: Boolean
     },
     methods: {
         sendStartToParent(date: string) {

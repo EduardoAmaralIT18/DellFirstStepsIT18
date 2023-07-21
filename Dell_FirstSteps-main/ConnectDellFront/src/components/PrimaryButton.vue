@@ -1,10 +1,11 @@
 <template>
-    <button class="dds__button dds__button--primary" type="button"  @click="sendClickToParent">{{ buttonName }}</button>
+    <button class="dds__button dds__button--primary" type="button"  @click="sendClickToParent" :disabled="isDisabled">{{ buttonName }}</button>
 </template>
 
 <script setup lang="ts">
 const props = defineProps({
-  buttonName: String
+  buttonName: String,
+  isDisabled: Boolean
 });
 
 const emits = defineEmits({

@@ -16,11 +16,11 @@ import axios from "axios";
         <TextInput boxName="Program Name" @typedText="handleInput"></TextInput>
         <div class="date-container">
             <DatePicker boxName="Start Date" v-bind:required="true" v-bind:dateNow="true" @selectedDate="handleStartDate"></DatePicker>
-            <DatePicker boxName="End Date" @selectedDate="handleEndDate"></DatePicker>
+            <DatePicker boxName="End Date" v-bind:minRequired="true" @selectedDate="handleEndDate"></DatePicker>
         </div>
         <Dropdown dropdownName="Owners" :data="ownerList" @ownerId="handleDropdown"/>
         <TextArea boxName="Description" v-bind:minLength=10 v-bind:maxLength=50 v-bind:required="true" @descriptionText="handleDescription"></TextArea>
-        <PrimaryButton buttonName="Submit" @clicked="handleClick"></PrimaryButton>
+        <PrimaryButton buttonName="Submit" @clicked="handleClick" :isDisabled="activateButton()"></PrimaryButton>
     </div>
 </template>
 
@@ -68,10 +68,10 @@ export default {
         async handleClick() {
             await axios
                 .post(`https://localhost:5001/program/addProgram`, {
-                name: this.programInfo.name,
+                name: this.programInfo.name.trim(),
                 startDate: this.programInfo.startDate,
                 endDate: this.programInfo.endDate,
-                description: this.programInfo.description,
+                description: this.programInfo.description.trim(),
                 owners: this.programInfo.owners
             })
                 .then(() => {
@@ -90,6 +90,14 @@ export default {
                 .catch((error) => {
                 console.log(error);
             });
+        },
+        activateButton(): boolean {
+            if (typeof(this.programInfo.endDate) == undefined)
+                return false;
+
+            if (this.programInfo.endDate! <= this.programInfo.startDate)
+                return true;
+            return false;
         }
     },
     mounted() {
