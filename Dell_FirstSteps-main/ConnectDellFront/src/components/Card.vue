@@ -15,7 +15,7 @@ defineProps<Program>()
       </div>
       <div class="dds__card__body">{{ description }}</div>
     </div>
-    <RouterLink style="text-decoration: none" class="link" :to="`/programinfo/${id}`">
+    <RouterLink style="text-decoration: none" class="link" :to="isBasic ? `/program/${id}` : `/myProgram/${id}`">
       Learn more ➔
     </RouterLink>
   </div>
@@ -34,6 +34,7 @@ defineProps<Program>()
 
 .dds__card__content {
   padding: 20px;
+  
 }
 
 .dds__card__header__title {

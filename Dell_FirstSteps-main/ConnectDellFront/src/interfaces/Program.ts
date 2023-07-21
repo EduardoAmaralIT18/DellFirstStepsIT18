@@ -1,4 +1,5 @@
 import type Edition from "@/interfaces/Edition";
+import User from "./User";
 
 export default interface Program{
     id?: number;
@@ -7,5 +8,6 @@ export default interface Program{
     startDate?: Date;
     endDate?: Date;
     editions?: Edition[];
-    owners: user[];
+    owners: User[];
+    isBasic: boolean;
 }

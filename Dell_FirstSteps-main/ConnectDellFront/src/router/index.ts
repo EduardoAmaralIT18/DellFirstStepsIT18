@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import MyProgramView from "@/views/MyProgramView.vue";
 import ProgramView from "@/views/ProgramView.vue";
 
 const router = createRouter({
@@ -11,7 +12,12 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/programinfo/:id',
+      path: '/myProgram/:id',
+      name: 'My Program',
+      component: MyProgramView
+    },
+    {
+      path: '/program/:id',
       name: 'Program',
       component: ProgramView
     }
