@@ -9,25 +9,28 @@ import Sidebar from "./components/Sidebar.vue";
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
-localStorage.setItem("name", "");
-localStorage.setItem("id", "");
-localStorage.setItem("email", "");
-localStorage.setItem("role", "");
+localStorage.setItem("userName", "");
+localStorage.setItem("userId", "");
+localStorage.setItem("userEmail", "");
+localStorage.setItem("userRole", "");
 
-const name = ref();
-const role = ref();
+const name = ref<string>();
+const role = ref<number>();
 
 const route = useRoute();
 watch(route, () => {
-  name.value = localStorage.getItem("name");
-  role.value = localStorage.getItem("role");
+  name.value = localStorage.getItem("userName")!;
+  role.value =
+    localStorage.getItem("userRole") === ""
+      ? undefined
+      : +localStorage.getItem("userRole")!;
 });
 </script>
 
 <template class="template">
   <Header class="header" :name="name" :role="role" />
   <div class="container">
-    <Sidebar class="sidebar" v-if="role !== ''" />
+    <Sidebar class="sidebar" v-if="role !== undefined" />
     <main class="main">
       <RouterView id="router" />
     </main>

@@ -1,7 +1,7 @@
 <template>
   <div class="signin-page">
     <h1 class="signIn">Sign In</h1>
-    <Select id="select" :list="users" @selectValue="handleClick"></Select>
+    <Select id="select" :list="getEmails()" @selectValue="handleClick"></Select>
   </div>
 </template>
 
@@ -10,37 +10,35 @@ import Select from "../components/Select.vue";
 import axios from "axios";
 import { onMounted, ref } from "vue";
 import router from "@/router";
+import User from "@/interfaces/User";
 
-type User = {
-  id: number;
-  name: string;
-  email: string;
-  role: number;
-};
-
-const usersModel = ref([]);
-const users = ref<User[]>();
+const mappedData = ref<User[]>([]);
 
 onMounted(async () => {
   await axios
-    .get("https://localhost:5001/Login/getUserList")
+    .get<User[]>("https://localhost:5001/Login/getUserList")
     .then((response) => {
-      usersModel.value = response.data;
+      mappedData.value = response.data.map((item) => {
+        const { id, name, email, role } = item;
+        return { id, name, email, role };
+      });
     })
     .catch((error) => {
       console.log(error);
     });
-
-  users.value = usersModel.value.map((user) => user.email);
 });
 
+function getEmails() {
+  return mappedData.value.map((user) => user.email);
+}
+
 function handleClick(email: string) {
-  const user = usersModel.value.find((element) => element.email === email);
-  localStorage.setItem("name", user.name);
-  localStorage.setItem("id", user.id);
-  localStorage.setItem("email", user.email);
-  localStorage.setItem("role", user.role);
-  router.push("/Home");
+  const user = mappedData.value.find((element) => element.email === email)!;
+  localStorage.setItem("userName", user.name);
+  localStorage.setItem("userId", user.id.toString());
+  localStorage.setItem("userEmail", user.email ?? "");
+  localStorage.setItem("userRole", user.role.toString());
+  router.push("/");
 }
 </script>
 

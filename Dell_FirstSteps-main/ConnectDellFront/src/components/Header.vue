@@ -38,12 +38,14 @@ const type: any = {
   border-bottom: 2px solid #a6a6a6;
   height: 75px;
 }
+
 .name {
   color: #0672cb;
   font-size: 145%;
   margin-top: 0.8%;
   margin-left: auto;
 }
+
 .userPicture {
   width: 47px;
 }
