@@ -1,10 +1,30 @@
 <template>
-    <Calendar></Calendar>>
+    <Calendar :events="mockData"></Calendar>>
 </template>
 
 <script setup lang="ts">
 import Calendar from '../components/Calendar.vue'
 
+type TypeEvent = {
+    id : number,
+    name : string,
+    eventType : number,
+    phaseType : number,
+    startDate : Date,
+    endDate : Date,
+    where : string,
+    peopleInvolved : string[]
+}
+const mockData: TypeEvent[] = [{
+    id : 1,
+    name : 'John Johns',
+    eventType : 1,
+    phaseType : 1,
+    startDate : new Date(),
+    endDate : new Date(),
+    where : 'here',
+    peopleInvolved : ['me', 'he']
+}]
 </script>
 
 <style scoped>

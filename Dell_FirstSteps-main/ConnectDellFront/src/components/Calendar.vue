@@ -7,6 +7,12 @@ import interactionPlugin from '@fullcalendar/interaction'
 import { onMounted, PropType, ref } from 'vue'
 import Modal from './ModalEventInfo.vue'
 
+const Props = defineProps({
+  startDate: String,
+  endDate: String,
+  events : Array as PropType<TypeEvent[]>,
+})
+
 enum PhaseType {
   "Setup",
   "Training",
@@ -15,7 +21,7 @@ enum PhaseType {
 }
 
 type TypeEvent = {
-  id : Number
+  id : Number,
   name : String,
   eventType : Number,
   phaseType : Number,
@@ -25,20 +31,12 @@ type TypeEvent = {
   peopleInvolved : Array<String>
 }
 
-declare var DDS: any;
-
-
-// let refer = ref(null);
-// let list = ref();
-
-// onMounted(() => {
-//   refer.value = DDS.Popover(list.value);
-// })
-
 const handleEventClick = (info : EventClickArg) => {
-  // refer.open();
+  console.log(info);
+}
 
-  // console.log(info)
+const handleDateClick = (info : DateClickArg) => {
+  console.log(info);
 }
 
 function loadEvent() {
@@ -61,11 +59,7 @@ function loadEvent() {
   })
 }
 
-const Props = defineProps({
-  startDate: String,
-  endDate: String,
-  events : Array as PropType<TypeEvent[]>,
-})
+
 
 const calendarOptions = {
   plugins: [
@@ -83,14 +77,13 @@ const calendarOptions = {
     start: Props.startDate,
     end: Props.endDate,
   },
-  eventClick : handleEventClick,
+  eventClick: handleEventClick,
+  dateClick: handleDateClick,
   editable: true,
-  refer: null
 } as CalendarOptions;
 
+
 loadEvent()
-
-
 
 </script>
 
@@ -103,19 +96,15 @@ loadEvent()
       >
         <template v-slot:eventContent='arg'>
           <b>{{ arg.event.id }}</b>
-          <i>{{ arg.event.title }}</i> -->
-          <Popover  ref="refer" :event="arg.event" id="idPop"></Popover>
+          <i>{{ arg.event.title }}</i>
+          <!-- <Modal></Modal> -->
         </template>
       </FullCalendar>
       
     </div>
   </div>
-
-
-  <Modal></Modal>
+  
 </template>
-
-
 
 
 <style lang='css'>
