@@ -1,5 +1,5 @@
 import type Edition from "@/interfaces/Edition";
-import User from "./User";
+import type User from "@/interfaces/User";
 
 export default interface Program{
     id?: number;

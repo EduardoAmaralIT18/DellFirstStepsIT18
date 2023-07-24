@@ -38,14 +38,14 @@ public class UserService : IUserService
         
     }
 
-    public async Task<int> RemoveUser(int userid)
+    public async Task RemoveUser(int userId)
     {
-        var usr = await dbUser.users.Where(usr => usr.id == userid).FirstOrDefaultAsync();
-
-        dbUser.users.Remove(usr);
-
-        var entries = await dbUser.SaveChangesAsync();
-
-        return entries;
+        var existingUser = await dbUser.users.FindAsync(userId);
+        if (existingUser == null)
+        {
+            throw new Exception("User not found");
+        }
+        dbUser.users.Remove(existingUser);
+        await dbUser.SaveChangesAsync();
     }
 }

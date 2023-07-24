@@ -4,6 +4,7 @@ import {onMounted, ref} from "vue";
 import axios from "axios";
 import type User from "@/interfaces/User";
 import router from '@/router';
+import Popup from "@/components/Popup.vue";
 
 const users = ref<User[]>()
 onMounted(async () => {
@@ -11,13 +12,23 @@ onMounted(async () => {
   await findAllUsers();
 })
 
+const selectedUser = ref<User>()
 
-const deleteUser = async (id: number) => {
-  await axios.delete(`https://localhost:5001/User/removeUser/${id}`)
+const selectUser = (user: User) => {
+  selectedUser.value = user;
+}
+
+const deleteUser = async () => {
+  await axios.delete(`https://localhost:5001/User/removeUser/${selectedUser.value?.id}`)
+      .then(async () => {
+        await findAllUsers();
+        selectedUser.value = undefined;
+      })
       .catch((e) => {
         console.error(e);
       })
 }
+
 const findAllUsers = async () => {
   await axios.get('https://localhost:5001/User/listUsers')
       .then((response) => {
@@ -36,7 +47,7 @@ const redirectIfNotAdmin = () => {
     router.push('/');
   }
 }
-
+const popupTitle = "Remove user"
 const roles = [
   "Admin",
   "Intern",
@@ -47,6 +58,11 @@ const roles = [
 </script>
 
 <template>
+  <div v-if="selectedUser">
+    <Popup :title="popupTitle"
+           :text="`You are about to revoke the access of ${selectedUser.name}.`"
+           :object="selectedUser" :action="deleteUser"></Popup>
+  </div>
   <div class="container">
     <table id="components-table--static" class="dds__table">
       <thead class="dds__thead">
@@ -63,7 +79,8 @@ const roles = [
         <td id="email_td" class="dds__td">{{ user.email }}</td>
         <td class="dds__td">{{ roles[user.role] }}</td>
         <td class="dds__td" id="delete-td">
-          <button v-if="!itsMe(user.id)" class="red dds__button dds__button--destructive" :id="user.id" type="button" @click="deleteUser(user.id)">
+          <button v-if="!itsMe(user.id)" class="red dds__button dds__button--destructive" :id="user.id" type="button"
+                  @click="selectUser(user)">
             <i class="dds__icon dds__icon--user-remove" aria-hidden="true"></i>
           </button>
         </td>
