@@ -47,7 +47,7 @@ const router = createRouter({
       component: CreateProgramView,
     },
     {
-      path: '/editioninfo',
+      path: '/editioninfo/:id',
       name: 'EditionInfo',
       component: EditionInfoView,
     }

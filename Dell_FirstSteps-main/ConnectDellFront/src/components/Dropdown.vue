@@ -56,3 +56,9 @@ const emits = defineEmits({
     selectedId: Array
 })
 </script>
+
+<style scoped>
+.dds__label--required::after {  
+    color: #0672CB;
+}
+</style>

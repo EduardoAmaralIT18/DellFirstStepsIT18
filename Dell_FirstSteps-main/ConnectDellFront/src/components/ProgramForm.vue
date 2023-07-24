@@ -19,7 +19,7 @@ import axios from "axios";
             <DatePicker boxName="End Date" v-bind:minRequired="true" @selectedDate="handleEndDate"></DatePicker>
         </div>
         <Dropdown dropdownName="Owners" :data="ownerList" @selectedId="handleDropdown"/>
-        <TextArea boxName="Description" v-bind:minLength=10 v-bind:maxLength=50 v-bind:required="true" @descriptionText="handleDescription"></TextArea>
+        <TextArea boxName="Description" maxlength="50" v-bind:required="true" @descriptionText="handleDescription"></TextArea>
         <PrimaryButton buttonName="Submit" @clicked="handleClick" :isDisabled="activateButton()"></PrimaryButton>
     </div>
 </template>
@@ -29,12 +29,12 @@ export default {
     data() {
         return {
             programInfo: {
-                name: "",
-                startDate: new Date().toISOString().slice(0, 10),
-                endDate: undefined,
-                description: "",
-                owners: []
-            } as Program,
+            name: "",
+            startDate: new Date().toISOString().slice(0, 10),
+            endDate: undefined,
+            description: "",
+            owners: []
+} as unknown as Program,
             ownerList: new Array
         };
     },
