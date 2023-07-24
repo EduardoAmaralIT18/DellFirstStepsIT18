@@ -38,7 +38,7 @@ function handleClick(email: string) {
   localStorage.setItem("userId", user.id.toString());
   localStorage.setItem("userEmail", user.email ?? "");
   localStorage.setItem("userRole", user.role.toString());
-  router.push("/");
+  router.push("/home");
 }
 </script>
 

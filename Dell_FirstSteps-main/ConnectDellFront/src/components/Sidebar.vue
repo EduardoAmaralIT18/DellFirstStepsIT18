@@ -9,15 +9,18 @@ function handleClick(key: number) {
   if (key !== isActive.value) {
     if (key === 1) {
       isActive.value = 1
-      router.push("/")
+      router.push("/home")
     }
     else if (key === 2) {
       isActive.value = 2
-      router.push("/Users")
+      router.push("/users")
     }
     else if (key === 3) {
       isActive.value = 3
-      router.push("/News")
+      router.push("/news")
+    }
+    else if (key === 4) {
+      router.push("/login")
     }
 
   }
@@ -49,6 +52,13 @@ function handleClick(key: number) {
             <span class="text">News</span>
           </a>
         </li>
+        <li @click="handleClick(4)" :class="{ 'dds__side-nav__item--selected': isActive === 3 }"
+          class="dds__side-nav__item ">
+          <a href="javascript:void(0)">
+            <span class="text dds__icon dds__side-nav__icon dds__icon--doc-lines" aria-hidden="true"></span>
+            <span class="text">Back to Login (dev)</span>
+          </a>
+        </li>
       </ul>
     </section>
   </nav>
@@ -56,9 +66,16 @@ function handleClick(key: number) {
 
 <style scoped>
 nav {
-  height: 100%;
+  height: 100vh;
 }
 
 .text {
   color: #0d76b2;
-}</style>
+}
+
+.dds__side-nav__wrapper {
+  width: 15rem;
+  min-width: 10rem;
+}
+
+</style>

@@ -9,11 +9,6 @@ import Sidebar from "./components/Sidebar.vue";
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
-localStorage.setItem("userName", "");
-localStorage.setItem("userId", "");
-localStorage.setItem("userEmail", "");
-localStorage.setItem("userRole", "");
-
 const name = ref<string>();
 const role = ref<string>();
 
@@ -41,7 +36,7 @@ watch(route, () => {
 }
 
 .container {
-    height: 92vh;
+    /* height: 100vh; */
     display: flex;
     flex-direction: row;
 }

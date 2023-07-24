@@ -26,7 +26,10 @@ function getRoleString(role: number) {
 
 <template>
   <header class="navbar shadow-lg fixed-top">
-    <img class="logo" alt="logo Dell" src="../assets/logoDell.png" />
+    <picture>
+      <source media="(min-width: 900px)" class="logo" alt="logo Dell" srcset="../assets/logoDell.png" />
+      <img class="logo" alt="logo Dell" src="../assets/small-logo-dell.png" />
+    </picture>
     <p v-if="name && role" class="name">{{ name }} | {{ getRoleString(+role) }}</p>
     <img v-if="name && role" class="userPicture" alt="icon" src="../assets/user.png" />
   </header>
@@ -36,7 +39,6 @@ function getRoleString(role: number) {
 .navbar {
   display: flex;
   vertical-align: bottom;
-
   align-items: center;
   background-color: white;
   width: 100%;
@@ -57,7 +59,6 @@ function getRoleString(role: number) {
 
 .logo {
   height: 45px;
-
   margin-left: 1%;
 }
 </style>

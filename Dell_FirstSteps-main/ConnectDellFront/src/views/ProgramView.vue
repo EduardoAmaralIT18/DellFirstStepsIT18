@@ -54,7 +54,7 @@ const ownersFormatter = (owners: User[]) => {
         text +=  ', ' + owners[i].name
     }
 
-    text += ('and ' + lastUserName)
+    text += (' and ' + lastUserName)
     return text;
 }
 const defineOwnerList = () => {
