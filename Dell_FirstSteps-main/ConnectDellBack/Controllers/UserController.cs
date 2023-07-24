@@ -51,15 +51,15 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpGet("removeUser")]
-    public async Task<ActionResult> RemoveUser(int user)
+    [HttpDelete("removeUser/{id}")]
+    public async Task<ActionResult> RemoveUser(int id)
     {
-        var entries = await _service.RemoveUser(user);
-        if (entries > 0)
+        try
         {
+            await _service.RemoveUser(id);
             return Ok();
         }
-        else
+        catch
         {
             return NotFound();
         }
