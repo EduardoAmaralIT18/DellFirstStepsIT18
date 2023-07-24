@@ -1,8 +1,9 @@
 <template>
   <div class="dds__select" data-dds="select">
       <div class="dds__select__wrapper">
+        <label id="select-label" for="select-label" class="dds__label">{{ boxName }}</label>
         <select id="select-control-505500786" v-model="value" @change="handleChange" class="dds__select__field">
-          <option disabled value="Please select user">Please select user</option>
+          <option disabled value="Please select user">{{ placeholder }}</option>
           <option
             v-for="item in list" 
             :value="item">
@@ -19,6 +20,8 @@ import { ref } from "vue";
   defineProps({
     list: Array<string>,
     selectValue: Function,
+    boxName: String,
+    placeholder: String
   });
 
   const selectedOption = ref("");
