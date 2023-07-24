@@ -1,7 +1,13 @@
+import User from "./User"
 export default interface Edition{
     id?: number;
     name: string;
+    numberOfInterns: number;
+    members: User[];
     description: string;
-    startDate?: Date;
-    endDate?: Date;
+    curriculum: string;
+    mode: number;
+    startDate?: Date | string;
+    endDate?: Date | string;
+    program: number;
 }

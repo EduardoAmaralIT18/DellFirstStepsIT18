@@ -4,8 +4,9 @@ import HomeView from '../views/HomeView.vue';
 import NewsView from '../views/NewsView.vue';
 import ProgramView from "../views/ProgramView.vue";
 import MyProgramView from '../views/MyProgramView.vue';
-import UsersView from '../views/UsersView.vue';
+// import UsersView from '../views/UsersView.vue';
 import CreateProgramView from '../views/CreateProgramView.vue';
+import CreateEditionView from '../views/CreateEditionView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,15 +36,20 @@ const router = createRouter({
       name: 'Program',
       component: ProgramView,
     },
-    {
-      path: '/users',
-      name: 'Users',
-      component: UsersView
-    },
+    // {
+    //   path: '/users',
+    //   name: 'Users',
+    //   component: UsersView
+    // },
     {
       path: '/createprogram',
       name: 'CreateProgram',
       component: CreateProgramView,
+    },
+    {
+      path: '/myProgram/:id/createedition',
+      name: 'CreateEdition',
+      component: CreateEditionView,
     }
   ]
 })
