@@ -8,7 +8,7 @@ defineProps<{ url: string }>()
   <div class="dds__card">
     <div class="dds__card__content">
       <div class="addProgramIcon dds__card__body">
-        <RouterLink style="text-decoration: none" to="/{{url}}">
+        <RouterLink style="text-decoration: none" :to="`${url}`">
           +
         </RouterLink>
       </div>

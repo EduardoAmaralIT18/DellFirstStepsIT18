@@ -5,7 +5,7 @@ import GoBackButton from "@/components/GoBackButton.vue";
 
 <template>
     <div class="body">
-        <GoBackButton class="button" path="/" />
+        <GoBackButton class="button" path="/home" />
         <ProgramForm formName="Create Program"/>
     </div>
 </template>

@@ -27,7 +27,7 @@ const getPrograms = async (userId: number, role: number) => {
 }
 
 function isAdmin() {
-  if (role == 0) {
+  if (role === 0) {
     return true;
   }
   return false;
@@ -48,7 +48,7 @@ function isAdmin() {
     <div class="row">
       <div class="initialCard col-3 dds__mr-4 dds__mb-3">
         <div v-if="isAdmin()">
-          <CardPlus url="createprogram"/>
+          <CardPlus url="/createprogram"/>
         </div>
         
         <div class="card col-lg-12 col-md-12 col-sm-12 dds__mb-3" v-for="item in myPrograms" id="my-programs">
