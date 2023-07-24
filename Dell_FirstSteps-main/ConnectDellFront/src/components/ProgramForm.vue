@@ -15,8 +15,8 @@ import axios from "axios";
         <h2 class="title">{{ formName }}</h2>
         <TextInput boxName="Program Name" @typedText="handleInput"></TextInput>
         <div class="date-container">
-            <DatePicker boxName="Start Date" v-bind:required="true" v-bind:dateNow="true" @selectedDate="handleStartDate"></DatePicker>
-            <DatePicker boxName="End Date" v-bind:minRequired="true" @selectedDate="handleEndDate"></DatePicker>
+            <DatePicker class="date_picker" boxName="Start Date" v-bind:required="true" v-bind:dateNow="true" @selectedDate="handleStartDate"></DatePicker>
+            <DatePicker class="date_picker" boxName="End Date" v-bind:minRequired="true" @selectedDate="handleEndDate"></DatePicker>
         </div>
         <Dropdown dropdownName="Owners" :data="ownerList" @selectedId="handleDropdown"/>
         <TextArea boxName="Description" v-bind:minLength=10 v-bind:maxLength=50 v-bind:required="true" @descriptionText="handleDescription"></TextArea>
@@ -155,6 +155,10 @@ export default {
     font-size: 200%;
     font-weight: 500;
     text-align: center;
+}
+
+.date_picker {
+    width: 45%;
 }
 
 .dds__button {
