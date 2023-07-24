@@ -35,7 +35,7 @@ const getProgram = async (programId: number, userId: number) => {
 }
 
 function formatDate(dates: Date) {
-  const date = new Date(dates);
+  const date = new Date(dates.toString());
   return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 }
 

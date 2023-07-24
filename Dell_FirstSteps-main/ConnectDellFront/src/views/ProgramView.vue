@@ -7,7 +7,7 @@ import CardEdition from "@/components/CardEdition.vue";
 import User from "@/interfaces/User";
 
 const route = useRoute();
-const program : ref<Program> = ref<Program>({
+const program = ref<Program>({
     name: '',
     description: '',
     owners: [],
@@ -33,7 +33,7 @@ const getSimpleProgram = async (programId: number) => {
 }
 
 function formatDate(dates: Date) {
-    const date = new Date(dates);
+    const date = new Date(dates.toString());
     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 }
 

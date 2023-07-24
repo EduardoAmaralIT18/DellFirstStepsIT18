@@ -8,7 +8,7 @@ export default interface Program {
     startDate?:Date,
     endDate?: Date,
     description: string,
-    owners?: User[],
+    owners: User[],
     editions?: Edition[],
     isBasic: boolean;
 }
