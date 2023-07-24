@@ -5,8 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { onMounted, PropType, ref } from 'vue'
-import Popover from './Popover.vue'
-import Modal from './Modal.vue'
+import Modal from './ModalEventInfo.vue'
 
 enum PhaseType {
   "Setup",
@@ -39,7 +38,7 @@ declare var DDS: any;
 const handleEventClick = (info : EventClickArg) => {
   // refer.open();
 
-  console.log(info)
+  // console.log(info)
 }
 
 function loadEvent() {
@@ -98,16 +97,16 @@ loadEvent()
 <template>
   <div class='demo-app'>
     <div class='demo-app-main'>
-      <!-- <FullCalendar
+      <FullCalendar
         class='demo-app-calendar'
         :options='calendarOptions'
       >
         <template v-slot:eventContent='arg'>
           <b>{{ arg.event.id }}</b>
           <i>{{ arg.event.title }}</i> -->
-          <!-- <Popover  ref="refer" :event="arg.event" id="idPop"></Popover> -->
-        <!-- </template>
-      </FullCalendar> -->
+          <Popover  ref="refer" :event="arg.event" id="idPop"></Popover>
+        </template>
+      </FullCalendar>
       
     </div>
   </div>

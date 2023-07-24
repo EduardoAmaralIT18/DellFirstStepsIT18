@@ -22,6 +22,9 @@ function handleClick(key: number) {
     else if (key === 4) {
       router.push("/login")
     }
+    else if (key === 5) {
+      router.push("/calendar")
+    }
 
   }
 }
@@ -57,6 +60,13 @@ function handleClick(key: number) {
           <a href="javascript:void(0)">
             <span class="text dds__icon dds__side-nav__icon dds__icon--doc-lines" aria-hidden="true"></span>
             <span class="text">Back to Login (dev)</span>
+          </a>
+        </li>
+        <li @click="handleClick(5)" :class="{ 'dds__side-nav__item--selected': isActive === 3 }"
+          class="dds__side-nav__item ">
+          <a href="javascript:void(0)">
+            <span class="text dds__icon dds__side-nav__icon dds__icon--doc-lines" aria-hidden="true"></span>
+            <span class="text">Calendar (dev)</span>
           </a>
         </li>
       </ul>
