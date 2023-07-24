@@ -1,7 +1,8 @@
 import type Edition from "@/interfaces/Edition";
-import User from "./User"
+import type User from "@/interfaces/User";
 
-interface Program {
+
+export default interface Program {
     id?: number,
     name: string,
     startDate: string | Date,
@@ -12,4 +13,3 @@ interface Program {
     isBasic: boolean;
 }
 
-export default Program
