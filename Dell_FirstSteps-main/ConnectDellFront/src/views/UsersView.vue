@@ -7,17 +7,17 @@ import router from '@/router';
 import Popup from "@/components/Popup.vue";
 import Select from "@/components/Select.vue";
 
-const users = ref<User[]>();
-const pagedUsers = ref<User[]>();
+const users = ref<User[]>([]);
+const pagedUsers = ref<User[]>([]);
 const currentPage = ref<number>(1);
 
 const pageSize = 15;
-const maxPages = ref<number>();
+const maxPages = ref<number>(0);
 
 onMounted(async () => {
   redirectIfNotAdmin();
   await findAllUsers();
-  maxPages.value = Math.ceil(users.value?.length / pageSize);
+  maxPages.value = Math.ceil(users.value.length / pageSize);
   loadPagedUsers();
 })
 
@@ -84,11 +84,11 @@ const findAllUsers = async () => {
 }
 
 const itsMe = (id: number) => {
-  return id == +localStorage.getItem('userId');
+  return id == +localStorage.getItem('userId')!;
 }
 
 const redirectIfNotAdmin = () => {
-  if (localStorage.getItem('userRole') != 0) {
+  if (+localStorage.getItem('userRole')! != 0) {
     router.push('/');
   }
 }
@@ -134,14 +134,14 @@ const roles = [
           <td class="dds__td">
             <select v-if="!itsMe(user.id)" id="select-control-505500786" v-model="user.role" @change="updateUser(user)"
                     class="dds__select__field">
-              <option :selected="role == user.role" v-for="role in roles" :key="role" :value="roles.indexOf(role)">
+              <option v-for="role in roles" :key="role" :value="roles.indexOf(role)">
                 {{ role }}
               </option>
             </select>
             <div v-else>{{ roles[user.role] }}</div>
           </td>
           <td class="dds__td" id="delete-td">
-            <button v-if="!itsMe(user.id)" class="red dds__button dds__button--destructive" :id="user.id" type="button"
+            <button v-if="!itsMe(user.id)" class="red dds__button dds__button--destructive" type="button"
                     @click="selectUser(user)">
               <i class="dds__icon dds__icon--user-remove" aria-hidden="true"></i>
             </button>

@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import axios from "axios";
-import type Program from "@/interfaces/Program";
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import CardEdition from "@/components/CardEdition.vue";
 import User from "@/interfaces/User";
+import ProgramInfo from "@/interfaces/ProgramInfo";
 
 const route = useRoute();
-const program = ref<Program>({
+const program = ref<ProgramInfo>({
     name: '',
     description: '',
-    owners: [],
-    isBasic: true,
-  startDate: new Date()
+    startDate: '',
+    editions: [],
+    owners: []
 });
 const ownerList = ref<string>('');
 const id = +route.params.id
@@ -32,8 +32,8 @@ const getSimpleProgram = async (programId: number) => {
         })
 }
 
-function formatDate(dates: Date) {
-    const date = new Date(dates.toString());
+function formatDate(dates: string) {
+    const date = new Date(dates);
     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 }
 
@@ -52,7 +52,7 @@ const ownersFormatter = (owners: User[]) => {
 
     text += owners[0].name;
     for (let i = 1; i < owners.length - 1; i++) {
-        text +=  ', ' + owners[i].name
+        text += ', ' + owners[i].name
     }
 
     text += (' and ' + lastUserName)
@@ -72,7 +72,7 @@ const defineOwnerList = () => {
         </h2>
 
         <p class="date">
-            {{ formatDate(program.startDate!) }}
+            {{ formatDate(program.startDate) }}
         </p>
 
         <p class="description">
@@ -103,11 +103,11 @@ body {
 }
 
 .container {
-  padding-top: 3%;
-  padding-left: 15%;
-  display: flex;
-  flex-direction: column;
-  max-width: 1630px;
+    padding-top: 3%;
+    padding-left: 15%;
+    display: flex;
+    flex-direction: column;
+    max-width: 1630px;
 }
 
 .title {
@@ -138,10 +138,10 @@ body {
 
 
 .row {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-  margin-top: 2rem;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
 }
 
 .initialCard {

@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import axios from "axios";
-import type Program from "@/interfaces/Program";
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import CardPlus from "@/components/CardPlus.vue";
 import CardEdition from "@/components/CardEdition.vue";
 import User from "@/interfaces/User";
+import ProgramInfo from "@/interfaces/ProgramInfo";
 
 const route = useRoute();
-const program = ref<Program>({
+const program = ref<ProgramInfo>({
   name: '',
   description: '',
-  owners: [],
-  isBasic: true,
-  startDate: new Date()
+  startDate: '',
+  editions: [],
+  owners: []
 });
 const ownerList = ref<string>('');
 const id = +route.params.id
@@ -34,8 +34,8 @@ const getProgram = async (programId: number, userId: number) => {
     })
 }
 
-function formatDate(dates: Date) {
-  const date = new Date(dates.toString());
+function formatDate(dates: string) {
+  const date = new Date(dates);
   return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 }
 
@@ -47,18 +47,18 @@ function getLastElement(array: any[]) {
 }
 
 const ownersFormatter = (owners: User[]) => {
-    if (owners.length === 1) return `${owners[0].name}`
+  if (owners.length === 1) return `${owners[0].name}`
 
-    let lastUserName = getLastElement(owners).name;
-    let text = '';
+  let lastUserName = getLastElement(owners).name;
+  let text = '';
 
-    text += owners[0].name;
-    for (let i = 1; i < owners.length - 1; i++) {
-        text +=  ', ' + owners[i].name
-    }
+  text += owners[0].name;
+  for (let i = 1; i < owners.length - 1; i++) {
+    text += ', ' + owners[i].name
+  }
 
-    text += (' and ' + lastUserName)
-    return text;
+  text += (' and ' + lastUserName)
+  return text;
 }
 const defineOwnerList = () => {
   ownerList.value = ownersFormatter(program.value.owners)
@@ -84,7 +84,7 @@ function isAdmin() {
     </h2>
 
     <p class="date">
-      {{ formatDate(program.startDate!) }}
+      {{ formatDate(program.startDate) }}
     </p>
 
     <p class="description">
