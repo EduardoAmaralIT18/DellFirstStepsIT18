@@ -14,4 +14,8 @@ import GoBackButton from "@/components/GoBackButton.vue";
 .button {
     margin-left: 10%;
 }
+
+.body {
+    margin-top: 5%;
+}
 </style>

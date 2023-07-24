@@ -15,8 +15,8 @@ import axios from "axios";
         <h2 class="title">{{ formName }}</h2>
         <TextInput boxName="Program Name" @typedText="handleInput"></TextInput>
         <div class="date-container">
-            <DatePicker boxName="Start Date" v-bind:required="true" v-bind:dateNow="true" @selectedDate="handleStartDate"></DatePicker>
-            <DatePicker boxName="End Date" v-bind:minRequired="true" @selectedDate="handleEndDate"></DatePicker>
+            <DatePicker class="date_picker" boxName="Start Date" v-bind:required="true" v-bind:dateNow="true" @selectedDate="handleStartDate"></DatePicker>
+            <DatePicker class="date_picker" boxName="End Date" v-bind:minRequired="true" @selectedDate="handleEndDate"></DatePicker>
         </div>
         <Dropdown dropdownName="Owners" :data="ownerList" @selectedId="handleDropdown"/>
         <TextArea boxName="Description" v-bind:minLength=10 v-bind:maxLength=50 v-bind:required="true" @descriptionText="handleDescription"></TextArea>
@@ -33,9 +33,11 @@ export default {
                 startDate: new Date().toISOString().slice(0, 10),
                 endDate: undefined,
                 description: "",
-                owners: []
+                owners: [],
+                isBasic: false,
             } as Program,
-            ownerList: new Array
+            ownerList: new Array,
+            nameList: new Array
         };
     },
     props: {
@@ -91,17 +93,47 @@ export default {
                 console.log(error);
             });
         },
+        async getProgramsName() {
+            await axios
+                .get("https://localhost:5001/program/getProgramsName")
+                .then((response) => {
+                this.nameList = response.data;
+            })
+                .catch((error) => {
+                console.log(error);
+            });
+        },
         activateButton(): boolean {
             if (typeof(this.programInfo.endDate) == undefined)
                 return false;
 
-            if (this.programInfo.endDate! <= this.programInfo.startDate)
+            if (this.programInfo.endDate! <= this.programInfo.startDate || this.checkName() || this.checkOwners() || this.checkDescription())
                 return true;
+            return false;
+        },
+        checkName(): boolean {
+            if(this.programInfo.name.length < 5 || this.programInfo.name.length > 50)
+                return true
+            for(let item of this.nameList) {
+                if(item.name === this.programInfo.name)
+                    return true
+            }
+            return false;
+        },
+        checkOwners(): boolean {
+            if(this.programInfo.owners?.length === 0)
+                return true
+            return false;
+        },
+        checkDescription(): boolean {
+            if(this.programInfo.description.length < 10 || this.programInfo.description.length > 1500)
+                return true
             return false;
         }
     },
     mounted() {
         this.getOwners();
+        this.getProgramsName();
     },
 };
 </script>
@@ -123,6 +155,10 @@ export default {
     font-size: 200%;
     font-weight: 500;
     text-align: center;
+}
+
+.date_picker {
+    width: 45%;
 }
 
 .dds__button {
