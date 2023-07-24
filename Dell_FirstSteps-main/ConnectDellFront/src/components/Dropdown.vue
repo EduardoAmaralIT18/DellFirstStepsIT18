@@ -49,10 +49,10 @@ function sendSelectedToParent() {
     for (let item of selected) {
         selectedId.push(+item)
     }
-    emits('ownerId', selectedId);
+    emits('selectedId', selectedId);
 }
 
 const emits = defineEmits({
-    ownerId: Array
+    selectedId: Array
 })
 </script>

@@ -18,7 +18,7 @@ import axios from "axios";
             <DatePicker boxName="Start Date" v-bind:required="true" v-bind:dateNow="true" @selectedDate="handleStartDate"></DatePicker>
             <DatePicker boxName="End Date" v-bind:minRequired="true" @selectedDate="handleEndDate"></DatePicker>
         </div>
-        <Dropdown dropdownName="Owners" :data="ownerList" @ownerId="handleDropdown"/>
+        <Dropdown dropdownName="Owners" :data="ownerList" @selectedId="handleDropdown"/>
         <TextArea boxName="Description" v-bind:minLength=10 v-bind:maxLength=50 v-bind:required="true" @descriptionText="handleDescription"></TextArea>
         <PrimaryButton buttonName="Submit" @clicked="handleClick" :isDisabled="activateButton()"></PrimaryButton>
     </div>
