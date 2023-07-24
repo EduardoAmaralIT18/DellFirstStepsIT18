@@ -7,11 +7,12 @@ import CardEdition from "@/components/CardEdition.vue";
 import User from "@/interfaces/User";
 
 const route = useRoute();
-const program = ref<Program>({
+const program : ref<Program> = ref<Program>({
     name: '',
     description: '',
     owners: [],
-    isBasic: true
+    isBasic: true,
+  startDate: new Date()
 });
 const ownerList = ref<string>('');
 const id = +route.params.id

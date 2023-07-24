@@ -5,8 +5,8 @@ import type User from "@/interfaces/User";
 export default interface Program {
     id?: number,
     name: string,
-    startDate: string | Date,
-    endDate?:  string | Date,
+    startDate?:Date,
+    endDate?: Date,
     description: string,
     owners?: User[],
     editions?: Edition[],

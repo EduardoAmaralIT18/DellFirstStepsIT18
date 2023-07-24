@@ -12,7 +12,8 @@ const program = ref<Program>({
   name: '',
   description: '',
   owners: [],
-  isBasic: false
+  isBasic: true,
+  startDate: new Date()
 });
 const ownerList = ref<string>('');
 const id = +route.params.id
