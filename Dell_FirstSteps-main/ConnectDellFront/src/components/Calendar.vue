@@ -32,28 +32,35 @@ type TypeEvent = {
   phaseType : Number,
   startDate : Date,
   endDate : Date,
-  where : String,
-  peopleInvolved : Array<String>
+  where : String
 }
 
+let eventToPass = ref({id : 0,
+  name : "null",
+  eventType : 0,
+  phaseType : 0,
+  startDate : new Date(),
+  endDate : new Date(),
+  where : "null"});
 
 let aux = ref(false);
-const handleEventClick = () => {
+const handleEventClick = (args: any) => {
+  argsToTypeEvent(args);
+  console.log(args.event._def.title)
   aux.value = !aux.value;
 }
 
-function argToTypeEvent(event: any) {
-  console.log(event.end)
-  let newEvent = {
-    id : event.id,
-    name : event.title,
-    eventType : event.extendedProps.eventType,
-    phaseType : event.extendedProps.phaseType,
-    endDate : event.end,
-    startDate : event.start,
-    where : event.extendedProps.where,
+function argsToTypeEvent(e: any) {
+  console.log(e);
+  eventToPass.value = {
+    id : e.event._def.publicId,
+    name : e.event._def.title,
+    eventType : e.event._def.extendedProps.eventType,
+    phaseType : e.event._def.extendedProps.phaseType,
+    endDate : e.event._instance.range.end,
+    startDate : e.event._instance.range.start,
+    where : e.event._def.extendedProps.where,
   }
-  return newEvent;
 }
 
 function loadEvent() {
@@ -67,7 +74,7 @@ function loadEvent() {
       extendedProps: {
                 where : event.where, 
                 eventType: event.eventType,
-                phaseType: event.phaseType
+                phaseType: event.phaseType,
               }, 
       allDay: true,
       display: "multi-day",
@@ -81,17 +88,24 @@ function loadEvent() {
 }
 
 
-
 const calendarOptions = {
   plugins: [
     dayGridPlugin,
     timeGridPlugin,
-    interactionPlugin // needed for dateClick
+    interactionPlugin 
   ],
-  headerToolbar: {  // botoes
+  customButtons: {
+    buttonAddEvent: {
+      text: 'Add Event',
+      click: function() {
+        //TODO chamar componente criar evento
+      }
+    }
+  },
+  headerToolbar: {  
     left: 'prev,next today',
     center: 'title',
-    right: 'dayGridMonth,timeGridWeek,timeGridDay'  // parte dos imports
+    right: 'dayGridMonth,timeGridWeek,timeGridDay buttonAddEvent'  
   },
   initialView: 'dayGridMonth',
   validRange: {
@@ -107,16 +121,16 @@ loadEvent()
 </script>
 
 <template>
-  <div class='demo-app'>
-    <div class='demo-app-main'>
+  <div class='component'>
+    <div class='component-main'>
       <FullCalendar
-        class='demo-app-calendar'
+        class='calendar'
         :options='calendarOptions'
       >
         <template v-slot:eventContent='arg'>
           <b>{{ arg.event.id }}</b>
           <i>{{ arg.event.title }}</i>
-          <Modal :event="argToTypeEvent(arg.event)" v-if="aux"></Modal>
+          <Modal :event="eventToPass" v-if="aux"></Modal>
         </template>
       </FullCalendar>
     </div>
@@ -148,7 +162,7 @@ b { /* used for event dates/times */
   margin-right: 3px;
 }
 
-.demo-app {
+.component {
   display: flex;
   min-height: 100%;
   font-family: Roboto;
@@ -156,7 +170,7 @@ b { /* used for event dates/times */
   font-weight: 400;
 }
 
-.demo-app-main {
+.component-main {
   flex-grow: 1;
   padding: 3em;
 }

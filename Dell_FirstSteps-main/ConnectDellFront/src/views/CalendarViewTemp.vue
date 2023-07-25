@@ -24,7 +24,15 @@ const mockData: TypeEvent[] = [{
     endDate : new Date("2023-7-26"),
     where : 'here',
     peopleInvolved : ['me', 'he']
-}]
+}, 
+    {id : 2,
+    name : 'Joana',
+    eventType : 1,
+    phaseType : 1,
+    startDate : new Date(),
+    endDate : new Date("2023-7-27"),
+    where : 'here',
+    peopleInvolved : ['me', 'he']}]
 </script>
 
 <style scoped>
