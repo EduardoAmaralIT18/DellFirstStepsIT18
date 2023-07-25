@@ -30,8 +30,8 @@ type TypeEvent = {
   name : String,
   eventType : Number,
   phaseType : Number,
-  startDate : String,
-  endDate : String,
+  startDate : Date,
+  endDate : Date,
   where : String,
   peopleInvolved : Array<String>
 }
@@ -43,14 +43,15 @@ const handleEventClick = () => {
 }
 
 function argToTypeEvent(event: any) {
+  console.log(event.end)
   let newEvent = {
     id : event.id,
     name : event.title,
-    eventType : event.eventType,
-    phaseType : event.phaseType,
-    startDate : event.start,
+    eventType : event.extendedProps.eventType,
+    phaseType : event.extendedProps.phaseType,
     endDate : event.end,
-    where : event.where,
+    startDate : event.start,
+    where : event.extendedProps.where,
   }
   return newEvent;
 }
@@ -72,8 +73,10 @@ function loadEvent() {
       display: "multi-day",
       color: "#97DCF4",
       textColor: "#0E0E0E"
+      
     }
     ]
+    console.log(calendarOptions.events[0].end)
   })
 }
 
