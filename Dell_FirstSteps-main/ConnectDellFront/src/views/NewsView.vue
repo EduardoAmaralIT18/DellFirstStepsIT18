@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import axios from "axios";
 import News from "@/interfaces/News";
-import { onMounted, ref } from "vue";
+import {onMounted, ref} from "vue";
 
 onMounted(async () => {
   await getNews();
@@ -11,13 +11,13 @@ const news = ref<News[]>([]);
 
 const getNews = async () => {
   await axios
-    .get(`https://localhost:5001/News/getNews`)
-    .then((response) => {
-      news.value = response.data;
-    })
-    .catch((e) => {
-      console.error(e);
-    });
+      .get(`https://localhost:5001/News/getNews`)
+      .then((response) => {
+        news.value = response.data;
+      })
+      .catch((e) => {
+        console.error(e);
+      });
 };
 
 function isAdmin() {
@@ -33,19 +33,20 @@ function isAuthor(authorId: number) {
   <div class="container">
     <div class="title">
       <h2>News</h2>
-      <button
-        class="manageProgram button dds__button dds__button&#45;&#45;primary"
-        type="button"
-        v-if="isAdmin()"
-      >
-        <i class="dds__icon dds__icon--plus-add" aria-hidden="true"></i>
-        Add News
-      </button>
+      <RouterLink to="addNews">
+        <button
+            class="manageProgram button dds__button dds__button&#45;&#45;primary"
+            type="button"
+            v-if="isAdmin()"
+        >
+          <i class="dds__icon dds__icon--plus-add" aria-hidden="true"></i>
+          Add News
+        </button>
+      </RouterLink>
     </div>
     <div v-for="item in news" class="dds__card" id="card-news">
       <div v-if="item.image != null" class="dds__card__media">
-        <img :src="item.image" />
-        {{ console.log(item.image) }}
+        <img alt="news image" :src="item.image"/>
       </div>
       <div class="body-card">
         <h3>{{ item.title }}</h3>
@@ -54,12 +55,12 @@ function isAuthor(authorId: number) {
       </div>
       <div class="footer-card">
         <span>{{ item.date }}</span>
-        <RouterLink :to="`editnew/${item.id}`" v-if="isAuthor(item.authorId)">
+        <RouterLink :to="`editNews/${item.id}`" v-if="isAuthor(item.authorId)">
           <button
-            class="manageProgram button dds__button dds__button&#45;&#45;primary"
-            type="button"
+              class="manageProgram button dds__button dds__button&#45;&#45;primary"
+              type="button"
           >
-            <img src="../assets/pencil.png" alt="pencil icon" width="19" />
+            <img src="../assets/pencil.png" alt="pencil icon" width="19"/>
             Manage News
           </button>
         </RouterLink>
@@ -109,12 +110,14 @@ h2 {
     font-style: italic;
     margin-bottom: 20px;
   }
+
+  h3 {
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 10px
+  }
 }
 
-h3 {
-  font-weight: bold;
-  font-size: 20px;
-}
 
 .footer-card {
   display: flex;

@@ -114,7 +114,7 @@ function isAdmin() {
     <div class="row">
       <div class="initialCard col-3 dds__mr-4 dds__mb-3">
         <div v-if="isAdmin()">
-          <CardPlus :url="`${id}/createedition`" />
+          <CardPlus :url="`${id}/createEdition`" />
         </div>
 
         <div

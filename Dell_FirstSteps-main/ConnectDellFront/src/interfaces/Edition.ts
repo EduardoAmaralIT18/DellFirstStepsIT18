@@ -1,4 +1,4 @@
-import User from "./User";
+import type User from "./User";
 export default interface Edition {
   id: number;
   name: string;
