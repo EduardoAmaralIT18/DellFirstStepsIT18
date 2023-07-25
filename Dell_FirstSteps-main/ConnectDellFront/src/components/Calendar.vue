@@ -35,30 +35,22 @@ type TypeEvent = {
   where : String
 }
 
-let eventToPass = ref({id : 0,
-  name : "null",
-  eventType : 0,
-  phaseType : 0,
-  startDate : new Date(),
-  endDate : new Date(),
-  where : "null"});
+let eventToPass = ref();
 
 let aux = ref(false);
 const handleEventClick = (args: any) => {
   argsToTypeEvent(args);
-  console.log(args.event._def.title)
   aux.value = !aux.value;
 }
 
 function argsToTypeEvent(e: any) {
-  console.log(e);
   eventToPass.value = {
     id : e.event._def.publicId,
     name : e.event._def.title,
     eventType : e.event._def.extendedProps.eventType,
     phaseType : e.event._def.extendedProps.phaseType,
-    endDate : e.event._instance.range.end,
-    startDate : e.event._instance.range.start,
+    endDate : e.event._def.extendedProps.end,
+    startDate : e.event._def.extendedProps.start,
     where : e.event._def.extendedProps.where,
   }
 }
@@ -75,6 +67,8 @@ function loadEvent() {
                 where : event.where, 
                 eventType: event.eventType,
                 phaseType: event.phaseType,
+                start: event.startDate, 
+                end: event.endDate,
               }, 
       allDay: true,
       display: "multi-day",
@@ -94,6 +88,11 @@ const calendarOptions = {
     timeGridPlugin,
     interactionPlugin 
   ],
+  eventTimeFormat: {
+    hour: 'numeric',
+    minute: '2-digit',
+    meridiem: 'short'
+  },
   customButtons: {
     buttonAddEvent: {
       text: 'Add Event',
@@ -128,7 +127,7 @@ loadEvent()
         :options='calendarOptions'
       >
         <template v-slot:eventContent='arg'>
-          <b>{{ arg.event.id }}</b>
+          <b>{{ arg.event.id}}</b>
           <i>{{ arg.event.title }}</i>
           <Modal :event="eventToPass" v-if="aux"></Modal>
         </template>
