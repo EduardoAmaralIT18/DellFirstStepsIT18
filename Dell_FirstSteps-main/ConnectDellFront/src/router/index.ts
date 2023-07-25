@@ -8,12 +8,13 @@ import MyProgramView from '../views/MyProgramView.vue';
 import CreateProgramView from '../views/CreateProgramView.vue';
 import CreateEditionView from '../views/CreateEditionView.vue';
 import UsersView from "@/views/UsersView.vue";
+import NotFound from "@/components/NotFound.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/login',
+      path: '/',
       name: 'Login',
       component: LoginView,
     },
@@ -62,6 +63,10 @@ const router = createRouter({
     //   name: 'Edit news',
     //   component: ,
     // }
+    {
+      path: '/:pathMatch(.*)*',
+      component: NotFound
+    }
   ]
 })
 
