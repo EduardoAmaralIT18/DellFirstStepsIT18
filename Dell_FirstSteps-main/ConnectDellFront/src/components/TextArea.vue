@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const props = defineProps({
     boxName: String,
@@ -26,9 +26,10 @@ const props = defineProps({
     helperText: String,
     errorText: String,
     required: Boolean,
+    data: String
 });
 
-const info = ref();
+let info = ref();
 
 const emits = defineEmits({
     descriptionText: String
@@ -37,4 +38,13 @@ const emits = defineEmits({
 function sendTextToParent(){
     emits('descriptionText', info);
 }
+
+function handleChange(){
+    info.value = props.data;
+}
+
+onMounted(() => {
+    handleChange();
+});
+
 </script>

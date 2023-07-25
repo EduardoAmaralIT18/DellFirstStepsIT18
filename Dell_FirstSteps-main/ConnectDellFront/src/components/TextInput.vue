@@ -25,13 +25,20 @@ export default {
         };
     },
     props: {
-        boxName: String
+        boxName: String,
+        data: String
     },
     methods: {
         sendTextToParent(text: string) {
             this.info = text;
             this.$emit("typedText", text);
+        },
+        handleChange() {
+            this.info = this.data!; 
         }
+    },
+    mounted() {
+        this.handleChange();
     }
 };
 </script>
