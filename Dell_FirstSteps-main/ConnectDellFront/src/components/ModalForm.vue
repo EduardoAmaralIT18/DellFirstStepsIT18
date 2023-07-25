@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, PropType, ref } from "vue";
+import { onMounted, PropType, ref, watchEffect } from "vue";
 import TextInput from "./TextInput.vue";
 import PrimaryButton from "./PrimaryButton.vue";
 import Select from "./Select.vue";
@@ -11,9 +11,11 @@ import SecondaryButton from "./SecondaryButton.vue";
 
 declare var DDS: any;
 
-defineProps({
+const props=defineProps({
   modalTitle: String,
   editionUsers: Array as PropType<User[]>,
+  editionStartDate: Date,
+  editionEndDate: Date
 });
 
 const modal = ref();
@@ -23,21 +25,42 @@ onMounted(() => {
   modal.value = DDS.Modal(element.value);
 });
 
-const inserts = {
+const emits = defineEmits({
+
+sendBodyToParent: Object
+})
+
+function sendBodyToParent(){
+emits("sendBodyToParent",inserts.value);
+}
+
+const inserts = ref({
   eventTitle: "",
   eventType: "",
   startDate: new Date().toISOString().slice(0, 10),
   endDate: new Date().toISOString().slice(0, 10),
-  peopleInvolved: Array as PropType<User[]>,
+  peopleInvolved:[],
   location: "",
-};
+});
+const activateButton = ref(true);
+const handleEventTitle = (text: string) => (inserts.value.eventTitle = text);
+const handleEventType = (text: string) => (inserts.value.eventType = text);
+const handleStartDate = (date: string) => (inserts.value.startDate = date);
+const handleEndDate = (date: string) => (inserts.value.endDate = date);
+const handleDropdown = (users: []) => (inserts.value.peopleInvolved = users);
+const handleLocation = (text: string) => (inserts.value.location = text);
 
-const handleEventTitle = (text: string) => (inserts.eventTitle = text);
-const handleEventType = (text: string) => (inserts.eventType = text);
-const handleStartDate = (date: string) => (inserts.startDate = date);
-const handleEndDate = (date: string) => (inserts.endDate = date);
-const handleDropdown = (users: []) => (inserts.peopleInvolved = users);
-const handleLocation = (text: string) => (inserts.location = text);
+watchEffect(() => {
+  if(inserts.value.eventTitle && inserts.value.eventType){
+    activateButton.value=false;
+    console.log("false")
+  }
+  else{
+    activateButton.value=true;
+    console.log("true")
+  }
+})
+
 </script>
 
 <template>
@@ -97,8 +120,8 @@ const handleLocation = (text: string) => (inserts.location = text);
       </div>
 
       <div class="dds__modal__footer">
-        <SecondaryButton buttonName="Cancel" />
-        <PrimaryButton buttonName="Save" :disabled="true" />
+        <SecondaryButton @click="modal.close()" buttonName="Cancel" />
+        <PrimaryButton @click="sendBodyToParent(), modal.close()" buttonName="Save" :disabled="activateButton ? true : false " />
       </div>
     </div>
   </div>

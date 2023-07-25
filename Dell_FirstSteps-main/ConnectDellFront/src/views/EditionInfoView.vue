@@ -1,5 +1,5 @@
 <template>
-<ModalForm modalTitle="Add Event" :editionUsers="data.members"></ModalForm>
+<ModalForm @sendBodyToParent="handlePostBody" modalTitle="Add Event" :editionUsers="data.members" :editionStartDate="data.startDate" :editionEndDate="data.endDate"></ModalForm>
 </template>
 
 <script setup lang="ts">
@@ -8,7 +8,8 @@ import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 const data= ref([]);
-
+let eventBody:object;
+const handlePostBody = (body: Object) =>{eventBody=body; handleSubmitForm()}
 async function handleClick() {
             await axios
                 .get('https://localhost:5001/edition/getUsersNotAdmin')
@@ -19,7 +20,7 @@ async function handleClick() {
                 alert("Não foi possível atender a solicitação.");
             });
         }
-        async function getMembers(){
+async function getMembers(){
             await axios .get(`https://localhost:5001/edition/showInfoEdition?idProgram=0&idEdition=${id}`)
             .then((response) => {console.log(response.data)
                 data.value=response.data
@@ -27,14 +28,23 @@ async function handleClick() {
             .catch((error) => {
                 alert("Não foi possível atender a solicitação.");
             });
-            
-
         }
+async function handleSubmitForm(){
+    await axios .post("https://localhost:5001/event/addEvent", {
+          name: eventBody.eventTitle,
+          peopleInvolved: eventBody.peopleInvolved,
+          startDate: eventBody.startDate,
+          endDate: eventBody.endDate,
+          where: eventBody.location,
+          eventType: 1 ,
+          editionId: data.editionId,
+        })
+}
 onMounted(async() => {
     await getMembers();
-    console.log(data.memberships);
-
 })
+
+
 
 const route = useRoute();
 const id = +route.params.id;
