@@ -4,7 +4,7 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import { onMounted, PropType, ref } from 'vue'
+import { computed, onMounted, PropType, ref } from 'vue'
 import Modal from './ModalEventInfo.vue'
 
 const Props = defineProps({
@@ -58,29 +58,60 @@ function argsToTypeEvent(e: any) {
 function loadEvent() {
   calendarOptions.events = [];
   Props.events?.forEach(
-    (event) => {calendarOptions.events = [...calendarOptions.events, {
-      id : event.id, 
-      title : event.name, 
-      start: event.startDate, 
-      end: event.endDate, 
-      extendedProps: {
-                where : event.where, 
-                eventType: event.eventType,
-                phaseType: event.phaseType,
-                start: event.startDate, 
-                end: event.endDate,
-              }, 
-      allDay: true,
-      display: "multi-day",
-      color: "#97DCF4",
-      textColor: "#0E0E0E"
-      
+    (event) => {
+      if(event.eventType === 0) {
+        calendarOptions.events = [...calendarOptions.events, {
+        id : event.id, 
+        title : event.name, 
+        start: event.startDate, 
+        end: event.endDate, 
+        extendedProps: {
+          where : event.where, 
+          eventType: event.eventType,
+          phaseType: event.phaseType,
+          start: event.startDate, 
+          end: event.endDate,
+        },
+        allDay: true,
+        display: 'none',
+        borderColor: "#7E7E7E",
+        color: "#97DCF4",
+        textColor: "#0E0E0E"
+      }
+    ]}
+    else if(event.eventType === 1) {
+      calendarOptions.events = [...calendarOptions.events, {
+        id : event.id, 
+        title : event.name, 
+        start: event.startDate, 
+        end: event.endDate, 
+        extendedProps: {
+          where : event.where, 
+          eventType: event.eventType,
+          phaseType: event.phaseType,
+          start: event.startDate, 
+          end: event.endDate,
+        },
+        display: 'none',
+        backgroundColor: "#0672CB",
+        borderColor: "#7E7E7E",
+        textColor: "#0E0E0E"
+      }]
     }
-    ]
-    console.log(calendarOptions.events[0].end)
   })
 }
 
+
+let phaseCheckBox = ref(false);
+let activityCheckBox = ref(false);
+const checkEvent = computed(() => {
+  (calendarOptions.events as Array<any>).forEach((event) => {
+    if(phaseCheckBox.value && event.extendedProps.eventType === 0)
+      event.display = "multi-day"
+    else if(activityCheckBox.value && event.extendedProps.eventType === 1) 
+      event.display = "multi-day"
+  })
+})
 
 const calendarOptions = {
   plugins: [
@@ -111,17 +142,23 @@ const calendarOptions = {
     start: Props.startDate,
     end: Props.endDate,
   },
-  eventClick: handleEventClick
+  eventClick: handleEventClick,
 } as CalendarOptions;
 
-
 loadEvent()
+checkEvent.value
 
 </script>
 
 <template>
   <div class='component'>
     <div class='component-main'>
+      <div>
+        <input type="checkbox" id="phase" v-model="phaseCheckBox"/>
+        <label for="phase">Phase</label>
+        <input type="checkbox" id="activity" v-model="activityCheckBox"/>
+        <label for="phase" id="activity">Activity</label>
+      </div>
       <FullCalendar
         class='calendar'
         :options='calendarOptions'

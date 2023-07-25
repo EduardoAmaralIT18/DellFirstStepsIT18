@@ -27,7 +27,7 @@ const mockData: TypeEvent[] = [{
 }, 
     {id : 2,
     name : 'Joana',
-    eventType : 1,
+    eventType : 0,
     phaseType : 1,
     startDate : new Date(),
     endDate : new Date("2023-7-27"),
