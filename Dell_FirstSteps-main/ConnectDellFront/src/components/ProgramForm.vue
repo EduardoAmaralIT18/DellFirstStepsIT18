@@ -20,7 +20,7 @@ import axios from "axios";
         </div>
         <Dropdown dropdownName="Owners" :data="ownerList" @selectedId="handleDropdown"/>
         <TextArea boxName="Description" v-bind:minLength=10 v-bind:maxLength=50 v-bind:required="true" @descriptionText="handleDescription"></TextArea>
-        <PrimaryButton buttonName="Submit" @clicked="handleClick" :isDisabled="activateButton()"></PrimaryButton>
+        <PrimaryButton class="dds__button" buttonName="Submit" @clicked="handleClick" :isDisabled="activateButton()"></PrimaryButton>
     </div>
 </template>
 
@@ -138,8 +138,11 @@ export default {
 
 <style scoped>
 .form {
-    margin-left: 10%;
-    margin-right: 10%;
+    margin-left: 20%;
+    margin-right: 20%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
 .date-container {
@@ -160,6 +163,7 @@ export default {
 }
 
 .dds__button {
-    margin-top: 30px;
+    padding-top: -4px;
+    width: 10%;
 }
 </style>
