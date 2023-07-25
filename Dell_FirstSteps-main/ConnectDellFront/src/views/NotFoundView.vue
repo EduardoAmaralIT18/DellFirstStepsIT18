@@ -18,7 +18,7 @@
         </RouterLink>
       </div>
     </div>
-    <img src="../assets/404Image.webp" alt="">
+    <img src="../assets/notFound.png" alt="">
   </div>
 </template>
 

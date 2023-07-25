@@ -4,11 +4,10 @@ import HomeView from '../views/HomeView.vue';
 import NewsView from '../views/NewsView.vue';
 import ProgramView from "../views/ProgramView.vue";
 import MyProgramView from '../views/MyProgramView.vue';
-// import UsersView from '../views/UsersView.vue';
 import CreateProgramView from '../views/CreateProgramView.vue';
 import CreateEditionView from '../views/CreateEditionView.vue';
 import UsersView from "@/views/UsersView.vue";
-import NotFound from "@/components/NotFound.vue";
+import NotFoundView from "@/views/NotFoundView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -65,7 +64,7 @@ const router = createRouter({
     // }
     {
       path: '/:pathMatch(.*)*',
-      component: NotFound
+      component: NotFoundView
     }
   ]
 })
