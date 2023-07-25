@@ -11,7 +11,7 @@ public interface IUserService
 
     public Task<IEnumerable<UserModel>> ListUsers();
 
-    public Task<int> ChangeRole(int userid, int role);
-    public Task<int> RemoveUser(int userid);
+    public Task<UserModel> ChangeRole(int userId, int role);
+    public Task RemoveUser(int userId);
 }
 

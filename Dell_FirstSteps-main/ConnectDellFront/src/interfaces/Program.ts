@@ -1,15 +1,14 @@
 import type Edition from "@/interfaces/Edition";
-import User from "./User"
+import type User from "@/interfaces/User";
 
-interface Program {
+
+export default interface Program {
     id?: number,
     name: string,
-    startDate: string | Date,
-    endDate?:  string | Date,
+    startDate:string,
+    endDate?: string,
     description: string,
-    owners?: User[],
     editions?: Edition[],
     isBasic: boolean;
 }
 
-export default Program

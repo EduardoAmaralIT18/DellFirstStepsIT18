@@ -5,7 +5,6 @@ defineProps({
 });
 
 function getRoleString(role: number) {
-  console.log(role);
   switch (role) {
     case 0:
       return 'Admin';
