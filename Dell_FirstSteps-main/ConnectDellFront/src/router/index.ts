@@ -43,15 +43,25 @@ const router = createRouter({
       component: UsersView
     },
     {
-      path: '/createprogram',
+      path: '/createProgram',
       name: 'CreateProgram',
       component: CreateProgramView,
     },
     {
-      path: '/myProgram/:id/createedition',
+      path: '/myProgram/:id/createEdition',
       name: 'CreateEdition',
       component: CreateEditionView,
-    }
+    },
+    // {
+    //   path: '/addNews',
+    //   name: 'Add News',
+    //   component: ,
+    // },
+    // {
+    //   path: '/editNews/:id',
+    //   name: 'Edit news',
+    //   component: ,
+    // }
   ]
 })
 
