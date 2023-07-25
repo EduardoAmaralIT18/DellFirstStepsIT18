@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { CalendarOptions, EventApi, DateSelectArg, EventClickArg } from '@fullcalendar/core'
+import { CalendarOptions, EventApi, DateSelectArg, EventClickArg, type EventSourceInput } from '@fullcalendar/core'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -20,6 +20,11 @@ enum PhaseType {
   "HandsOn"
 }
 
+enum EventType {
+  "Phase",
+  "Activity"
+}
+     
 type TypeEvent = {
   id : Number,
   name : String,
@@ -31,12 +36,23 @@ type TypeEvent = {
   peopleInvolved : Array<String>
 }
 
-const handleEventClick = (info : EventClickArg) => {
-  console.log(info);
+
+let aux = ref(false);
+const handleEventClick = () => {
+  aux.value = !aux.value;
 }
 
-const handleDateClick = (info : DateClickArg) => {
-  console.log(info);
+function argToTypeEvent(event: any) {
+  let newEvent = {
+    id : event.id,
+    name : event.title,
+    eventType : event.eventType,
+    phaseType : event.phaseType,
+    startDate : event.start,
+    endDate : event.end,
+    where : event.where,
+  }
+  return newEvent;
 }
 
 function loadEvent() {
@@ -49,12 +65,14 @@ function loadEvent() {
       end: event.endDate, 
       extendedProps: {
                 where : event.where, 
-                phaseType: PhaseType[event.phaseType as number]
+                eventType: event.eventType,
+                phaseType: event.phaseType
               }, 
       allDay: true,
       display: "multi-day",
       color: "#97DCF4",
-      textColor: "#0E0E0E",}
+      textColor: "#0E0E0E"
+    }
     ]
   })
 }
@@ -77,9 +95,7 @@ const calendarOptions = {
     start: Props.startDate,
     end: Props.endDate,
   },
-  eventClick: handleEventClick,
-  dateClick: handleDateClick,
-  editable: true,
+  eventClick: handleEventClick
 } as CalendarOptions;
 
 
@@ -97,10 +113,9 @@ loadEvent()
         <template v-slot:eventContent='arg'>
           <b>{{ arg.event.id }}</b>
           <i>{{ arg.event.title }}</i>
-          <!-- <Modal></Modal> -->
+          <Modal :event="argToTypeEvent(arg.event)" v-if="aux"></Modal>
         </template>
       </FullCalendar>
-      
     </div>
   </div>
   

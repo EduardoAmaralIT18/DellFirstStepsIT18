@@ -1,31 +1,54 @@
 <template>
-    <button @click="modal.open()" class="dds__button" id="example" type="button">Launch Modal Button</button>
+    <!-- <button @click="modal.open()" class="button" id="example" type="button">Launch Modal Button</button> -->
     <div role="dialog" ref="list" data-dds="modal" class="dds__modal" aria-labelledby="modal-headline-160350263">
       <div class="dds__modal__content">
-        <div class="dds__modal__header"><h3 class="dds__modal__title" id="modal-headline-160350263">Present new laptop</h3></div>
+        <div @OnClick="closeModal" class="dds__modal__header"><h3 class="dds__modal__title" id="modal-headline-160350263">{{ props.event?.name }}</h3></div>
         <div id="modal-body-754450445" class="dds__modal__body">
-          <p>
-            Small, light, and stylish laptops and 2-in-1s designed for ultimate productivity. A new era of collaboration and connectivity to
-            work anywhere. XPS laptops and 2-in-1s are precision crafted with premium materials, featuring stunning displays and the performance
-            you demand to express your creative self and your big ideas.
-            <a href="https://www.dell.com">dell.com</a>
-          </p>
+          <b>EventType: </b><p>{{ EventType[props.event?.eventType as number] }}</p>
+          <b>Start Date: </b><p>{{ props.event?.startDate }}</p>
+          <b>End Date: </b><p>{{ props.event?.endDate }}</p>
+          <b>Where: </b><p>{{ props.event?.where }}</p>
         </div>
         <div class="dds__modal__footer">
           <button class="dds__button dds__button--secondary dds__button--md" type="button" name="modal-primary-button">No</button>
-          <button class="dds__button dds__button--md" type="button" name="modal-secondary-button">Yes</button>
+          <button @OnClick="closeModal" class="dds__button dds__button--md" type="button" name="modal-secondary-button">Yes</button>
         </div>
       </div>
     </div>
     </template>
-     
-    <script setup lang="ts">
-    import { onMounted, ref } from 'vue';
-     
-    declare var DDS: any;
-    const modal= ref()
-    const list = ref(null)
-    onMounted(() => {
-        modal.value = DDS.Modal(list.value);
-    })
-    </script>
+<script setup lang="ts">
+  import { onMounted, ref, PropType } from 'vue';
+  import TypeEvent from "../interfaces/Event"
+
+  enum PhaseType {
+  "Setup",
+  "Training",
+  "Sprints",
+  "HandsOn"
+  }
+
+  enum EventType {
+    "Phase",
+    "Activity"
+  }
+
+  const props = defineProps({
+    event : Object as PropType<TypeEvent>,
+  });
+  declare var DDS: any;
+  const modal= ref()
+  const list = ref(null)
+    
+  function closeModal() {
+    modal.value.close()
+  }
+
+  onMounted(() => {
+      modal.value = DDS.Modal(list.value);
+      modal.value.open();
+    }
+  )
+</script>
+<style scoped>
+
+</style>    
