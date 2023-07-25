@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace ConnectDellBack.DTOs;
 
 public class ContentDTO{
-    public int id {get; set;}
+    public int? id {get; set;}
     [Required]
     public string title { get; set; } = null!;
     [Required]

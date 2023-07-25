@@ -8,6 +8,8 @@ import CreateProgramView from '../views/CreateProgramView.vue';
 import CreateEditionView from '../views/CreateEditionView.vue';
 import UsersView from "@/views/UsersView.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
+import AddNewsPage from "@/views/AddNewsView.vue";
+import AddNewsView from "@/views/AddNewsView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -52,11 +54,11 @@ const router = createRouter({
       name: 'CreateEdition',
       component: CreateEditionView,
     },
-    // {
-    //   path: '/addNews',
-    //   name: 'Add News',
-    //   component: ,
-    // },
+    {
+      path: '/addNews',
+      name: 'Add News',
+      component: AddNewsView,
+    },
     // {
     //   path: '/editNews/:id',
     //   name: 'Edit news',
@@ -65,7 +67,7 @@ const router = createRouter({
     {
       path: '/:pathMatch(.*)*',
       component: NotFoundView
-    }
+    },
   ]
 })
 

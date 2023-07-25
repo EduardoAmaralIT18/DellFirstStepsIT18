@@ -33,7 +33,7 @@ public class NewsController : ControllerBase
     }
 
     [HttpPost("addContent")]
-    public async Task<ActionResult> AddContent([FromForm] ContentDTO content)
+    public async Task<ActionResult> AddContent([FromBody] ContentDTO content)
     {
         var result = await _newsService.AddContent(content);
 

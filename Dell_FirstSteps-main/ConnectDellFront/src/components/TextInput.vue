@@ -18,7 +18,7 @@ import "@dds/components/src/scss/dds-fonts.scss";
 
 <script lang="ts">
 export default {
-    name: "Dropdown",
+    name: "TextInput",
     data() {
         return {
             info: ""
