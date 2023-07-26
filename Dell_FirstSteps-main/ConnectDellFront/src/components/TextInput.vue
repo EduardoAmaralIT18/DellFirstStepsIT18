@@ -15,7 +15,7 @@ const emits = defineEmits({
 
 const sendTextToParent = (text: string) => {
   info.value = text;
-  emits("typedText", info);
+  emits("typedText", info.value);
 }
 </script>
 
