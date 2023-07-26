@@ -4,15 +4,19 @@ import HomeView from '../views/HomeView.vue';
 import NewsView from '../views/NewsView.vue';
 import ProgramView from "../views/ProgramView.vue";
 import MyProgramView from '../views/MyProgramView.vue';
-// import UsersView from '../views/UsersView.vue';
 import CreateProgramView from '../views/CreateProgramView.vue';
+import EditionInfoView from '../views/EditionInfoView.vue';
 import CreateEditionView from '../views/CreateEditionView.vue';
+import UsersView from "@/views/UsersView.vue";
+import NotFoundView from "@/views/NotFoundView.vue";
+import AddNewsPage from "@/views/AddNewsView.vue";
+import AddNewsView from "@/views/AddNewsView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/login',
+      path: '/',
       name: 'Login',
       component: LoginView,
     },
@@ -36,21 +40,40 @@ const router = createRouter({
       name: 'Program',
       component: ProgramView,
     },
-    // {
-    //   path: '/users',
-    //   name: 'Users',
-    //   component: UsersView
-    // },
     {
-      path: '/createprogram',
+      path: '/users',
+      name: 'Users',
+      component: UsersView
+    },
+    {
+      path: '/createProgram',
       name: 'CreateProgram',
       component: CreateProgramView,
     },
     {
-      path: '/myProgram/:id/createedition',
+      path: '/editioninfo/:id',
+      name: 'EditionInfo',
+      component: EditionInfoView,
+    },
+    {
+      path: '/myProgram/:id/createEdition',
       name: 'CreateEdition',
       component: CreateEditionView,
-    }
+    },
+    {
+      path: '/addNews',
+      name: 'Add News',
+      component: AddNewsView,
+    },
+    // {
+    //   path: '/editNews/:id',
+    //   name: 'Edit news',
+    //   component: ,
+    // }
+    {
+      path: '/:pathMatch(.*)*',
+      component: NotFoundView
+    },
   ]
 })
 

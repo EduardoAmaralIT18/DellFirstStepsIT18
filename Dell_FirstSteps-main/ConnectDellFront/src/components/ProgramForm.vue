@@ -19,19 +19,22 @@ import axios from "axios";
             <DatePicker class="date_picker" boxName="End Date" v-bind:minRequired="true" @selectedDate="handleEndDate"></DatePicker>
         </div>
         <Dropdown dropdownName="Owners" :data="ownerList" @selectedId="handleDropdown"/>
-        <TextArea boxName="Description" v-bind:minLength=10 v-bind:maxLength=50 v-bind:required="true" @descriptionText="handleDescription"></TextArea>
-        <PrimaryButton class="dds__button" buttonName="Submit" @clicked="handleClick" :isDisabled="activateButton()"></PrimaryButton>
+        <TextArea boxName="Description" maxlength="50" v-bind:required="true" @descriptionText="handleDescription"></TextArea>
+        <PrimaryButton buttonName="Submit" @clicked="handleClick" :isDisabled="activateButton()"></PrimaryButton>
     </div>
 </template>
 
 <script lang="ts">
+import axios from "axios";
+import type Program from "@/interfaces/Program";
+
 export default {
     data() {
         return {
             programInfo: {
                 name: "",
-                startDate: new Date().toISOString().slice(0, 10),
-                endDate: undefined,
+                startDate: new Date(),
+                endDate: new Date(),
                 description: "",
                 owners: [],
                 isBasic: false,
@@ -46,26 +49,21 @@ export default {
     methods: {
         handleInput(text: string): void {
             this.programInfo.name = text;
-            console.log(this.programInfo.name);
         },
-        handleStartDate(date: string): void {
+        handleStartDate(date: Date): void {
             this.programInfo.startDate = date
-            console.log(this.programInfo.startDate);
         },
         handleEndDate(date: Date): void {
             this.programInfo.endDate = date;
-            console.log(this.programInfo.endDate);
         },
         handleDropdown(owner: []): void {   
             this.programInfo.owners = [];   
             owner.forEach(id => {
                 this.programInfo.owners?.push(this.ownerList.find(user => user.id === id));
             })
-            console.log(this.programInfo.owners);
         },
         handleDescription(text: string): void {
             this.programInfo.description = text;
-            console.log(this.programInfo.description);
         },
         async handleClick() {
             await axios
@@ -90,7 +88,7 @@ export default {
                 this.ownerList = response.data;
             })
                 .catch((error) => {
-                console.log(error);
+                console.error(error);
             });
         },
         async getProgramsName() {
@@ -100,7 +98,7 @@ export default {
                 this.nameList = response.data;
             })
                 .catch((error) => {
-                console.log(error);
+                console.error(error);
             });
         },
         activateButton(): boolean {
