@@ -80,7 +80,7 @@ function loadEvent() {
         allDay: true,
         display: 'none',
         borderColor: "#7E7E7E",
-        color: "#97DCF4",
+        color: "#61C1EB",
         textColor: "#0E0E0E"
       }
     ]}
@@ -98,7 +98,7 @@ function loadEvent() {
           end: event.endDate,
         },
         display: 'none',
-        backgroundColor: "#0672CB",
+        color: '#61C1EBF69AC6',
         borderColor: "#7E7E7E",
         textColor: "#0E0E0E"
       }]
