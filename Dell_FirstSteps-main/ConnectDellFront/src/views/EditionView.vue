@@ -95,20 +95,69 @@ const handlePostBody = (body: Object) => {
 </script>
 
 <template>
-    <h1>{{ edition?.programName }} - {{ edition?.name }} [{{ modeToString() }}]</h1>
-    <p class="date">{{ formatDate(edition?.startDate!) }}{{ hasEndDate() }}</p>
-    <p class="description">{{ edition?.description }}</p>
+  <div class="container">
+    <div class="flexItem">
+    
+    <div>
+      <p class="title">{{ edition?.programName }} - {{ edition?.name }} [{{ modeToString() }}]</p>
+      <p class="date">{{ formatDate(edition?.startDate!) }}{{ hasEndDate() }}</p>
+      <p class="description">{{ edition?.description }}</p>
+    </div>
     <button class="dds__button dds__button--primary dds__button--lg" type="button">
         <span class="dds__icon dds__icon--pencil dds__button__icon--start" aria-hidden="true"></span>
         Manage edition
     </button>
-    <p>Edition's calendar</p>
+    <div class="editionCalendar"><p class="title">Edition's calendar</p>
     <ModalForm 
+      class="modalbutton"
       @sendBodyToParent="handlePostBody"
       modal-title="Add Event"
       :edition-users="edition?.members"
       :edition-start-date="edition?.startDate"
       :edition-end-date="edition?.endDate"
-    ></ModalForm>
-    <Calendar :id="calendarRefreshId" :events="edition?.events" :start-date="edition?.startDate" :end-date="edition?.endDate"></Calendar>
+    ></ModalForm></div>
+    </div>
+    <Calendar class="flexItem" :id="calendarRefreshId" :events="edition?.events" :start-date="edition?.startDate" :end-date="edition?.endDate"></Calendar>
+      
+  </div>
 </template>
+
+<style scoped>
+.container{
+  display: flex;
+  flex-direction: column;
+  margin: 2em;
+}
+.title {
+  color: #0672cb;
+  font-size: 190%;
+  text-align: left;
+  font-weight: bold;
+}
+.date {
+  text-align: left;
+  font-size: 13px;
+  color: #7e7e7e;
+}
+.description {
+  text-align: justify;
+  padding-right: 30px;
+  left: 0;
+  position: relative;
+}
+.dds__button{
+  align-self: flex-end;
+}
+
+.editionCalendar{
+  display: flex;
+  
+}
+.modalbutton{
+  align-self: flex-end;
+}
+.flexItem{
+  flex: 1;
+}
+
+</style>
