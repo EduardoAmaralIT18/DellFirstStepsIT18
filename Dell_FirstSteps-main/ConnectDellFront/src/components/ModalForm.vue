@@ -53,7 +53,10 @@ function sendBodyToParent() {
   emits("sendBodyToParent", inserts.value);
 }
 
-const handleEventTitle = (text: string) => (inserts.value.eventTitle = text);
+const handleEventTitle = (text: string) => {
+  text = text.trim();
+  inserts.value.eventTitle = text;
+}
 const handleEventType = (text: string) => {
   if (text === "Phase") inserts.value.eventType = 0;
   if (text === "Activity") inserts.value.eventType = 1;

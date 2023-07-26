@@ -52,7 +52,7 @@ async function handleSubmitForm() {
       endDate: eventBody.endDate,
       where: eventBody.location,
       eventType: eventBody.eventType,
-      editionId: data.editionId,
+      editionId: id,
     })
     .then(function (response) {
       return response;
