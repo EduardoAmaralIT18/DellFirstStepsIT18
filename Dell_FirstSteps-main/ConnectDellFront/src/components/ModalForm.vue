@@ -38,10 +38,8 @@ onMounted(() => {
 watchEffect(() => {
   if (inserts.value.eventTitle && inserts.value.eventType !== -1) {
     activateButton.value = false;
-    console.log("false");
   } else {
     activateButton.value = true;
-    console.log("true");
   }
 });
 
@@ -106,16 +104,14 @@ function resetInputs() {
         <TextInput
           maxlength="30"
           boxName="Event Title"
-          ref="inserts.eventTitle"
           @typedText="handleEventTitle"
         />
         <Select
-          placeholder="select EventType"
+          placeholder="Select Event Type"
           v-bind:required="true"
           :list="['Phase', 'Activity']"
           selectTitle="Event Type"
-          ref="inserts.eventType"
-          @selectValue="handleEventType"
+          @selectedValue="handleEventType"
         />
         <div class="date-container">
           <DatePicker
@@ -153,7 +149,7 @@ function resetInputs() {
         <PrimaryButton
           @click="sendBodyToParent(), modal.close(), resetInputs()"
           buttonName="Save"
-          :disabled="activateButton ? true : false"
+          :disabled="activateButton"
         />
       </div>
     </div>

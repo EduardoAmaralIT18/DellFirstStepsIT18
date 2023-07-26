@@ -1,5 +1,22 @@
 <script setup lang="ts">
-import "@dds/components/src/scss/dds-fonts.scss";
+import {ref} from "vue";
+
+const props = defineProps({
+  boxName: String,
+  minlength: String,
+  maxlength: String,
+})
+
+const info = ref<String>("")
+
+const emits = defineEmits({
+  typedText: String
+})
+
+const sendTextToParent = (text: string) => {
+  info.value = text;
+  emits("typedText", info);
+}
 </script>
 
 <template>
@@ -25,9 +42,7 @@ export default {
         };
     },
     props: {
-        boxName: String,
-        minlength: String,
-        maxlength: String,
+
     },
     methods: {
         sendTextToParent(text: string) {
