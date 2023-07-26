@@ -1,12 +1,12 @@
 <template>
   <div class="dds__select" data-dds="select">
-    <label v-if="required" id="date-picker-label-206993451" for="date-picker-control-name-206993451"
-            class="dds__label dds__label--required">{{ selectTitle }}</label>
-    <label v-else id="select-label-293511350" for="select-control-293511350" class="dds__label">{{ selectTitle }}</label>
       <div class="dds__select__wrapper">
+        <label v-if="required" id="date-picker-label-206993451" for="date-picker-control-name-206993451"
+            class="dds__label dds__label--required">{{ selectTitle }}</label>
+        <label v-else id="select-label-293511350" for="select-control-293511350" class="dds__label">{{ selectTitle }}</label>
         <label id="select-label" for="select-label" class="dds__label">{{ boxName }}</label>
         <select id="select-control-505500786" v-model="selectedValue" @change="sendSelectedToParent" class="dds__select__field">
-          <option disabled value="">{{ placeholder }}</option>
+          <option class="dds__select__option--placeholder" disabled="" value="">{{ placeholder }}</option>
           <option
             v-for="item in list" 
             :value="item">
