@@ -6,20 +6,20 @@ const role = +localStorage.getItem("userRole")!;
 let isActive = ref(1)
 
 function handleClick(key: number) {
-  if (key === 1) {
-    isActive.value = 1
-    router.push("/home")
-  }
-  else if (key === 2) {
-    isActive.value = 2
-    router.push("/users")
-  }
-  else if (key === 3) {
-    isActive.value = 3
-    router.push("/news")
-  }
-  else if (key === 4) {
-    router.push("/")
+    if (key === 1) {
+      isActive.value = 1
+      router.push("/home")
+    }
+    else if (key === 2) {
+      isActive.value = 2
+      router.push("/users")
+    }
+    else if (key === 3) {
+      isActive.value = 3
+      router.push("/news")
+    }
+    else if (key === 4) {
+      router.push("/login")
   }
 }
 

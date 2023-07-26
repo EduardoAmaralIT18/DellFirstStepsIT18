@@ -1,5 +1,8 @@
 <template>
   <div class="dds__select" data-dds="select">
+    <label v-if="required" id="date-picker-label-206993451" for="date-picker-control-name-206993451"
+            class="dds__label dds__label--required">{{ selectTitle }}</label>
+    <label v-else id="select-label-293511350" for="select-control-293511350" class="dds__label">{{ selectTitle }}</label>
       <div class="dds__select__wrapper">
         <label id="select-label" for="select-label" class="dds__label">{{ boxName }}</label>
         <select id="select-control-505500786" v-model="selectedValue" @change="sendSelectedToParent" class="dds__select__field">
@@ -17,17 +20,21 @@
 
 <script setup lang="ts">
 
+import { ref } from "vue";
+  defineProps({
+    list: Array<string>,
+    selectValue: Function,
+    selectTitle: String,
+    required: Boolean,
+    boxName: String,
+    placeholder: String
+  });
+
 let selectedValue: string = '';
 
 const emits = defineEmits({
   selectedValue: String
 })
-
-defineProps({
-  list: Array<string>,
-  boxName: String,
-  placeholder: String
-});
 
 function sendSelectedToParent() {
   emits("selectedValue", selectedValue);
@@ -36,4 +43,8 @@ function sendSelectedToParent() {
 
 </script>
 
-
+<style> 
+.dds__label--required::after {  
+    color: #0672CB;
+}
+</style>
