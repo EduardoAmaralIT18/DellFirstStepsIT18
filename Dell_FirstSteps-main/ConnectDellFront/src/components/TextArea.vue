@@ -14,7 +14,6 @@
             <small id="text-area-error-867784391" class="dds__invalid-feedback">{{ errorText }}</small>
         </div>
     </div>
-  </div>
 </template>
 
 <script setup lang="ts">
