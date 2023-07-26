@@ -6,6 +6,7 @@ import ProgramView from "../views/ProgramView.vue";
 import MyProgramView from '../views/MyProgramView.vue';
 import CalendarView from '../views/CalendarViewTemp.vue';
 import CreateProgramView from '../views/CreateProgramView.vue';
+import EditionViewVue from '@/views/EditionView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,7 +45,12 @@ const router = createRouter({
       path: '/createprogram',
       name: 'CreateProgram',
       component: CreateProgramView,
-    }
+    },
+    {
+      path: '/edition/:editionId/:programId',
+      name: 'Edition',
+      component: EditionViewVue,
+    },
   ]
 })
 
