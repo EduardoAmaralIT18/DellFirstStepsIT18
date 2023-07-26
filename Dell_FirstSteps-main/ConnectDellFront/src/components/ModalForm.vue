@@ -38,10 +38,8 @@ onMounted(() => {
 watchEffect(() => {
   if (inserts.value.eventTitle && inserts.value.eventType !== -1) {
     activateButton.value = false;
-    console.log("false");
   } else {
     activateButton.value = true;
-    console.log("true");
   }
 });
 

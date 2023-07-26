@@ -4,20 +4,20 @@ import "@/components/FileInput.vue";
 
 const selectedFile = ref<File>();
 
-const imageName = ref<string>("Limit 2MB - PNG or JPG accepted.");
-
+// const imageName = ref<string>();
+defineProps({
+  imageName: String
+})
 const fileInput = ref(null);
 
 // @ts-ignore
 const emits = defineEmits({
-  selectedFile: File,
-  name: String
+  selectedFile: File
 })
 
-const onFileChange = (event) => {
-  selectedFile.value = event.target.files[0];
-  emits('fileSelected', selectedFile.value, selectedFile.value?.name);
-  imageName.value = selectedFile.value!.name;
+const onFileChange = (event: Event) => {
+  selectedFile.value = (event.target as HTMLInputElement)?.files[0];
+  emits('fileSelected', selectedFile.value);
 }
 </script>
 

@@ -38,57 +38,58 @@ const getPrograms = async (userId: number, role: number) => {
       })
 }
 
-const addNews = async (news: AddNews) => {
-  await axios
-      .post(`https://localhost:5001/News/addContent`, news)
-      .then((response) => {
-        console.log(response.data)
-      }).catch((e) => {
-        console.error(e);
-      })
-}
-
 const handleTitle = (title: string) => {
-  newsToBeCreated.value.title = title.trim();
+  newsToBeCreated.value.title = title;
 }
 const handleText = (text: string) => {
   newsToBeCreated.value.text = text;
 }
 
 const disableButton = () => {
-  console.log(newsToBeCreated.value.title?.trim().length, newsToBeCreated.value.text?.trim().length, newsToBeCreated.value.program)
-  return !(newsToBeCreated.value.title?.trim().length > 5 && newsToBeCreated.value.text?.trim().length > 5 && newsToBeCreated.value.program > 0)
+  if(newsToBeCreated.value.title?.trim().length > 5 && newsToBeCreated.value.text?.trim().length > 5 && newsToBeCreated.value.program > 0){
+    return false
+  }
+  return true
 }
 
 const selectedFile = ref<File | null>(null);
 
-const onFileChange = (file: File, name: String) => {
+const onFileChange = (file: File) => {
   selectedFile.value = file
-  newsToBeCreated.value.imageName = name
+  newsToBeCreated.value.imageName = file.name
 };
-const submitForm = () => {
-  if (selectedFile.value) {
-    const formData = new FormData();
-    formData.append('image', selectedFile.value!);
-    formData.append('title', newsToBeCreated.value.title);
-    formData.append('author', newsToBeCreated.value.author.toString());
-    formData.append('program', newsToBeCreated.value.program.toString());
-    formData.append('text', newsToBeCreated.value.text);
-    formData.append('imageName', newsToBeCreated.value.imageName!);
 
-    axios
-        .post(`https://localhost:5001/News/addContent`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then((response) => {
-          console.log('Imagem enviada com sucesso!', response);
-        })
-        .catch((error) => {
-          console.error('Erro ao enviar a imagem:', error);
-        });
-  }
+const zeroStates = () => {
+  newsToBeCreated.value.title = '';
+  handleText('')
+  newsToBeCreated.value.imageName = '';
+  newsToBeCreated.value.program = 0;
+  newsToBeCreated.value.author = 0;
+  selectedFile.value = null;
+}
+const submitForm = () => {
+  const formData = new FormData();
+  formData.append('image', selectedFile.value!);
+  formData.append('title', newsToBeCreated.value.title);
+  formData.append('author', newsToBeCreated.value.author.toString());
+  formData.append('program', newsToBeCreated.value.program.toString());
+  formData.append('text', newsToBeCreated.value.text);
+  formData.append('imageName', newsToBeCreated.value.imageName!);
+
+  axios
+      .post(`https://localhost:5001/News/addContent`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((response) => {
+        zeroStates()
+        alert('Notícia adicionada com sucesso')
+      })
+      .catch((error) => {
+        console.error('Erro ao enviar a imagem:', error);
+      });
+
 }
 
 </script>
@@ -106,8 +107,8 @@ const submitForm = () => {
       </select>
       <TextInput @typedText="handleTitle" boxName="Title"></TextInput>
       <TextArea @descriptionText="handleText" boxName="Text"></TextArea>
-      <FileInput @fileSelected="onFileChange"></FileInput>
-      <PrimaryButton buttonName="Submit" :isDisabled="disableButton()" @clicked="submitForm"/>
+      <FileInput :image-name="newsToBeCreated.imageName ? newsToBeCreated.imageName : `Limit 2MB - PNG or JPG accepted.`" @fileSelected="onFileChange"></FileInput>
+      <PrimaryButton buttonName="Submit" :disabled="disableButton()" @clicked="submitForm"/>
     </form>
   </div>
 </template>
