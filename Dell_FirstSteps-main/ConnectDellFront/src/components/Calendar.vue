@@ -4,12 +4,12 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import { computed, onMounted, PropType, ref } from 'vue'
+import { computed, onMounted, PropType, ref, watch } from 'vue'
 import Modal from './ModalEventInfo.vue'
 
 const Props = defineProps({
-  startDate: String,
-  endDate: String,
+  startDate: Date,
+  endDate: Date,
   events : Array as PropType<TypeEvent[]>,
 })
 
@@ -43,6 +43,11 @@ const handleEventClick = (args: any) => {
   aux.value = !aux.value;
 }
 
+const handleDateSelect = () => {
+  console.log("to-do");
+}
+
+
 function argsToTypeEvent(e: any) {
   eventToPass.value = {
     id : e.event._def.publicId,
@@ -56,11 +61,11 @@ function argsToTypeEvent(e: any) {
 }
 
 function loadEvent() {
-  calendarOptions.events = [];
+  calendarOptions.value.events = [];
   Props.events?.forEach(
     (event) => {
       if(event.eventType === 0) {
-        calendarOptions.events = [...calendarOptions.events, {
+        calendarOptions.value.events = [...calendarOptions.value.events, {
         id : event.id, 
         title : event.name, 
         start: event.startDate, 
@@ -80,7 +85,7 @@ function loadEvent() {
       }
     ]}
     else if(event.eventType === 1) {
-      calendarOptions.events = [...calendarOptions.events, {
+      calendarOptions.value.events = [...calendarOptions.value.events, {
         id : event.id, 
         title : event.name, 
         start: event.startDate, 
@@ -101,19 +106,41 @@ function loadEvent() {
   })
 }
 
-
-let phaseCheckBox = ref(false);
-let activityCheckBox = ref(false);
-const checkEvent = computed(() => {
-  (calendarOptions.events as Array<any>).forEach((event) => {
-    if(phaseCheckBox.value && event.extendedProps.eventType === 0)
-      event.display = "multi-day"
-    else if(activityCheckBox.value && event.extendedProps.eventType === 1) 
-      event.display = "multi-day"
-  })
+let selectCheck = ref([])
+watch(selectCheck,() => {
+  checkEvent();
 })
 
-const calendarOptions = {
+const checkEvent = () => {
+  let checkMultiDayPhase = false;
+  let checkMultiDayActivity = false;
+  (calendarOptions.value.events as Array<any>).forEach((event) => {
+    if (selectCheck.value.length !== 0) {
+      selectCheck.value.forEach((check) => {
+        if(event.extendedProps.eventType === 0) {
+          if(check === "Phase") {
+            event.display = "multi-day";
+            checkMultiDayPhase = true;
+          }
+          else if(!checkMultiDayPhase)
+            event.display = "none";
+        }
+        else if(event.extendedProps.eventType === 1) {
+          if(check === "Activity") {
+            event.display = "multi-day";
+            checkMultiDayActivity = true;
+          }
+          else if (!checkMultiDayActivity) 
+            event.display = "none";
+        }
+      })
+    }
+    else
+      event.display = "none";
+  })
+}
+
+const calendarOptions = ref({
   plugins: [
     dayGridPlugin,
     timeGridPlugin,
@@ -137,16 +164,17 @@ const calendarOptions = {
     center: 'title',
     right: 'dayGridMonth,timeGridWeek,timeGridDay buttonAddEvent'  
   },
-  initialView: 'dayGridMonth',
+  initialView: 'timeGridWeek',
   validRange: {
     start: Props.startDate,
     end: Props.endDate,
   },
+  selectable: true,
   eventClick: handleEventClick,
-} as CalendarOptions;
+  select: handleDateSelect
+} as CalendarOptions);
 
 loadEvent()
-checkEvent.value
 
 </script>
 
@@ -154,10 +182,11 @@ checkEvent.value
   <div class='component'>
     <div class='component-main'>
       <div>
-        <input type="checkbox" id="phase" v-model="phaseCheckBox"/>
+        <input type="checkbox" id="phase" value="Phase" v-model="selectCheck"/>
         <label for="phase">Phase</label>
-        <input type="checkbox" id="activity" v-model="activityCheckBox"/>
-        <label for="phase" id="activity">Activity</label>
+
+        <input type="checkbox" id="activity" value="Activity" v-model="selectCheck"/>
+        <label for="activity" id="activity">Activity</label>
       </div>
       <FullCalendar
         class='calendar'
