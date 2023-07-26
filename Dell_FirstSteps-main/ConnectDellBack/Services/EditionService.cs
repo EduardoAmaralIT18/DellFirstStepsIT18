@@ -91,14 +91,15 @@ public class EditionService : IEditionService
 
     }
 
-    public async Task<EditionDTO> GetEditionInfo(int idProgram, int idEdition)
+    public async Task<NewEditionDTO> GetEditionInfo(int idProgram, int idEdition)
     {
         var edition = await _dbContext.editions.Where(ed => ed.id == idEdition)
                                                 .Include(ed => ed.program)
+                                                .Include(ed => ed.events)
                                                 //.Include(ed => ed.membership)
                                                 .Include(ed => ed.members)
                                                 .FirstOrDefaultAsync();
-        return EditionDTO.ConvertModel2DTO(edition);
+        return NewEditionDTO.ConvertModel2DTO(edition);
     }
  
     public async Task<IEnumerable<UserDTO>> GetUsersNotAdmin()
