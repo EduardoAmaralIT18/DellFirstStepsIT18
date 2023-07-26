@@ -9,6 +9,7 @@ let eventBody: object;
 
 onMounted(async () => {
   await getMembers();
+  await getEventToUpdate();
 });
 
 const route = useRoute();
@@ -43,6 +44,20 @@ async function getMembers() {
     });
 }
 
+//TO-DO Passar pra modal e ficar pré preenchido e deixar o id do evento dinâmico
+async function getEventToUpdate() {
+  await axios
+    .get(`https://localhost:5001/event/getEventToUpdate?eventId=23`)
+    .then((response) => {
+      console.log(response.data);
+      data.value = response.data;
+    })
+    .catch((error) => {
+      console.log(error.response);
+      alert("Não foi possível atender a solicitação.");
+    });
+}
+
 async function handleSubmitForm() {
   await axios
     .post("https://localhost:5001/event/addEvent", {
@@ -64,9 +79,17 @@ async function handleSubmitForm() {
 </script>
 
 <template>
-  <ModalForm
+  <!-- <ModalForm
     @sendBodyToParent="handlePostBody"
     modalTitle="Add Event"
+    :editionUsers="data.members"
+    :editionStartDate="data.startDate"
+    :editionEndDate="data.endDate"
+  /> -->
+
+  <ModalForm
+    @sendBodyToParent="handlePostBody"
+    modalTitle="Edit Event"
     :editionUsers="data.members"
     :editionStartDate="data.startDate"
     :editionEndDate="data.endDate"
