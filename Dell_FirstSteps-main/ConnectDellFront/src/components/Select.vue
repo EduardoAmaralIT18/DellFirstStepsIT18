@@ -6,7 +6,7 @@
         <label v-else id="select-label-293511350" for="select-control-293511350" class="dds__label">{{ selectTitle }}</label>
         <label id="select-label" for="select-label" class="dds__label">{{ boxName }}</label>
         <select id="select-control-505500786" v-model="selectedValue" @change="sendSelectedToParent" class="dds__select__field">
-          <option class="dds__select__option--placeholder" disabled="" value="">{{ placeholder }}</option>
+          <option class="dds__select__option--placeholder" disabled value="">{{ placeholder }}</option>
           <option
             v-for="item in list" 
             :value="item">
