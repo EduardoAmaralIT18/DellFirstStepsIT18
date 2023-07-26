@@ -33,26 +33,6 @@ const sendTextToParent = (text: string) => {
     </div>
 </template>
 
-<script lang="ts">
-export default {
-    name: "TextInput",
-    data() {
-        return {
-            info: ""
-        };
-    },
-    props: {
-
-    },
-    methods: {
-        sendTextToParent(text: string) {
-            this.info = text;
-            this.$emit("typedText", text);
-        }
-    }
-};
-</script>
-
 <style scoped>
 .dds__label--required::after {  
     color: #0672CB;

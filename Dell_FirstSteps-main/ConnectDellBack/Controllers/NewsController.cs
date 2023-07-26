@@ -55,7 +55,7 @@ public class NewsController : ControllerBase
         return news == null ? NotFound() : Ok(newsDTO);
     }
 
-    [HttpPost("updateNews")]
+    [HttpPatch("updateNews")]
     public async Task<ActionResult> UpdateNews([FromForm] ContentDTO contentForm)
     {
         var result = await _newsService.UpdateNews(contentForm);
