@@ -37,29 +37,29 @@ public class UserController : ControllerBase
         return listUser == null ? NotFound() : Ok(listUser);
     }
 
-    [HttpGet("changeRole")]
-    public async Task<ActionResult> ChangeRole(int user, int role)
+    [HttpPatch("changeRole")]
+    public async Task<ActionResult> ChangeRole(int userId, int role)
     {
-        var entries = await _service.ChangeRole(user, role);
-        if (entries > 0)
+        try
         {
-            return Ok();
-       }
-        else
+            var updatedUser = await _service.ChangeRole(userId, role);
+            return Ok(UserDTO.ConvertToDTO(updatedUser));
+        }
+        catch
         {
-            return NotFound();
+            return BadRequest();
         }
     }
 
-    [HttpGet("removeUser")]
-    public async Task<ActionResult> RemoveUser(int user)
+    [HttpDelete("removeUser/{id}")]
+    public async Task<ActionResult> RemoveUser(int id)
     {
-        var entries = await _service.RemoveUser(user);
-        if (entries > 0)
+        try
         {
+            await _service.RemoveUser(id);
             return Ok();
         }
-        else
+        catch
         {
             return NotFound();
         }

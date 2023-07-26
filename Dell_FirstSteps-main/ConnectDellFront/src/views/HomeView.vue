@@ -48,11 +48,11 @@ function isAdmin() {
     <div class="row">
       <div class="initialCard col-3 dds__mr-4 dds__mb-3">
         <div v-if="isAdmin()">
-          <CardPlus url="/createprogram"/>
+          <CardPlus url="/createProgram"/>
         </div>
         
         <div class="card col-lg-12 col-md-12 col-sm-12 dds__mb-3" v-for="item in myPrograms" id="my-programs">
-          <Card :key="item.id" :name="item.name" :description="item.description" :id="item.id" :owners="item.owners" :isBasic="false"/>
+          <Card :key="item.id" :name="item.name" :description="item.description" :id="item.id" :isBasic="false" :endDate="item.endDate" :startDate="item.startDate"/>
         </div>
       </div>
     </div>
@@ -63,7 +63,7 @@ function isAdmin() {
 
     <div class="initialCard col-3 dds__mr-4 dds__mb-3">
       <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3" v-for="item in programs" id="programs">
-        <Card :key="item.id" :name="item.name" :description="item.description" :id="item.id" :owners="item.owners" :isBasic="true"/>
+        <Card :key="item.id" :name="item.name" :description="item.description" :id="item.id" :isBasic="true" :endDate="item.endDate" :startDate="item.startDate"/>
       </div>
     </div>
   </div>

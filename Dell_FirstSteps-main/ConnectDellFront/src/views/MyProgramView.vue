@@ -1,39 +1,45 @@
 <script setup lang="ts">
 import axios from "axios";
-import type Program from "@/interfaces/Program";
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import CardPlus from "@/components/CardPlus.vue";
 import CardEdition from "@/components/CardEdition.vue";
 import User from "@/interfaces/User";
+import ProgramInfo from "@/interfaces/ProgramInfo";
+import router from "@/router";
 
 const route = useRoute();
-const program = ref<Program>({
-  name: '',
-  description: '',
+const program = ref<ProgramInfo>({
+  name: "",
+  description: "",
+  startDate: "",
+  editions: [],
   owners: [],
-  isBasic: false
 });
-const ownerList = ref<string>('');
-const id = +route.params.id
-const userId = ref(+localStorage.getItem('userId')!).value;
-const userRole = ref(+localStorage.getItem('userRole')!).value;
+const ownerList = ref<string>("");
+const id = +route.params.id;
+const userId = ref(+localStorage.getItem("userId")!).value;
+const userRole = ref(+localStorage.getItem("userRole")!).value;
 onMounted(async () => {
   await getProgram(id, userId);
   defineOwnerList();
-})
+});
 
 const getProgram = async (programId: number, userId: number) => {
   await axios
-    .get(`https://localhost:5001/Program/showInfoProgram?id=${programId}&userId=${userId}`)
+    .get(
+      `https://localhost:5001/Program/showInfoProgram?id=${programId}&userId=${userId}`
+    )
     .then((response) => {
       program.value = response.data;
-    }).catch((e) => {
-      console.error(e);
     })
-}
+    .catch((e) => {
+      console.error(e);
+      router.push('/notFound')
+    });
+};
 
-function formatDate(dates: Date) {
+function formatDate(dates: string) {
   const date = new Date(dates);
   return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 }
@@ -46,25 +52,25 @@ function getLastElement(array: any[]) {
 }
 
 const ownersFormatter = (owners: User[]) => {
-    if (owners.length === 1) return `${owners[0].name}`
+  if (owners.length === 1) return `${owners[0].name}`;
 
-    let lastUserName = getLastElement(owners).name;
-    let text = '';
+  let lastUserName = getLastElement(owners).name;
+  let text = "";
 
-    text += owners[0].name;
-    for (let i = 1; i < owners.length - 1; i++) {
-        text +=  ', ' + owners[i].name
-    }
+  text += owners[0].name;
+  for (let i = 1; i < owners.length - 1; i++) {
+    text += ", " + owners[i].name;
+  }
 
-    text += (' and ' + lastUserName)
-    return text;
-}
+  text += " and " + lastUserName;
+  return text;
+};
 const defineOwnerList = () => {
-  ownerList.value = ownersFormatter(program.value.owners)
-}
+  ownerList.value = ownersFormatter(program.value.owners);
+};
 
 function isOwner() {
-  return program.value.owners.some(owner => owner.id === userId);
+  return program.value.owners.some((owner) => owner.id === userId);
 }
 
 function isAdmin() {
@@ -73,7 +79,6 @@ function isAdmin() {
   }
   return false;
 }
-
 </script>
 
 <template>
@@ -83,7 +88,7 @@ function isAdmin() {
     </h2>
 
     <p class="date">
-      {{ formatDate(program.startDate!) }}
+      {{ formatDate(program.startDate) }}
     </p>
 
     <p class="description">
@@ -92,29 +97,46 @@ function isAdmin() {
 
     <div class="bottomInfo">
       <div class="owner">
-        <p> {{ program.owners.length > 1 ? "Owners:&nbsp" : "Owner:&nbsp" }} </p>
-        <p> {{ ownerList }}</p>
+        <p>{{ program.owners.length > 1 ? "Owners:&nbsp" : "Owner:&nbsp" }}</p>
+        <p>{{ ownerList }}</p>
       </div>
       <div v-if="isOwner()">
         <RouterLink style="text-decoration: none" :to="`/editProgram/${id}`">
-          <p class="manageProgram button dds__button dds__button&#45;&#45;primary" type="button">
-            <img src="../assets/pencil.png" alt="pencil icon" width="19">
+          <button
+            class="manageProgram button dds__button dds__button&#45;&#45;primary"
+            type="button"
+          >
+            <img src="../assets/pencil.png" alt="pencil icon" width="19" />
             Manage Program
-          </p>
+          </button>
         </RouterLink>
       </div>
-
     </div>
 
     <div class="row">
       <div class="initialCard col-3 dds__mr-4 dds__mb-3">
         <div v-if="isAdmin()">
-          <CardPlus url="edition" />
+          <CardPlus :url="`${id}/createEdition`" />
         </div>
 
-        <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3" v-for="item in program.editions" id="editions">
-          <CardEdition :key="item.id" :name="item.name" :description="item.description" :id="item.id"
-            :start-date="item.startDate" :end-date="item.endDate" />
+        <div
+          class="col-lg-12 col-md-12 col-sm-12 dds__mb-3"
+          v-for="item in program.editions"
+          id="editions"
+        >
+          <CardEdition
+            :key="item.id"
+            :number-of-interns="item.numberOfInterns"
+            :curriculum="item.curriculum"
+            :members="item.members"
+            :mode="item.mode"
+            :name="item.name"
+            :description="item.description"
+            :id="item.id"
+            :start-date="item.startDate"
+            :end-date="item.endDate"
+            :program="item.program"
+          />
         </div>
       </div>
     </div>
@@ -123,7 +145,7 @@ function isAdmin() {
 
 <style scoped>
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .container {
@@ -135,7 +157,7 @@ body {
 }
 
 .title {
-  color: #0672CB;
+  color: #0672cb;
   font-size: 190%;
   text-align: left;
   margin-top: 55px;
@@ -145,7 +167,7 @@ body {
 .date {
   text-align: left;
   font-size: 13px;
-  color: #7E7E7E;
+  color: #7e7e7e;
 }
 
 .description {
@@ -156,10 +178,9 @@ body {
 }
 
 .description a {
-  color: #0672CB;
+  color: #0672cb;
   font-size: 15px;
 }
-
 
 .row {
   display: flex;
@@ -183,7 +204,7 @@ body {
 .owner {
   text-align: left;
   font-size: 14px;
-  color: #7E7E7E;
+  color: #7e7e7e;
   margin-top: 1%;
   display: flex;
   float: left;

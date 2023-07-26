@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type Edition from "@/interfaces/Edition";
 
-function dateCompare(start, end) {
-  var startDate = new Date(start)
-  var endDate = new Date(end)
-  var today = new Date()
+function dateCompare(start: string, end: string) {
+  const startDate: Date = new Date(start)
+  const endDate: Date = new Date(end)
+  const today: Date = new Date()
 
   if (startDate > today) {
     return 'Not Started'
@@ -31,7 +31,7 @@ defineProps<Edition>()
       </span>
         <span class="dds__badge dds__badge--brand dds__badge--light">
           <span class="dds__badge__label">{{
-            dateCompare(startDate, endDate)
+            dateCompare(startDate.toString(), endDate.toString())
             }}
           </span>
         </span>

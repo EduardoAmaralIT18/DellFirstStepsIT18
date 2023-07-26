@@ -7,12 +7,17 @@ import MyProgramView from '../views/MyProgramView.vue';
 import CalendarView from '../views/CalendarViewTemp.vue';
 import CreateProgramView from '../views/CreateProgramView.vue';
 import EditionViewVue from '@/views/EditionView.vue';
+// import EditionInfoView from '../views/EditionInfoView.vue';
+import CreateEditionView from '../views/CreateEditionView.vue';
+import UsersView from "@/views/UsersView.vue";
+import NotFoundView from "@/views/NotFoundView.vue";
+import AddNewsView from "@/views/AddNewsView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/login',
+      path: '/',
       name: 'Login',
       component: LoginView,
     },
@@ -42,7 +47,7 @@ const router = createRouter({
       component: CalendarView,
     },
     {
-      path: '/createprogram',
+      path: '/createProgram',
       name: 'CreateProgram',
       component: CreateProgramView,
     },
@@ -50,6 +55,25 @@ const router = createRouter({
       path: '/edition/:editionId/:programId',
       name: 'Edition',
       component: EditionViewVue,
+    },
+    {
+      path: '/myProgram/:id/createEdition',
+      name: 'CreateEdition',
+      component: CreateEditionView,
+    },
+    {
+      path: '/addNews',
+      name: 'Add News',
+      component: AddNewsView,
+    },
+    // {
+    //   path: '/editNews/:id',
+    //   name: 'Edit news',
+    //   component: ,
+    // }
+    {
+      path: '/:pathMatch(.*)*',
+      component: NotFoundView
     },
   ]
 })
