@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, PropType, ref, watchEffect } from "vue";
+import { onMounted, PropType, ref, watch, watchEffect } from "vue";
 import TextInput from "./TextInput.vue";
 import PrimaryButton from "./PrimaryButton.vue";
 import Select from "./Select.vue";
@@ -11,87 +11,79 @@ import SecondaryButton from "./SecondaryButton.vue";
 
 declare var DDS: any;
 
-const props=defineProps({
+const props = defineProps({
   modalTitle: String,
   editionUsers: Array as PropType<User[]>,
   editionStartDate: Date,
-  editionEndDate: Date
+  editionEndDate: Date,
 });
 
 const modal = ref();
 const element = ref(null);
-
-onMounted(() => {
-  modal.value = DDS.Modal(element.value);
-});
-
-const emits = defineEmits({
-
-sendBodyToParent: Object
-})
-
-function sendBodyToParent(){
-emits("sendBodyToParent",inserts.value);
-}
-
+const key = ref(0);
+const activateButton = ref(true);
 const inserts = ref({
   eventTitle: "",
   eventType: -1,
   startDate: new Date().toISOString().slice(0, 10),
   endDate: new Date().toISOString().slice(0, 10),
-  peopleInvolved: new Array,
+  peopleInvolved: new Array(),
   location: "",
 });
-const activateButton = ref(true);
-const handleEventTitle = (text: string) => (inserts.value.eventTitle = text);
-const handleEventType = (text: string) => {
-  if(text === "Phase"){
-    inserts.value.eventType = 0;
-  }
-  if(text === "Activity"){
-  inserts.value.eventType = 1;
-  }
-}
-const handleStartDate = (date: string) => (inserts.value.startDate = date);
-const handleEndDate = (date: string) => (inserts.value.endDate = date);
-const handleDropdown = (users: []) =>
- {
-  inserts.value.peopleInvolved = [];
-  users.forEach(id => {
-  inserts.value.peopleInvolved.push(props.editionUsers?.find(user => user.id === id) )
- })};
 
-//  function resetInputs(){
-//   inserts.value.eventTitle="";
-//   inserts.value.eventType=-1;
-//   inserts.value.startDate=new Date().toISOString().slice(0, 10);
-//   inserts.value.endDate=new Date().toISOString().slice(0, 10);
-//   inserts.value.peopleInvolved=[];
-//   inserts.value.location= "";
-//  }
-//  function teste(){
-//   setTimeout(() => { resetInputs()}, 1000)
-//  }
- 
-
-
-const handleLocation = (text: string) => (inserts.value.location = text);
+onMounted(() => {
+  modal.value = DDS.Modal(element.value);
+});
 
 watchEffect(() => {
-  if(inserts.value.eventTitle && inserts.value.eventType!==-1){
-    activateButton.value=false;
-    console.log("false")
+  if (inserts.value.eventTitle && inserts.value.eventType !== -1) {
+    activateButton.value = false;
+    console.log("false");
+  } else {
+    activateButton.value = true;
+    console.log("true");
   }
-  else{
-    activateButton.value=true;
-    console.log("true")
-  }
-})
+});
 
+const emits = defineEmits({
+  sendBodyToParent: Object,
+});
+
+function sendBodyToParent() {
+  emits("sendBodyToParent", inserts.value);
+}
+
+const handleEventTitle = (text: string) => (inserts.value.eventTitle = text);
+const handleEventType = (text: string) => {
+  if (text === "Phase") inserts.value.eventType = 0;
+  if (text === "Activity") inserts.value.eventType = 1;
+};
+const handleStartDate = (date: string) => (inserts.value.startDate = date);
+const handleEndDate = (date: string) => (inserts.value.endDate = date);
+const handleDropdown = (users: []) => {
+  inserts.value.peopleInvolved = [];
+  users.forEach((id) => {
+    inserts.value.peopleInvolved.push(
+      props.editionUsers?.find((user) => user.id === id)
+    );
+  });
+};
+const handleLocation = (text: string) => (inserts.value.location = text);
+
+function resetInputs() {
+  inserts.value.eventTitle = "";
+  inserts.value.eventType = -1;
+  inserts.value.startDate = new Date().toISOString().slice(0, 10);
+  inserts.value.endDate = new Date().toISOString().slice(0, 10);
+  inserts.value.peopleInvolved = [];
+  inserts.value.location = "";
+  key.value++;
+}
 </script>
 
 <template>
-  <PrimaryButton buttonName="Add Event" @click="modal.open()"> </PrimaryButton>
+  <PrimaryButton buttonName="Add Event" @click="modal.open(), resetInputs()">
+  </PrimaryButton>
 
   <div
     role="dialog"
@@ -107,10 +99,11 @@ watchEffect(() => {
         </h3>
       </div>
 
-      <div class="dds__modal__body">
+      <div class="dds__modal__body" :key="key">
         <TextInput
           maxlength="30"
           boxName="Event Title"
+          ref="inserts.eventTitle"
           @typedText="handleEventTitle"
         />
         <Select
@@ -118,6 +111,7 @@ watchEffect(() => {
           v-bind:required="true"
           :list="['Phase', 'Activity']"
           selectTitle="Event Type"
+          ref="inserts.eventType"
           @selectValue="handleEventType"
         />
         <div class="date-container">
@@ -137,6 +131,7 @@ watchEffect(() => {
         <Dropdown
           dropdownName="People Involved"
           :data="editionUsers"
+          ref="peopleInvolved"
           @selectedId="handleDropdown"
         />
         <TextArea
@@ -148,8 +143,15 @@ watchEffect(() => {
       </div>
 
       <div class="dds__modal__footer">
-        <SecondaryButton @click="modal.close()" buttonName="Cancel" />
-        <PrimaryButton @click="sendBodyToParent(), modal.close()" buttonName="Save" :disabled="activateButton ? true : false " />
+        <SecondaryButton
+          @click="modal.close(), resetInputs()"
+          buttonName="Cancel"
+        />
+        <PrimaryButton
+          @click="sendBodyToParent(), modal.close(), resetInputs()"
+          buttonName="Save"
+          :disabled="activateButton ? true : false"
+        />
       </div>
     </div>
   </div>
