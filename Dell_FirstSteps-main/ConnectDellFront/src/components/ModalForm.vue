@@ -36,7 +36,8 @@ onMounted(() => {
 });
 
 watchEffect(() => {
-  if (inserts.value.eventTitle && inserts.value.eventType !== -1) {
+  console.log(inserts.value.eventType)
+  if (inserts.value.eventTitle !=="" && inserts.value.eventType !== -1) {
     activateButton.value = false;
     console.log("false");
   } else {
@@ -58,6 +59,7 @@ const handleEventTitle = (text: string) => {
   inserts.value.eventTitle = text;
 }
 const handleEventType = (text: string) => {
+  console.log(text);
   if (text === "Phase") inserts.value.eventType = 0;
   if (text === "Activity") inserts.value.eventType = 1;
 };
@@ -115,7 +117,7 @@ function resetInputs() {
           :list="['Phase', 'Activity']"
           selectTitle="Event Type"
           ref="inserts.eventType"
-          @selectValue="handleEventType"
+          @selectedValue="handleEventType"
         />
         <div class="date-container">
           <DatePicker

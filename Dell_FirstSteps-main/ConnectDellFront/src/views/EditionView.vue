@@ -5,6 +5,8 @@ import type Event from "@/interfaces/Event";
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import Calendar from "@/components/Calendar.vue";
+import ModalForm from "@/components/ModalForm.vue"
+import User from "@/interfaces/User";
 
 const route = useRoute();
 
@@ -15,7 +17,7 @@ type editionType = {
     description: string;
     startDate?: Date;
     endDate?: Date;
-    members: String[];
+    members: User[];
     events: Event[];
     mode: number;
 }
@@ -25,6 +27,8 @@ const programId = +route.params.programId;
 const userId = ref(+localStorage.getItem('userId')!).value;
 const userRole = ref(+localStorage.getItem('userRole')!).value;
 const edition = ref<editionType>();
+let eventBody: object;
+let calendarRefreshId = ref(0);
 
 onMounted(async () => {
   await getEdition(programId, editionId);
@@ -62,11 +66,32 @@ function hasEndDate() {
     return edition.value?.endDate == null ? '' : (' - ' + formatDate(edition.value?.endDate));
 }
 
-// function formatDate() {
-//     if (edition.value?.startDate) {
-//         return moment(String(edition.value.startDate)).format('MM/DD/YYYY')
-//     }
-// }
+async function handleSubmitForm() {
+  console.log("teste")
+  await axios
+    .post("https://localhost:5001/event/addEvent", {
+      name: eventBody.eventTitle,
+      peopleInvolved: eventBody.peopleInvolved,
+      startDate: eventBody.startDate,
+      endDate: eventBody.endDate,
+      where: eventBody.location,
+      eventType: eventBody.eventType,
+      editionId: editionId,
+    })
+    .then(function (response) {
+      return response;
+    })
+    .catch((error) => {
+      alert("Não foi possível atender a solicitação.");
+    });
+}
+
+const handlePostBody = (body: Object) => {
+  eventBody = body;
+  handleSubmitForm();
+  calendarRefreshId.value++;
+};
+
 </script>
 
 <template>
@@ -78,5 +103,12 @@ function hasEndDate() {
         Manage edition
     </button>
     <p>Edition's calendar</p>
-    <Calendar :events="edition?.events" :start-date="edition?.startDate" :end-date="edition?.endDate"></Calendar>
+    <ModalForm 
+      @sendBodyToParent="handlePostBody"
+      modal-title="Add Event"
+      :edition-users="edition?.members"
+      :edition-start-date="edition?.startDate"
+      :edition-end-date="edition?.endDate"
+    ></ModalForm>
+    <Calendar :id="calendarRefreshId" :events="edition?.events" :start-date="edition?.startDate" :end-date="edition?.endDate"></Calendar>
 </template>

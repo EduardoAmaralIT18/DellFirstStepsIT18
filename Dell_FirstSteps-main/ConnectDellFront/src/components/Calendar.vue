@@ -24,7 +24,7 @@ enum EventType {
   "Phase",
   "Activity"
 }
-     
+
 type TypeEvent = {
   id : Number,
   name : String,
@@ -151,18 +151,10 @@ const calendarOptions = ref({
     minute: '2-digit',
     meridiem: 'short'
   },
-  customButtons: {
-    buttonAddEvent: {
-      text: 'Add Event',
-      click: function() {
-        //TODO chamar componente criar evento
-      }
-    }
-  },
   headerToolbar: {  
     left: 'prev,next today',
     center: 'title',
-    right: 'dayGridMonth,timeGridWeek,timeGridDay buttonAddEvent'  
+    right: 'dayGridMonth,timeGridWeek'  
   },
   initialView: 'timeGridWeek',
   validRange: {
