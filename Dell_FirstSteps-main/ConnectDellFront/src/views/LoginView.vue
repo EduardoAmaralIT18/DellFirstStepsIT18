@@ -1,7 +1,7 @@
 <template>
   <div class="signin-page">
     <h1 class="signIn">Sign In</h1>
-    <Select id="select" :list="getEmails()" @selectValue="handleClick"></Select>
+    <Select id="select" :list="getEmails()" :placeholder="'Select user'" @selectedValue="handleClick"></Select>
   </div>
 </template>
 
@@ -29,7 +29,7 @@ onMounted(async () => {
 });
 
 function getEmails() {
-  return mappedData.value.map((user) => user.email);
+  return mappedData.value.map((user) => user.email!);
 }
 
 function handleClick(email: string) {

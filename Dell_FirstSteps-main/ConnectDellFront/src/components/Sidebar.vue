@@ -20,9 +20,9 @@ function handleClick(key: number) {
     }
     else if (key === 4) {
       router.push("/login")
-
   }
 }
+
 
 </script>
 

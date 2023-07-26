@@ -28,24 +28,30 @@ public class UserService : IUserService
         return userList;
     }
 
-    public async Task<int> ChangeRole(int userid, int role)
+    public async Task<UserModel> ChangeRole(int userId, int role)
     {
-        var usr = await dbUser.users.Where(usr => usr.id == userid).FirstOrDefaultAsync();
-        usr.role = (Role)role;
-       
-       int entries = await dbUser.SaveChangesAsync();
-       return entries;
+        var existingUser = await dbUser.users.FindAsync(userId);
+        if (existingUser == null)
+        {
+            throw new Exception("User not found");
+        }
+
+        existingUser.role = (Role)role;
+        var updatedUser = dbUser.users.Update(existingUser);
+        
+        await dbUser.SaveChangesAsync();
+        return updatedUser.Entity;
         
     }
 
-    public async Task<int> RemoveUser(int userid)
+    public async Task RemoveUser(int userId)
     {
-        var usr = await dbUser.users.Where(usr => usr.id == userid).FirstOrDefaultAsync();
-
-        dbUser.users.Remove(usr);
-
-        var entries = await dbUser.SaveChangesAsync();
-
-        return entries;
+        var existingUser = await dbUser.users.FindAsync(userId);
+        if (existingUser == null)
+        {
+            throw new Exception("User not found");
+        }
+        dbUser.users.Remove(existingUser);
+        await dbUser.SaveChangesAsync();
     }
 }
