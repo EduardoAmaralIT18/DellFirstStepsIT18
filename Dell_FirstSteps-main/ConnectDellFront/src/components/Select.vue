@@ -2,8 +2,8 @@
   <div class="dds__select" data-dds="select">
       <div class="dds__select__wrapper">
         <label id="select-label" for="select-label" class="dds__label">{{ boxName }}</label>
-        <select id="select-control-505500786" v-model="value" @change="handleChange" class="dds__select__field">
-          <option disabled value="Please select user">{{ placeholder }}</option>
+        <select id="select-control-505500786" v-model="selectedValue" @change="sendSelectedToParent" class="dds__select__field">
+          <option disabled value="">{{ placeholder }}</option>
           <option
             v-for="item in list" 
             :value="item">
@@ -16,32 +16,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-  defineProps({
-    list: Array<string>,
-    selectValue: Function,
-    boxName: String,
-    placeholder: String
-  });
 
-  const selectedOption = ref("");
+let selectedValue: string = '';
 
-  
-</script>
+const emits = defineEmits({
+  selectedValue: String
+})
 
-<script lang="ts">
-  export default {
-    data() {
-      return {
-        value: "Please select user",
-      };
-    },
-    methods: {
-      handleChange() {
-        this.$emit("selectValue", this.value);
-      }
-    },
-  };
+defineProps({
+  list: Array<string>,
+  boxName: String,
+  placeholder: String
+});
+
+function sendSelectedToParent() {
+  emits("selectedValue", selectedValue);
+}
+
+
 </script>
 
 

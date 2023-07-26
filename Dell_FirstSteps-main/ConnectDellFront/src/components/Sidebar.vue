@@ -19,7 +19,7 @@ function handleClick(key: number) {
     router.push("/news")
   }
   else if (key === 4) {
-    router.push("/login")
+    router.push("/")
   }
 }
 
