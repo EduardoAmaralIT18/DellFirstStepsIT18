@@ -8,12 +8,11 @@
     </div>
     <div class="dds__text-area__wrapper">
             <textarea class="dds__text-area" name="text-area-control-name-867784391" id="text-area-control-867784391"
-                      aria-required="true" aria-labelledby="text-area-label-867784391 text-area-helper-867784391"
-                      required
-                      v-model="info" minlength={{minLength}} maxlength={{maxLength}}
-                      @input="sendTextToParent"></textarea>
-      <small id="text-area-helper-359524269" class="dds__input-text__helper">{{ helperText }}</small>
-      <small id="text-area-error-867784391" class="dds__invalid-feedback">{{ errorText }}</small>
+                aria-required="true" aria-labelledby="text-area-label-867784391 text-area-helper-867784391" required
+                v-model="info" :minlength="`${minlength}`" :maxlength="`${maxlength}`" @input="sendTextToParent"></textarea>
+            <small id="text-area-helper-359524269" class="dds__input-text__helper">{{ helperText }}</small>
+            <small id="text-area-error-867784391" class="dds__invalid-feedback">{{ errorText }}</small>
+        </div>
     </div>
   </div>
 </template>
@@ -22,12 +21,12 @@
 import {ref} from 'vue';
 
 const props = defineProps({
-  boxName: String,
-  minLength: Number,
-  maxLength: Number,
-  helperText: String,
-  errorText: String,
-  required: Boolean,
+    boxName: String,
+    minlength: String,
+    maxlength: String,
+    helperText: String,
+    errorText: String,
+    required: Boolean,
 });
 
 const info = ref();
