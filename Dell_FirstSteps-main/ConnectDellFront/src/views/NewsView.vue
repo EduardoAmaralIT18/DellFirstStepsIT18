@@ -46,7 +46,7 @@ function isAuthor(authorId: number) {
     </div>
     <div v-for="item in news" class="dds__card" id="card-news">
       <div v-if="item.image != null" class="dds__card__media">
-        <img alt="news image" :src="item.image"/>
+        <img id="news-image" alt="news image" :src="item.image"/>
       </div>
       <div class="body-card">
         <h3>{{ item.title }}</h3>
@@ -97,6 +97,13 @@ h2 {
 
 .dds__card {
   padding: 30px 20px 40px 20px;
+}
+
+.dds__card__media {
+  img {
+    height: 100%;
+    object-fit: contain;
+  }
 }
 
 .body-card {

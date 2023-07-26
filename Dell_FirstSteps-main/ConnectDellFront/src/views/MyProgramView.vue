@@ -6,6 +6,7 @@ import CardPlus from "@/components/CardPlus.vue";
 import CardEdition from "@/components/CardEdition.vue";
 import User from "@/interfaces/User";
 import ProgramInfo from "@/interfaces/ProgramInfo";
+import router from "@/router";
 
 const route = useRoute();
 const program = ref<ProgramInfo>({
@@ -34,6 +35,7 @@ const getProgram = async (programId: number, userId: number) => {
     })
     .catch((e) => {
       console.error(e);
+      router.push('/notFound')
     });
 };
 
