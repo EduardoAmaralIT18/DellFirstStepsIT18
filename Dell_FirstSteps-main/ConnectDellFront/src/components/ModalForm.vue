@@ -36,22 +36,49 @@ emits("sendBodyToParent",inserts.value);
 
 const inserts = ref({
   eventTitle: "",
-  eventType: "",
+  eventType: -1,
   startDate: new Date().toISOString().slice(0, 10),
   endDate: new Date().toISOString().slice(0, 10),
-  peopleInvolved:[],
+  peopleInvolved: new Array,
   location: "",
 });
 const activateButton = ref(true);
 const handleEventTitle = (text: string) => (inserts.value.eventTitle = text);
-const handleEventType = (text: string) => (inserts.value.eventType = text);
+const handleEventType = (text: string) => {
+  if(text === "Phase"){
+    inserts.value.eventType = 0;
+  }
+  if(text === "Activity"){
+  inserts.value.eventType = 1;
+  }
+}
 const handleStartDate = (date: string) => (inserts.value.startDate = date);
 const handleEndDate = (date: string) => (inserts.value.endDate = date);
-const handleDropdown = (users: []) => (inserts.value.peopleInvolved = users);
+const handleDropdown = (users: []) =>
+ {
+  inserts.value.peopleInvolved = [];
+  users.forEach(id => {
+  inserts.value.peopleInvolved.push(props.editionUsers?.find(user => user.id === id) )
+ })};
+
+//  function resetInputs(){
+//   inserts.value.eventTitle="";
+//   inserts.value.eventType=-1;
+//   inserts.value.startDate=new Date().toISOString().slice(0, 10);
+//   inserts.value.endDate=new Date().toISOString().slice(0, 10);
+//   inserts.value.peopleInvolved=[];
+//   inserts.value.location= "";
+//  }
+//  function teste(){
+//   setTimeout(() => { resetInputs()}, 1000)
+//  }
+ 
+
+
 const handleLocation = (text: string) => (inserts.value.location = text);
 
 watchEffect(() => {
-  if(inserts.value.eventTitle && inserts.value.eventType){
+  if(inserts.value.eventTitle && inserts.value.eventType!==-1){
     activateButton.value=false;
     console.log("false")
   }
@@ -87,6 +114,7 @@ watchEffect(() => {
           @typedText="handleEventTitle"
         />
         <Select
+          placeholder="select EventType"
           v-bind:required="true"
           :list="['Phase', 'Activity']"
           selectTitle="Event Type"

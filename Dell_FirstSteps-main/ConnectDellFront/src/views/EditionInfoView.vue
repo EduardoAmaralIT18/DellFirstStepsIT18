@@ -9,7 +9,7 @@ import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 const data= ref([]);
 let eventBody:object;
-const handlePostBody = (body: Object) =>{eventBody=body; handleSubmitForm()}
+const handlePostBody = (body: Object) =>{eventBody=body;console.log("body",eventBody); handleSubmitForm()}
 async function handleClick() {
             await axios
                 .get('https://localhost:5001/edition/getUsersNotAdmin')
@@ -30,15 +30,24 @@ async function getMembers(){
             });
         }
 async function handleSubmitForm(){
+    console.log("cheguei no post")
     await axios .post("https://localhost:5001/event/addEvent", {
           name: eventBody.eventTitle,
           peopleInvolved: eventBody.peopleInvolved,
           startDate: eventBody.startDate,
           endDate: eventBody.endDate,
           where: eventBody.location,
-          eventType: 1 ,
+          eventType: eventBody.eventType,
           editionId: data.editionId,
         })
+        .then(function (response) {
+          console.log("1",response.data)
+          return response;
+        })
+        .catch((error) => {
+                console.log(error)
+                alert("Não foi possível atender a solicitação.");
+        });
 }
 onMounted(async() => {
     await getMembers();
