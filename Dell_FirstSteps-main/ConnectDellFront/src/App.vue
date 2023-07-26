@@ -18,8 +18,6 @@ const route = useRoute();
 watch(route, () => {
   name.value = localStorage.getItem("userName")!;
   role.value = localStorage.getItem("userRole")!;
-  console.log("original", routes)
-  console.log("validação", route.path.replace(new RegExp("\\d+"),":id"))
 });
 
 const routes = router.options.routes;
