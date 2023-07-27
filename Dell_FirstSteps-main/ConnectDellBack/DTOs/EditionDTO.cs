@@ -5,11 +5,8 @@ using ConnectDellBack.Models;
 public class EditionDTO
 {
     public int id { get; set; }
-    [MinLength(5)]
     public string name { get; set; } = null!;
-    [MinLength(1)]
     public int numberOfInterns { get; set; }
-    [MinLength(5)]
     public string description { get; set; }
     public string curriculum { get; set; }
     public int mode { get; set; }
