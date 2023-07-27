@@ -6,12 +6,23 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { computed, onMounted, PropType, ref, watch } from 'vue'
 import Modal from './ModalEventInfo.vue'
+import EditionForm from './EditionForm.vue'
 
 const Props = defineProps({
   startDate: Date,
   endDate: Date,
   events : Array as PropType<TypeEvent[]>,
 })
+
+const emits = defineEmits({
+  sendStart: Object,
+  sendEnd: Object
+});
+
+const keyCalendar = ref(0)
+let eventToPass = ref();
+let selectCheck = ref(["Phase","Activity"])
+
 
 enum PhaseType {
   "Setup",
@@ -35,16 +46,15 @@ type TypeEvent = {
   where : String
 }
 
-let eventToPass = ref();
-
 let toggleEventClick = ref(false);
 const handleEventClick = (args: any) => {
   argsToTypeEvent(args);
   toggleEventClick.value = !toggleEventClick.value;
 }
 
-const handleDateSelect = () => {
-  console.log("to-do");
+const handleDateSelect = (info : any) => {
+  emits("sendStart", new Date(info.startStr));
+  emits("sendEnd", new Date(info.endStr));
 }
 
 
@@ -78,7 +88,7 @@ function loadEvent() {
           end: event.endDate,
         },
         allDay: true,
-        display: 'none',
+        display: "multi-day",
         borderColor: "#7E7E7E",
         color: "#61C1EB",
         textColor: "#0E0E0E"
@@ -97,7 +107,7 @@ function loadEvent() {
           start: event.startDate, 
           end: event.endDate,
         },
-        display: 'none',
+        display: "multi-day",
         color: '#61C1EBF69AC6',
         borderColor: "#7E7E7E",
         textColor: "#0E0E0E"
@@ -106,7 +116,6 @@ function loadEvent() {
   })
 }
 
-let selectCheck = ref([])
 watch(selectCheck,() => {
   checkEvent();
 })
@@ -157,16 +166,25 @@ const calendarOptions = ref({
     right: 'dayGridMonth,timeGridWeek'  
   },
   initialView: 'timeGridWeek',
-  validRange: {
-    start: Props.startDate,
-    end: Props.endDate,
-  },
   selectable: true,
   eventClick: handleEventClick,
   select: handleDateSelect
 } as CalendarOptions);
 
-loadEvent()
+function createValidRange() {
+  calendarOptions.value.validRange = {
+    start: Props.startDate,
+    end: Props.endDate
+  }
+}
+
+
+onMounted(() => {
+  setTimeout(() => {
+    createValidRange()
+    loadEvent()
+  }, 1000);
+})
 
 </script>
 
@@ -198,6 +216,7 @@ loadEvent()
       <div>
       <FullCalendar
         class='calendar'
+        :id="keyCalendar"
         :options='calendarOptions'
       >
         <template v-slot:eventContent='arg'>
@@ -224,6 +243,12 @@ loadEvent()
   --fc-button-hover-border-color: #002A58;
   --fc-button-active-bg-color: #002A58;
   --fc-button-active-border-color: #002A58;
+}
+
+.eventBox {
+  word-wrap: break-word;  
+  overflow-wrap: break-word;  
+  word-break: break-all;
 }
 
 .component-main {

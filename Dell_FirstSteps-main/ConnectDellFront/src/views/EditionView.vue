@@ -2,7 +2,7 @@
 import axios from "axios";
 import type Edition from "@/interfaces/Edition";
 import type Event from "@/interfaces/Event";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import Calendar from "@/components/Calendar.vue";
 import ModalForm from "@/components/ModalForm.vue"
@@ -18,12 +18,12 @@ type editionType = {
     startDate?: Date;
     endDate?: Date;
     members: User[];
+    interns: User[];
     events: Event[];
     mode: number;
 }
 
-const editionId = +route.params.editionId;
-const programId = +route.params.programId;
+const editionId = +route.params.id;
 const userId = ref(+localStorage.getItem('userId')!).value;
 const userRole = ref(+localStorage.getItem('userRole')!).value;
 const edition = ref<editionType>();
@@ -31,8 +31,7 @@ let eventBody: object;
 let calendarRefreshId = ref(0);
 
 onMounted(async () => {
-  await getEdition(programId, editionId);
-  console.log(edition.value);
+  await getEdition(3241, editionId);
 })
 
 const getEdition = async (programId: number, editionId: number) => {
@@ -91,6 +90,13 @@ const handlePostBody = (body: Object) => {
   calendarRefreshId.value++;
 };
 
+let dateStart = ref();
+let endStart = ref();
+
+watch(dateStart,() => {
+  console.log(dateStart.value)
+})
+
 </script>
 
 <template>
@@ -109,7 +115,7 @@ const handlePostBody = (body: Object) => {
           class="modalbutton"
           @sendBodyToParent="handlePostBody"
           modal-title="Add Event"
-          :edition-users="edition?.members"
+          :edition-users="edition?.members.concat(edition?.interns)"
           :edition-start-date="edition?.startDate"
           :edition-end-date="edition?.endDate">
         </ModalForm>
@@ -120,7 +126,12 @@ const handlePostBody = (body: Object) => {
         </button>
     </div>
 
-    <Calendar :id="calendarRefreshId" :events="edition?.events" :start-date="edition?.startDate" :end-date="edition?.endDate"></Calendar>
+    <Calendar :id="calendarRefreshId" 
+      :events="edition?.events" 
+      :start-date="edition?.startDate" 
+      :end-date="edition?.endDate" 
+      @sendStart="dateStart">
+    </Calendar>
   </div>
 </template>
 
@@ -128,7 +139,7 @@ const handlePostBody = (body: Object) => {
 
 .container{
   display: flex;
-  width: max-content;
+
   flex-direction: column;
   margin: 2em;
   gap: 20px;

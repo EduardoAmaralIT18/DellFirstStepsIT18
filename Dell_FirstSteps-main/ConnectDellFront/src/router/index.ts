@@ -52,7 +52,7 @@ const router = createRouter({
       component: CreateProgramView,
     },
     {
-      path: '/edition/:editionId/:programId',
+      path: '/edition/:id',
       name: 'Edition',
       component: EditionViewVue,
     },

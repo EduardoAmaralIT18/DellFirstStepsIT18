@@ -63,6 +63,4 @@
   background: transparent;
   backdrop-filter: blur(1px);
 }
-
-
 </style>    

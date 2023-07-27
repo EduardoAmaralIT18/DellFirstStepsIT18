@@ -96,6 +96,7 @@ public class EditionService : IEditionService
         var edition = await _dbContext.editions.Where(ed => ed.id == idEdition)
                                                 .Include(ed => ed.program)
                                                 .Include(ed => ed.events)
+                                                .Include(ed => ed.interns)
                                                 //.Include(ed => ed.membership)
                                                 .Include(ed => ed.members)
                                                 .FirstOrDefaultAsync();
