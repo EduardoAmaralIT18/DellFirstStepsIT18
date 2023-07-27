@@ -9,7 +9,7 @@ const props = defineProps({
 })
 
 
-const info = ref<String>(props.initialValue!)
+const info = ref<String>(`${props.initialValue ? props.initialValue : ''}`)
 
 const emits = defineEmits({
   typedText: String
@@ -17,7 +17,7 @@ const emits = defineEmits({
 
 const sendTextToParent = (text: string) => {
   info.value = text;
-  emits("typedText", info.value);
+  emits("typedText", info);
 }
 </script>
 
