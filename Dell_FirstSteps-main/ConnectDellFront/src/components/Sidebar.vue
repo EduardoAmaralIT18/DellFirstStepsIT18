@@ -110,6 +110,10 @@ nav {
   color: #0d76b2;
 }
 
+.dds__side-nav {
+  height: 100%;
+}
+
 .dds__side-nav__wrapper {
   width: 15rem;
   min-width: 10rem;

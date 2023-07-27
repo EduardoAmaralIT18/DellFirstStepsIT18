@@ -2,50 +2,51 @@
 import type Edition from "@/interfaces/Edition";
 
 function dateCompare(start: string, end: string) {
-  const startDate: Date = new Date(start)
-  const endDate: Date = new Date(end)
-  const today: Date = new Date()
+  const startDate: Date = new Date(start);
+  const endDate: Date = new Date(end);
+  const today: Date = new Date();
 
   if (startDate > today) {
-    return 'Not Started'
+    return "Not Started";
   }
   if (endDate < today) {
-    return 'Finished'
+    return "Finished";
   }
-  if ((startDate <= today) && (endDate >= today)) {
-    return 'Ongoing'
+  if (startDate <= today && endDate >= today) {
+    return "Ongoing";
   }
-  return 'Error'
-
+  return "Error";
 }
 
-defineProps<Edition>()
+defineProps<Edition>();
 </script>
 
 <template>
   <div class="dds__card">
     <div class="dds__card__content">
       <div class="dds__card__header">
-      <span class="dds__card__header__text">
-        <h5 class="dds__card__header__title">{{ name }}</h5>
-      </span>
+        <span class="dds__card__header__text">
+          <h5 class="dds__card__header__title">{{ name }}</h5>
+        </span>
         <span class="dds__badge dds__badge--brand dds__badge--light">
-          <span class="dds__badge__label">{{
-            dateCompare(startDate.toString(), endDate.toString())
-            }}
+          <span class="dds__badge__label"
+            >{{ dateCompare(startDate.toString(), endDate.toString()) }}
           </span>
         </span>
       </div>
       <div class="dds__card__body">{{ description }}</div>
     </div>
-    <RouterLink style="text-decoration: none" class="link" :to="`/editioninfo/${id}`">
+    <RouterLink
+      style="text-decoration: none"
+      class="link"
+      :to="`/edition/${id}`"
+    >
       Learn more ➔
     </RouterLink>
   </div>
 </template>
 
 <style scoped>
-
 .dds__card {
   box-shadow: rgba(0, 0, 0, 0.176) 0px 3px 8px;
   border-radius: 10px;
@@ -61,7 +62,7 @@ defineProps<Edition>()
 
 .dds__card__header__title {
   font-size: 19px;
-  color: #0672CB;
+  color: #0672cb;
   text-align: left;
 }
 
@@ -82,5 +83,4 @@ defineProps<Edition>()
   left: 20px;
   bottom: 10px;
 }
-
 </style>
