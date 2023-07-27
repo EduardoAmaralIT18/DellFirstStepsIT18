@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import axios from "axios";
 import News from "@/interfaces/News";
-import {onMounted, ref} from "vue";
+import { onMounted, ref } from "vue";
 
 onMounted(async () => {
   await getNews();
@@ -11,13 +11,13 @@ const news = ref<News[]>([]);
 
 const getNews = async () => {
   await axios
-      .get(`https://localhost:5001/News/getNews`)
-      .then((response) => {
-        news.value = response.data;
-      })
-      .catch((e) => {
-        console.error(e);
-      });
+    .get(`https://localhost:5001/News/getNews`)
+    .then((response) => {
+      news.value = response.data;
+    })
+    .catch((e) => {
+      console.error(e);
+    });
 };
 
 function isAdmin() {
@@ -35,9 +35,9 @@ function isAuthor(authorId: number) {
       <h2>News</h2>
       <RouterLink to="addNews">
         <button
-            class="manageProgram button dds__button dds__button&#45;&#45;primary"
-            type="button"
-            v-if="isAdmin()"
+          class="manageProgram button dds__button dds__button&#45;&#45;primary"
+          type="button"
+          v-if="isAdmin()"
         >
           <i class="dds__icon dds__icon--plus-add" aria-hidden="true"></i>
           Add News
@@ -46,7 +46,7 @@ function isAuthor(authorId: number) {
     </div>
     <div v-for="item in news" class="dds__card" id="card-news">
       <div v-if="item.image != null" class="dds__card__media">
-        <img id="news-image" alt="news image" :src="item.image"/>
+        <img id="news-image" alt="news image" :src="item.image" />
       </div>
       <div class="body-card">
         <h3>{{ item.title }}</h3>
@@ -57,10 +57,10 @@ function isAuthor(authorId: number) {
         <span>{{ item.date }}</span>
         <RouterLink :to="`editNews/${item.id}`" v-if="isAuthor(item.authorId)">
           <button
-              class="manageProgram button dds__button dds__button&#45;&#45;primary"
-              type="button"
+            class="manageProgram button dds__button dds__button&#45;&#45;primary"
+            type="button"
           >
-            <img src="../assets/pencil.png" alt="pencil icon" width="19"/>
+            <i class="dds__icon dds__icon--pencil" aria-hidden="true"></i>
             Manage News
           </button>
         </RouterLink>
@@ -122,10 +122,9 @@ h2 {
   h3 {
     font-weight: bold;
     font-size: 20px;
-    margin-top: 10px
+    margin-top: 10px;
   }
 }
-
 
 .footer-card {
   display: flex;
@@ -136,8 +135,10 @@ h2 {
     color: gray;
   }
 
-  img {
+  i {
     margin-right: 10px;
+    font-size: 20px;
+    opacity: 0.8;
   }
 }
 </style>

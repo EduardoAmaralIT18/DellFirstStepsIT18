@@ -32,7 +32,7 @@ public class EditionController : ControllerBase
         }
     }
 
-    [HttpPost("updateEdition")]
+    [HttpPatch("updateEdition")]
     public async Task<ActionResult> UpdateEdition(EditionModel editionForm)
     {
         int entries = await _service.UpdateEdition(editionForm);
@@ -61,7 +61,7 @@ public class EditionController : ControllerBase
     }
 
     [HttpGet("getEditionsNames")]
-     public async Task<ActionResult<EditionDTO>> GetEditionsNames(int idProgram)
+    public async Task<ActionResult<EditionDTO>> GetEditionsNames(int idProgram)
     {
         var result = await _service.AllEditions(idProgram);
         return result == null ? NoContent() : Ok(result);
