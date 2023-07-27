@@ -25,11 +25,13 @@ import axios from "axios";
         <Select boxName="Work Model" placeholder="Please select a work model" :list="workModel" @selectValue="handleSelect"></Select>
         <TextArea boxName="Description" v-bind:minLength=10 v-bind:maxLength=50 @descriptionText="handleDescription"></TextArea>
         <TextArea boxName="Curriculum" @descriptionText="handleCurriculum"></TextArea>
-        <PrimaryButton class="dds__button" buttonName="Submit" @clicked="handleClick" :isDisabled="activateButton()"></PrimaryButton>
+        <PrimaryButton class="dds__button" buttonName="Submit" @clicked="handleClick" :disabled="activateButton()"></PrimaryButton>
     </div>
 </template>
 
 <script lang="ts">
+import axios from "axios";
+
 export default {
     data() {
         return {
@@ -97,7 +99,7 @@ export default {
                 .then(() => {
                 alert("Solicitação atendida com sucesso!");
             })
-                .catch((error) => {
+                .catch(() => {
                 alert("Não foi possível atender a solicitação.");
             });
         },

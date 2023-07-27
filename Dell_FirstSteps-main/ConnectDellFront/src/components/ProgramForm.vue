@@ -26,7 +26,7 @@ import axios from "axios";
 
 <script lang="ts">
 import axios from "axios";
-import type Program from "@/interfaces/Program";
+import type ProgramInfo from "@/interfaces/ProgramInfo";
 
 export default {
     data() {
@@ -38,7 +38,7 @@ export default {
                 description: "",
                 owners: [],
                 isBasic: false,
-            } as Program,
+            } as ProgramInfo,
             ownerList: new Array,
             nameList: new Array
         };
@@ -57,7 +57,7 @@ export default {
             this.programInfo.endDate = date;
         },
         handleDropdown(owner: []): void {   
-            this.programInfo.owners = [];   
+            this.programInfo.owners = [];
             owner.forEach(id => {
                 this.programInfo.owners?.push(this.ownerList.find(user => user.id === id));
             })
