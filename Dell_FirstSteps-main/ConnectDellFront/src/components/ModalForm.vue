@@ -36,13 +36,11 @@ onMounted(() => {
 });
 
 watchEffect(() => {
-  console.log(inserts.value.eventType)
   if (inserts.value.eventTitle !=="" && inserts.value.eventType !== -1) {
     activateButton.value = false;
     console.log("false");
   } else {
     activateButton.value = true;
-    console.log("true");
   }
 });
 
@@ -88,6 +86,7 @@ function resetInputs() {
 
 <template>
   <PrimaryButton buttonName="Add Event" @click="modal.open(), resetInputs()">
+    
   </PrimaryButton>
 
   <div
@@ -118,7 +117,7 @@ function resetInputs() {
           selectTitle="Event Type"
           ref="inserts.eventType"
           @selectedValue="handleEventType"
-        />
+        ></Select>
         <div class="date-container">
           <DatePicker
             boxName="Start Date"

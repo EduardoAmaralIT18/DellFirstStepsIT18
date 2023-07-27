@@ -37,10 +37,10 @@ type TypeEvent = {
 
 let eventToPass = ref();
 
-let aux = ref(false);
+let toggleEventClick = ref(false);
 const handleEventClick = (args: any) => {
   argsToTypeEvent(args);
-  aux.value = !aux.value;
+  toggleEventClick.value = !toggleEventClick.value;
 }
 
 const handleDateSelect = () => {
@@ -171,15 +171,31 @@ loadEvent()
 </script>
 
 <template>
-  <div class='component'>
+  <!-- <div class='component'> -->
     <div class='component-main'>
-      <div>
-        <input type="checkbox" id="phase" value="Phase" v-model="selectCheck"/>
-        <label for="phase">Phase</label>
-
-        <input type="checkbox" id="activity" value="Activity" v-model="selectCheck"/>
-        <label for="activity" id="activity">Activity</label>
+      <div class="checkbox-layout">
+          <label class="dds__checkbox__label" for="phase">
+            <input
+              type="checkbox"
+              id="phase"
+              class="dds__checkbox__input"
+              value="Phase"
+              v-model="selectCheck"
+            />
+            <span class="test">Phase</span>
+          </label>
+          <label class="dds__checkbox__label" for="activity">
+            <input
+              type="checkbox"
+              id="activity"
+              class="dds__checkbox__input"
+              value="Activity"
+              v-model="selectCheck"
+            />
+            <span>Activity</span>
+          </label>
       </div>
+      <div>
       <FullCalendar
         class='calendar'
         :options='calendarOptions'
@@ -187,16 +203,57 @@ loadEvent()
         <template v-slot:eventContent='arg'>
           <b>{{ arg.event.id}}</b>
           <i>{{ arg.event.title }}</i>
-          <Modal :event="eventToPass" v-if="aux"></Modal>
+          <Modal :event="eventToPass" v-if="toggleEventClick"></Modal>
         </template>
       </FullCalendar>
+      </div>
     </div>
-  </div>
+  <!-- </div> -->
   
 </template>
 
 
 <style lang='css'>
+
+.fc { /* the calendar root */
+  
+  --fc-today-bg-color: rgba(13,118,178,.2);
+  --fc-button-bg-color:#00468B;
+  --fc-button-border-color: #002A58;
+  --fc-button-hover-bg-color: #002A58;
+  --fc-button-hover-border-color: #002A58;
+  --fc-button-active-bg-color: #002A58;
+  --fc-button-active-border-color: #002A58;
+}
+
+.component-main {
+  max-width: 1100px;
+  min-width: 900px;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 400;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.checkbox-layout {
+  align-self: flex-start;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #1282D6;
+  border-radius: 4px;
+  max-width: 1184px;
+}
+
+.dds__checkbox__input + span {
+  font-size: inherit;
+  color: white;
+  font-weight: 400;
+}
+
 
 h2 {
   margin: 0;
@@ -218,31 +275,4 @@ li {
 b { /* used for event dates/times */
   margin-right: 3px;
 }
-
-.component {
-  display: flex;
-  min-height: 100%;
-  font-family: Roboto;
-  font-size: 14px;
-  font-weight: 400;
-}
-
-.component-main {
-  flex-grow: 1;
-  padding: 3em;
-}
-
-.fc { /* the calendar root */
-  max-width: 1100px;
-  margin: 0 auto;
-  --fc-today-bg-color: rgba(13,118,178,.2);
-  --fc-button-bg-color:#00468B;
-  --fc-button-border-color: #002A58;
-  --fc-button-hover-bg-color: #002A58;
-  --fc-button-hover-border-color: #002A58;
-  --fc-button-active-bg-color: #002A58;
-  --fc-button-active-border-color: #002A58;
-}
-
-
 </style>
