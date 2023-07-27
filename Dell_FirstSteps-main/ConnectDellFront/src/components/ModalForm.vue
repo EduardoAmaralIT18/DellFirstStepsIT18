@@ -12,16 +12,22 @@ import SecondaryButton from "./SecondaryButton.vue";
 declare var DDS: any;
 
 const props = defineProps({
+  eventTitle: String,
+  eventType: Number,
   modalTitle: String,
   editionUsers: Array as PropType<User[]>,
-  editionStartDate: Date,
-  editionEndDate: Date,
+  eventStartDate: Date,
+  eventEndDate: Date,
+  peopleInvolved: Array,
+  location: String,
+  editMode: Boolean,
 });
 
 const modal = ref();
 const element = ref(null);
 const key = ref(0);
 const activateButton = ref(true);
+
 const inserts = ref({
   eventTitle: "",
   eventType: -1,
@@ -33,13 +39,15 @@ const inserts = ref({
 
 onMounted(() => {
   modal.value = DDS.Modal(element.value);
+  console.log(props.editMode);
+  if (props.editMode) activateButton.value = true;
 });
 
 watchEffect(() => {
   if (inserts.value.eventTitle && inserts.value.eventType !== -1) {
     activateButton.value = false;
-  } else {
-    activateButton.value = true;
+  } else if (props.editMode) {
+    activateButton.value = false;
   }
 });
 
@@ -52,9 +60,9 @@ function sendBodyToParent() {
 }
 
 const handleEventTitle = (text: string) => {
-  text = text.trim();
+  // text = text.trim();
   inserts.value.eventTitle = text;
-}
+};
 const handleEventType = (text: string) => {
   if (text === "Phase") inserts.value.eventType = 0;
   if (text === "Activity") inserts.value.eventType = 1;
@@ -70,6 +78,12 @@ const handleDropdown = (users: []) => {
   });
 };
 const handleLocation = (text: string) => (inserts.value.location = text);
+
+const checkEventType = () => {
+  return props.eventType === -1;
+};
+
+const phaseList = ["Phase", "Activity"];
 
 function resetInputs() {
   inserts.value.eventTitle = "";
@@ -105,13 +119,15 @@ function resetInputs() {
           maxlength="30"
           boxName="Event Title"
           @typedText="handleEventTitle"
+          :data="props.eventTitle"
         />
         <Select
-          placeholder="Select Event Type"
+          :placeholder="checkEventType() ? 'Event Type' : phaseList[props.eventType!] "
           v-bind:required="true"
-          :list="['Phase', 'Activity']"
+          :list="phaseList"
           selectTitle="Event Type"
           @selectedValue="handleEventType"
+          :value="checkEventType() ? 'Event Type' : phaseList[props.eventType!] "
         />
         <div class="date-container">
           <DatePicker
@@ -129,8 +145,9 @@ function resetInputs() {
         </div>
         <Dropdown
           dropdownName="People Involved"
-          :data="editionUsers"
-          ref="peopleInvolved"
+          :data="props.editionUsers"
+          :peopleInvolved="props.peopleInvolved"
+          :selected="props.peopleInvolved"
           @selectedId="handleDropdown"
         />
         <TextArea
@@ -138,6 +155,7 @@ function resetInputs() {
           maxlength="120"
           boxName="Location"
           :required="false"
+          :description="props.location"
         />
       </div>
 
