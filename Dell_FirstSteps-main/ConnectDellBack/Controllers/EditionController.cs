@@ -32,7 +32,7 @@ public class EditionController : ControllerBase
         }
     }
 
-    [HttpPatch("updateEdition")]
+    [HttpPost("updateEdition")]
     public async Task<ActionResult> UpdateEdition(EditionModel editionForm)
     {
         int entries = await _service.UpdateEdition(editionForm);
