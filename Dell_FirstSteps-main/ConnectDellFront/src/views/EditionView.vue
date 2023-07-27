@@ -16,8 +16,8 @@ type editionType = {
     name: string;
     programName : string;
     description: string;
-    startDate?: Date;
-    endDate?: Date;
+    startDate?: string;
+    endDate?: string;
     members: User[];
     interns: User[];
     events: Event[];
@@ -57,7 +57,7 @@ function modeToString() {
     }
 }
 
-function formatDate(dates: Date) {
+function formatDate(dates: string) {
   const date = new Date(dates);
   
   return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;

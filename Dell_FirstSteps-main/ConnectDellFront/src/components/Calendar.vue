@@ -1,16 +1,15 @@
 <script setup lang='ts'>
-import { CalendarOptions, EventApi, DateSelectArg, EventClickArg, type EventSourceInput } from '@fullcalendar/core'
+import { CalendarOptions } from '@fullcalendar/core'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import { computed, onMounted, PropType, ref, watch } from 'vue'
+import { onMounted, PropType, ref, watch } from 'vue'
 import Modal from './ModalEventInfo.vue'
-import EditionForm from './EditionForm.vue'
 
 const Props = defineProps({
-  startDate: Date,
-  endDate: Date,
+  startDate: String,
+  endDate: String,
   events : Array as PropType<TypeEvent[]>,
 })
 
@@ -24,18 +23,6 @@ let eventToPass = ref();
 let selectCheck = ref(["Phase","Activity"])
 
 
-enum PhaseType {
-  "Setup",
-  "Training",
-  "Sprints",
-  "HandsOn"
-}
-
-enum EventType {
-  "Phase",
-  "Activity"
-}
-
 type TypeEvent = {
   id : Number,
   name : String,
@@ -48,18 +35,17 @@ type TypeEvent = {
 
 let toggleEventClick = ref(false);
 const handleEventClick = (args: any) => {
-  if(userRole.value === 0) {
-    argsToTypeEvent(args);
-    toggleEventClick.value = !toggleEventClick.value;
-  }
+  argsToTypeEvent(args);
+  toggleEventClick.value = !toggleEventClick.value;
 }
 
 const handleDateSelect = (info : any) => {
-  
-  emits("sendDate", {
-    startDate: new Date(info.startStr),
-    endDate: new Date(info.endStr) 
-  });
+  if(userRole.value === 0) {
+    emits("sendDate", {
+      startDate: new Date(info.startStr),
+      endDate: new Date(info.endStr) 
+    });
+  }
 }
 
 
