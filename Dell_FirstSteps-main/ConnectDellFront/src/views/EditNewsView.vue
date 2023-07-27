@@ -12,6 +12,7 @@ import type AddNews from "@/interfaces/AddNews";
 import FileInput from "@/components/FileInput.vue";
 import GoBackButton from "@/components/GoBackButton.vue";
 import {useRoute} from "vue-router";
+import router from "@/router";
 
 
 
@@ -30,6 +31,8 @@ const newsToBeUpdated = ref<News>();
 onMounted(async () => {
   await getNews(newsId);
   await getPrograms(author, role);
+
+  
 })
 
 const getNews = async (newsId: number) => {
@@ -66,10 +69,10 @@ const handleText = (text: string) => {
 const disableButton = () => {
   if (newsToBeUpdated.value?.title?.trim().length > 5 &&
       newsToBeUpdated.value?.text?.trim().length > 5 &&
-      newsToBeUpdated.value?.program > 0) {
-    return false
+      newsToBeUpdated.value?.programId > 0) {
+    return false;
   }
-  return true
+  return true;
 }
 
 const selectedFile = ref<File | null>(null);
@@ -92,6 +95,9 @@ const submitForm = () => {
   formData.append('author', newsToBeUpdated.value.authorId.toString());
   formData.append('program', newsToBeUpdated.value.programId.toString());
   formData.append('text', newsToBeUpdated.value.text);
+  if(selectedFile.value !== null){
+    formData.append('imageName', selectedFile.value!.name);
+  }
   console.log(newsToBeUpdated.value)
 
   axios
@@ -102,7 +108,8 @@ const submitForm = () => {
       })
       .then((response) => {
         zeroStates()
-        alert('Notícia adicionada com sucesso')
+        alert('Notícia alterada com sucesso.')
+        router.push("/news")
       })
       .catch((error) => {
         console.error('Erro ao enviar a imagem:', error);
@@ -110,9 +117,6 @@ const submitForm = () => {
 
 }
 
-setInterval(() => {
-  console.log(newsToBeUpdated.value)
-},10000)
 </script>
 
 <template>
@@ -131,8 +135,8 @@ setInterval(() => {
       <FileInput
           :image-name="`Limit 2MB - PNG or JPG accepted.`"
           @fileSelected="onFileChange"></FileInput>
-<!--      <PrimaryButton buttonName="Submit" :disabled="disableButton()" @clicked="submitForm"/>-->
-      <PrimaryButton buttonName="Submit" @clicked="submitForm"/>
+     <PrimaryButton buttonName="Submit" :disabled="disableButton()" @clicked="submitForm"/>
+      <!-- <PrimaryButton buttonName="Submit" @clicked="submitForm"/> -->
     </form>
   </div>
 </template>
