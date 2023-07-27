@@ -15,10 +15,13 @@ import "@dds/components/src/scss/dds-icons.scss";
                 @input="sendStartToParent(preset)"/>
             <input v-else type="date" class="dds__date-picker__input" placeholder="Enter the date" required="true" maxlength="256"
                 id="date-picker-control-206993451" name="date-picker-control-name-206993451"
-                aria-labelledby="date-picker-label-206993451 date-picker-helper-206993451" v-model="info"
-                @input="sendEndToParent(info)" :min="minRequired ? preset : undefined"/>
+                aria-labelledby="date-picker-label-206993451 date-picker-helper-206993451" v-model="preset"
+                @input="sendStartToParent(preset)" />
 
-            <!-- <input type="date" class="dds__date-picker__input" placeholder="Enter the date" required="true" maxlength="256"
+
+
+            <!-- :min="minRequired ? preset : undefined" 
+                <input type="date" class="dds__date-picker__input" placeholder="Enter the date" required="true" maxlength="256"
                 id="date-picker-control-206993451" name="date-picker-control-name-206993451"
                 aria-labelledby="date-picker-label-206993451 date-picker-helper-206993451" :value="dateNow ? preset : info" :v-model="dateNow ? preset : info"
                 @input="dateNow? sendStartToParent(preset) : sendEndToParent(info)" :min="minRequired ? preset : undefined"/> -->
@@ -43,7 +46,8 @@ export default {
         boxName: String,
         required: Boolean,
         dateNow: Boolean,
-        minRequired: Boolean
+        minRequired: Boolean,
+        initialDate: String
     },
     methods: {
         sendStartToParent(date: string) {
@@ -54,7 +58,13 @@ export default {
             this.info = date;
             this.$emit("selectedDate", date);
         }
-    }
+    },
+    mounted() {
+        console.log(this.initialDate)
+        if(this.initialDate != undefined){
+            this.preset = this.initialDate!
+        }
+    },
 };
 </script>
 

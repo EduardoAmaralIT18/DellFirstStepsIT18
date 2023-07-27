@@ -5,6 +5,7 @@ import NewsView from '../views/NewsView.vue';
 import ProgramView from "../views/ProgramView.vue";
 import MyProgramView from '../views/MyProgramView.vue';
 import CreateProgramView from '../views/CreateProgramView.vue';
+import EditProgramView from '../views/EditProgramView.vue'
 import EditionInfoView from '../views/EditionInfoView.vue';
 import CreateEditionView from '../views/CreateEditionView.vue';
 import UsersView from "@/views/UsersView.vue";
@@ -74,6 +75,11 @@ const router = createRouter({
       path: '/:pathMatch(.*)*',
       component: NotFoundView
     },
+    {
+      path: '/editprogram/:id',
+      name: 'EditProgram',
+      component: EditProgramView,
+    }
   ]
 })
 
