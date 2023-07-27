@@ -20,20 +20,23 @@
 
 <script setup lang="ts">
 
-defineProps({
+import {ref} from "vue";
+
+const props = defineProps({
   list: Array<string>,
   selectValue: Function,
   selectTitle: String,
   required: Boolean,
   boxName: String,
-  placeholder: String
+  placeholder: String,
+  initialValue: String
 });
-
-let selectedValue: string = '';
 
 const emits = defineEmits({
   selectedValue: String
 })
+
+const selectedValue = ref<String>(`${props.initialValue ? props.initialValue : ''}`)
 
 function sendSelectedToParent() {
   emits("selectedValue", selectedValue);

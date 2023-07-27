@@ -78,9 +78,9 @@ public class ProgramService : IProgramService
     }
 
 
-    public async Task<ProgramInfoDTO> GetProgramInfo(int id1, int idUser)
+    public async Task<ProgramInfoDTO> GetProgramInfo(int id, int userId)
     {
-        var user = await _dbContext.users.Where(u => u.id == idUser)
+        var user = await _dbContext.users.Where(u => u.id == userId)
                                     .Include(user => user.editionIntern)
                                     .ThenInclude(user => user.program)
                                     .ThenInclude(user => user.owners)
@@ -96,17 +96,17 @@ public class ProgramService : IProgramService
                                     .FirstOrDefaultAsync();
 
         ProgramInfoDTO program = new ProgramInfoDTO();
-        if (user.ownerships.Any(u => u.program.id == id1))
+        if (user.ownerships.Any(u => u.program.id == id))
         {
-            var multipleOwner = await _dbContext.programs.Where(p => p.id == id1)
+            var multipleOwner = await _dbContext.programs.Where(p => p.id == id)
                                     .Include(p => p.owners)
                                     .Include(p => p.ownerships)
                                     .FirstOrDefaultAsync();
 
-            var ownership = user.ownerships.Where(o => o.program.id == id1).ToList();
+            var ownership = user.ownerships.Where(o => o.program.id == id).ToList();
             program = ProgramInfoDTO.ConvertModel2DTOAdmin(ownership, multipleOwner);
         }
-        else if (user.role.Equals(Role.Intern) && user.editionIntern.program.id == id1)
+        else if (user.role.Equals(Role.Intern) && user.editionIntern.program.id == id)
         {
             var prog = user.editionIntern.program;
             var edition = EditionDTO.ConvertModel2DTO(user.editionIntern);
@@ -114,7 +114,7 @@ public class ProgramService : IProgramService
         }
         else
         {
-            var membership = user.memberships.Where(m => m.edition.program.id == id1).ToList();
+            var membership = user.memberships.Where(m => m.edition.program.id == id).ToList();
             List<EditionDTO> editions = new List<EditionDTO>();
             foreach (var i in membership)
             {

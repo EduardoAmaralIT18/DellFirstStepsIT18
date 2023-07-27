@@ -91,7 +91,7 @@ public class EditionService : IEditionService
 
     }
 
-    public async Task<EditionDTO> GetEditionInfo(int idProgram, int idEdition)
+    public async Task<EditionDTO> GetEditionInfo( int idEdition)
     {
         var edition = await _dbContext.editions.Where(ed => ed.id == idEdition)
                                                 .Include(ed => ed.program)

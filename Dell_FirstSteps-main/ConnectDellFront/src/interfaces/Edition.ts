@@ -10,4 +10,5 @@ export default interface Edition {
   startDate: string;
   endDate: string;
   program: number;
+  programName?: string;
 }
