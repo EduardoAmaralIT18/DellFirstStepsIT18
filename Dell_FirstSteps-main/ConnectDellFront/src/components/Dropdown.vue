@@ -38,10 +38,12 @@ onMounted(() => {
     dropdown.value = DDS.Dropdown(list.value)
 })
 
-const props = defineProps({
+defineProps({
     dropdownName: String,
     data: Array as PropType<User[]>
 })
+
+const emits = defineEmits(['selectedId'])
 
 function sendSelectedToParent() {
     const selected = dropdown.value.getSelection()
@@ -52,13 +54,10 @@ function sendSelectedToParent() {
     emits('selectedId', selectedId);
 }
 
-const emits = defineEmits({
-    selectedId: Array
-})
 </script>
 
 <style scoped>
-.dds__label--required::after {  
+.dds__label--required::after {
     color: #0672CB;
 }
 </style>

@@ -20,15 +20,14 @@
 
 <script setup lang="ts">
 
-import { ref } from "vue";
-  defineProps({
-    list: Array<string>,
-    selectValue: Function,
-    selectTitle: String,
-    required: Boolean,
-    boxName: String,
-    placeholder: String
-  });
+defineProps({
+  list: Array<string>,
+  selectValue: Function,
+  selectTitle: String,
+  required: Boolean,
+  boxName: String,
+  placeholder: String
+});
 
 let selectedValue: string = '';
 
@@ -43,8 +42,7 @@ function sendSelectedToParent() {
 
 </script>
 
-<style> 
-.dds__label--required::after {  
-    color: #0672CB;
-}
+<style> .dds__label--required::after {
+   color: #0672CB;
+ }
 </style>

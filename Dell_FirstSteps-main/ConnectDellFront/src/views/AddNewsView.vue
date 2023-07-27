@@ -1,11 +1,8 @@
 <script setup lang="ts">
 
-
 import {onMounted, ref} from "vue";
 import type Program from "@/interfaces/Program";
-import type News from "@/interfaces/News";
 import axios from "axios";
-import router from "@/router"
 import TextInput from "@/components/TextInput.vue";
 import TextArea from "@/components/TextArea.vue";
 import PrimaryButton from "@/components/PrimaryButton.vue";
@@ -62,7 +59,7 @@ const onFileChange = (file: File) => {
 const zeroStates = () => {
   handleTitle('')
   handleText('')
-  newsToBeCreated.value.imageName = '';
+  newsToBeCreated.value.imageName = ''
   newsToBeCreated.value.program = 0;
   selectedFile.value = null;
 }
@@ -104,7 +101,7 @@ const submitForm = () => {
           {{ program.name }}
         </option>
       </select>
-      <TextInput @typedText="handleTitle" boxName="Title"></TextInput>
+      <TextInput ref="textInputComponentRef" @typedText="handleTitle" boxName="Title"></TextInput>
       <TextArea @descriptionText="handleText" boxName="Text"></TextArea>
       <FileInput :image-name="newsToBeCreated.imageName ? newsToBeCreated.imageName : `Limit 2MB - PNG or JPG accepted.`" @fileSelected="onFileChange"></FileInput>
       <PrimaryButton buttonName="Submit" :disabled="disableButton()" @clicked="submitForm"/>

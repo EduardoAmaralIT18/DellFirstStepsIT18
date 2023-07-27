@@ -86,13 +86,7 @@ function resetInputs() {
   <PrimaryButton buttonName="Add Event" @click="modal.open(), resetInputs()">
   </PrimaryButton>
 
-  <div
-    role="dialog"
-    ref="element"
-    data-dds="modal"
-    class="dds__modal"
-    aria-labelledby="modal-headline-160350263"
-  >
+  <div role="dialog" ref="element" data-dds="modal" class="dds__modal" aria-labelledby="modal-headline-160350263">
     <div class="dds__modal__content">
       <div class="dds__modal__header">
         <h3 class="dds__modal__title">
@@ -114,31 +108,11 @@ function resetInputs() {
           @selectedValue="handleEventType"
         />
         <div class="date-container">
-          <DatePicker
-            boxName="Start Date"
-            v-bind:required="true"
-            :date-now="true"
-            @selectedDate="handleStartDate"
-          />
-          <DatePicker
-            boxName="End Date"
-            v-bind:required="true"
-            :date-now="true"
-            @selectedDate="handleEndDate"
-          />
+          <DatePicker boxName="Start Date" v-bind:required="true" :date-now="true" @selectedDate="handleStartDate" />
+          <DatePicker boxName="End Date" v-bind:required="true" :date-now="true" @selectedDate="handleEndDate" />
         </div>
-        <Dropdown
-          dropdownName="People Involved"
-          :data="editionUsers"
-          ref="peopleInvolved"
-          @selectedId="handleDropdown"
-        />
-        <TextArea
-          @description-text="handleLocation"
-          maxlength="120"
-          boxName="Location"
-          :required="false"
-        />
+        <Dropdown dropdownName="People Involved" :data="editionUsers" ref="peopleInvolved" @selectedId="handleDropdown" />
+        <TextArea @description-text="handleLocation" maxlength="120" boxName="Location" :required="false" />
       </div>
 
       <div class="dds__modal__footer">
@@ -161,9 +135,11 @@ function resetInputs() {
   color: #0672cb;
   font-weight: 500;
 }
+
 .dds__modal__content {
   width: 40%;
 }
+
 .date-container {
   display: flex;
   flex-direction: row;

@@ -1,5 +1,4 @@
 export default interface News {
-value: any;
   id: number;
   title: string;
   text: string;

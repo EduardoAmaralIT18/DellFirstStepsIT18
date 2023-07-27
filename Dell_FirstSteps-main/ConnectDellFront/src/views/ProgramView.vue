@@ -91,8 +91,8 @@ const defineOwnerList = () => {
     <div class="row">
       <div class="initialCard col-3 dds__mr-4 dds__mb-3">
         <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3" v-for="item in program.editions" id="editions">
-          <CardEdition :key="item.id" :name="item.name" :description="item.description" :id="item.id"
-                       :start-date="item.startDate" :end-date="item.endDate"/>
+          <CardEdition :key="item.id" :id="item.id" :name="item.name" :numberOfInterns="item.numberOfInterns" :members="item.members" :description="item.description" 
+            :curriculum="item.curriculum" :mode="item.mode" :start-date="item.startDate" :end-date="item.endDate" :program="item.program"/>
         </div>
       </div>
     </div>
