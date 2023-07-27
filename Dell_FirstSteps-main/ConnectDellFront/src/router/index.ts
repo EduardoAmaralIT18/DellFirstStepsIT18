@@ -9,7 +9,7 @@ import EditionInfoView from '../views/EditionInfoView.vue';
 import CreateEditionView from '../views/CreateEditionView.vue';
 import UsersView from "@/views/UsersView.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
-import AddNewsPage from "@/views/AddNewsView.vue";
+import EditNewsView from "@/views/EditNewsView.vue";
 import AddNewsView from "@/views/AddNewsView.vue";
 
 const router = createRouter({
@@ -65,11 +65,11 @@ const router = createRouter({
       name: 'Add News',
       component: AddNewsView,
     },
-    // {
-    //   path: '/editNews/:id',
-    //   name: 'Edit news',
-    //   component: ,
-    // }
+    {
+      path: '/editNews/:id',
+      name: 'Edit news',
+      component: EditNewsView,
+    },
     {
       path: '/:pathMatch(.*)*',
       component: NotFoundView

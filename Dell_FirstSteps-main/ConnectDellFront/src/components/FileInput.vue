@@ -31,7 +31,7 @@ const onFileChange = (event: Event) => {
         type="file"
         name="file-input-control-name-861422857"
         class="dds__file-input__control"
-        accept=".png, .jpeg"
+        accept=".png, .jpeg, .jpg"
         multiple=""
         ref="fileInputRef"
         @change="onFileChange"
