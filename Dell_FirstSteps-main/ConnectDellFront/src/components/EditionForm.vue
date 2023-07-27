@@ -25,8 +25,7 @@ const editionInfo = ref<Edition>({
   startDate: '',
   endDate: '',
   program: 0,
-  programName: '',
-  calendarEndDate: ''
+  programName: ''
 });
 const workModel = ref<string[]>(['Remote', 'Hybrid', 'InOffice'])
 const internList = ref<User[]>([])
@@ -217,7 +216,7 @@ const checkCurriculum = () => {
     <TextArea
         boxName="Description"
         v-bind:minLength="10"
-        v-bind:maxLength="50"
+        v-bind:maxLength="500"
         @descriptionText="handleDescription"
     ></TextArea>
     <TextArea

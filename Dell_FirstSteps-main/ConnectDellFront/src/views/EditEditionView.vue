@@ -3,9 +3,7 @@ import EditEditionForm from "@/components/EditEditionForm.vue";
 </script>
 
 <template>
- <EditEditionForm>
-
- </EditEditionForm>
+ <EditEditionForm form-name="Manage News" :program-id="1"/>
 </template>
 
 <style scoped>

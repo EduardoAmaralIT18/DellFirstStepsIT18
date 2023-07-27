@@ -22,17 +22,7 @@ const author = ref(+localStorage.getItem('userId')!).value;
 const route = useRoute();
 const newsId = +route.params.id;
 
-const newsToBeUpdated = ref<News>({
-  id: 0,
-  title: '',
-  text: '',
-  program: '',
-  programId: 0,
-  author: '',
-  authorId: 0,
-  image: '',
-  date: ''
-});
+const newsToBeUpdated = ref<News>();
 
 onMounted(async () => {
   await getNews(newsId);
@@ -62,14 +52,10 @@ const getPrograms = async (userId: number, role: number) => {
 }
 
 const handleTitle = (title: string) => {
-  if ("title" in newsToBeUpdated.value!) {
-    newsToBeUpdated.value.title = title;
-  }
+  newsToBeUpdated.value!.title = title;
 }
 const handleText = (text: string) => {
-  if ("text" in newsToBeUpdated.value!) {
-    newsToBeUpdated.value.text = text;
-  }
+  newsToBeUpdated.value!.text = text;
 }
 
 const disableButton = () => {
@@ -141,7 +127,6 @@ const submitForm = () => {
       <TextArea :initial-value="newsToBeUpdated.text" @descriptionText="handleText" boxName="Text"></TextArea>
       <FileInput :image-name="`Limit 2MB - PNG or JPG accepted.`" @fileSelected="onFileChange"></FileInput>
       <PrimaryButton buttonName="Submit" :disabled="disableButton()" @clicked="submitForm" />
-      <!-- <PrimaryButton buttonName="Submit" @clicked="submitForm"/> -->
     </form>
   </div>
 </template>

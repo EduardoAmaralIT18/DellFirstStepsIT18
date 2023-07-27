@@ -32,14 +32,12 @@ const props = defineProps({
   initialValue: String
 });
 
-const emits = defineEmits({
-  selectedValue: String
-})
+const emits = defineEmits(['selectedValue'])
 
 const selectedValue = ref<String>(`${props.initialValue ? props.initialValue : ''}`)
 
 function sendSelectedToParent() {
-  emits("selectedValue", selectedValue);
+  emits("selectedValue", selectedValue.value);
 }
 
 

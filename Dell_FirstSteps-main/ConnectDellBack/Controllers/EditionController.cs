@@ -47,7 +47,7 @@ public class EditionController : ControllerBase
     }
 
     [HttpGet("showInfoEdition")]
-    public async Task<ActionResult<EditionDTO>> ShowInfoEdition( int idEdition)
+    public async Task<ActionResult<NewEditionDTO>> ShowInfoEdition( int idEdition)
     {
         var result = await _service.GetEditionInfo(idEdition);
         return result == null ? NotFound() : Ok(result);
