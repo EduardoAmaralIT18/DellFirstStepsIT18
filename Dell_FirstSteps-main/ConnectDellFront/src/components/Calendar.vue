@@ -15,11 +15,11 @@ const Props = defineProps({
 })
 
 const emits = defineEmits({
-  sendStart: Object,
-  sendEnd: Object
+  sendDate: Object,
 });
 
 const keyCalendar = ref(0)
+const userRole = ref(+localStorage.getItem('userRole')!);
 let eventToPass = ref();
 let selectCheck = ref(["Phase","Activity"])
 
@@ -48,13 +48,18 @@ type TypeEvent = {
 
 let toggleEventClick = ref(false);
 const handleEventClick = (args: any) => {
-  argsToTypeEvent(args);
-  toggleEventClick.value = !toggleEventClick.value;
+  if(userRole.value === 0) {
+    argsToTypeEvent(args);
+    toggleEventClick.value = !toggleEventClick.value;
+  }
 }
 
 const handleDateSelect = (info : any) => {
-  emits("sendStart", new Date(info.startStr));
-  emits("sendEnd", new Date(info.endStr));
+  
+  emits("sendDate", {
+    startDate: new Date(info.startStr),
+    endDate: new Date(info.endStr) 
+  });
 }
 
 
@@ -221,7 +226,7 @@ onMounted(() => {
       >
         <template v-slot:eventContent='arg'>
           <b>{{ arg.event.id}}</b>
-          <i>{{ arg.event.title }}</i>
+          <i class="eventBox">{{ arg.event.title }}</i>
           <Modal :event="eventToPass" v-if="toggleEventClick"></Modal>
         </template>
       </FullCalendar>
@@ -245,15 +250,14 @@ onMounted(() => {
   --fc-button-active-border-color: #002A58;
 }
 
-.eventBox {
-  word-wrap: break-word;  
-  overflow-wrap: break-word;  
-  word-break: break-all;
+a.fc-event {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .component-main {
-  max-width: 1100px;
-  min-width: 900px;
+  max-width: 100%;
+  min-width: 90%;
   font-family: Roboto;
   font-size: 14px;
   font-weight: 400;
@@ -268,7 +272,8 @@ onMounted(() => {
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: #1282D6;
+  background-color: #00468B;
+  border-color: #002A58;
   border-radius: 4px;
   max-width: 1184px;
 }
@@ -277,6 +282,10 @@ onMounted(() => {
   font-size: inherit;
   color: white;
   font-weight: 400;
+}
+
+.dds__checkbox__input:checked + span::before {
+  background-color: #002A58;
 }
 
 

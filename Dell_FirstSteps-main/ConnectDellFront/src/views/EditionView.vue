@@ -7,6 +7,7 @@ import { useRoute } from "vue-router";
 import Calendar from "@/components/Calendar.vue";
 import ModalForm from "@/components/ModalForm.vue"
 import User from "@/interfaces/User";
+import GoBackButton from "@/components/GoBackButton.vue";
 
 const route = useRoute();
 
@@ -24,14 +25,15 @@ type editionType = {
 }
 
 const editionId = +route.params.id;
-const userId = ref(+localStorage.getItem('userId')!).value;
-const userRole = ref(+localStorage.getItem('userRole')!).value;
+const userRole = ref(+localStorage.getItem('userRole')!);
 const edition = ref<editionType>();
+const loading = ref(false);
 let eventBody: object;
 let calendarRefreshId = ref(0);
 
 onMounted(async () => {
   await getEdition(3241, editionId);
+  loading.value = true;
 })
 
 const getEdition = async (programId: number, editionId: number) => {
@@ -90,58 +92,78 @@ const handlePostBody = (body: Object) => {
   calendarRefreshId.value++;
 };
 
-let dateStart = ref();
-let endStart = ref();
+let programId = 0
 
-watch(dateStart,() => {
-  console.log(dateStart.value)
-})
+let dates = ref();
+let receiveDate = (body: object) => {
+  dates.value = body;
+};
 
 </script>
 
 <template>
-  <div class="container">
-
-    <div>
-      <p class="title">{{ edition?.programName }} - {{ edition?.name }} [{{ modeToString() }}]</p>
+  <div v-if="loading" class="container">
+    <GoBackButton class="button" path="/home" />
+      <div class="calendar">
+        <div class="cont">
+          <p class="title">{{ edition?.programName }} - {{ edition?.name }} [{{ modeToString() }}]</p>
+          <button v-if="userRole === 0" class="dds__button dds__button--primary dds__button--lg" type="button">
+            <span class="dds__icon dds__icon--pencil dds__button__icon--start" aria-hidden="true"></span>
+            Manage edition
+          </button>
+        </div>
       <p class="date">{{ formatDate(edition?.startDate!) }}{{ hasEndDate() }}</p>
       <p class="description">{{ edition?.description }}</p>
-    </div>
-    
+      <br>
+      </div>
+    <div class="calendar">
     <p class="title">Edition's calendar</p>
-    
-    <div class="buttons">
-        <ModalForm 
-          class="modalbutton"
-          @sendBodyToParent="handlePostBody"
-          modal-title="Add Event"
-          :edition-users="edition?.members.concat(edition?.interns)"
-          :edition-start-date="edition?.startDate"
-          :edition-end-date="edition?.endDate">
-        </ModalForm>
-
-        <button class="dds__button dds__button--primary dds__button--lg" type="button">
-          <span class="dds__icon dds__icon--pencil dds__button__icon--start" aria-hidden="true"></span>
-          Manage edition
-        </button>
+      <div class="buttons">
+      <ModalForm 
+        v-if="userRole === 0"
+        class="modalbutton"
+        @sendBodyToParent="handlePostBody"
+        modal-title="Add Event"
+        :edition-users="edition?.members.concat(edition?.interns)"
+        :edition-start-date="edition?.startDate"
+        :edition-end-date="edition?.endDate">
+      </ModalForm>
     </div>
+      <Calendar 
+        :id="calendarRefreshId" 
+        :events="edition?.events" 
+        :start-date="edition?.startDate" 
+        :end-date="edition?.endDate" 
+        @sendDate="receiveDate">
+      </Calendar>
+  </div>
+  </div>
 
-    <Calendar :id="calendarRefreshId" 
-      :events="edition?.events" 
-      :start-date="edition?.startDate" 
-      :end-date="edition?.endDate" 
-      @sendStart="dateStart">
-    </Calendar>
+  <div v-else class="loading">
+    <div class="dds__loading-indicator">
+      <div class="dds__loading-indicator__label">Loading...</div>
+      <div class="dds__loading-indicator__spinner"></div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 
+.loading {
+  display: flex;
+  margin: 23%;
+  justify-content: center;
+}
+.cont {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .container{
   display: flex;
-
   flex-direction: column;
-  margin: 2em;
+  margin: 4em;
+  min-width: 600px;
   gap: 20px;
   justify-content: center;
 }
@@ -154,8 +176,14 @@ watch(dateStart,() => {
 }
 
 .buttons {
-  display: flex;
   gap: 20px;
+  display:  flex;
+  align-self: flex-end;
+}
+.calendar {
+  display:  flex;
+  flex-flow: column wrap;
+  margin: 0em 7%;
 }
 
 .date {
@@ -170,7 +198,7 @@ watch(dateStart,() => {
   position: relative;
 }
 .dds__button{
-  align-self: flex-start;
+  align-self: flex-end;
 }
 
 </style>
