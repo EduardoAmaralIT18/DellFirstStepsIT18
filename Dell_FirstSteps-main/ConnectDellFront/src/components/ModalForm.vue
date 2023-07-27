@@ -44,10 +44,11 @@ onMounted(() => {
 });
 
 watchEffect(() => {
-  if (inserts.value.eventTitle && inserts.value.eventType !== -1) {
+  if (inserts.value.eventTitle !== "" && inserts.value.eventType !== -1) {
     activateButton.value = false;
-  } else if (props.editMode) {
-    activateButton.value = false;
+    console.log("false");
+  } else {
+    activateButton.value = true;
   }
 });
 
@@ -64,6 +65,7 @@ const handleEventTitle = (text: string) => {
   inserts.value.eventTitle = text;
 };
 const handleEventType = (text: string) => {
+  console.log(text);
   if (text === "Phase") inserts.value.eventType = 0;
   if (text === "Activity") inserts.value.eventType = 1;
 };
@@ -126,9 +128,9 @@ function resetInputs() {
           v-bind:required="true"
           :list="phaseList"
           selectTitle="Event Type"
+          ref="inserts.eventType"
           @selectedValue="handleEventType"
-          :value="checkEventType() ? 'Event Type' : phaseList[props.eventType!] "
-        />
+        ></Select>
         <div class="date-container">
           <DatePicker
             boxName="Start Date"
