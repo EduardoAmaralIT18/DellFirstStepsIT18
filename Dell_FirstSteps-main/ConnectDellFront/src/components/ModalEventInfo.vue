@@ -21,13 +21,14 @@
     event : Object as PropType<TypeEvent>,
     editionUsers: Array as PropType<User[]>
   });
+
+  const emits = defineEmits({
+    sendBodyToParent: Object,
+  });
+
   declare var DDS: any;
   const modal= ref()
   const list = ref(null)
-
-  function handleEditClick() {
-    closeModal();
-  }
     
   function closeModal() {
     modal.value.close()
@@ -39,6 +40,9 @@
     }
   )
 
+  function handleEditClick() {
+    emits("sendBodyToParent",true)
+  }
 </script>
 
 <template>
@@ -53,18 +57,7 @@
           <b>Where: </b><p>{{ props.event?.where }}</p>
         </div>
         <div class="dds__modal__footer">
-          <ModalFormVue
-            buttonText="Edit"
-            :eventTitle="props.event?.name" 
-            :eventType="props.event?.eventType" 
-            modalTitle="Edit Event"
-            :editionUsers="props.editionUsers"
-            :eventStartDate="props.event?.startDate"
-            :eventEndDate="props.event?.endDate"
-            :peopleInvolved="props.event?.peopleInvolved"
-            :location="props.event?.where"
-            :editMode="true"/>
-          <!-- <button v-if="role === 0" @OnClick="handleEditClick" class="dds__button dds__button--md" type="button" name="modal-secondary-button">Edit</button> -->
+          <button v-if="role === 0" @click="handleEditClick" class="dds__button dds__button--md" type="button" name="modal-secondary-button">Edit</button>
         </div>
       </div>
     </div>

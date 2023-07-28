@@ -43,7 +43,9 @@ const getEdition = async (programId: number, editionId: number) => {
     }).catch((e) => {
       console.error(e);
     })
+    console.log(edition.value?.events)
 }
+
 
 function modeToString() {
     switch (edition.value?.mode) {
@@ -77,8 +79,9 @@ async function handleSubmitForm() {
       eventType: eventBody.eventType,
       editionId: editionId,
     })
-    .then(function (response) {
-      return response;
+    .then(async function () {
+      await getEdition(3241, editionId);
+      window.location.reload();
     })
     .catch((error) => {
       alert("Não foi possível atender a solicitação.");
@@ -91,12 +94,18 @@ const handlePostBody = (body: Object) => {
   calendarRefreshId.value++;
 };
 
-let programId = 0
-
 let dates = ref();
 let receiveDate = (body: object) => {
   dates.value = body;
 };
+
+let toggleEditClick = ref(false);
+const openModalEdit = () => {
+  toggleEditClick.value = true;
+}
+const closeModalEdit = (teste : Boolean) => {
+  toggleEditClick.value = false;
+}
 
 </script>
 
@@ -118,15 +127,19 @@ let receiveDate = (body: object) => {
     <div class="calendar">
     <p class="title">Edition's calendar</p>
       <div class="buttons">
+        <button @click="openModalEdit" v-if="userRole === 0" class="dds__button dds__button--primary dds__button--lg" type="button">
+          Add Event
+        </button>
       <ModalForm 
-        v-if="userRole === 0"
+        v-if="toggleEditClick"
+        @closeModal="closeModalEdit"
         class="modalbutton"
         buttonText="Add Event"
         @sendBodyToParent="handlePostBody"
         modal-title="Add Event"
         :edition-users="edition?.members.concat(edition?.interns)"
-        :edition-start-date="edition?.startDate"
-        :edition-end-date="edition?.endDate">
+        :editionStartDate="edition?.startDate"
+        :editionEndDate="edition?.endDate">
       </ModalForm>
     </div>
       <Calendar 

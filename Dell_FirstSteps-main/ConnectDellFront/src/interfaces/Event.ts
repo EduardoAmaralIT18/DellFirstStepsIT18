@@ -1,3 +1,4 @@
+import User from "./User"
 export default interface TypeEvent {
     id : number,
     name : string,
@@ -6,5 +7,5 @@ export default interface TypeEvent {
     startDate : Date,
     endDate : Date,
     where : string,
-    peopleInvolved: string[]
+    peopleInvolved: User[]
 }

@@ -6,7 +6,10 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { onMounted, PropType, ref, watch } from 'vue'
 import Modal from './ModalEventInfo.vue'
+import ModalForm from './ModalForm.vue'
 import type User from '@/interfaces/User'
+import TypeEvent from '@/interfaces/Event'
+import axios from 'axios'
 
 const Props = defineProps({
   startDate: String,
@@ -23,17 +26,8 @@ const keyCalendar = ref(0)
 const userRole = ref(+localStorage.getItem('userRole')!);
 let eventToPass = ref();
 let selectCheck = ref(["Phase","Activity"])
+let eventBody: object;
 
-
-type TypeEvent = {
-  id : Number,
-  name : String,
-  eventType : Number,
-  phaseType : Number,
-  startDate : Date,
-  endDate : Date,
-  where : String
-}
 
 let toggleEventClick = ref(false);
 const handleEventClick = (args: any) => {
@@ -60,6 +54,7 @@ function argsToTypeEvent(e: any) {
     endDate : e.event._def.extendedProps.end,
     startDate : e.event._def.extendedProps.start,
     where : e.event._def.extendedProps.where,
+    peopleInvolved: e.event._def.extendedProps.peopleInvolved
   }
 }
 
@@ -77,6 +72,7 @@ function loadEvent() {
           where : event.where, 
           eventType: event.eventType,
           phaseType: event.phaseType,
+          peopleInvolved: event.peopleInvolved,
           start: event.startDate, 
           end: event.endDate,
         },
@@ -173,15 +169,80 @@ function createValidRange() {
 
 
 onMounted(() => {
+  console.log(Props.events)
   setTimeout(() => {
     createValidRange()
     loadEvent()
   }, 1000);
 })
 
+let toggleEditClick = ref(false);
+const openModalEdit = (teste : Boolean) => {
+  if(teste) {
+    toggleEditClick.value = true;
+  }
+}
+const closeModalEdit = (teste : Boolean) => {
+  toggleEditClick.value = false;
+}
+
+async function getEventToUpdate() {
+  await axios
+    .get(`https://localhost:5001/event/getEventToUpdate?eventId=${eventToPass.value.id}`)
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.log(error.response);
+      alert("Não foi possível atender a solicitação.");
+    });
+}
+
+
+async function handleSubmitForm(body: Object) {
+  eventBody = body;
+  await axios
+      .post("https://localhost:5001/event/updateEvent", {
+        id: eventBody.eventId,
+        name: eventBody.eventTitle,
+        eventType: eventBody.eventType,
+        peopleInvolved: eventBody.peopleInvolved,
+        startDate: eventBody.startDate,
+        endDate: eventBody.endDate,
+        where: eventBody.location,
+      })
+      .then(function () {
+        console.log("Editou evento");
+        getEventToUpdate();
+        window.location.reload();
+      })
+      .catch((error) => {
+        alert("Não foi possível atender a solicitação.");
+      });
+}
+
+
 </script>
 
 <template>
+  <ModalForm
+    v-if="toggleEditClick"
+    @closeModal="closeModalEdit"
+    @sendBodyToParent="handleSubmitForm"
+    :eventId="eventToPass.id"
+    buttonText="Edit"
+    :eventTitle="eventToPass.name" 
+    :eventType="eventToPass.eventType" 
+    modalTitle="Edit Event"
+    :editionUsers="Props.editionUsers"
+    :eventStartDate="eventToPass.event?.startDate"
+    :eventEndDate="eventToPass.event?.endDate"
+    :peopleInvolved="eventToPass.event?.peopleInvolved"
+    :location="eventToPass.event?.where"
+    :editMode="true"
+    :editionStartDate="Props.startDate"
+    :editionEndDate="Props.endDate"/>
+
   <!-- <div class='component'> -->
     <div class='component-main'>
       <div class="checkbox-layout">
@@ -217,13 +278,13 @@ onMounted(() => {
           <i class="eventBox">{{ arg.event.title }}</i>
           <Modal v-if="toggleEventClick" 
             :event="eventToPass"
+            @sendBodyToParent="openModalEdit"
             :editionUsers="Props.editionUsers"></Modal>
         </template>
       </FullCalendar>
       </div>
     </div>
   <!-- </div> -->
-  
 </template>
 
 

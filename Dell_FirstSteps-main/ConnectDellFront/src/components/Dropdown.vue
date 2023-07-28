@@ -79,6 +79,7 @@ const dropdown = ref();
 onMounted(() => {
   dropdown.value = DDS.Dropdown(list.value);
   console.log("a", props.selected);
+  console.log("dfskghjfsa")
 
   if (props.selected) {
     setTimeout(() => {
