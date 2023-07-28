@@ -73,7 +73,7 @@ const handleCurriculum = (text: string) => {
 
 const submitForm = async () => {
   await axios
-    .post(`https://localhost:5001/edition/updateEdition`, {
+    .patch(`https://localhost:5001/edition/updateEdition`, {
       name: editionInfo.value!.name.trim(),
       id: editionInfo.value?.id,
       numberOfInterns: editionInfo.value!.numberOfInterns,

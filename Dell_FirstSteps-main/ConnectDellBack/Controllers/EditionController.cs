@@ -32,7 +32,7 @@ public class EditionController : ControllerBase
         }
     }
 
-    [HttpPost("updateEdition")]
+    [HttpPatch("updateEdition")]
     public async Task<ActionResult> UpdateEdition(EditionDTO dto)
     {
         int entries = await _service.UpdateEdition(dto);
