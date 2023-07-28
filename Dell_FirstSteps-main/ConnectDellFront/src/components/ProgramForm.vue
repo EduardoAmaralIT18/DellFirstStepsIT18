@@ -18,7 +18,7 @@ defineProps<{
 
 const programInfo = ref<ProgramInfo>({
     name: "",
-    startDate: '',
+    startDate: new Date().toISOString().slice(0, 10),
     endDate: '',
     description: "",
     editions: [],
@@ -66,15 +66,12 @@ const handleEndDate = (date: Date) => {
     programInfo.value.endDate = date.toString();
 }
 
-const handleDropdown = (owner: User[]) => {
+const handleDropdown = (ownerId: number[]) => {
     programInfo.value.owners = [];
 
-    const validOwners = owner.filter(id => id !== undefined);
-
-    validOwners.forEach(owner => {
-        const user = ownerList.value.find(user => user.id === owner.id);
-        if (user) {
-            programInfo.value.owners.push(user);
+    ownerList.value.forEach(owner => {
+        if (ownerId.some(id => id === owner.id)) {
+            programInfo.value!.owners.push(owner)
         }
     })
 }
@@ -93,46 +90,42 @@ const handleClick = async () => {
             owners: programInfo.value.owners
         })
         .then(() => {
-            alert("Solicitação atendida com sucesso!");
+            alert("Program successfully added.");
         })
         .catch((error) => {
-            alert("Não foi possível atender a solicitação.");
+            alert("Could not add program.");
         });
 }
 
-const activateButton = () => {
-    if (typeof (programInfo.value.endDate) == undefined) {
-        return false;
-    }
-
-    if (new Date(programInfo.value.endDate!) <= new Date(programInfo.value.startDate) || checkName() || checkOwners() || checkDescription()) {
+const disableButton = () => {
+    console.log(programInfo.value.owners)
+    if (programInfo.value.endDate == undefined) {
         return true;
     }
 
-    return false;
+    if (new Date(programInfo.value.endDate!) > new Date(programInfo.value.startDate!) && checkName() && checkDescription() && checkOwners()) {
+        return false;
+    }
+    return true;
 }
 
 const checkName = () => {
-    if (programInfo.value.name.length < 5 || programInfo.value.name.length > 50) {
+    if (programInfo.value.name.length >= 5 && programInfo.value.name.length <= 50) {
         return true
     }
-    for (let item of nameList.value) {
-        if (item === programInfo.value.name) {
-            return true
-        }
-    }
+
     return false;
 }
 
 const checkOwners = () => {
     if (programInfo.value.owners?.length === 0) {
-        return true
+        return false
     }
-    return false;
+    return true;
 }
 
 const checkDescription = () => {
-    if (programInfo.value.description.length < 10 || programInfo.value.description.length > 1500) {
+    if (programInfo.value.description.length <= 1500 && programInfo.value.description.length >= 10) {
         return true
     }
     return false;
@@ -144,12 +137,14 @@ const checkDescription = () => {
         <h2 class="title">{{ formName }}</h2>
         <TextInput boxName="Program Name" @typedText="handleInput"></TextInput>
         <div class="date-container">
-            <DatePicker class="date_picker" boxName="Start Date" v-bind:required="true" v-bind:dateNow="true" @selectedDate="handleStartDate"></DatePicker>
-            <DatePicker class="date_picker" boxName="End Date" v-bind:minRequired="true" @selectedDate="handleEndDate" initialDate=""></DatePicker>
+            <DatePicker class="date_picker" boxName="Start Date" v-bind:required="true" v-bind:dateNow="true"
+                @selectedDate="handleStartDate"></DatePicker>
+            <DatePicker class="date_picker" boxName="End Date" v-bind:minRequired="true" @selectedDate="handleEndDate"
+                initialDate=""></DatePicker>
         </div>
-        <Dropdown dropdownName="Owners" :data="ownerList" @selectedId="handleDropdown"/>
-        <TextArea boxName="Description" maxlength="50" v-bind:required="true" @descriptionText="handleDescription"></TextArea>
-        <PrimaryButton buttonName="Submit" @clicked="handleClick" :disabled="activateButton()"></PrimaryButton>
+        <Dropdown dropdownName="Owners" :data="ownerList" @selectedId="handleDropdown" />
+        <TextArea boxName="Description" minlength="10" maxlength="1500" :required="true" @descriptionText="handleDescription"></TextArea>
+        <PrimaryButton buttonName="Submit" @clicked="handleClick" :disabled="disableButton()"></PrimaryButton>
     </div>
 </template>
 

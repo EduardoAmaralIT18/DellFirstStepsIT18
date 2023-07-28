@@ -4,17 +4,15 @@ import HomeView from '../views/HomeView.vue';
 import NewsView from '../views/NewsView.vue';
 import ProgramView from "../views/ProgramView.vue";
 import MyProgramView from '../views/MyProgramView.vue';
-import CalendarView from '../views/CalendarViewTemp.vue';
 import CreateProgramView from '../views/CreateProgramView.vue';
-import EditionViewVue from '@/views/EditionView.vue';
-import EditProgramView from '../views/EditProgramView.vue'
-import EditionInfoView from '../views/EditionInfoView.vue';
+import EditionView from '../views/EditionView.vue';
 import CreateEditionView from '../views/CreateEditionView.vue';
-import UsersView from "@/views/UsersView.vue";
-import NotFoundView from "@/views/NotFoundView.vue";
-import ManageNewsView from "@/views/ManageNewsView.vue";
-import AddNewsView from "@/views/AddNewsView.vue";
-import ManageEditionView from "@/views/ManageEditionView.vue";
+import UsersView from '../views/UsersView.vue';
+import NotFoundView from '../views/NotFoundView.vue';
+import ManageNewsView from '../views/ManageNewsView.vue';
+import AddNewsView from '../views/AddNewsView.vue';
+import ManageEditionView from '../views/ManageEditionView.vue';
+import ManageProgramView from '@/views/ManageProgramView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -55,9 +53,9 @@ const router = createRouter({
       component: CreateProgramView,
     },
     {
-      path: "/editionInfo/:id",
-      name: "EditionInfo",
-      component: EditionInfoView,
+      path: "/edition/:id",
+      name: "Edition",
+      component: EditionView,
     },
     {
       path: "/myProgram/:id/createEdition",
@@ -73,6 +71,11 @@ const router = createRouter({
       path: "/manageNews/:id",
       name: "ManageNews",
       component: ManageNewsView,
+    },
+    {
+      path: "/manageProgram/:id",
+      name: "ManageProgram",
+      component: ManageProgramView,
     },
     {
       path: "/manageEdition/:id",

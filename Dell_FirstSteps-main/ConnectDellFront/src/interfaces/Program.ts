@@ -1,6 +1,4 @@
 import type Edition from "@/interfaces/Edition";
-import type User from "@/interfaces/User";
-
 
 export default interface Program {
     id?: number,
@@ -11,4 +9,3 @@ export default interface Program {
     editions?: Edition[],
     isBasic: boolean;
 }
-

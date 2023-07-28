@@ -1,14 +1,14 @@
 <template>
     <div class="body">
         <GoBackButton class="button" :path="`/myProgram/${id}`" />
-        <ProgramEditForm formName="Edit Program"></ProgramEditForm>
+        <ManageProgramForm formName="Manage Program"></ManageProgramForm>
     </div>
 </template>
  
-<script setup lang="ts">
-import ProgramEditForm from "@/components/ProgramEditForm.vue";    
+<script setup lang="ts">  
 import GoBackButton from "@/components/GoBackButton.vue";
 import { useRoute } from "vue-router";
+import ManageProgramForm from "@/components/ManageProgramForm.vue";
 
 const route = useRoute()
 const id = +route.params.id

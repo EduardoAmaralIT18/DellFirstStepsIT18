@@ -93,6 +93,7 @@ function isAuthor(authorId: number) {
 h2 {
   color: #0672cb;
   font-weight: 500;
+  font-size: 35px;
 }
 
 .dds__card {

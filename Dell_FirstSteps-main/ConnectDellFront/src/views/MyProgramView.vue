@@ -101,7 +101,7 @@ function isAdmin() {
         <p>{{ ownerList }}</p>
       </div>
       <div v-if="isOwner()">
-        <RouterLink style="text-decoration: none" :to="`/editProgram/${id}`">
+        <RouterLink style="text-decoration: none" :to="`/manageProgram/${id}`">
           <button class="manageProgram button dds__button dds__button&#45;&#45;primary" type="button">
             <i class="dds__icon dds__icon--pencil" aria-hidden="true"></i>
             Manage Program

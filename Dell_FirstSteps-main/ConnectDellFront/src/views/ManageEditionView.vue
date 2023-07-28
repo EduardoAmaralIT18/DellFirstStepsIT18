@@ -10,7 +10,7 @@ const id = +route.params.id;
 
 <template>
     <div class="body">
-        <GoBackButton class="button" :path="`/editionInfo/${id}`" />
+        <GoBackButton class="button" :path="`/edition/${id}`" />
         <ManageEditionForm form-name="Manage Edition" />
     </div>
 </template>

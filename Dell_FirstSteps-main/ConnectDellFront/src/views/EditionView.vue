@@ -2,7 +2,7 @@
 import axios from "axios";
 import type Edition from "@/interfaces/Edition";
 import type Event from "@/interfaces/Event";
-import { onMounted, ref, watch,provide } from "vue";
+import { onMounted, ref, watch, provide } from "vue";
 import { useRoute } from "vue-router";
 import Calendar from "@/components/Calendar.vue";
 import ModalForm from "@/components/ModalForm.vue"
@@ -12,16 +12,16 @@ const route = useRoute();
 
 
 type editionType = {
-    id?: number;
-    name: string;
-    programName : string;
-    description: string;
-    startDate?: string;
-    endDate?: string;
-    members: User[];
-    interns: User[];
-    events: Event[];
-    mode: number;
+  id?: number;
+  name: string;
+  programName: string;
+  description: string;
+  startDate?: string;
+  endDate?: string;
+  members: User[];
+  interns: User[];
+  events: Event[];
+  mode: number;
 }
 
 const editionId = +route.params.id;
@@ -43,29 +43,29 @@ const getEdition = async (programId: number, editionId: number) => {
     }).catch((e) => {
       console.error(e);
     })
-    console.log(edition.value?.events)
+  console.log(edition.value?.events)
 }
 
 
 function modeToString() {
-    switch (edition.value?.mode) {
+  switch (edition.value?.mode) {
     case 0:
-        return "REMOTE"
+      return "REMOTE"
     case 1:
-        return "HYBRID"
+      return "HYBRID"
     case 2:
-        return "IN-OFFICE"
-    }
+      return "IN-OFFICE"
+  }
 }
 
 function formatDate(dates: string) {
   const date = new Date(dates);
-  
+
   return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 }
 
 function hasEndDate() {
-    return edition.value?.endDate == null ? '' : (' - ' + formatDate(edition.value?.endDate));
+  return edition.value?.endDate == null ? '' : (' - ' + formatDate(edition.value?.endDate));
 }
 
 async function handleSubmitForm() {
@@ -103,7 +103,7 @@ let toggleEditClick = ref(false);
 const openModalEdit = () => {
   toggleEditClick.value = true;
 }
-const closeModalEdit = (teste : Boolean) => {
+const closeModalEdit = (teste: Boolean) => {
   toggleEditClick.value = false;
 }
 
@@ -112,45 +112,37 @@ const closeModalEdit = (teste : Boolean) => {
 <template>
   <div v-if="loading" class="container">
     <GoBackButton class="button" path="/home" />
-      <div class="calendar">
-        <div class="cont">
-          <p class="title">{{ edition?.programName }} - {{ edition?.name }} [{{ modeToString() }}]</p>
+    <div class="calendar">
+      <div class="cont">
+        <p class="title">{{ edition?.programName }} - {{ edition?.name }} [{{ modeToString() }}]</p>
+        <RouterLink :to="`manageEdition/${edition?.id}`">
           <button v-if="userRole === 0" class="dds__button dds__button--primary dds__button--lg" type="button">
             <span class="dds__icon dds__icon--pencil dds__button__icon--start" aria-hidden="true"></span>
             Manage edition
           </button>
-        </div>
+        </RouterLink>
+      </div>
       <p class="date">{{ formatDate(edition?.startDate!) }}{{ hasEndDate() }}</p>
       <p class="description">{{ edition?.description }}</p>
       <br>
-      </div>
+    </div>
     <div class="calendar">
-    <p class="title">Edition's calendar</p>
+      <p class="title">Edition's calendar</p>
       <div class="buttons">
-        <button @click="openModalEdit" v-if="userRole === 0" class="dds__button dds__button--primary dds__button--lg" type="button">
+        <button @click="openModalEdit" v-if="userRole === 0" class="dds__button dds__button--primary dds__button--lg"
+          type="button">
           Add Event
         </button>
-      <ModalForm 
-        v-if="toggleEditClick"
-        @closeModal="closeModalEdit"
-        class="modalbutton"
-        buttonText="Add Event"
-        @sendBodyToParent="handlePostBody"
-        modal-title="Add Event"
-        :edition-users="edition?.members.concat(edition?.interns)"
-        :editionStartDate="edition?.startDate"
-        :editionEndDate="edition?.endDate">
-      </ModalForm>
-    </div>
-      <Calendar 
-        :id="calendarRefreshId" 
-        :events="edition?.events" 
-        :start-date="edition?.startDate" 
-        :end-date="edition?.endDate" 
-        :editionUsers="edition?.members.concat(edition?.interns)"
-        @sendDate="receiveDate">
+        <ModalForm v-if="toggleEditClick" @closeModal="closeModalEdit" class="modalbutton" buttonText="Add Event"
+          @sendBodyToParent="handlePostBody" modal-title="Add Event"
+          :edition-users="edition?.members.concat(edition?.interns)" :editionStartDate="edition?.startDate"
+          :editionEndDate="edition?.endDate">
+        </ModalForm>
+      </div>
+      <Calendar :id="calendarRefreshId" :events="edition?.events" :start-date="edition?.startDate"
+        :end-date="edition?.endDate" :editionUsers="edition?.members.concat(edition?.interns)" @sendDate="receiveDate">
       </Calendar>
-  </div>
+    </div>
   </div>
 
   <div v-else class="loading">
@@ -162,18 +154,19 @@ const closeModalEdit = (teste : Boolean) => {
 </template>
 
 <style scoped>
-
 .loading {
   display: flex;
   margin: 23%;
   justify-content: center;
 }
+
 .cont {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.container{
+
+.container {
   display: flex;
   flex-direction: column;
   margin: 4em;
@@ -181,6 +174,7 @@ const closeModalEdit = (teste : Boolean) => {
   gap: 20px;
   justify-content: center;
 }
+
 .title {
   color: #0672cb;
   font-size: 190%;
@@ -191,11 +185,12 @@ const closeModalEdit = (teste : Boolean) => {
 
 .buttons {
   gap: 20px;
-  display:  flex;
+  display: flex;
   align-self: flex-end;
 }
+
 .calendar {
-  display:  flex;
+  display: flex;
   flex-flow: column wrap;
   margin: 0em 7%;
 }
@@ -205,14 +200,15 @@ const closeModalEdit = (teste : Boolean) => {
   font-size: 13px;
   color: #7e7e7e;
 }
+
 .description {
   text-align: justify;
   padding-right: 30px;
   left: 0;
   position: relative;
 }
-.dds__button{
+
+.dds__button {
   align-self: flex-end;
 }
-
 </style>

@@ -1,3 +1,5 @@
+import User from "./User";
+
 export default interface ProgramUpdate {
     id: number,
     name: string,
@@ -5,5 +7,5 @@ export default interface ProgramUpdate {
     endDate?: string,
     description: string,
     editions: [],
-    owners: [],
+    owners: User[],
 }
