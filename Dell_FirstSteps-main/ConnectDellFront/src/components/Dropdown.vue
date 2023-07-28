@@ -16,7 +16,7 @@
             role="presentation" tabindex="-1">
             <ul class="dds__dropdown__list" role="listbox" tabindex="-1" id="multi-select-list-dropdown-list">
                 <li class="dds__dropdown__item" role="none" v-for="item in data" :key="item.id">
-                    <button type="button" class="dds__dropdown__item-option" role="option" data-selected="false"
+                    <button type="button" class="dds__dropdown__item-option" role="option" :data-selected="selectedIds.includes(item.id)"
                         :data-value=item.id tabindex="-1">
                         <span class="dds__dropdown__item-label">{{ item.name }}</span>
                     </button>
@@ -38,20 +38,28 @@ onMounted(() => {
     dropdown.value = DDS.Dropdown(list.value)
 })
 
-defineProps({
+const props = defineProps({
     dropdownName: String,
-    data: Array as PropType<User[]>
+    data: Array as PropType<User[]>,
+    initialValue: Array as PropType<number[]>
 })
 
 const emits = defineEmits(['selectedId'])
 
+const selectedIds = ref<number[]>([])
+
+if (props.initialValue) {
+    selectedIds.value = props.initialValue
+    console.log(selectedIds.value)
+}
+
 function sendSelectedToParent() {
     const selected = dropdown.value.getSelection()
-    const selectedId = []
+    selectedIds.value = []
     for (let item of selected) {
-        selectedId.push(+item)
+        selectedIds.value.push(+item)
     }
-    emits('selectedId', selectedId);
+    emits('selectedId', selectedIds.value);
 }
 
 </script>
