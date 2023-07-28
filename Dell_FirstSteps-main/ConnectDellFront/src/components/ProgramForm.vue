@@ -7,7 +7,6 @@ import Dropdown from "./Dropdown.vue"
 import TextArea from "./TextArea.vue";
 import PrimaryButton from "./PrimaryButton.vue";
 import Program from "@/interfaces/Program";
-import axios from "axios";
 </script>
 
 <template>
@@ -26,7 +25,6 @@ import axios from "axios";
 
 <script lang="ts">
 import axios from "axios";
-import type ProgramInfo from "@/interfaces/ProgramInfo";
 
 export default {
     data() {

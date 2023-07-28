@@ -76,7 +76,7 @@ const router = createRouter({
       component: NotFoundView
     },
     {
-      path: '/editprogram/:id',
+      path: '/editProgram/:id',
       name: 'EditProgram',
       component: EditProgramView,
     }

@@ -158,7 +158,6 @@ import PrimaryButton from "./PrimaryButton.vue";
 [5:28 PM] Rafael Terres, Guilherme - Dell Team
 
 <style scoped>
-
 .form {
     margin-left: 20%;
     margin-right: 20%;
@@ -167,13 +166,11 @@ import PrimaryButton from "./PrimaryButton.vue";
     gap: 16px;
 }
 
-
 .date-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
-
 
 .title {
     color: #0063B8;
@@ -182,15 +179,12 @@ import PrimaryButton from "./PrimaryButton.vue";
     text-align: center;
 }
 
-
 .date_picker {
     width: 45%;
 }
-
 
 .dds__button {
     padding-top: -4px;
     width: 10%;
 }
-
 </style>
