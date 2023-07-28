@@ -1,11 +1,12 @@
 export default interface News {
+value: any;
   id: number;
-  title?: string;
-  text?: string;
-  program?: string;
+  title: string;
+  text: string;
+  program: string;
   programId: number;
-  author?: string;
+  author: string;
   authorId: number;
-  image: string;
-  date?: string;
+  image?: string;
+  date: string;
 }

@@ -60,11 +60,10 @@ const onFileChange = (file: File) => {
 };
 
 const zeroStates = () => {
-  newsToBeCreated.value.title = '';
+  handleTitle('')
   handleText('')
   newsToBeCreated.value.imageName = '';
   newsToBeCreated.value.program = 0;
-  newsToBeCreated.value.author = 0;
   selectedFile.value = null;
 }
 const submitForm = () => {

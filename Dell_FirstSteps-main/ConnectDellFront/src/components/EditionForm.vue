@@ -9,7 +9,9 @@ import Dropdown from "./Dropdown.vue"
 import TextArea from "./TextArea.vue";
 import PrimaryButton from "./PrimaryButton.vue";
 import Edition from "@/interfaces/Edition";
+import User from "@/interfaces/User";
 import axios from "axios";
+import { PropType } from "vue";
 </script>
 
 <template>
@@ -25,7 +27,7 @@ import axios from "axios";
         <Select boxName="Work Model" placeholder="Please select a work model" :list="workModel" @selectValue="handleSelect"></Select>
         <TextArea boxName="Description" v-bind:minLength=10 v-bind:maxLength=50 @descriptionText="handleDescription"></TextArea>
         <TextArea boxName="Curriculum" @descriptionText="handleCurriculum"></TextArea>
-        <PrimaryButton class="dds__button" buttonName="Submit" @clicked="handleClick" :isDisabled="activateButton()"></PrimaryButton>
+        <PrimaryButton class="dds__button" buttonName="Submit" @clicked="handleClick" :disabled="activateButton()"></PrimaryButton>
     </div>
 </template>
 
@@ -34,11 +36,12 @@ export default {
     data() {
         return {
             editionInfo: {
+                id: new Number,
                 name: "",
                 numberOfInterns: new Number,
                 members: new Array,
                 startDate: new Date().toISOString().slice(0, 10),
-                endDate: undefined,
+                endDate: "",
                 mode: new Number,
                 description: "",
                 curriculum: "",
@@ -63,7 +66,7 @@ export default {
         handleStartDate(date: string): void {
             this.editionInfo.startDate = date
         },
-        handleEndDate(date: Date): void {
+        handleEndDate(date: string): void {
             this.editionInfo.endDate = date;
         },
         handleDropdown(intern: []): void {   
@@ -91,13 +94,13 @@ export default {
                 endDate: this.editionInfo.endDate,
                 mode: this.editionInfo.mode,
                 description: this.editionInfo.description.trim(),
-                curriculum: this.editionInfo.curriculum.trim(),
+                curriculum: this.editionInfo.curriculum?.trim(),
                 program: this.programId
             })
                 .then(() => {
                 alert("Solicitação atendida com sucesso!");
             })
-                .catch((error) => {
+                .catch(() => {
                 alert("Não foi possível atender a solicitação.");
             });
         },
@@ -149,12 +152,12 @@ export default {
             return false;
         },
         checkDescription(): boolean {
-            if(this.editionInfo.description.length > 500)
+            if(this.editionInfo.description.trim().length > 500)
                 return true
             return false;
         },
         checkCurriculum(): boolean {
-            if(this.editionInfo.curriculum.length > 500)
+            if(this.editionInfo.curriculum!.trim().length > 500)
                 return true
             return false;
         }
@@ -196,4 +199,4 @@ export default {
     padding-top: -4px;
     width: 10%;
 }
-</style>16
+</style>

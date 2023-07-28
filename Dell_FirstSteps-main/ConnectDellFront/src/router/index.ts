@@ -7,10 +7,12 @@ import MyProgramView from '../views/MyProgramView.vue';
 import CalendarView from '../views/CalendarViewTemp.vue';
 import CreateProgramView from '../views/CreateProgramView.vue';
 import EditionViewVue from '@/views/EditionView.vue';
-// import EditionInfoView from '../views/EditionInfoView.vue';
+import EditProgramView from '../views/EditProgramView.vue'
+import EditionInfoView from '../views/EditionInfoView.vue';
 import CreateEditionView from '../views/CreateEditionView.vue';
 import UsersView from "@/views/UsersView.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
+import EditNewsView from "@/views/EditNewsView.vue";
 import AddNewsView from "@/views/AddNewsView.vue";
 
 const router = createRouter({
@@ -66,15 +68,20 @@ const router = createRouter({
       name: 'Add News',
       component: AddNewsView,
     },
-    // {
-    //   path: '/editNews/:id',
-    //   name: 'Edit news',
-    //   component: ,
-    // }
+    {
+      path: '/editNews/:id',
+      name: 'Edit news',
+      component: EditNewsView,
+    },
     {
       path: '/:pathMatch(.*)*',
       component: NotFoundView
     },
+    {
+      path: '/editProgram/:id',
+      name: 'EditProgram',
+      component: EditProgramView,
+    }
   ]
 })
 

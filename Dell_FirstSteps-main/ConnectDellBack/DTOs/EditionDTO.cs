@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace ConnectDellBack.DTOs;
 using ConnectDellBack.Models;
 public class EditionDTO

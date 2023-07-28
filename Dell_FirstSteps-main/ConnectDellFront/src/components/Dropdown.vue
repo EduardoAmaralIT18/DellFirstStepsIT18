@@ -77,25 +77,19 @@ const list = ref(null);
 const dropdown = ref();
 
 onMounted(() => {
-  dropdown.value = DDS.Dropdown(list.value);
-  console.log("a", props.selected);
-  console.log("dfskghjfsa")
-
-  if (props.selected) {
+    dropdown.value = DDS.Dropdown(list.value);
     setTimeout(() => {
-      for (let owner of props.selected!) {
-        dropdown.value.selectOption(owner.id.toString());
-      }
+        for (let owner of props.selected!) {
+            dropdown.value.selectOption(owner.id.toString());
+        }
     }, 1000);
-  }
 });
 
 const props = defineProps({
-  dropdownName: String,
-  data: Array as PropType<User[]>,
-  peopleInvolved: Array,
-  selected: Array as PropType<User[]>,
-});
+    dropdownName: String,
+    data: Array as PropType<User[]>,
+    selected: Array as PropType<User[]>,
+})
 
 function sendSelectedToParent() {
   const selected = dropdown.value.getSelection();
