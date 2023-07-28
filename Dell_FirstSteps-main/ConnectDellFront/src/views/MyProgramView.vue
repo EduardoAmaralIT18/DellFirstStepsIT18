@@ -102,10 +102,7 @@ function isAdmin() {
       </div>
       <div v-if="isOwner()">
         <RouterLink style="text-decoration: none" :to="`/editProgram/${id}`">
-          <button
-            class="manageProgram button dds__button dds__button&#45;&#45;primary"
-            type="button"
-          >
+          <button class="manageProgram button dds__button dds__button&#45;&#45;primary" type="button">
             <i class="dds__icon dds__icon--pencil" aria-hidden="true"></i>
             Manage Program
           </button>
@@ -119,24 +116,10 @@ function isAdmin() {
           <CardPlus :url="`${id}/createEdition`" />
         </div>
 
-        <div
-          class="col-lg-12 col-md-12 col-sm-12 dds__mb-3"
-          v-for="item in program.editions"
-          id="editions"
-        >
-          <CardEdition
-            :key="item.id"
-            :number-of-interns="item.numberOfInterns"
-            :curriculum="item.curriculum"
-            :members="item.members"
-            :mode="item.mode"
-            :name="item.name"
-            :description="item.description"
-            :id="item.id"
-            :start-date="item.startDate"
-            :end-date="item.endDate"
-            :program="item.program"
-          />
+        <div class="col-lg-12 col-md-12 col-sm-12 dds__mb-3" v-for="item in program.editions" id="editions">
+          <CardEdition :key="item.id" :number-of-interns="item.numberOfInterns" :curriculum="item.curriculum"
+            :members="item.members" :mode="item.mode" :name="item.name" :description="item.description" :id="item.id"
+            :start-date="item.startDate" :end-date="item.endDate" :program="item.program" />
         </div>
       </div>
     </div>
@@ -154,6 +137,7 @@ body {
   display: flex;
   flex-direction: column;
   max-width: 1630px;
+  margin-bottom: 10%;
 }
 
 .title {

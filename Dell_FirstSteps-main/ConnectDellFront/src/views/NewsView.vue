@@ -55,7 +55,7 @@ function isAuthor(authorId: number) {
       </div>
       <div class="footer-card">
         <span>{{ item.date }}</span>
-        <RouterLink :to="`editNews/${item.id}`" v-if="isAuthor(item.authorId)">
+        <RouterLink :to="`manageNews/${item.id}`" v-if="isAuthor(item.authorId)">
           <button
             class="manageProgram button dds__button dds__button&#45;&#45;primary"
             type="button"

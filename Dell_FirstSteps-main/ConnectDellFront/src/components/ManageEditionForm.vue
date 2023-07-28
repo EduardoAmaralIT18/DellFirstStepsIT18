@@ -24,8 +24,7 @@ const idEdition = +route.params.id
 const initialSelectedIds = ref<number[]>([])
 
 const props = defineProps<{
-  formName: String,
-  programId: Number
+  formName: String
 }>();
 
 onMounted(() => {
@@ -83,7 +82,7 @@ const submitForm = async () => {
       mode: editionInfo.value!.mode,
       description: editionInfo.value!.description.trim(),
       curriculum: editionInfo.value!.curriculum!.trim(),
-      program: props.programId,
+      program: editionInfo.value?.program,
       programName: editionInfo.value!.programName!.trim(),
     })
     .then(() => {
@@ -183,9 +182,9 @@ const checkCurriculum = () => {
     <Dropdown dropdownName="Members" :data="internList" :initial-value="initialSelectedIds"
       @selectedId="handleDropdown" />
     <div class="date-container">
-      <DatePicker class="date_picker" boxName="Start Date" v-bind:required="true" v-bind:dateNow="true"
+      <DatePicker :initial-date="editionInfo.startDate" class="date_picker" boxName="Start Date" v-bind:required="true" v-bind:dateNow="true"
         @selectedDate="handleStartDate"></DatePicker>
-      <DatePicker class="date_picker" boxName="End Date" v-bind:required="true" v-bind:minRequired="true"
+      <DatePicker :initial-date="editionInfo.endDate" class="date_picker" boxName="End Date" v-bind:required="true" v-bind:minRequired="true"
         @selectedDate="handleEndDate"></DatePicker>
     </div>
     <Select :initial-value="workModel[editionInfo.mode]" boxName="Work Model" placeholder="Please select a work model"

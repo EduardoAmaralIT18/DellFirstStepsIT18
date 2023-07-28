@@ -50,7 +50,6 @@ const selectedIds = ref<number[]>([])
 
 if (props.initialValue) {
     selectedIds.value = props.initialValue
-    console.log(selectedIds.value)
 }
 
 function sendSelectedToParent() {
