@@ -8,7 +8,6 @@ const props = defineProps({
   initialValue: String
 })
 
-
 const info = ref<String>(`${props.initialValue ? props.initialValue : ''}`)
 
 const emits = defineEmits({

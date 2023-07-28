@@ -9,7 +9,9 @@ import Dropdown from "./Dropdown.vue"
 import TextArea from "./TextArea.vue";
 import PrimaryButton from "./PrimaryButton.vue";
 import Edition from "@/interfaces/Edition";
+import User from "@/interfaces/User";
 import axios from "axios";
+import { PropType } from "vue";
 </script>
 
 <template>
@@ -30,17 +32,16 @@ import axios from "axios";
 </template>
 
 <script lang="ts">
-import axios from "axios";
-
 export default {
     data() {
         return {
             editionInfo: {
+                id: new Number,
                 name: "",
                 numberOfInterns: new Number,
                 members: new Array,
                 startDate: new Date().toISOString().slice(0, 10),
-                endDate: undefined,
+                endDate: "",
                 mode: new Number,
                 description: "",
                 curriculum: "",
@@ -65,7 +66,7 @@ export default {
         handleStartDate(date: string): void {
             this.editionInfo.startDate = date
         },
-        handleEndDate(date: Date): void {
+        handleEndDate(date: string): void {
             this.editionInfo.endDate = date;
         },
         handleDropdown(intern: []): void {   
@@ -93,7 +94,7 @@ export default {
                 endDate: this.editionInfo.endDate,
                 mode: this.editionInfo.mode,
                 description: this.editionInfo.description.trim(),
-                curriculum: this.editionInfo.curriculum.trim(),
+                curriculum: this.editionInfo.curriculum?.trim(),
                 program: this.programId
             })
                 .then(() => {
@@ -151,12 +152,12 @@ export default {
             return false;
         },
         checkDescription(): boolean {
-            if(this.editionInfo.description.length > 500)
+            if(this.editionInfo.description.trim().length > 500)
                 return true
             return false;
         },
         checkCurriculum(): boolean {
-            if(this.editionInfo.curriculum.length > 500)
+            if(this.editionInfo.curriculum!.trim().length > 500)
                 return true
             return false;
         }
@@ -198,4 +199,4 @@ export default {
     padding-top: -4px;
     width: 10%;
 }
-</style>16
+</style>

@@ -12,5 +12,4 @@ const props = defineProps({
 .goBack {
   text-decoration: none;
 }
-
 </style>
