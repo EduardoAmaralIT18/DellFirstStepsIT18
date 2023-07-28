@@ -10,7 +10,7 @@ const id = +route.params.id;
 
 <template>
     <div class="body">
-        <GoBackButton class="button" path="/home" />
+        <GoBackButton class="button" :path="`/myProgram/${id}`" />
         <EditionForm formName="Create Edition" v-bind:programId="id"/>
     </div>
 </template>
