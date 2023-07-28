@@ -49,7 +49,6 @@ const props = defineProps({
     selected: Array as PropType<User[]>,
 })
 
-
 function sendSelectedToParent() {
     const selected = dropdown.value.getSelection()
     const selectedId = []

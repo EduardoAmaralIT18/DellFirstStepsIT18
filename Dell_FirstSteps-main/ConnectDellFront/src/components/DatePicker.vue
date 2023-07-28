@@ -12,7 +12,7 @@ import "@dds/components/src/scss/dds-icons.scss";
             <input type="date" class="dds__date-picker__input" placeholder="Enter the date" required="true" maxlength="256"
                 id="date-picker-control-206993451" name="date-picker-control-name-206993451"
                 aria-labelledby="date-picker-label-206993451 date-picker-helper-206993451" v-model="preset"
-                @input="sendStartToParent(preset)" />
+                @input="sendToParent(preset)" />
             <small id="date-picker-helper-206993451" class="dds__date-picker__helper">Please, use the format
                 MM/DD/YYYY</small>
             <div id="date-picker-error-206993451" class="dds__date-picker__invalid-feedback">Invalid date</div>
@@ -31,11 +31,10 @@ export default {
     props: {
         boxName: String,
         required: Boolean,
-        minRequired: Boolean,
         initialDate: String
     },
     methods: {
-        sendStartToParent(date: string) {
+        sendToParent(date: string) {
             this.preset = date;
             this.$emit("selectedDate", date);
         },
@@ -44,10 +43,7 @@ export default {
         if(this.initialDate != undefined){
             this.preset = this.initialDate!
         }
-        this.sendStartToParent(this.preset);
+        this.sendToParent(this.preset);
     },
 };
 </script>
-
-<style scoped>
-</style>
