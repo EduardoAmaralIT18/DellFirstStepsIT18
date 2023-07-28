@@ -12,94 +12,90 @@ import EditionInfoView from '../views/EditionInfoView.vue';
 import CreateEditionView from '../views/CreateEditionView.vue';
 import UsersView from "@/views/UsersView.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
-import EditNewsView from "@/views/EditNewsView.vue";
+import ManageNewsView from "@/views/ManageNewsView.vue";
 import AddNewsView from "@/views/AddNewsView.vue";
+import ManageEditionView from "@/views/ManageEditionView.vue";
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
-    routes: [
-        {
-            path: '/',
-            name: 'Login',
-            component: LoginView,
-        },
-        {
-            path: '/home',
-            name: 'Home',
-            component: HomeView,
-        },
-        {
-            path: '/users',
-            name: 'Users',
-            component: UsersView,
-        },
-        {
-            path: '/news',
-            name: 'News',
-            component: NewsView,
-        },
-        {
-            path: '/myProgram/:id',
-            name: 'My Program',
-            component: MyProgramView,
-        },
-        {
-            path: '/program/:id',
-            name: 'Program',
-            component: ProgramView,
-        },
-        {
-            path: '/calendar',
-            name: 'Calendar',
-            component: CalendarView,
-        },
-        {
-            path: '/createProgram',
-            name: 'CreateProgram',
-            component: CreateProgramView,
-        },
-        {
-            path: '/edition/:id',
-            name: 'Edition',
-            component: EditionViewVue,
-        },
-        {
-            path: '/myProgram/:id/createEdition',
-            name: 'CreateEdition',
-            component: CreateEditionView,
-        },
-        {
-            path: '/addNews',
-            name: 'Add News',
-            component: AddNewsView,
-        },
-        {
-            path: '/editNews/:id',
-            name: 'Edit news',
-            component: EditNewsView,
-        },
-        {
-            path: '/:pathMatch(.*)*',
-            component: NotFoundView
-        },
-        {
-            path: '/editProgram/:id',
-            name: 'EditProgram',
-            component: EditProgramView,
-        }
-    ]
-})
-
-router.beforeEach(async (to, from, next) => {
-    if (to.name === 'Login' && localStorage.getItem("userRole") !== '') {
-        localStorage.setItem("userName", "");
-        localStorage.setItem("userId", "");
-        localStorage.setItem("userEmail", "");
-        localStorage.setItem("userRole", "");
-        next();
-    } else {
-        next();
-    }
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    {
+      path: "/",
+      name: "Login",
+      component: LoginView,
+    },
+    {
+      path: "/home",
+      name: "Home",
+      component: HomeView,
+    },
+    {
+      path: "/news",
+      name: "News",
+      component: NewsView,
+    },
+    {
+      path: "/myProgram/:id",
+      name: "MyProgram",
+      component: MyProgramView,
+    },
+    {
+      path: "/program/:id",
+      name: "Program",
+      component: ProgramView,
+    },
+    {
+      path: "/users",
+      name: "Users",
+      component: UsersView,
+    },
+    {
+      path: "/createProgram",
+      name: "CreateProgram",
+      component: CreateProgramView,
+    },
+    {
+      path: "/editionInfo/:id",
+      name: "EditionInfo",
+      component: EditionInfoView,
+    },
+    {
+      path: "/myProgram/:id/createEdition",
+      name: "CreateEdition",
+      component: CreateEditionView,
+    },
+    {
+      path: "/addNews",
+      name: "AddNews",
+      component: AddNewsView,
+    },
+    {
+      path: "/manageNews/:id",
+      name: "ManageNews",
+      component: ManageNewsView,
+    },
+    {
+      path: "/manageEdition/:id",
+      name: "ManageEdition",
+      component: ManageEditionView,
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      component: NotFoundView,
+    },
+  ],
 });
 
-export default router
+router.beforeEach(async (to, from, next) => {
+  if (to.name === "Login" && localStorage.getItem("userRole") !== "") {
+    localStorage.setItem("userName", "");
+    localStorage.setItem("userId", "");
+    localStorage.setItem("userEmail", "");
+    localStorage.setItem("userRole", "");
+    next();
+  } else {
+    next();
+  }
+});
+
+export default router;

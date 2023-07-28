@@ -64,6 +64,13 @@ defineProps<Edition>();
   font-size: 19px;
   color: #0672cb;
   text-align: left;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .dds__card__body {

@@ -10,12 +10,9 @@ const props = defineProps({
 
 const info = ref<String>(`${props.initialValue ? props.initialValue : ''}`)
 
-const emits = defineEmits({
-  typedText: String
-})
+const emits = defineEmits(['typedText'])
 
-const sendTextToParent = (text: string) => {
-  info.value = text;
+const sendTextToParent = () => {
   emits("typedText", info.value);
 }
 </script>
@@ -29,7 +26,7 @@ const sendTextToParent = (text: string) => {
              name="text-input-control-name-647192958"
              id="text-input-control-647192958" required="true"
              aria-labelledby="text-input-label-647192958 text-input-helper-647192958" v-model="info"
-             @input="sendTextToParent(info)"/>
+             @input="sendTextToParent" />
       <small id="text-input-helper-647192958" class="dds__input-text__helper"></small>
       <div id="text-input-error-647192958" class="dds__invalid-feedback">Error text</div>
     </div>

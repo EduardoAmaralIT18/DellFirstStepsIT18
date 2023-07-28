@@ -5,16 +5,16 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-  buttonName: String,
-  disabled: Boolean
+defineProps({
+    buttonName: String,
+    disabled: Boolean
 });
 
 const emits = defineEmits({
     clicked: Boolean
 })
 
-function sendClickToParent(){
+function sendClickToParent() {
     emits('clicked', true);
 }
 </script>

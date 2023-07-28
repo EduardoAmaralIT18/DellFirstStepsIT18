@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import EditionForm from "@/components/EditionForm.vue";
+import ManageEditionForm from "@/components/ManageEditionForm.vue";
 import GoBackButton from "@/components/GoBackButton.vue";
 import { useRoute } from "vue-router";
 
@@ -10,8 +10,8 @@ const id = +route.params.id;
 
 <template>
     <div class="body">
-        <GoBackButton class="button" :path="`/myProgram/${id}`" />
-        <EditionForm formName="Create Edition" v-bind:programId="id" />
+        <GoBackButton class="button" :path="`/editionInfo/${id}`" />
+        <ManageEditionForm form-name="Manage Edition" />
     </div>
 </template>
 

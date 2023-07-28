@@ -46,58 +46,50 @@ public class EditionService : IEditionService
     }
 
 
-    public async Task<int> UpdateEdition(EditionModel editionForm)
+    public async Task<int> UpdateEdition(EditionDTO dto)
     {
-        //Puxar objeto do database
-        //mexer nas váriáveis dele na mão
-        //Descobrir como enviar esse objeto atualizado, sem criar um novo.
+        var program = await _dbContext.programs.FindAsync(dto.program);
+        var model = NewEditionDTO.ToModel(dto, program);
+       
 
-        var edition = _dbContext.editions.Where(ed => ed.id == editionForm.id)
+        var edition = _dbContext.editions.Where(ed => ed.id == model.id)
                                          .Include(ed => ed.members)
                                          .FirstOrDefault();
 
         if (edition != null)
         {
-            edition.name = editionForm.name;
-            edition.startDate = editionForm.startDate;
-            edition.endDate = editionForm.endDate;
-            edition.endDate = editionForm.endDate.AddDays(1);
-            edition.description = editionForm.description;
-            edition.curriculum = editionForm.curriculum;
-            edition.numberOfInterns = editionForm.numberOfInterns;
-            // edition.members = editionForm.members;
-
+            edition.name = model.name;
+            edition.startDate = model.startDate;
+            edition.endDate = model.endDate;
+            edition.endDate = model.endDate.AddDays(1);
+            edition.description = model.description;
+            edition.curriculum = model.curriculum;
+            edition.numberOfInterns = model.numberOfInterns;
             List<UserModel> members = new List<UserModel>();
 
-            foreach (var item in editionForm.members)
+            edition.members.Clear();
+            foreach (var item in model.members)
             {
                 members.Add(await _dbContext.users.Where(user => user.id == item.id).FirstOrDefaultAsync());
             }
-
-            edition.mode = (Mode)editionForm.mode;
-
+            edition.mode = model.mode;
             edition.members.AddRange(members);
-
+            
             int entries = await _dbContext.SaveChangesAsync();
             return 1;
-
         }
         else
         {
-
             return 0;
-
         }
-
     }
 
-    public async Task<NewEditionDTO> GetEditionInfo(int idProgram, int idEdition)
+    public async Task<NewEditionDTO> GetEditionInfo( int idEdition)
     {
         var edition = await _dbContext.editions.Where(ed => ed.id == idEdition)
                                                 .Include(ed => ed.program)
                                                 .Include(ed => ed.events)
                                                 .Include(ed => ed.interns)
-                                                //.Include(ed => ed.membership)
                                                 .Include(ed => ed.members)
                                                 .FirstOrDefaultAsync();
         return NewEditionDTO.ConvertModel2DTO(edition);

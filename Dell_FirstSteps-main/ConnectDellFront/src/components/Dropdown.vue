@@ -1,71 +1,29 @@
 <template>
-  <div
-    class="dds__dropdown"
-    data-dds="dropdown"
-    ref="list"
-    id="multi-select-list-dropdown"
-    data-selection="multiple"
-    data-select-all-label="Select all"
-    @click="sendSelectedToParent"
-  >
-    <div class="dds__dropdown__input-container">
-      <label
-        id="dropdown-label-331655468"
-        for="dropdown-control-331655468"
-        class="dds__label"
-        >{{ dropdownName }}</label
-      >
-      <div
-        class="dds__dropdown__input-wrapper"
-        autocomplete="off"
-        aria-haspopup="listbox"
-        aria-controls="multi-select-list-dropdown-popup"
-      >
-        <input
-          id="multi-select-list-dropdown-input"
-          name="multi-select-list-dropdown-name"
-          type="text"
-          role="combobox"
-          class="dds__dropdown__input-field"
-          aria-labelledby="multi-select-list-dropdown-label multi-select-list-dropdown-helper"
-          autocomplete="off"
-          aria-expanded="false"
-          aria-controls="multi-select-list-dropdown-list"
-        />
-      </div>
+    <div class="dds__dropdown" data-dds="dropdown" ref="list" id="multi-select-list-dropdown" data-selection="multiple"
+        data-select-all-label="Select all" @click="sendSelectedToParent">
+        <div class="dds__dropdown__input-container">
+            <label id="dropdown-label-331655468" for="dropdown-control-331655468" class="dds__label">{{ dropdownName
+            }}</label>
+            <div class="dds__dropdown__input-wrapper" autocomplete="off" aria-haspopup="listbox"
+                aria-controls="multi-select-list-dropdown-popup">
+                <input id="multi-select-list-dropdown-input" name="multi-select-list-dropdown-name" type="text"
+                    role="combobox" class="dds__dropdown__input-field"
+                    aria-labelledby="multi-select-list-dropdown-label multi-select-list-dropdown-helper" autocomplete="off"
+                    aria-expanded="false" aria-controls="multi-select-list-dropdown-list" />
+            </div>
+        </div>
+        <div id="multi-select-list-dropdown-popup" class="dds__dropdown__popup dds__dropdown__popup--hidden"
+            role="presentation" tabindex="-1">
+            <ul class="dds__dropdown__list" role="listbox" tabindex="-1" id="multi-select-list-dropdown-list">
+                <li class="dds__dropdown__item" role="none" v-for="item in data" :key="item.id">
+                    <button type="button" class="dds__dropdown__item-option" role="option" :data-selected="selectedIds.includes(item.id)"
+                        :data-value=item.id tabindex="-1">
+                        <span class="dds__dropdown__item-label">{{ item.name }}</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
     </div>
-    <div
-      id="multi-select-list-dropdown-popup"
-      class="dds__dropdown__popup dds__dropdown__popup--hidden"
-      role="presentation"
-      tabindex="-1"
-    >
-      <ul
-        class="dds__dropdown__list"
-        role="listbox"
-        tabindex="-1"
-        id="multi-select-list-dropdown-list"
-      >
-        <li
-          class="dds__dropdown__item"
-          role="none"
-          v-for="item in data"
-          :key="item.id"
-        >
-          <button
-            type="button"
-            class="dds__dropdown__item-option"
-            role="option"
-            data-selected="false"
-            :data-value="item.id"
-            tabindex="-1"
-          >
-            <span class="dds__dropdown__item-label">{{ item.name }}</span>
-          </button>
-        </li>
-      </ul>
-    </div>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -88,25 +46,29 @@ onMounted(() => {
 const props = defineProps({
     dropdownName: String,
     data: Array as PropType<User[]>,
-    selected: Array as PropType<User[]>,
+    initialValue: Array as PropType<number[]>
 })
 
-function sendSelectedToParent() {
-  const selected = dropdown.value.getSelection();
-  const selectedId = [];
-  for (let item of selected) {
-    selectedId.push(+item);
-  }
-  emits("selectedId", selectedId);
+const emits = defineEmits(['selectedId'])
+
+const selectedIds = ref<number[]>([])
+
+if (props.initialValue) {
+    selectedIds.value = props.initialValue
 }
 
-const emits = defineEmits({
-  selectedId: Array,
-});
+function sendSelectedToParent() {
+    const selected = dropdown.value.getSelection()
+    selectedIds.value = []
+    for (let item of selected) {
+        selectedIds.value.push(+item)
+    }
+    emits('selectedId', selectedIds.value);
+}
 </script>
 
 <style scoped>
 .dds__label--required::after {
-  color: #0672cb;
+    color: #0672CB;
 }
 </style>

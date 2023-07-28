@@ -54,4 +54,24 @@ public class NewEditionDTO
         aux.name = edition.name;
         return aux;
     }
+
+    public static EditionModel ToModel(EditionDTO dto, ProgramModel model)
+    {
+        return new EditionModel
+        {
+            curriculum = dto.curriculum,
+            startDate = dto.startDate,
+            numberOfInterns = dto.numberOfInterns,
+            description = dto.description,
+            events = dto.events,
+            id = dto.id,
+            interns = dto.interns,
+            members = dto.members,
+            mode = (Mode)dto.mode,
+            name = dto.name,
+            program = model,
+            endDate = dto.endDate,
+            memberships = dto.memberships
+        };
+    }
 }

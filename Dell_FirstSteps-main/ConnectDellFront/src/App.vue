@@ -24,9 +24,9 @@ const routes = router.options.routes;
 
 const routeExist = () => {
   return routes
-      .some(r => r.path
+      .some(r => r.path.toLowerCase()
           .includes(
-             route.path.replace(new RegExp("\\d+"),":id")
+             route.path.replace(new RegExp("\\d+"),":id").toLowerCase()
           ))
 }
 </script>

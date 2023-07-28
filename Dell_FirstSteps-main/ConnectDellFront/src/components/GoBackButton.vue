@@ -1,10 +1,10 @@
 <template>
-    <RouterLink :to="`${path}`" class="goBack"> &larr; Go back</RouterLink>
+  <RouterLink :to="`${path}`" class="goBack"> &larr; Go back</RouterLink>
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-    path: String
+defineProps({
+  path: String
 });
 </script>
 

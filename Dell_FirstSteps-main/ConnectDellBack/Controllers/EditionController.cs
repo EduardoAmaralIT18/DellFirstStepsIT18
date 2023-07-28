@@ -32,10 +32,10 @@ public class EditionController : ControllerBase
         }
     }
 
-    [HttpPost("updateEdition")]
-    public async Task<ActionResult> UpdateEdition(EditionModel editionForm)
+    [HttpPatch("updateEdition")]
+    public async Task<ActionResult> UpdateEdition(EditionDTO dto)
     {
-        int entries = await _service.UpdateEdition(editionForm);
+        int entries = await _service.UpdateEdition(dto);
         if (entries > 0)
         {
             return Accepted();
@@ -47,9 +47,9 @@ public class EditionController : ControllerBase
     }
 
     [HttpGet("showInfoEdition")]
-    public async Task<ActionResult<NewEditionDTO>> ShowInfoEdition(int idProgram, int idEdition)
+    public async Task<ActionResult<NewEditionDTO>> ShowInfoEdition( int idEdition)
     {
-        var result = await _service.GetEditionInfo(idProgram, idEdition);
+        var result = await _service.GetEditionInfo(idEdition);
         return result == null ? NotFound() : Ok(result);
     }
 
@@ -61,7 +61,7 @@ public class EditionController : ControllerBase
     }
 
     [HttpGet("getEditionsNames")]
-     public async Task<ActionResult<EditionDTO>> GetEditionsNames(int idProgram)
+    public async Task<ActionResult<EditionDTO>> GetEditionsNames(int idProgram)
     {
         var result = await _service.AllEditions(idProgram);
         return result == null ? NoContent() : Ok(result);

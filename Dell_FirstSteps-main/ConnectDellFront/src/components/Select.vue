@@ -39,7 +39,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import {ref} from "vue";
+
 const props = defineProps({
   list: Array<string>,
   selectValue: Function,
@@ -47,26 +48,19 @@ const props = defineProps({
   required: Boolean,
   boxName: String,
   placeholder: String,
-  value: String,
+  initialValue: String
 });
 
-let selectedValue: string = "";
+const emits = defineEmits(['selectedValue'])
 
-const emits = defineEmits({
-  selectedValue: String,
-});
-
-onMounted(() => {
-  if (props.value) selectedValue = props.value;
-});
+const selectedValue = ref<String>(`${props.initialValue ? props.initialValue : ''}`)
 
 function sendSelectedToParent() {
-  emits("selectedValue", selectedValue);
+  emits("selectedValue", selectedValue.value);
 }
 </script>
 
-<style>
-.dds__label--required::after {
-  color: #0672cb;
-}
+<style> .dds__label--required::after {
+   color: #0672CB;
+ }
 </style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineEmits } from 'vue';
+import { ref } from 'vue';
 import "@/components/FileInput.vue";
 
 const selectedFile = ref<File>();
@@ -16,7 +16,7 @@ const emits = defineEmits({
 })
 
 const onFileChange = (event: Event) => {
-  selectedFile.value = (event.target as HTMLInputElement)?.files[0];
+  selectedFile.value = (event.target as HTMLInputElement)?.files![0];
   emits('fileSelected', selectedFile.value);
 }
 </script>
@@ -32,7 +32,6 @@ const onFileChange = (event: Event) => {
         name="file-input-control-name-861422857"
         class="dds__file-input__control"
         accept=".png, .jpeg, .jpg"
-        multiple=""
         ref="fileInputRef"
         @change="onFileChange"
     />

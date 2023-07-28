@@ -2,32 +2,33 @@
 import "@dds/components/src/scss/dds-fonts.scss";
 import { ref } from "vue";
 
-const info = ref(1);
-
 const props = defineProps({
-    boxName: String
-});
+    boxName: String,
+    initialValue: Number
+})
 
-const emits = defineEmits({
-    typedNumber: Number
-});
+const info = ref<Number>(props.initialValue ? props.initialValue : 0)
 
-function sendToParent(value: number) {
-    info.value = value
-    emits('typedNumber', value)
+const emits = defineEmits(['typedNumber'])
+
+const sendTextToParent = () => {
+    emits("typedNumber", info.value);
+
 }
 </script>
 
 <template>
     <div id="text-input-216225955" class="dds__input-text__container">
-        <label id="text-input-label-647192958" for="text-input-control-647192958" class="dds__label dds__label--required">{{ boxName }}</label>
+        <label id="text-input-label-647192958" for="text-input-control-647192958" class="dds__label dds__label--required">{{
+            boxName }}</label>
         <div class="dds__input-text__wrapper">
             <input type="number" class="dds__input-text" name="text-input-control-name-647192958"
                 id="text-input-control-647192958" required="true"
-                aria-labelledby="text-input-label-647192958 text-input-helper-647192958" 
-                @input="sendToParent(info)" min="1" max="22" v-model="info" />
+                aria-labelledby="text-input-label-647192958 text-input-helper-647192958" @input="sendTextToParent"
+                min="1" max="22" v-model="info" />
             <small id="text-input-helper-647192958" class="dds__input-text__helper"></small>
             <div id="text-input-error-647192958" class="dds__invalid-feedback">Error text</div>
         </div>
     </div>
 </template>
+

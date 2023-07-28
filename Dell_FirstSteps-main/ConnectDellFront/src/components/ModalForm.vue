@@ -209,9 +209,11 @@ function resetInputs() {
   color: #0672cb;
   font-weight: 500;
 }
+
 .dds__modal__content {
   width: 40%;
 }
+
 .date-container {
   display: flex;
   flex-direction: row;
