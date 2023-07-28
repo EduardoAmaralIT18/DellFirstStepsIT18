@@ -2,14 +2,14 @@
 import axios from "axios";
 import type Edition from "@/interfaces/Edition";
 import type Event from "@/interfaces/Event";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch,provide } from "vue";
 import { useRoute } from "vue-router";
 import Calendar from "@/components/Calendar.vue";
 import ModalForm from "@/components/ModalForm.vue"
 import User from "@/interfaces/User";
 import GoBackButton from "@/components/GoBackButton.vue";
-
 const route = useRoute();
+
 
 type editionType = {
     id?: number;
@@ -35,7 +35,6 @@ onMounted(async () => {
   await getEdition(3241, editionId);
   loading.value = true;
 })
-
 const getEdition = async (programId: number, editionId: number) => {
   await axios
     .get(`https://localhost:5001/Edition/showInfoEdition?idProgram=${programId}&idEdition=${editionId}`)
@@ -122,6 +121,7 @@ let receiveDate = (body: object) => {
       <ModalForm 
         v-if="userRole === 0"
         class="modalbutton"
+        buttonText="Add Event"
         @sendBodyToParent="handlePostBody"
         modal-title="Add Event"
         :edition-users="edition?.members.concat(edition?.interns)"
@@ -134,6 +134,7 @@ let receiveDate = (body: object) => {
         :events="edition?.events" 
         :start-date="edition?.startDate" 
         :end-date="edition?.endDate" 
+        :editionUsers="edition?.members.concat(edition?.interns)"
         @sendDate="receiveDate">
       </Calendar>
   </div>

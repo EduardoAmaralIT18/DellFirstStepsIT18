@@ -12,6 +12,7 @@ import SecondaryButton from "./SecondaryButton.vue";
 declare var DDS: any;
 
 const props = defineProps({
+  buttonText: String,
   eventTitle: String,
   eventType: Number,
   modalTitle: String,
@@ -85,6 +86,11 @@ const checkEventType = () => {
   return props.eventType === -1;
 };
 
+
+function openModal() {
+  modal.value.open()
+}
+
 const phaseList = ["Phase", "Activity"];
 
 function resetInputs() {
@@ -99,7 +105,7 @@ function resetInputs() {
 </script>
 
 <template>
-  <PrimaryButton buttonName="Add Event" @click="modal.open(), resetInputs()">
+  <PrimaryButton :buttonName="props.buttonText" @click="openModal(), resetInputs()">
   </PrimaryButton>
 
   <div

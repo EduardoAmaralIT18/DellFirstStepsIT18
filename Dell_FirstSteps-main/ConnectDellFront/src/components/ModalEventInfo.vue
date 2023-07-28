@@ -1,7 +1,8 @@
 <script setup lang="ts">
-  import { onMounted, ref, PropType } from 'vue';
+  import { onMounted, ref, PropType,inject } from 'vue';
   import TypeEvent from "../interfaces/Event"
-
+  import ModalFormVue from './ModalForm.vue';
+  import type User from '@/interfaces/User';
   const role = +localStorage.getItem("userRole")!;
 
   enum PhaseType {
@@ -18,6 +19,7 @@
 
   const props = defineProps({
     event : Object as PropType<TypeEvent>,
+    editionUsers: Array as PropType<User[]>
   });
   declare var DDS: any;
   const modal= ref()
@@ -25,7 +27,6 @@
 
   function handleEditClick() {
     closeModal();
-
   }
     
   function closeModal() {
@@ -37,11 +38,12 @@
       modal.value.open();
     }
   )
+
 </script>
 
 <template>
     <!-- <button @click="modal.open()" class="button" id="example" type="button">Launch Modal Button</button> -->
-    <div role="dialog" ref="list" data-dds="modal" class="dds__modal" aria-labelledby="modal-headline-160350263">
+    <div id="modalEventInfo" role="dialog" ref="list" data-dds="modal" class="dds__modal" aria-labelledby="modal-headline-160350263">
       <div class="dds__modal__content">
         <div @OnClick="closeModal" class="dds__modal__header"><h3 class="dds__modal__title" id="modal-headline-160350263">{{ props.event?.name }}</h3></div>
         <div id="modal-body-754450445" class="dds__modal__body">
@@ -51,7 +53,18 @@
           <b>Where: </b><p>{{ props.event?.where }}</p>
         </div>
         <div class="dds__modal__footer">
-          <button v-if="role === 0" @OnClick="handleEditClick" class="dds__button dds__button--md" type="button" name="modal-secondary-button">Edit</button>
+          <ModalFormVue
+            buttonText="Edit"
+            :eventTitle="props.event?.name" 
+            :eventType="props.event?.eventType" 
+            modalTitle="Edit Event"
+            :editionUsers="props.editionUsers"
+            :eventStartDate="props.event?.startDate"
+            :eventEndDate="props.event?.endDate"
+            :peopleInvolved="props.event?.peopleInvolved"
+            :location="props.event?.where"
+            :editMode="true"/>
+          <!-- <button v-if="role === 0" @OnClick="handleEditClick" class="dds__button dds__button--md" type="button" name="modal-secondary-button">Edit</button> -->
         </div>
       </div>
     </div>

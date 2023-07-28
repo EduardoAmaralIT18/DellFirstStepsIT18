@@ -6,4 +6,5 @@ export default interface TypeEvent {
     startDate : Date,
     endDate : Date,
     where : string,
+    peopleInvolved: string[]
 }

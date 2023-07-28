@@ -6,11 +6,13 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { onMounted, PropType, ref, watch } from 'vue'
 import Modal from './ModalEventInfo.vue'
+import type User from '@/interfaces/User'
 
 const Props = defineProps({
   startDate: String,
   endDate: String,
   events : Array as PropType<TypeEvent[]>,
+  editionUsers: Array as PropType<User[]>
 })
 
 const emits = defineEmits({
@@ -213,7 +215,9 @@ onMounted(() => {
         <template v-slot:eventContent='arg'>
           <b>{{ arg.event.id}}</b>
           <i class="eventBox">{{ arg.event.title }}</i>
-          <Modal :event="eventToPass" v-if="toggleEventClick"></Modal>
+          <Modal v-if="toggleEventClick" 
+            :event="eventToPass"
+            :editionUsers="Props.editionUsers"></Modal>
         </template>
       </FullCalendar>
       </div>
