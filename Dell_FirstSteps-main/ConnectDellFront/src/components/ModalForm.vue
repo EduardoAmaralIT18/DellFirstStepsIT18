@@ -82,7 +82,7 @@ function sendBodyToParent() {
 }
 
 const handleEventTitle = (text: string) => {
-  // text = text.trim();
+  text = text.trim();
   inserts.value.eventTitle = text;
 };
 const handleEventType = (text: string) => {
@@ -109,15 +109,6 @@ const handleLocation = (text: string) => (inserts.value.location = text);
 const checkEventType = () => {
   return props.eventType === -1;
 };
-
-// const teste = ref(false)
-// watch(teste,() => {
-//   modal.value.close()
-//   setTimeout(() => {
-//     console.log("sdfjghjfghkas")
-//     modal.value.open()
-//   }, 3000);
-// })
 
 function openModal() {
   modal.value.open()
@@ -157,7 +148,7 @@ function resetInputs() {
           maxlength="30"
           boxName="Event Title"
           @typedText="handleEventTitle"
-          :data="props.eventTitle"
+          :initial-value="props.eventTitle"
         />
         <Select
           :placeholder="checkEventType() ? 'Event Type' : phaseList[props.eventType!] "
