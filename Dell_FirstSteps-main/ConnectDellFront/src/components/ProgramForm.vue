@@ -7,6 +7,46 @@ import Dropdown from "./Dropdown.vue"
 import TextArea from "./TextArea.vue";
 import PrimaryButton from "./PrimaryButton.vue";
 import Program from "@/interfaces/Program";
+import { ref } from "vue";
+import axios from "axios";
+
+const programInfo = ref({
+    name: "",
+    startDate: "",
+    endDate: "",
+    description: "",
+    owners: [],
+    isBasic: false,
+} as Program);
+
+const props = defineProps({
+    formName: String
+})
+
+function handleInput(text: string): void {
+    programInfo.value.name = text;
+}
+
+function handleStartDate(date: string): void {
+    programInfo.value.startDate = date
+}
+
+function handleEndDate(date: string): void {
+    programInfo.value.endDate = date;
+}
+
+function handleDropdown(owner: []): void {   
+    programInfo.value.owners = [];
+    owner.forEach(id => {
+        programInfo.value.owners?.push(.ownerList.find(user => user.id === id));
+    })
+}
+
+function handleDescription(text: string): void {
+    programInfo.value.description = text;
+}
+
+
 </script>
 
 <template>
@@ -24,8 +64,6 @@ import Program from "@/interfaces/Program";
 </template>
 
 <script lang="ts">
-import axios from "axios";
-
 export default {
     data() {
         return {
@@ -41,28 +79,28 @@ export default {
             nameList: new Array
         };
     },
-    props: {
-        formName: String
-    },
+    // props: {
+    //     formName: String
+    // },
     methods: {
-        handleInput(text: string): void {
-            this.programInfo.name = text;
-        },
-        handleStartDate(date: string): void {
-            this.programInfo.startDate = date
-        },
-        handleEndDate(date: string): void {
-            this.programInfo.endDate = date;
-        },
-        handleDropdown(owner: []): void {   
-            this.programInfo.owners = [];
-            owner.forEach(id => {
-                this.programInfo.owners?.push(this.ownerList.find(user => user.id === id));
-            })
-        },
-        handleDescription(text: string): void {
-            this.programInfo.description = text;
-        },
+        // handleInput(text: string): void {
+        //     this.programInfo.name = text;
+        // },
+        // handleStartDate(date: string): void {
+        //     this.programInfo.startDate = date
+        // },
+        // handleEndDate(date: string): void {
+        //     this.programInfo.endDate = date;
+        // },
+        // handleDropdown(owner: []): void {   
+        //     this.programInfo.owners = [];
+        //     owner.forEach(id => {
+        //         this.programInfo.owners?.push(this.ownerList.find(user => user.id === id));
+        //     })
+        // },
+        // handleDescription(text: string): void {
+        //     this.programInfo.description = text;
+        // },
         async handleClick() {
             if(this.programInfo.startDate == "")
                 this.programInfo.startDate = new Date().toISOString().slice(0, 10)
