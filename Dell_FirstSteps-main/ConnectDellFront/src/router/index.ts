@@ -4,7 +4,9 @@ import HomeView from '../views/HomeView.vue';
 import NewsView from '../views/NewsView.vue';
 import ProgramView from "../views/ProgramView.vue";
 import MyProgramView from '../views/MyProgramView.vue';
+import CalendarView from '../views/CalendarViewTemp.vue';
 import CreateProgramView from '../views/CreateProgramView.vue';
+import EditionViewVue from '@/views/EditionView.vue';
 import EditProgramView from '../views/EditProgramView.vue'
 import EditionInfoView from '../views/EditionInfoView.vue';
 import CreateEditionView from '../views/CreateEditionView.vue';
@@ -42,9 +44,9 @@ const router = createRouter({
       component: ProgramView,
     },
     {
-      path: '/users',
-      name: 'Users',
-      component: UsersView
+      path: '/calendar',
+      name: 'Calendar',
+      component: CalendarView,
     },
     {
       path: '/createProgram',
@@ -52,9 +54,9 @@ const router = createRouter({
       component: CreateProgramView,
     },
     {
-      path: '/editioninfo/:id',
-      name: 'EditionInfo',
-      component: EditionInfoView,
+      path: '/edition/:id',
+      name: 'Edition',
+      component: EditionViewVue,
     },
     {
       path: '/myProgram/:id/createEdition',
