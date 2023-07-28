@@ -104,14 +104,8 @@ export default {
             });
         },
         activateButton(): boolean {
-            
-
-
             if (new Date(this.programInfo.endDate!) <= new Date(this.programInfo.startDate) || this.checkName() || this.checkOwners() || this.checkDescription())
                 return true;
-
-            if (this.programInfo.endDate == "")
-                return false;
             return false;
         },
         checkName(): boolean {
@@ -129,7 +123,7 @@ export default {
             return false;
         },
         checkDescription(): boolean {
-            if(this.programInfo.description.length < 10 || this.programInfo.description.length > 1500)
+            if(this.programInfo.description.trim().length < 10 || this.programInfo.description.trim().length > 1500)
                 return true
             return false;
         }

@@ -105,8 +105,6 @@ import PrimaryButton from "./PrimaryButton.vue";
             });
         },
         activateButton(): boolean {
-            
-
             if (new Date(this.programInfo.endDate!) <= new Date(this.programInfo.startDate) || this.checkName() || this.checkOwners() || this.checkDescription())
                 return true;
             return false;
@@ -126,7 +124,7 @@ import PrimaryButton from "./PrimaryButton.vue";
             return false;
         },
         checkDescription(): boolean {
-            if(this.programInfo.description.length < 10 || this.programInfo.description.length > 1500)
+            if(this.programInfo.description.trim().length < 10 || this.programInfo.description.trim().length > 1500)
                 return true
             return false;
         }
