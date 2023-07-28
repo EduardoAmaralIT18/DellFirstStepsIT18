@@ -35,13 +35,20 @@ const list = ref(null)
 const dropdown = ref();
 
 onMounted(() => {
-    dropdown.value = DDS.Dropdown(list.value)
-})
+    dropdown.value = DDS.Dropdown(list.value);
+    setTimeout(() => {
+        for (let owner of props.selected!) {
+            dropdown.value.selectOption(owner.id.toString());
+        }
+    }, 1000);
+});
 
 const props = defineProps({
     dropdownName: String,
-    data: Array as PropType<User[]>
+    data: Array as PropType<User[]>,
+    selected: Array as PropType<User[]>,
 })
+
 
 function sendSelectedToParent() {
     const selected = dropdown.value.getSelection()
