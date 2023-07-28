@@ -3,7 +3,6 @@ import ProgramUpdate from "@/interfaces/ProgramUpdate";
 import "@dds/components/src/scss/dds-fonts.scss";
 import "@dds/components/src/scss/dds-icons.scss";
 import axios from "axios";
-import { onMounted, PropType } from "vue";
 import { useRoute } from "vue-router";
 import TextInput from "./TextInput.vue";
 import DatePicker from "./DatePicker.vue";
@@ -152,8 +151,6 @@ import PrimaryButton from "./PrimaryButton.vue";
     }
 }
 </script>
-
-[5:28 PM] Rafael Terres, Guilherme - Dell Team
 
 <style scoped>
 .form {
