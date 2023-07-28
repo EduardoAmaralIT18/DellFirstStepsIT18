@@ -1,6 +1,7 @@
 <template>
-    <button class="dds__button dds__button--primary" type="button" @click="sendClickToParent" :disabled="disabled">{{
-        buttonName }}</button>
+    <button class="dds__button dds__button--primary" type="button"  @click="sendClickToParent" :disabled="disabled">
+        {{ buttonName }}
+    </button>
 </template>
 
 <script setup lang="ts">

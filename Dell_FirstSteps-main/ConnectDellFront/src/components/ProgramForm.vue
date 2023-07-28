@@ -137,7 +137,6 @@ const checkDescription = () => {
     }
     return false;
 }
-
 </script>
 
 <template>
@@ -145,14 +144,11 @@ const checkDescription = () => {
         <h2 class="title">{{ formName }}</h2>
         <TextInput boxName="Program Name" @typedText="handleInput"></TextInput>
         <div class="date-container">
-            <DatePicker class="date_picker" boxName="Start Date" v-bind:required="true" v-bind:dateNow="true"
-                @selectedDate="handleStartDate"></DatePicker>
-            <DatePicker class="date_picker" boxName="End Date" v-bind:minRequired="true" @selectedDate="handleEndDate">
-            </DatePicker>
+            <DatePicker class="date_picker" boxName="Start Date" v-bind:required="true" v-bind:dateNow="true" @selectedDate="handleStartDate"></DatePicker>
+            <DatePicker class="date_picker" boxName="End Date" v-bind:minRequired="true" @selectedDate="handleEndDate" initialDate=""></DatePicker>
         </div>
-        <Dropdown dropdownName="Owners" :data="ownerList" @selectedId="handleDropdown" />
-        <TextArea boxName="Description" maxlength="50" v-bind:required="true"
-            @descriptionText="handleDescription"></TextArea>
+        <Dropdown dropdownName="Owners" :data="ownerList" @selectedId="handleDropdown"/>
+        <TextArea boxName="Description" maxlength="50" v-bind:required="true" @descriptionText="handleDescription"></TextArea>
         <PrimaryButton buttonName="Submit" @clicked="handleClick" :disabled="activateButton()"></PrimaryButton>
     </div>
 </template>

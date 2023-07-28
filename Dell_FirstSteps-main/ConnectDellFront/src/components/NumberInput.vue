@@ -13,6 +13,7 @@ const emits = defineEmits(['typedNumber'])
 
 const sendTextToParent = () => {
     emits("typedNumber", info.value);
+
 }
 </script>
 
@@ -31,4 +32,3 @@ const sendTextToParent = () => {
     </div>
 </template>
 
-<style scoped></style>

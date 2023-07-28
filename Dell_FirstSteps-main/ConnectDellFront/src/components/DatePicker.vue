@@ -37,6 +37,3 @@ const sendStartToParent = () => {
         </div>
     </div>
 </template>
-
-<style scoped>
-</style>

@@ -1,12 +1,15 @@
-import { createRouter, createWebHistory } from "vue-router";
-import LoginView from "../views/LoginView.vue";
-import HomeView from "../views/HomeView.vue";
-import NewsView from "../views/NewsView.vue";
+import {createRouter, createWebHistory} from 'vue-router';
+import LoginView from '../views/LoginView.vue';
+import HomeView from '../views/HomeView.vue';
+import NewsView from '../views/NewsView.vue';
 import ProgramView from "../views/ProgramView.vue";
-import MyProgramView from "../views/MyProgramView.vue";
-import CreateProgramView from "../views/CreateProgramView.vue";
-import EditionInfoView from "../views/EditionInfoView.vue";
-import CreateEditionView from "../views/CreateEditionView.vue";
+import MyProgramView from '../views/MyProgramView.vue';
+import CalendarView from '../views/CalendarViewTemp.vue';
+import CreateProgramView from '../views/CreateProgramView.vue';
+import EditionViewVue from '@/views/EditionView.vue';
+import EditProgramView from '../views/EditProgramView.vue'
+import EditionInfoView from '../views/EditionInfoView.vue';
+import CreateEditionView from '../views/CreateEditionView.vue';
 import UsersView from "@/views/UsersView.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
 import ManageNewsView from "@/views/ManageNewsView.vue";

@@ -27,16 +27,21 @@
 </template>
 
 <script setup lang="ts">
-import User from "@/interfaces/User"
-import { ref, onMounted, PropType } from 'vue'
+import User from "@/interfaces/User";
+import { ref, onMounted, PropType } from "vue";
 
 declare var DDS: any;
-const list = ref(null)
+const list = ref(null);
 const dropdown = ref();
 
 onMounted(() => {
-    dropdown.value = DDS.Dropdown(list.value)
-})
+    dropdown.value = DDS.Dropdown(list.value);
+    setTimeout(() => {
+        for (let owner of props.selected!) {
+            dropdown.value.selectOption(owner.id.toString());
+        }
+    }, 1000);
+});
 
 const props = defineProps({
     dropdownName: String,
@@ -60,7 +65,6 @@ function sendSelectedToParent() {
     }
     emits('selectedId', selectedIds.value);
 }
-
 </script>
 
 <style scoped>

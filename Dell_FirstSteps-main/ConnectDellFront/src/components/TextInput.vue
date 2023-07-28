@@ -8,7 +8,6 @@ const props = defineProps({
   initialValue: String
 })
 
-
 const info = ref<String>(`${props.initialValue ? props.initialValue : ''}`)
 
 const emits = defineEmits(['typedText'])
@@ -20,9 +19,11 @@ const sendTextToParent = () => {
 
 <template>
   <div id="text-input-216225955" class="dds__input-text__container">
-    <label id="text-input-label-647192958" for="text-input-control-647192958" class="dds__label dds__label--required">{{ boxName }}</label>
+    <label id="text-input-label-647192958" for="text-input-control-647192958"
+           class="dds__label dds__label--required">{{ boxName }}</label>
     <div class="dds__input-text__wrapper">
-      <input :minlength="`${minlength}`" :maxlength="`${maxlength}`" type="text" class="dds__input-text" name="text-input-control-name-647192958"
+      <input :minlength="`${minlength}`" :maxlength="`${maxlength}`" type="text" class="dds__input-text"
+             name="text-input-control-name-647192958"
              id="text-input-control-647192958" required="true"
              aria-labelledby="text-input-label-647192958 text-input-helper-647192958" v-model="info"
              @input="sendTextToParent" />
