@@ -1,6 +1,4 @@
 <script setup lang="ts">
-
-
 import { onMounted, ref } from "vue";
 import type Program from "@/interfaces/Program";
 import type News from "@/interfaces/News";
@@ -13,12 +11,10 @@ import GoBackButton from "@/components/GoBackButton.vue";
 import { useRoute } from "vue-router";
 import router from "@/router";
 
-
-
 const programList = ref<Program[]>([]);
 
-const role = ref(+localStorage.getItem('userRole')!).value;
-const author = ref(+localStorage.getItem('userId')!).value;
+const role = ref(+localStorage.getItem("userRole")!).value;
+const author = ref(+localStorage.getItem("userId")!).value;
 const route = useRoute();
 const newsId = +route.params.id;
 
@@ -27,88 +23,90 @@ const newsToBeUpdated = ref<News>();
 onMounted(async () => {
   await getNews(newsId);
   await getPrograms(author, role);
-
-
-})
+});
 
 const getNews = async (newsId: number) => {
   await axios
     .get(`https://localhost:5001/News/getSpecificNews?id=${newsId}`)
     .then((response) => {
-      newsToBeUpdated.value = response.data
-    }).catch((e) => {
-      console.error(e);
+      newsToBeUpdated.value = response.data;
     })
-}
+    .catch((e) => {
+      console.error(e);
+    });
+};
 
 const getPrograms = async (userId: number, role: number) => {
   await axios
-    .get(`https://localhost:5001/Program/getPrograms?idUser=${userId}&role=${role}`)
+    .get(
+      `https://localhost:5001/Program/getPrograms?idUser=${userId}&role=${role}`
+    )
     .then((response) => {
       programList.value = response.data.myPrograms;
-    }).catch((e) => {
-      console.error(e);
     })
-}
+    .catch((e) => {
+      console.error(e);
+    });
+};
 
 const handleTitle = (title: string) => {
   newsToBeUpdated.value!.title = title;
-}
+};
 const handleText = (text: string) => {
   newsToBeUpdated.value!.text = text;
-}
+};
 
 const disableButton = () => {
-  if (newsToBeUpdated.value!.title.trim().length > 5 &&
+  if (
+    newsToBeUpdated.value!.title.trim().length > 5 &&
     newsToBeUpdated.value!.text.trim().length > 5 &&
-    newsToBeUpdated.value!.programId > 0) {
+    newsToBeUpdated.value!.programId > 0
+  ) {
     return false;
   }
   return true;
-}
+};
 
 const selectedFile = ref<File | null>(null);
 
 const onFileChange = (file: File) => {
-  selectedFile.value = file
+  selectedFile.value = file;
 };
 
 const zeroStates = () => {
-  newsToBeUpdated.value!.title = '';
-  handleText('');
+  newsToBeUpdated.value!.title = "";
+  handleText("");
   newsToBeUpdated.value!.programId = 0;
   selectedFile.value = null;
-}
+};
 const submitForm = () => {
   const formData = new FormData();
-  formData.append('id', newsToBeUpdated.value!.id.toString());
-  formData.append('image', selectedFile.value!);
-  formData.append('title', newsToBeUpdated.value!.title);
-  formData.append('author', newsToBeUpdated.value!.authorId.toString());
-  formData.append('program', newsToBeUpdated.value!.programId.toString());
-  formData.append('text', newsToBeUpdated.value!.text);
+  formData.append("id", newsToBeUpdated.value!.id.toString());
+  formData.append("image", selectedFile.value!);
+  formData.append("title", newsToBeUpdated.value!.title);
+  formData.append("author", newsToBeUpdated.value!.authorId.toString());
+  formData.append("program", newsToBeUpdated.value!.programId.toString());
+  formData.append("text", newsToBeUpdated.value!.text);
   if (selectedFile.value !== null) {
-    formData.append('imageName', selectedFile.value!.name);
+    formData.append("imageName", selectedFile.value!.name);
   }
-  console.log(newsToBeUpdated.value)
+  console.log(newsToBeUpdated.value);
 
   axios
     .patch(`https://localhost:5001/News/updateNews`, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
     })
     .then((response) => {
-      zeroStates()
-      alert('Notícia alterada com sucesso.')
-      router.push("/news")
+      zeroStates();
+      alert("Notícia alterada com sucesso.");
+      router.push("/news");
     })
     .catch((error) => {
-      console.error('Erro ao enviar a imagem:', error);
+      console.error("Erro ao enviar a imagem:", error);
     });
-
-}
-
+};
 </script>
 
 <template>
@@ -116,24 +114,45 @@ const submitForm = () => {
     <GoBackButton class="button" path="/news" />
     <h2 class="title">Manage News</h2>
     <form v-if="newsToBeUpdated" @submit="submitForm">
-      <label for="program" class="dds__label dds__label--required">Program</label>
+      <label for="program" class="dds__label dds__label--required"
+        >Program</label
+      >
       <select name="program" v-model="newsToBeUpdated.programId" required>
-        <option :selected="newsToBeUpdated.programId == program.id" :value="program.id" :key="program.id"
-          v-for="program in programList">
+        <option
+          :selected="newsToBeUpdated.programId == program.id"
+          :value="program.id"
+          :key="program.id"
+          v-for="program in programList"
+        >
           {{ program.name }}
         </option>
       </select>
-      <TextInput :initial-value="newsToBeUpdated.title" @typedText="handleTitle" boxName="Title"></TextInput>
-      <TextArea :initial-value="newsToBeUpdated.text" @descriptionText="handleText" boxName="Text"></TextArea>
-      <FileInput :image-name="`Limit 2MB - PNG or JPG accepted.`" @fileSelected="onFileChange"></FileInput>
-      <PrimaryButton buttonName="Submit" :disabled="disableButton()" @clicked="submitForm" />
+      <TextInput
+        :initial-value="newsToBeUpdated.title"
+        @typedText="handleTitle"
+        boxName="Title"
+      ></TextInput>
+      <TextArea
+        :initial-value="newsToBeUpdated.text"
+        @descriptionText="handleText"
+        boxName="Text"
+      ></TextArea>
+      <FileInput
+        :image-name="`Limit 2MB - PNG or JPG accepted.`"
+        @fileSelected="onFileChange"
+      ></FileInput>
+      <PrimaryButton
+        buttonName="Submit"
+        :disabled="disableButton()"
+        @clicked="submitForm"
+      />
     </form>
   </div>
 </template>
 
 <style scoped lang="scss">
 .title {
-  color: #0063B8;
+  color: #0063b8;
   font-size: 200%;
   font-weight: 500;
   text-align: center;
@@ -152,13 +171,13 @@ const submitForm = () => {
     gap: 10px;
 
     button {
-      margin-top: 1rem
+      margin-top: 1rem;
+      width: 100px;
     }
 
     select {
       height: 48px;
     }
-
   }
 }
 </style>

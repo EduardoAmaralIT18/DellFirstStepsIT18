@@ -1,113 +1,115 @@
-<script setup lang='ts'>
-import { CalendarOptions } from '@fullcalendar/core'
-import FullCalendar from '@fullcalendar/vue3'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import interactionPlugin from '@fullcalendar/interaction'
-import { onMounted, PropType, ref, watch } from 'vue'
-import Modal from './ModalEventInfo.vue'
-import ModalForm from './ModalForm.vue'
-import type User from '@/interfaces/User'
-import TypeEvent from '@/interfaces/Event'
-import axios from 'axios'
+<script setup lang="ts">
+import { CalendarOptions } from "@fullcalendar/core";
+import FullCalendar from "@fullcalendar/vue3";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import { onMounted, PropType, ref, watch } from "vue";
+import Modal from "./ModalEventInfo.vue";
+import ModalForm from "./ModalForm.vue";
+import type User from "@/interfaces/User";
+import TypeEvent from "@/interfaces/Event";
+import axios from "axios";
 
 const Props = defineProps({
   startDate: String,
   endDate: String,
-  events : Array as PropType<TypeEvent[]>,
-  editionUsers: Array as PropType<User[]>
-})
+  events: Array as PropType<TypeEvent[]>,
+  editionUsers: Array as PropType<User[]>,
+});
 
 const emits = defineEmits({
   sendDate: Object,
 });
 
-const keyCalendar = ref(0)
-const userRole = ref(+localStorage.getItem('userRole')!);
+const keyCalendar = ref(0);
+const userRole = ref(+localStorage.getItem("userRole")!);
 let eventToPass = ref();
-let selectCheck = ref(["Phase","Activity"])
+let selectCheck = ref(["Phase", "Activity"]);
 let eventBody: object;
-
 
 let toggleEventClick = ref(false);
 const handleEventClick = (args: any) => {
   argsToTypeEvent(args);
   toggleEventClick.value = !toggleEventClick.value;
-}
+};
 
-const handleDateSelect = (info : any) => {
-  if(userRole.value === 0) {
+const handleDateSelect = (info: any) => {
+  if (userRole.value === 0) {
     emits("sendDate", {
       startDate: new Date(info.startStr),
-      endDate: new Date(info.endStr) 
+      endDate: new Date(info.endStr),
     });
   }
-}
-
+};
 
 function argsToTypeEvent(e: any) {
   eventToPass.value = {
-    id : e.event._def.publicId,
-    name : e.event._def.title,
-    eventType : e.event._def.extendedProps.eventType,
-    phaseType : e.event._def.extendedProps.phaseType,
-    endDate : e.event._def.extendedProps.end,
-    startDate : e.event._def.extendedProps.start,
-    where : e.event._def.extendedProps.where,
-    peopleInvolved: e.event._def.extendedProps.peopleInvolved
-  }
+    id: e.event._def.publicId,
+    name: e.event._def.title,
+    eventType: e.event._def.extendedProps.eventType,
+    phaseType: e.event._def.extendedProps.phaseType,
+    endDate: e.event._def.extendedProps.end,
+    startDate: e.event._def.extendedProps.start,
+    where: e.event._def.extendedProps.where,
+    peopleInvolved: e.event._def.extendedProps.peopleInvolved,
+  };
 }
 
 function loadEvent() {
   calendarOptions.value.events = [];
-  Props.events?.forEach(
-    (event) => {
-      if(event.eventType === 0) {
-        calendarOptions.value.events = [...calendarOptions.value.events, {
-        id : event.id, 
-        title : event.name, 
-        start: event.startDate, 
-        end: event.endDate, 
-        extendedProps: {
-          where : event.where, 
-          eventType: event.eventType,
-          phaseType: event.phaseType,
-          peopleInvolved: event.peopleInvolved,
-          start: event.startDate, 
+  Props.events?.forEach((event) => {
+    if (event.eventType === 0) {
+      calendarOptions.value.events = [
+        ...calendarOptions.value.events,
+        {
+          id: event.id,
+          title: event.name,
+          start: event.startDate,
           end: event.endDate,
+          extendedProps: {
+            where: event.where,
+            eventType: event.eventType,
+            phaseType: event.phaseType,
+            peopleInvolved: event.peopleInvolved,
+            start: event.startDate,
+            end: event.endDate,
+          },
+          allDay: true,
+          display: "multi-day",
+          borderColor: "#7E7E7E",
+          color: "#61C1EB",
+          textColor: "#0E0E0E",
         },
-        allDay: true,
-        display: "multi-day",
-        borderColor: "#7E7E7E",
-        color: "#61C1EB",
-        textColor: "#0E0E0E"
-      }
-    ]}
-    else if(event.eventType === 1) {
-      calendarOptions.value.events = [...calendarOptions.value.events, {
-        id : event.id, 
-        title : event.name, 
-        start: event.startDate, 
-        end: event.endDate, 
-        extendedProps: {
-          where : event.where, 
-          eventType: event.eventType,
-          phaseType: event.phaseType,
-          start: event.startDate, 
+      ];
+    } else if (event.eventType === 1) {
+      calendarOptions.value.events = [
+        ...calendarOptions.value.events,
+        {
+          id: event.id,
+          title: event.name,
+          start: event.startDate,
           end: event.endDate,
+          extendedProps: {
+            where: event.where,
+            eventType: event.eventType,
+            phaseType: event.phaseType,
+            start: event.startDate,
+            end: event.endDate,
+          },
+          display: "multi-day",
+          color: "#61C1EBF69AC6",
+          borderColor: "#7E7E7E",
+          textColor: "#0E0E0E",
         },
-        display: "multi-day",
-        color: '#61C1EBF69AC6',
-        borderColor: "#7E7E7E",
-        textColor: "#0E0E0E"
-      }]
+      ];
     }
-  })
+  });
 }
 
-watch(selectCheck,() => {
+watch(selectCheck, () => {
   checkEvent();
-})
+});
 
 const checkEvent = () => {
   let checkMultiDayPhase = false;
@@ -115,80 +117,69 @@ const checkEvent = () => {
   (calendarOptions.value.events as Array<any>).forEach((event) => {
     if (selectCheck.value.length !== 0) {
       selectCheck.value.forEach((check) => {
-        if(event.extendedProps.eventType === 0) {
-          if(check === "Phase") {
+        if (event.extendedProps.eventType === 0) {
+          if (check === "Phase") {
             event.display = "multi-day";
             checkMultiDayPhase = true;
-          }
-          else if(!checkMultiDayPhase)
-            event.display = "none";
-        }
-        else if(event.extendedProps.eventType === 1) {
-          if(check === "Activity") {
+          } else if (!checkMultiDayPhase) event.display = "none";
+        } else if (event.extendedProps.eventType === 1) {
+          if (check === "Activity") {
             event.display = "multi-day";
             checkMultiDayActivity = true;
-          }
-          else if (!checkMultiDayActivity) 
-            event.display = "none";
+          } else if (!checkMultiDayActivity) event.display = "none";
         }
-      })
-    }
-    else
-      event.display = "none";
-  })
-}
+      });
+    } else event.display = "none";
+  });
+};
 
 const calendarOptions = ref({
-  plugins: [
-    dayGridPlugin,
-    timeGridPlugin,
-    interactionPlugin 
-  ],
+  plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
   eventTimeFormat: {
-    hour: 'numeric',
-    minute: '2-digit',
-    meridiem: 'short'
+    hour: "numeric",
+    minute: "2-digit",
+    meridiem: "short",
   },
-  headerToolbar: {  
-    left: 'prev,next today',
-    center: 'title',
-    right: 'dayGridMonth,timeGridWeek'  
+  headerToolbar: {
+    left: "prev,next today",
+    center: "title",
+    right: "dayGridMonth,timeGridWeek",
   },
-  initialView: 'timeGridWeek',
+  initialView: "timeGridWeek",
   selectable: true,
   eventClick: handleEventClick,
-  select: handleDateSelect
+  select: handleDateSelect,
 } as CalendarOptions);
 
 function createValidRange() {
   calendarOptions.value.validRange = {
     start: Props.startDate,
-    end: Props.endDate
-  }
+    end: Props.endDate,
+  };
 }
-
 
 onMounted(() => {
-  console.log(Props.events)
   setTimeout(() => {
-    createValidRange()
-    loadEvent()
+    createValidRange();
+    loadEvent();
   }, 1000);
-})
+});
 
 let toggleEditClick = ref(false);
-const openModalEdit = (teste : Boolean) => {
-  if(teste) {
+const openModalEdit = (teste: Boolean) => {
+  if (teste) {
     toggleEditClick.value = true;
   }
-}
-const closeModalEdit = (teste : Boolean) => {
+};
+const closeModalEdit = (teste: Boolean) => {
   toggleEditClick.value = false;
-}
+};
 
 async function getEventToUpdate() {
   await axios
-    .get(`https://localhost:5001/event/getEventToUpdate?eventId=${eventToPass.value.id}`)
+    .get(
+      `https://localhost:5001/event/getEventToUpdate?eventId=${eventToPass.value.id}`
+    )
     .then((response) => {
       console.log(response.data);
     })
@@ -198,30 +189,27 @@ async function getEventToUpdate() {
     });
 }
 
-
 async function handleSubmitForm(body: Object) {
   eventBody = body;
   await axios
-      .post("https://localhost:5001/event/updateEvent", {
-        id: eventBody.eventId,
-        name: eventBody.eventTitle,
-        eventType: eventBody.eventType,
-        peopleInvolved: eventBody.peopleInvolved,
-        startDate: eventBody.startDate,
-        endDate: eventBody.endDate,
-        where: eventBody.location,
-      })
-      .then(function () {
-        console.log("Editou evento");
-        getEventToUpdate();
-        window.location.reload();
-      })
-      .catch((error) => {
-        alert("Não foi possível atender a solicitação.");
-      });
+    .post("https://localhost:5001/event/updateEvent", {
+      id: eventBody.eventId,
+      name: eventBody.eventTitle,
+      eventType: eventBody.eventType,
+      peopleInvolved: eventBody.peopleInvolved,
+      startDate: eventBody.startDate,
+      endDate: eventBody.endDate,
+      where: eventBody.location,
+    })
+    .then(function () {
+      console.log("Editou evento");
+      getEventToUpdate();
+      window.location.reload();
+    })
+    .catch((error) => {
+      alert("Não foi possível atender a solicitação.");
+    });
 }
-
-
 </script>
 
 <template>
@@ -231,8 +219,8 @@ async function handleSubmitForm(body: Object) {
     @sendBodyToParent="handleSubmitForm"
     :eventId="eventToPass.id"
     buttonText="Edit"
-    :eventTitle="eventToPass.name" 
-    :eventType="eventToPass.eventType" 
+    :eventTitle="eventToPass.name"
+    :eventType="eventToPass.eventType"
     modalTitle="Edit Event"
     :editionUsers="Props.editionUsers"
     :eventStartDate="eventToPass.event?.startDate"
@@ -241,64 +229,66 @@ async function handleSubmitForm(body: Object) {
     :location="eventToPass.event?.where"
     :editMode="true"
     :editionStartDate="Props.startDate"
-    :editionEndDate="Props.endDate"/>
+    :editionEndDate="Props.endDate"
+  />
 
   <!-- <div class='component'> -->
-    <div class='component-main'>
-      <div class="checkbox-layout">
-          <label class="dds__checkbox__label" for="phase">
-            <input
-              type="checkbox"
-              id="phase"
-              class="dds__checkbox__input"
-              value="Phase"
-              v-model="selectCheck"
-            />
-            <span class="test">Phase</span>
-          </label>
-          <label class="dds__checkbox__label" for="activity">
-            <input
-              type="checkbox"
-              id="activity"
-              class="dds__checkbox__input"
-              value="Activity"
-              v-model="selectCheck"
-            />
-            <span>Activity</span>
-          </label>
-      </div>
-      <div>
+  <div class="component-main">
+    <div class="checkbox-layout">
+      <label class="dds__checkbox__label" for="phase">
+        <input
+          type="checkbox"
+          id="phase"
+          class="dds__checkbox__input"
+          value="Phase"
+          v-model="selectCheck"
+        />
+        <span class="test">Phase</span>
+      </label>
+      <label class="dds__checkbox__label" for="activity">
+        <input
+          type="checkbox"
+          id="activity"
+          class="dds__checkbox__input"
+          value="Activity"
+          v-model="selectCheck"
+        />
+        <span>Activity</span>
+      </label>
+    </div>
+    <div>
       <FullCalendar
-        class='calendar'
+        class="calendar"
         :id="keyCalendar"
-        :options='calendarOptions'
+        :options="calendarOptions"
       >
-        <template v-slot:eventContent='arg'>
-          <b>{{ arg.event.id}}</b>
+        <template v-slot:eventContent="arg">
+          <b>{{ arg.event.id }}</b>
           <i class="eventBox">{{ arg.event.title }}</i>
-          <Modal v-if="toggleEventClick" 
+          <Modal
+            v-if="toggleEventClick"
             :event="eventToPass"
             @sendBodyToParent="openModalEdit"
-            :editionUsers="Props.editionUsers"></Modal>
+            :editionUsers="Props.editionUsers"
+          ></Modal>
         </template>
       </FullCalendar>
-      </div>
     </div>
+  </div>
   <!-- </div> -->
 </template>
 
+<style lang="css">
+.fc {
+  /* the calendar root */
 
-<style lang='css'>
-
-.fc { /* the calendar root */
-  
-  --fc-today-bg-color: rgba(13,118,178,.2);
-  --fc-button-bg-color:#00468B;
-  --fc-button-border-color: #002A58;
-  --fc-button-hover-bg-color: #002A58;
-  --fc-button-hover-border-color: #002A58;
-  --fc-button-active-bg-color: #002A58;
-  --fc-button-active-border-color: #002A58;
+  --fc-today-bg-color: rgba(13, 118, 178, 0.2);
+  --fc-button-bg-color: #00468b;
+  --fc-button-border-color: #002a58;
+  --fc-button-hover-bg-color: #002a58;
+  --fc-button-hover-border-color: #002a58;
+  --fc-button-active-bg-color: #002a58;
+  --fc-button-active-border-color: #002a58;
 }
 
 a.fc-event {
@@ -323,8 +313,8 @@ a.fc-event {
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: #00468B;
-  border-color: #002A58;
+  background-color: #00468b;
+  border-color: #002a58;
   border-radius: 4px;
   max-width: 1184px;
 }
@@ -336,9 +326,8 @@ a.fc-event {
 }
 
 .dds__checkbox__input:checked + span::before {
-  background-color: #002A58;
+  background-color: #002a58;
 }
-
 
 h2 {
   margin: 0;
@@ -357,7 +346,8 @@ li {
   padding: 0;
 }
 
-b { /* used for event dates/times */
+b {
+  /* used for event dates/times */
   margin-right: 3px;
 }
 </style>
