@@ -18,8 +18,8 @@ const props = defineProps({
   eventType: Number,
   modalTitle: String,
   editionUsers: Array as PropType<User[]>,
-  eventStartDate: Date,
-  eventEndDate: Date,
+  eventStartDate: String,
+  eventEndDate: String,
   peopleInvolved: Array as PropType<User[]>,
   location: String,
   editMode: Boolean,
@@ -39,19 +39,22 @@ const activateButton = ref(true);
 
 const inserts = ref({
   eventId: props.eventId,
-  eventTitle: "",
-  eventType: -1,
-  startDate: props.editionStartDate!,
-  endDate: props.editionEndDate!,
-  peopleInvolved: new Array(),
-  location: "",
+  eventTitle: props.editMode ? props.eventTitle : "",
+  eventType: props.editMode ? props.eventType : -1,
+  startDate: props.editMode ? props.eventStartDate : props.editionStartDate!,
+  endDate: props.editMode ? props.eventStartDate : props.editionEndDate!,
+  peopleInvolved: props.editMode ? props.peopleInvolved : [],
+  location: props.editMode ? props.location : "",
   editionAux: props.editionStartDate!,
 });
 
 onMounted(() => {
   modal.value = DDS.Modal(element.value);
   console.log(props.editMode);
-  if (props.editMode) activateButton.value = true;
+  if(props.editMode)setInitialValues();
+  if (props.editMode){
+    activateButton.value = true;
+  } 
   openModal()
 });
 
@@ -63,6 +66,15 @@ watchEffect(() => {
     activateButton.value = true;
   }
 });
+
+function setInitialValues(){
+  inserts.value.eventTitle = props.eventTitle;
+  inserts.value.eventType = props.eventType;
+  if(props.editMode){
+    inserts.value.startDate= props.eventStartDate
+    inserts.value.endDate=props.eventEndDate
+  }
+}
 
 function validateDate():Boolean{
   if(inserts.value.startDate=== "" && inserts.value.endDate===""){
@@ -158,7 +170,7 @@ function resetInputs() {
           ref="inserts.eventType"
           @selectedValue="handleEventType"
         ></Select>
-        <div class="date-container">
+        <div v-if="!props.editMode" class="date-container">
           <DatePicker
             boxName="Start Date"
             v-bind:required="true"
@@ -170,6 +182,21 @@ function resetInputs() {
             v-bind:required="true"
             :date-now="true"
             :initialDate="props.editionEndDate?.slice(0,10)"
+            @selectedDate="handleEndDate"
+          />
+        </div>
+        <div v-else class="date-container">
+          <DatePicker
+            boxName="Start Date"
+            v-bind:required="true"
+            :initialDate="props.eventStartDate?.slice(0,10)"
+            @selectedDate="handleStartDate"
+          />
+          <DatePicker
+            boxName="End Date"
+            v-bind:required="true"
+            :date-now="true"
+            :initialDate="props.eventEndDate?.slice(0,10)"
             @selectedDate="handleEndDate"
           />
         </div>
