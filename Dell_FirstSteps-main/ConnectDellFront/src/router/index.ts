@@ -97,7 +97,12 @@ router.beforeEach(async (to, from, next) => {
     localStorage.setItem("userRole", "");
     next();
   } else {
-    next();
+    if (to.name === "Login" || localStorage.getItem("userRole") !== "" ) {
+      next(); 
+    }
+    else if (localStorage.getItem("userRole") === "") {
+      next({name: "Login"})
+    }
   }
 });
 
