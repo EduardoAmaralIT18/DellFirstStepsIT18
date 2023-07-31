@@ -32,12 +32,12 @@ let eventBody: object;
 let calendarRefreshId = ref(0);
 
 onMounted(async () => {
-  await getEdition(3241, editionId);
+  await getEdition(editionId);
   loading.value = true;
 })
-const getEdition = async (programId: number, editionId: number) => {
+const getEdition = async (editionId: number) => {
   await axios
-    .get(`https://localhost:5001/Edition/showInfoEdition?idProgram=${programId}&idEdition=${editionId}`)
+    .get(`https://localhost:5001/Edition/showInfoEdition?idEdition=${editionId}`)
     .then((response) => {
       edition.value = response.data;
     }).catch((e) => {
@@ -115,7 +115,8 @@ const closeModalEdit = (teste: Boolean) => {
     <div class="calendar">
       <div class="cont">
         <p class="title">{{ edition?.programName }} - {{ edition?.name }} [{{ modeToString() }}]</p>
-        <RouterLink :to="`manageEdition/${edition?.id}`">
+        {{ console.log(edition?.id) }}
+        <RouterLink :to="`/manageEdition/${edition?.id}`">
           <button v-if="userRole === 0" class="dds__button dds__button--primary dds__button--lg" type="button">
             <span class="dds__icon dds__icon--pencil dds__button__icon--start" aria-hidden="true"></span>
             Manage edition

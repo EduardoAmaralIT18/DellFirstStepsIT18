@@ -72,7 +72,7 @@ function isAdmin() {
 <style scoped>
 .container {
   padding-top: 5%;
-  padding-left: 15%;
+  padding-left: 5%;
   display: inline-flex;
   flex-direction: column;
 }

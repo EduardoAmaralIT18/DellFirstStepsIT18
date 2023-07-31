@@ -133,7 +133,7 @@ body {
 
 .container {
   padding-top: 3%;
-  padding-left: 15%;
+  padding-left: 5%;
   display: flex;
   flex-direction: column;
   max-width: 1630px;
